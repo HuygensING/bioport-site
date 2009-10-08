@@ -1,0 +1,50 @@
+<html metal:use-macro="context/@@main_template/macros/master">
+<div metal:fill-slot="nav_left_box">
+	<div metal:use-macro="context/@@index/macros/admin_navigation" />
+</div>
+<div metal:fill-slot="content"
+    tal:define="
+        source_id python:view.traverse_subpath_helper(0, request.get('source_id'));
+        source python:context.repository().get_source(source_id);"
+        >
+
+<h1>Bewerk bron <em tal:content="source/id" /></h1>
+<form tal:attributes="action view/url" method="get">
+<input type="hidden" name="source_id" tal:attributes="value source/id" />
+<table>
+    <tr>
+        <th>id</th>
+        <td><span tal:replace="source/id" /></td>
+    </tr>
+    <tr>
+        <th>url</th>
+        <td><input type="text" name="url" tal:attributes="value source/url"
+            style="width:50em" /></td>
+    </tr>
+    <tr>
+        <th>description</th>
+        <td><textarea name="description" tal:content="source/description" style="width:50em" ></textarea></td>
+    </tr>
+    <tr>
+        <th>quality</th>
+        <td>Net iets beter dan:
+            <select name="quality">
+                
+                <option 
+                    tal:repeat="option python:context.repository().get_sources(order_by='quality')"
+                    tal:define="source_quality python:source.get_value('quality') or 0;"
+                    tal:attributes="
+                        value python:not option.quality and 0 or option.quality;
+                        selected python:option.quality  and option.quality == source.quality-1" 
+                    tal:content="option/id" />
+                <option value="0" tal:attributes="selected python:not source.quality">slechtste kwaliteit van allemaal</option>
+            </select>
+    </tr>
+     <tr>
+        <td />
+        <td><input type="submit" value="bewaar veranderingen" /></td>
+    </tr>
+</table>
+</form>
+</div>
+</html>

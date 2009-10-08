@@ -1,0 +1,125 @@
+<html metal:use-macro="context/@@main_template/macros/master">
+<div metal:fill-slot="nav_left_box">
+	<div metal:use-macro="context/@@index/macros/admin_navigation" />
+</div>
+<div metal:fill-slot="content"
+    tal:define="
+        bioport_id python:request.get('id');
+        person python:bioport_id and context.get_repository().get_person(bioport_id);"
+  
+        >
+<div tal:condition="person" tal:omit-tag="">
+<style>
+    .guess {
+        color : grey;
+    }
+    .sure {
+        color : black;
+    }
+</style>
+<h1><span tal:replace="person/title" /></h1>
+Corrigeer hier de gegevens van deze persoon.
+De gegevens in het zwart zijn de gegevens zoals ze op het biografisch portaal worden getoond. In het lichtgrijs staan suggesties van het biografisch portaal. Klik op "verander" om deze suggesties (of uw eigen veranderingen) over te namen.
+<table>
+    <tr>
+        <th>bioport identifier</th>
+
+        <td tal:content="person/get_identifier" />
+    </tr>
+    <tr><th>naam</th><td tal:content="person/title" /></tr>
+    <tr><th>illustratie</th><td><a href="">bij deze persoon is geen illustratie beschikbaar</a></td>
+    </tr>
+    <tr> 
+        <th>pre-posities</th>
+        <td><input type="text" width="50" />
+        </td><td>
+        <input type="submit" value="verander" />
+    </tr>
+    <tr> 
+        <th>voornamen</th>
+        <td><input type="text" width="50" class="guess" value="George Howard" />
+        </td><td>
+        <input type="submit" value="verander" />
+    </tr>
+    <tr> 
+        <th>intra-posities</th>
+        <td><input type="text" width="50" />
+        </td><td>
+        <input type="submit" value="verander" />
+    </tr>
+    <tr> 
+        <th>achternamen</th>
+        <td><input type="text" width="50" class="sure" value="Darwin" />
+        </td><td>
+        <input type="submit" value="verander" />
+    </tr>
+    <tr> 
+        <th>post-posities</th>
+        <td><input type="text" width="50" />
+        </td><td>
+        <input type="submit" value="verander" />
+    </tr>
+    <tr> 
+        <th>geboortedatum</th>
+        <td>
+            <input type="text" width="50" value="1 januari 1901" class="sure"/>
+        </td><td>
+            <input type="submit" value="verander" />
+        </td>
+    </tr>
+     <tr> 
+        <th>geboorteplaats</th>
+        <td>
+            <select class="guess"><option>Almelo</option></select>
+        </td><td>
+            <input type="submit" value="verander" />
+        </td>
+        <td>.... te Almelo geboren...</td>
+    </tr>
+     <tr> 
+        <th>sterfdatum</th>
+        <td>
+            <input type="text" width="50" class="sure" value="2 augustus 1990" />
+        </td><td>
+            <input type="submit" value="verander" />
+        </td>
+    </tr>
+     <tr> 
+        <th>sterfplaats</th>
+        <td>
+            <select class="guess"><option>New York</option></select>
+        </td><td>
+            <input type="submit" value="verander" />
+        </td>
+        <td>.... en stief op 2 augustus 1990 in New York....</td>
+    </tr>
+</table>
+<ul>
+<h2>Tekst</h2>
+<div style="font-size: 0.8em">
+<p> Leck, Bart Antony van der, beeldend kunstenaar (Utrecht 26-11-1876 - Blaricum (N.H.) 13-11-1958). Zoon van Bart Antonij van der Leck, huisschilder, en Hendrika Gathier. Gehuwd op 18-7-1912 met Bertha Aleida Teerink (1883-1959), onderwijzeres. Uit dit huwelijk werden 3 dochters geboren.
+<p>
+Binnen het eenvoudige arbeidersmilieu waarin Bart van der Leck samen met twee broers en een zuster opgroeide, werd weinig waarde gehecht aan de intellectuele ontwikkeling van de kinderen. Op veertienjarige leeftijd verruilde hij de schoolbanken dan ook voor een ambachtelijke vorming in verschillende Utrechtse glasschilderateliers. In een daarvan ontmoette hij in 1893 de architect in opleiding Piet Klaarhamer, onder wiens hoede hij zich geestelijk begon te ontplooien. In zijn zoektocht naar een hem passende levenshouding schoof Van der Leck vanuit zijn christelijke achtergrond steeds meer op naar de socialistische idealen, die indertijd opgeld begonnen te doen. En hoewel hij zich nooit aansloot bij een politieke partij of een maatschappelijke groepering, bleef hij deze ideologie tot het eind van zijn leven toegedaan.
+<a href="">[toon volledige tekst]</a>
+<a href="">[bron]</a>
+</div>
+<h2>Biografie&euml;en van deze persoon</h2>
+<div tal:repeat="bio person/get_biographies">
+<li><a tal:attributes="href string:${here/biography/absolute_url}?source_id=${bio/source/id}&bio_id=${bio/id}" tal:content="bio/title" />
+<a href="">[toon informatie]</a>
+<a href="">[toon tekst van de biografie]</a>
+</div>
+</ul>
+<ul>
+<h2>Acties</h2>
+<li>
+<a href="" class="todo">Bekijk bewerk-geschiedenis</a>
+<li>
+<a href="">Zoek naar andere biografie&euml;n van deze persoon</a>
+</ul>
+</div>
+</div>
+<div tal:condition="not:person">
+
+</div>
+</html>

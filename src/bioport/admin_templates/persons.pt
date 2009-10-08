@@ -1,0 +1,9 @@
+<html metal:use-macro="context/@@main_template/macros/master">
+	<div metal:fill-slot="nav_left_box">
+		<div metal:use-macro="context/@@index/macros/admin_navigation" />
+	</div>
+	<div metal:fill-slot="content">
+		<h1>Persons</h1>
+	</div>
+
+</html>

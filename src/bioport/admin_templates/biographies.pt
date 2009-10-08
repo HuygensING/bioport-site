@@ -1,0 +1,70 @@
+<div tal:omit-tag=""
+j    tal:define="
+
+        biografien view/get_biographies">
+        
+<html metal:use-macro="context/@@main_template/macros/master">
+ <div metal:fill-slot="nav_left_box">
+	<div metal:use-macro="context/@@index/macros/admin_navigation" />
+</div>
+<div metal:fill-slot="content">
+<h1>Biografie&euml;n</h1>
+<p>
+<form tal:attributes="action string:.">
+bron:
+<select class="todo">
+<option tal:repeat="source_id python:['nnbw', 'bwsa', 'dvn', 'bwn', 'knaw']" >
+    <span tal:replace="source_id" />
+ </option>
+ </select>
+bewerker:
+<select class="todo"><option>jelle</option></select>
+<input type="text" name="search_term" tal:attributes="value request/search_term | nothing" />
+<input type="submit" value=" zoek " />
+</form>
+
+<ul>
+<li tal:condition="request/auteur_id | nothing">U zocht naar biografie&euml;n met 
+	<em tal:content="structure python:view.get_auteur(request.auteur_id).naam"></em> als auteur.</li>
+	<li tal:condition="request/beroep_id | nothing">U zocht naar biografie&euml;n met <em tal:content="structure python:here.get_beroep(request.beroep_id).naam"></em> als beroep.</li>
+</ul>
+<div tal:omit-tag="" tal:define="results biografien;">
+<div tal:omit-tag="" metal:define-macro="aantal_resultaten">
+	<p tal:condition="python:len(results) == 0">Er zijn geen resultaten gevonden.</p>
+	<p tal:condition="python:len(results) == 1">Er is 1 resultaat gevonden.</p>
+	<p tal:condition="python:len(results) > 2">Er zijn <span tal:replace="python:len(results)" /> resultaten gevonden.</p>
+</div>
+</div>
+<table>
+<tr>
+    <th>Naam</th>
+    <th>Bron</th>
+    <th colspan="2">Ge&iuml;dentificeerd</th>
+    <th>laast bewerkt</th>
+    <th>verantwoordelijk</th>
+</tr>
+<tr tal:repeat="bio python:biografien">
+	<td 
+		tal:condition="bio/get_namen"
+		tal:content="python:bio.get_namen()[0].volledige_naam()" />
+	<td tal:content="python:bio.source.id" />
+	<td>
+	    <span tal:content="python:bio.get_identifier() and 'ja' or 'nee'" />
+	</td>
+	<td tal:condition="not:bio/get_identifier">
+	    [<a tal:attributes="href string:biography_identify?source_id=${bio/source/id}&bio_id=${bio/id}" >identify</a>]
+	</td>
+	<td tal:condition="bio/get_identifier">
+	    <a tal:attributes="href string:${view/url}/person?id=${bio/get_identifier}">[edit data on this person]</a>
+	</td>
+	<td>
+	<span tal:replace="bio/last_commit" />
+		door <em class="todo">jelle</em>
+		</td>
+	<td class="todo">jelle</td>
+
+</tr>
+<ul>
+</div>
+</html>
+</div>

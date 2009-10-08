@@ -1,0 +1,30 @@
+<html
+     metal:use-macro="context/@@main_template/macros/master">
+<div metal:fill-slot="nav_left_box">
+	<ul metal:define-macro="admin_navigation">
+		<li><a tal:attributes="href python:view.url('index')">Homepagina</a></li>
+		<li><a tal:attributes="href python:view.url('biographies')">Biografie&euml;n</a></li>
+		<li><a tal:attributes="href python:view.url('persons')">Personen</a></li>
+		<li><a tal:attributes="href python:view.url('sources')">Bronnen</a></li>
+		<li><a tal:attributes="href python:view.url('edit')">Gevanceerde admin dingen</a></li>
+	</ul>
+</div>
+<div metal:fill-slot="content">
+    <h1>Welkom!</h1>
+<p>
+U kunt de volgende dingen doen:
+<ul>
+    <li><a href="biographies">ga naar de lijst met biografie&euml;n</a>
+    <li><a href="biographies">ga naar de lijst met personen</a>
+    <li><a href="">bekijk de laatste veranderingen</a>
+</ul>
+<p>
+Voor "superusers" zijn er nog de volgende mogelijkheden:
+<ul>
+    <li><a href="">bekijk alle veranderingen</a> (en maak ze ongedaan)
+    <li><a href="sources">importeer nieuwe gegevens</a>
+    <li><a href="">gebruikersadministratie</a>
+</ul>
+<tt tal:content="python:context.SVN_REPOSITORY"/>
+</div>
+</html>

@@ -1,0 +1,53 @@
+<div tal:omit-tag=""
+    tal:define="
+
+        biografien here/get_biografien">
+<html metal:use-macro="context/@@main_template/macros/master">
+<div metal:fill-slot="nav_left_box">
+	<div metal:use-macro="context/@@index/macros/admin_navigation" />
+</div>
+
+<div metal:fill-slot="content"
+    tal:define="bio python:here.repository().get_source(id=request.source_id).get_biography(id=request.bio_id);
+        similar_persons python:here.repository().get_similar_persons(bio)"
+>
+<h1>Identificeer biografie</h1>
+<p>
+<em>Identificeer de biografie van <span tal:replace="bio/title" /></em>
+</p>
+<p>Gegevens van deze biografie:
+<table class="todo">
+    <tr><th>Naamsvarianten</th>
+        <td> <span tal:repeat="s python:[n.volledige_naam() for n in bio.get_value('namen')]"  tal:content="s" /></td>
+    </tr>
+    <tr><th>Bron</th><td>knaw</td></tr>
+    <tr><th>Url</th><td><a href="" tal:content="python:bio.get_value('url_biografie')" /></tr>
+</table>
+<p tal:condition="bio/get_identifier">Deze biografie is al ge&iuml;dentficeerd met Bioport Id 
+<a tal:attributes="href string:person?id=${bio/get_identifier}"
+tal:define="person python:here.repository().get_person(bio.get_identifier())">
+    <span  tal:replace="python:person.get_identifier()" />
+    (<span  tal:replace="person/title" />)
+</a>
+</p>
+<div tal:condition="similar_persons">
+<p>
+Hieronder staat een lijst met ge&iuml;dentificeerde personen die (volgens de software) het meest op de huidige biografie lijken.
+Als er geen plausibele kandidaten in deze lijst staan, dan kunt u een een 
+<a tal:attributes="href string:bio_identify?source_id=${bio/source/id}&bio_id=${bio/id}">nieuwe Bioport Identifier aan deze biografie toekennen.</a>
+<p>
+<table>
+<tr tal:repeat="person similar_persons">
+    <td tal:content="person/title" />
+    <td><a tal:attributes="href string:bio_identify?source_id=${bio/source/id}&bio_id=${bio/id}&bioport_id=${person/get_identifier}">
+        [dit is een biografie van deze persoon]</a>
+    </td>
+</tr>
+</table>
+</div>
+<p>
+<p>
+
+</div>
+</html>
+</div>

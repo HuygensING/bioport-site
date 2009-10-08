@@ -1,0 +1,60 @@
+<html metal:use-macro="context/@@main_template/macros/master">
+<div metal:fill-slot="nav_left_box">
+	<div metal:use-macro="context/@@index/macros/admin_navigation" />
+</div>
+<div metal:fill-slot="content"
+    tal:define="order_by python:request.get('order_by', 'quality')">
+    <div class="message" tal:condition="request/msg | nothing" tal:content="request/msg" />
+    <h1>Bronnen</h1>
+    <p tal:condition="python:order_by == 'quality'">De bronnen staan in volgorde van kwaliteit - de beste staan bovenaan</p>
+    <table>
+    <tr><th>Id</th><th>URL</th><th>actions</th></tr>
+    <div tal:repeat="source python:context.repository().get_sources(order_by=order_by)" tal:omit-tag="">
+        <tr>
+            <td>
+                <span tal:replace="source/id" />
+                <br>
+                (<a tal:attributes="href string:${view/url}/biographies?source_id=${source/id}"><span tal:replace="python:len(source.get_biographies())" /> biografie&euml;n</a>)
+            <td>
+                <a tal:content="source/url" tal:attributes="href source/url"></a> 
+                <br>
+                <em>
+                <div tal:replace="source/description | nothing" /><br>
+    The files for this source were last committed on <span tal:content="source/last_commit" />.
+            </em>
+           </td>
+            <td>
+    <ul>
+<li>    <a tal:attributes="href string:${view/url}?action=update_source&source_id=${source/id}">download biographies</a>
+<li>    <a tal:attributes="href string:source/${source/id}">edit</a>
+<li>    <a tal:attributes="href string:${view/url}?action=source_delete&source_id=${source/id}">delete</a>
+            </ul>
+            </td>
+        </tr>
+
+    </div>
+    </table>
+    <h2>Voeg een nieuwe bron toe</h2>
+    <div>
+        <form action="source_add" method="post">
+        <table>
+            <tr>
+                <th>id</th><td> <input type="text" name="id" /></td>
+            </tr>
+            <tr>
+                <th>url</th><td> <input type="text" name="url" size="50" /> </td>
+            </tr>
+            <tr>
+                <th>description</th>
+                <td><textarea name="description" cols="50"></textarea></td>
+            </tr>
+            <tr>
+            <td /><td>
+                <input type="submit" value="voeg nieuwe bron toe" />
+            </td>
+            </tr>
+
+        </form>
+    </div>
+</div>
+</html>

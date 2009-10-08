@@ -1,0 +1,10 @@
+Do a simple doctest test on the app.
+************************************
+:Test-Layer: unit
+
+When you create an instance there are no objects in it::
+
+   >>> from bioport.app import Bioport
+   >>> grokapp = Bioport()
+   >>> list(grokapp.keys())
+   [u'admin']
