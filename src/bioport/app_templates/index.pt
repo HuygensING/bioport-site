@@ -1,18 +1,19 @@
-<html
-     metal:use-macro="context/@@main_template/macros/master">
+<html metal:use-macro="context/@@main_template/macros/master">
 <div metal:fill-slot="content">
 <h1>Welkom</h1>
 <p>
 Dit is een prototype voor het Biografisch Portaal van Nederland. Het is bedoeld als een voorproef van wat het portaal uiteindelijk zou kunnen worden - en als <em>proof of concept</em> dat een dergelijke aanpak technisch mogelijk en conceptueel nuttig is.
 <p>
-Dit prototype bevat beschrijvingen van en verwijzingen naar 26.711 biografie&euml;n 
-uit vijf verschillende bronnen:
+Dit prototype bevat beschrijvingen van en verwijzingen naar
+<span tal:replace="python:len(context.get_biographies())" /> biografie&euml;n
+van
+<span tal:replace="python:len(context.get_persons())" /> personen 
+uit <span tal:replace="python:len(context.repository().get_sources())" /> verschillende bronnen.
+
 <ul>
-<li>Het  Nieuw Nederlandsch Biografisch Woordenboek (21.422 biografie&euml;n)
-<li>KNAW - Levensberichten en Herdenkingen (2046 biografie&euml;n)
-<li>Het Biografisch Woordenboek van Nederland (2031 biografie&euml;n)
-<li>Het Digitaal Vrouwenlexicon van Nederland (798 biografie&euml;n)
-<li>Het Biografisch Woordenboek van het Socialisme en de Arbeidersbeweging in Nederland (578 biografie&euml;n)
+<li tal:repeat="source python:context.repository().get_sources()"
+	tal:content="python:source.description or source.id">Het  Nieuw Nederlandsch Biografisch Woordenboek (21.422 biografie&euml;n)
+</li>
 </ul>
 De gegevens zijn opgenomen zoals ze in de bronnen zijn gevonden. Er heeft dus geen enkele nabewerking in de vorm van een controle of aanvullig van de gegevens plaats gevonden.
 <p>

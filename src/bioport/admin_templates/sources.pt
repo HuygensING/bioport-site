@@ -1,7 +1,4 @@
-<html metal:use-macro="context/@@main_template/macros/master">
-<div metal:fill-slot="nav_left_box">
-	<div metal:use-macro="context/@@index/macros/admin_navigation" />
-</div>
+<html metal:use-macro="context/@@admin_template/macros/master">
 <div metal:fill-slot="content"
     tal:define="order_by python:request.get('order_by', 'quality')">
     <div class="message" tal:condition="request/msg | nothing" tal:content="request/msg" />
@@ -14,19 +11,19 @@
             <td>
                 <span tal:replace="source/id" />
                 <br>
-                (<a tal:attributes="href string:${view/url}/biographies?source_id=${source/id}"><span tal:replace="python:len(source.get_biographies())" /> biografie&euml;n</a>)
+                (<a tal:attributes="href python:view.url(context, 'biographies', {'source_id':source.id})">
+                	<span tal:replace="python:len(context.repository().get_biographies(source=source))" /> biografie&euml;n</a>)
             <td>
                 <a tal:content="source/url" tal:attributes="href source/url"></a> 
                 <br>
                 <em>
-                <div tal:replace="source/description | nothing" /><br>
-    The files for this source were last committed on <span tal:content="source/last_commit" />.
+                <div tal:replace="source/description | nothing" />
             </em>
            </td>
             <td>
     <ul>
 <li>    <a tal:attributes="href string:${view/url}?action=update_source&source_id=${source/id}">download biographies</a>
-<li>    <a tal:attributes="href string:source/${source/id}">edit</a>
+<li>    <a tal:attributes="href string:source?source_id=${source/id}">edit</a>
 <li>    <a tal:attributes="href string:${view/url}?action=source_delete&source_id=${source/id}">delete</a>
             </ul>
             </td>
@@ -36,10 +33,11 @@
     </table>
     <h2>Voeg een nieuwe bron toe</h2>
     <div>
-        <form action="source_add" method="post">
+        <form>
+        <input type="hidden" name="action" value="add_source"> 
         <table>
             <tr>
-                <th>id</th><td> <input type="text" name="id" /></td>
+                <th>id</th><td> <input type="text" name="source_id" /></td>
             </tr>
             <tr>
                 <th>url</th><td> <input type="text" name="url" size="50" /> </td>

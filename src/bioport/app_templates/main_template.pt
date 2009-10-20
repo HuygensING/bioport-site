@@ -35,21 +35,23 @@
 	</div>
 	<div id="nav_left_box">
 	<div metal:define-slot="nav_left_box">
-		<ul tal:condition="nothing">
-			<li><a tal:attributes="href here/bioport/absolute_url">Homepagina</a></li>
-			<li><a tal:attributes="href here/bioport/list/absolute_url">Biografi&euml;n</a></li>
-			<li><a tal:attributes="href string:${here/bioport/absolute_url}/zoek">Zoek</a></li>
-			<li><a tal:attributes="href here/bioport/auteurslijst/absolute_url">Auteurs</a></li>
-			<li><a tal:attributes="href here/bioport/beroepenlijst/absolute_url">Beroepen</a></li>
+		<ul>
+			<li><a tal:attributes="href view/application_url">Homepagina</a></li>
+			<li><a tal:attributes="href python:view.url('personen')">Personen</a></li>
+			<li><a tal:attributes="href python:view.url('zoek')">Zoek</a></li>
+			<li><a tal:attributes="href python:view.url('auteurs')">Auteurs</a></li>
 
-			<li tal:define="bio_van_de_dag string:${here/bio/absolute_url}/232875"><a tal:attributes="href bio_van_de_dag">Biografie van de Dag</a>
-        <a tal:attributes="href bio_van_de_dag">
-        <img style="padding:0;border:0;margin-left:-0.3em;margin-top:0.4em;margin-bottom:-0.3em;width:8.4em;"
-            tal:attributes="src here/maria van bourgondie.jpg/absolute_url" />
+			<li  tal:define="bio_van_de_dag python:view.url('persoon')">
+				<a tal:attributes="href bio_van_de_dag">Biografie van de Dag</a>
+		        <a tal:attributes="href bio_van_de_dag">
+		        <img style="padding:0;border:0;margin-left:-0.3em;margin-top:0.4em;margin-bottom:-0.3em;width:8.4em;"
+		            tal:attributes="src static/maria_van_bourgondie.jpg" />
         </a>
-        </li>
-			<li><a tal:attributes="href here/bronnen/absolute_url">Op te nemen bronnen</a></li>
-			<li><a tal:attributes="href here/colofon/absolute_url">Colofon</a></li>
+	        </li>
+	        <li><a tal:attributes="href python:view.url('persoon')">Willekeurige biografie</a></li>
+			<li><a tal:attributes="href python:view.url('bronnen')">Op te nemen bronnen</a></li>
+			<li><a tal:attributes="href python:view.url('colofon')">Colofon</a></li>
+			<li><a tal:attributes="href python:view.url(context['admin'])">Admin</a></li>
 		</ul>
     </div>     
 	</div>

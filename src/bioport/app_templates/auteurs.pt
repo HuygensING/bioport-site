@@ -1,0 +1,23 @@
+<html metal:use-macro="context/@@main_template/macros/master">
+    <title metal:fill-slot="head_title">Zoek</title> 
+    <div metal:fill-slot="content" tal:define="auteurs view/get_auteurs">
+<h1>Auteurs</h1>
+<span tal:repeat="letter string:abcdefghijklmnopqrstuvwxyz"
+    tal:attributes="class python:letter == request.get('beginletter') and 'alfabet selected' or 'alfabet'"
+    ><a tal:attributes="href string:${view/url}?beginletter=${letter}" ><span tal:replace="letter/upper" /></a></span>
+<p>
+<form tal:attributes="action view/url">
+<input type="text" name="search_term" tal:attributes="value request/search_term | nothing" />
+<input type="submit" value=" zoek " />
+</form>
+/<div tal:omit-tag="" tal:define="results auteurs">
+<div metal:use-macro="context/@@personen/macros/aantal_resultaten" />
+</div>
+<ul class="biografien">
+<li tal:repeat="r_auteur python:auteurs">
+<a tal:content="structure r_auteur/name" 
+   tal:attributes="href python:view.url('personen',data= {'auteur_id':r_auteur.id})" />
+</li>
+</ul>
+</div>
+</html>

@@ -1,0 +1,53 @@
+<div tal:omit-tag=""
+    tal:define="persons view/get_persons">
+<html metal:use-macro="context/@@main_template/macros/master">
+<div metal:fill-slot="content">
+<span tal:repeat="letter string:abcdefghijklmnopqrstuvwxyz"
+    tal:attributes="class python:letter == request.get('beginletter') and 'alfabet selected' or 'alfabet'"
+    ><a tal:attributes="href string:${view/url}?beginletter=${letter}" ><span tal:replace="letter/upper" /></a></span>
+<p>
+<form tal:attributes="action view/url">
+<span tal:repeat="source python:context.repository().get_sources()"
+tal:condition="nothing"
+    tal:attributes="class python:source.id == request.get('source_id') and 'alfabet selected' or 'alfabet'"
+>
+    <a tal:attributes="href string:${view/url}?source_id=${source/id}" ><span tal:replace="source/id" /></a></span>
+    <span class="alfabet" tal:condition="nothing">
+    <a tal:attributes="href string:${view/url}?beginletter=%" >alle namen</a></span>
+<input type="text" name="search_term" tal:attributes="value request/search_term | nothing" />
+<input type="submit" value=" zoek " />
+</form>
+<ul>
+<li tal:condition="request/auteur_id | nothing">U zocht naar biografie&euml;n met <em tal:content="structure python:context.repository().get_author(request.form['auteur_id']).name"></em> als auteur.</li>
+<li tal:condition="request/beroep_id | nothing">U zocht naar biografie&euml;n met <em tal:content="structure python:here.get_beroep(request.beroep_id).naam"></em> als beroep.</li>
+</ul>
+<div tal:omit-tag="" tal:define="results persons">
+<div tal:omit-tag="" metal:define-macro="aantal_resultaten">
+<p tal:condition="python:results.grand_total == 0">Er zijn geen resultaten gevonden.</p>
+<p tal:condition="python:results.grand_total == 1">Er is 1 resultaat gevonden.</p>
+<p tal:condition="python:results.grand_total > 2">Er zijn <span tal:replace="results/grand_total" /> resultaten gevonden.</p>
+</div>
+</div>
+<div class="batch_navigation">	
+	<span tal:replace="python:'%s-%s van %s' % (persons.start + 1, persons.end + 1,  persons.grand_total)" />  | 
+	<span tal:condition="persons/previous">
+		<a tal:attributes="href python:view.batch_url(start=persons.previous.start)"
+			tal:content="string:vorige ${persons/previous/size}">vorige X</a>
+	</span>  | 
+
+	<span tal:condition="persons/next">
+		<a tal:attributes="href python:view.batch_url(start=persons.next.start);"
+			tal:content="string:volgende ${persons/next/size}">vorige X</a>
+	</span>
+</div>
+<ul class="biografien">
+<li tal:repeat="person persons">
+<a 
+	tal:content="structure python:person.naam() and person.naam().guess_normal_form() or 'XXXXX'" 
+    tal:attributes="href python:'%s/%s' % (view.url('persoon'), person.get_bioport_id())" />
+    (<span tal:replace="python:context.format_dates(person.get_value('geboortedatum'), person.get_value('sterfdatum'))" />)
+</li>
+<ul>
+</div>
+</html>
+</div>

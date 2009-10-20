@@ -1,0 +1,48 @@
+<html metal:use-macro="context/@@admin_template/macros/master">
+<div metal:fill-slot="content">
+<!-- render the form tag -->
+<form action="." tal:attributes="action request/URL" method="post"
+      class="edit-form" enctype="multipart/form-data">
+  <!-- render any validation errors on top -->
+  <ul class="errors" tal:condition="view/errors">
+    <li tal:repeat="error view/error_views">
+       <span tal:replace="structure error">Error Type</span>
+    </li>
+  </ul>
+
+  <!-- render the widgets -->
+  <tal:block repeat="widget view/widgets">
+    <label tal:attributes="for widget/name">
+      <!-- a * when the widget is required -->
+      <span class="required" tal:condition="widget/required">*</span>
+      <!-- the title of the field -->
+      <span i18n:translate="" tal:content="widget/label">label</span>
+    </label>
+
+    <!-- render the HTML widget -->
+    <div class="widget" tal:content="structure widget">
+      <input type="text" />
+    </div>
+
+    <!-- render any field specific validation error from a previous
+         form submit next to the field -->
+    <div class="error" tal:condition="widget/error">
+      <span tal:replace="structure widget/error">error</span>
+    </div>
+  </tal:block>
+
+	<input   tal:replace="structure python:view.actions['form.actions.edit_settings'].render()" />
+  <!-- render all the action submit buttons -->
+  <br>
+  <Br>
+  <span class="actionButtons" tal:condition="view/availableActions">
+    <span tal:repeat="action view/actions">
+        <input    tal:replace="structure action/render" 
+    	tal:condition="python:action.__name__ != 'form.actions.edit_settings'">
+           <br>
+     </span>
+  </span>
+</form>
+
+</div>
+</html>

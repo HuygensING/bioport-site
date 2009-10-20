@@ -105,7 +105,7 @@ Binnen het eenvoudige arbeidersmilieu waarin Bart van der Leck samen met twee br
 </div>
 <h2>Biografie&euml;en van deze persoon</h2>
 <div tal:repeat="bio person/get_biographies">
-<li><a tal:attributes="href string:${here/biography/absolute_url}?source_id=${bio/source/id}&bio_id=${bio/id}" tal:content="bio/title" />
+<li><a tal:attributes="href python:view.url(context, 'biography', {'source_id':bio.get_source().id,'bio_id':bio.id})" tal:content="bio/title" />
 <a href="">[toon informatie]</a>
 <a href="">[toon tekst van de biografie]</a>
 </div>

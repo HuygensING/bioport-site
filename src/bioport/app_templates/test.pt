@@ -1,0 +1,41 @@
+<div tal:omit-tag=""
+    tal:define="persons context/get_persons">
+<html metal:use-macro="context/@@main_template/macros/master">
+<div metal:fill-slot="content">
+<span tal:repeat="letter string:abcdefghijklmnopqrstuvwxyz"
+    tal:attributes="class python:letter == request.get('beginletter') and 'alfabet selected' or 'alfabet'"
+    ><a tal:attributes="href string:${view/url}?beginletter=${letter}" ><span tal:replace="letter/upper" /></a></span>
+<p>
+<form tal:attributes="action view/url">
+<span tal:repeat="source_id python:['nnbw', 'bwsa', 'dvn', 'bwn', 'knaw']"
+    tal:attributes="class python:source_id == request.get('source_id') and 'alfabet selected' or 'alfabet'"
+>
+    <a tal:attributes="href string:${view/url}?source_id=${source_id}" ><span tal:replace="source_id" /></a></span>
+    <span class="alfabet">
+    <a tal:attributes="href string:${view/url}?beginletter=%" >alle namen</a></span>
+<input type="text" name="search_term" tal:attributes="value request/search_term | nothing" />
+<input type="submit" value=" zoek " />
+</form>
+
+<ul>
+<li tal:condition="request/auteur_id | nothing">U zocht naar biografie&euml;n met <em tal:content="structure python:here.get_auteur(request.auteur_id).naam"></em> als auteur.</li>
+<li tal:condition="request/beroep_id | nothing">U zocht naar biografie&euml;n met <em tal:content="structure python:here.get_beroep(request.beroep_id).naam"></em> als beroep.</li>
+</ul>
+<div tal:omit-tag="" tal:define="results persons">
+<div tal:omit-tag="" metal:define-macro="aantal_resultaten">
+<p tal:condition="python:len(results) == 0">Er zijn geen resultaten gevonden.</p>
+<p tal:condition="python:len(results) == 1">Er is 1 resultaat gevonden.</p>
+<p tal:condition="python:len(results) > 2">Er zijn <span tal:replace="python:len(results)" /> resultaten gevonden.</p>
+</div>
+</div>
+<ul class="biografien">
+<li tal:repeat="person python:persons[:1000]">
+<a 
+	tal:content="structure person/naam" 
+    tal:attributes="href python:'%s/%s' % (view.url('persoon'), person.get_identifier())" />
+    (<span tal:replace="python:context.format_dates(person.get_value('geboortedatum'), person.get_value('sterfdatum'))" />)
+</li>
+<ul>
+</div>
+</html>
+</div>

@@ -1,0 +1,64 @@
+<html metal:use-macro="context/@@main_template/macros/master">
+    <title metal:fill-slot="head_title">Zoek</title> 
+    <div metal:fill-slot="content">
+<h1>Zoek naar personen</h1>
+<form tal:attributes="action python:view.url('personen')">
+<table>
+<tr>
+    <th>zoek</th>
+    <td>
+        <input type="text" name="search_term" tal:attributes="value request/search_term | nothing" />
+    </td>
+</tr>
+<tr>
+    <th>geboortejaar</th>
+    <td>
+        tussen <input type="text" size="4" name="geboortejaar_min" />
+        en <input type="text" size="4" name="geboortejaar_max" />
+    </td>
+</tr>
+
+<tr>
+    <th>sterfjaar</th>
+    <td>
+        tussen <input type="text" size="4" name="sterfjaar_min" />
+        en <input type="text" size="4" name="sterfjaar_max" />
+    </td>
+</tr>
+<tr>
+
+    <th>geslacht</th>
+    <td>
+        <select name="geslacht">
+            <option />
+            <option tal:repeat="sex python:[(1, 'man'), (2, 'vrouw')]"
+                tal:attributes="value python:sex[0]"
+                tal:content="python:sex[1]" />
+        </select>
+    </td>
+<tr>
+    <th>bron</th>
+    <td>
+    <select name="source_id">
+    <option tal:repeat="source_id python:['','nnbw', 'bwsa', 'dvn', 'bwn', 'knaw']"
+        tal:attributes="value source_id"
+        tal:content="source_id"
+            />
+    </select>
+    </td>
+</tr>
+<tr>
+    <td></td>
+<td>
+<input type="submit" value=" zoek " />
+
+</td>
+</tr>
+</table>
+</form>
+<p>Er zijn ook lijsten met <a href="auteurslijst">auteurs</a> en met <a href="beroepenlijst">beroepen en functies</a> beschikbaar.
+<p>Het is belangrijk op te merken dat bij een groot gedeelte van de gegevens ontbreken, en dat daardoor de zoekresultaten onvolledig zullen zijn.
+<p>Zo is bijvoorbeeld het geslacht van personen in het NNBW niet aangegeven, en dus zal een zoekopdracht op vrouwen in dat naslagwerk geen enkel resultaat opleveren.
+
+</div>
+</html>

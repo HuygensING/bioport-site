@@ -1,10 +1,7 @@
-<html metal:use-macro="context/@@main_template/macros/master">
-<div metal:fill-slot="nav_left_box">
-	<div metal:use-macro="context/@@index/macros/admin_navigation" />
-</div>
+<html metal:use-macro="context/@@admin_template/macros/master">
 <div metal:fill-slot="content"
     tal:define="
-        source_id python:view.traverse_subpath_helper(0, request.get('source_id'));
+        source_id python:request.get('source_id');
         source python:context.repository().get_source(source_id);"
         >
 

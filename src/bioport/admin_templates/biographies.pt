@@ -1,12 +1,7 @@
 <div tal:omit-tag=""
-j    tal:define="
-
-        biografien view/get_biographies">
+    tal:define="biografien view/get_biographies">
         
-<html metal:use-macro="context/@@main_template/macros/master">
- <div metal:fill-slot="nav_left_box">
-	<div metal:use-macro="context/@@index/macros/admin_navigation" />
-</div>
+<html metal:use-macro="context/@@admin_template/macros/master">
 <div metal:fill-slot="content">
 <h1>Biografie&euml;n</h1>
 <p>
@@ -45,17 +40,20 @@ bewerker:
 </tr>
 <tr tal:repeat="bio python:biografien">
 	<td 
-		tal:condition="bio/get_namen"
+		tal:condition="bio/get_namen">
+		<a tal:attributes="href python:'%s/persoon/%s' % (view.application_url(), bio.get_bioport_id())"
 		tal:content="python:bio.get_namen()[0].volledige_naam()" />
-	<td tal:content="python:bio.source.id" />
+	</td>
+	<td><a tal:attributes="href python:view.url(context, 'source', {'source_id':bio.get_source().id})"
+		 tal:content="python:bio.get_source().id" />
 	<td>
-	    <span tal:content="python:bio.get_identifier() and 'ja' or 'nee'" />
+	    <span tal:content="python:bio.get_bioport_id() and 'ja' or 'nee'" />
 	</td>
-	<td tal:condition="not:bio/get_identifier">
-	    [<a tal:attributes="href string:biography_identify?source_id=${bio/source/id}&bio_id=${bio/id}" >identify</a>]
+	<td tal:condition="not:bio/get_bioport_id">
+	    [<a tal:attributes="href python:view.url('biography_identify')"  x="{'source_id':bio.get_source().id,'bio_id':bio.id})" >identify</a>]
 	</td>
-	<td tal:condition="bio/get_identifier">
-	    <a tal:attributes="href string:${view/url}/person?id=${bio/get_identifier}">[edit data on this person]</a>
+	<td tal:condition="bio/get_bioport_id">
+	    <a tal:attributes="href python:view.url(context,'person', data={'id':bio.get_bioport_id()})">[edit data on this person]</a>
 	</td>
 	<td>
 	<span tal:replace="bio/last_commit" />

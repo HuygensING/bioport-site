@@ -1,6 +1,7 @@
 
 import grok
 from BioPortRepository.repository import Repository
+import BioPortRepository
 from BioPortRepository.common import  BioPortException
 from zope.interface import Interface
 from zope import schema
@@ -9,31 +10,58 @@ class IAdminSettings(Interface):
     SVN_REPOSITORY = schema.TextLine(title=u'URL of svn repository')
     SVN_REPOSITORY_LOCAL_COPY = schema.TextLine(title=u'path to local copy of svn repository')
    
+    DB_CONNECTION = schema.TextLine(title=u'Database connection (e.g. "mysql://root@localhost/bioport_test" )')
+    LIMIT = schema.Decimal(title=u'Dont download more than this amount of biographies per source (used for testing)')
 
 class Admin(grok.Container):
-    grok.template('admin_index')
-    SVN_REPOSITORY = '/home/jelle/projects_active/bioport/bioport_repository'
-    SVN_REPOSITORY_LOCAL_COPY = '/home/jelle/projects_active/bioport/bioport_repository_local_copy'
-    
     grok.implements(IAdminSettings)
+    grok.template('admin_index')
+    
+    SVN_REPOSITORY = None
+    SVN_REPOSITORY_LOCAL_COPY = None
+    DB_CONNECTION = None
+    LIMIT = None
+    
     
     def get_repository(self):
         repo = Repository(
             svn_repository=self.SVN_REPOSITORY, 
             svn_repository_local_copy=self.SVN_REPOSITORY_LOCAL_COPY,
+            database=self.DB_CONNECTION,
+            ZOPE_SESSIONS=False, #use z3c.saconfig package
         ) 
         return repo
     
     def repository(self):
         return self.get_repository()
     
+
+        
 class Edit(grok.EditForm):
+    grok.template('edit')
     grok.context(Admin)
     form_fields = grok.Fields(IAdminSettings)
-    @grok.action(u"Edit Admin settings")
+    @grok.action(u"Edit Admin settings", name="edit_settings")
     def edit_admin(self, **data):
         self.applyData(self.context, **data)
+        self.context.get_repository().db.metadata.create_all()
+        self.redirect(self.url(self))
+    
+    @grok.action('reset database (LOOK OUT)', name="reset_database")
+    def reset_database(self, **data):
+        self.context.get_repository().db.metadata.drop_all()
+        self.context.get_repository().db.metadata.create_all()
+        self.redirect(self.url(self))
         
+    @grok.action('Fill the similarity Cache', name='fill_similarity_cache') 
+    def fill_similarity_cache(self, **data):
+        self.context.repository().db.fill_similarity_cache()
+        self.redirect(self.url(self))
+       
+    @grok.action('Refresh the similiarty cache')
+    def refresh_similiarty_cache(self, **data): 
+        self.context.repository().db.fill_similarity_cache(refresh=True)
+        self.redirect(self.url(self))
 class Display(grok.DisplayForm):
     grok.context(Admin)
     form_fields = grok.Fields(IAdminSettings)
@@ -57,59 +85,61 @@ class Person(grok.View):
     pass
 class Persons(grok.View):
     pass
-class Source(grok.View):
-    #CODE for construction traverse_subpath from 
-    #  http://grok.zope.org/documentation/how-to/traversing-subpaths-in-views 
-    def publishTraverse(self, request, name):
-       self._traverse_subpath = request.getTraversalStack() + [name]
-       request.setTraversalStack([])
-       return self
-    def traverse_subpath(self):
-       return getattr(self, '_traverse_subpath', [])
-       
-    def traverse_subpath_helper(self, i, default=None):
-        p = self.traverse_subpath()
-        if i < len(p):
-            return p[i]
-        else:
-            return default
 
-    def update(self, source_id=None, url='', description='', quality=0):
+class Source(grok.EditForm):
+    def get_repository(self):
+        repository = self.context.repository()
+        return repository
+    def update(self, source_id=None, description=None, url=None, quality=None):
         if source_id:
-            source = self.context.repository().get_source(source_id) 
-            source.set_value(url=url, description=description) 
-            if quality and quality != source.get_value('quality'):
+            repository = self.get_repository()
+            source = repository.get_source(source_id) 
+            if url is not None:
+                source.set_value(url=url)
+            if description is not None:
+                source.set_value(description=description) 
+            if quality is not None:
                 source.set_quality(int(quality))
     
-            source.save()
+            repository.save_source(source)
             
             msg = 'Changed source %s' % source.id
             print msg
-            print quality
-            print source.quality 
             
+class Identify(grok.View):
+    def update(self, bioport_ids):
+        repo = self.context.repository()
+        persons = [BioPortRepository.person.Person(id, repository=repo) for id in bioport_ids]
+        repo.identify(persons)
+        
+        self.bioport_ids = bioport_ids
+        self.persons = persons
+        
 class Sources(grok.View):
     
 
-    def update(self, action=None, source_id=None):
+    def update(self, action=None, source_id=None, url=None, description=None):
         if action == 'update_source':
             self.update_source(source_id)
+            self.redirect(self.url())
         elif action == 'source_delete':
             self.source_delete(source_id)
-    
+        elif action=='add_source':
+            self.add_source(source_id, url, description)   
+            
     def update_source(self, source_id):
-            source = self.context.repository().get_source(source_id) 
-            assert source
-            try:
-                source.download_data()
-                msg = 'Downloaded data for source with id %s' % source.id
-    
-    
-            except BioPortException, error:
-                msg = 'An error occurred: %s' % (error)
-            return msg
-#            self.redirect('%s?msg=%s' % (self.url(), msg))
-
+        repo = self.context.repository()
+        source =repo.get_source(source_id)
+        repo.update_source(source, limit=int(self.context.LIMIT))
+        
+    def download_data(self, source_id):
+        repository = self.context.repository()
+        source = repository.get_source(id=source_id)
+        repository.download_biographies(source=source)
+        self.redirect(self.url())
+    def add_source(self, source_id, url, description=None):
+        source = self.context.repository().add_source(BioPortRepository.source.Source(source_id, url, description))
+ 
     def source_delete(self, source_id):
         repo = self.context.repository() 
         source = self.context.repository().get_source(source_id)
@@ -119,3 +149,5 @@ class Sources(grok.View):
         msg = 'Deleted source with id %s ' % source_id
         print msg
         return msg
+class MostSimilar(grok.View):
+    pass
