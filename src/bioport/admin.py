@@ -62,6 +62,12 @@ class Edit(grok.EditForm):
     def refresh_similiarty_cache(self, **data): 
         self.context.repository().db.fill_similarity_cache(refresh=True)
         self.redirect(self.url(self))
+        
+    @grok.action('Create tables')
+    def reset_database(self, **data):
+        self.context.get_repository().db.metadata.create_all()
+        self.redirect(self.url(self))
+        
 class Display(grok.DisplayForm):
     grok.context(Admin)
     form_fields = grok.Fields(IAdminSettings)
