@@ -5,8 +5,8 @@
     <h1>Bronnen</h1>
     <p tal:condition="python:order_by == 'quality'">De bronnen staan in volgorde van kwaliteit - de beste staan bovenaan</p>
     <table>
-    <tr><th>Id</th><th>URL</th><th>actions</th></tr>
-    <div tal:repeat="source python:context.repository().get_sources(order_by=order_by)" tal:omit-tag="">
+    <tr><th>Id</th><th>URL</th><th>Quality</th><th>actions</th></tr>
+    <div tal:repeat="source python:context.repository().get_sources(order_by=order_by, desc=True)" tal:omit-tag="">
         <tr>
             <td>
                 <span tal:replace="source/id" />
@@ -19,6 +19,9 @@
                 <em>
                 <div tal:replace="source/description | nothing" />
             </em>
+           </td>
+           <td>
+          	<tt tal:content="source/quality" /> 
            </td>
             <td>
     <ul>

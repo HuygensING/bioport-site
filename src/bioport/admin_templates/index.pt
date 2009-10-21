@@ -12,7 +12,8 @@ U kunt de volgende dingen doen:
 <p>
 Voor "superusers" zijn er nog de volgende mogelijkheden:
 <ul>
-    <li><a href="sources">importeer nieuwe gegevens</a>
+    <li><a href="sources">Bewerk bronnen</a>
+	<li><a tal:attributes="href python:view.url('edit')">Gevanceerde admin dingen</a></li>
     <li><a href="">gebruikersadministratie</a>
 </ul>
 <tt tal:content="python:context.SVN_REPOSITORY"/>

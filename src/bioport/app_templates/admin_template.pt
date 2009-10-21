@@ -35,10 +35,9 @@
 	<div metal:define-slot="nav_left_box">
 	<ul metal:define-macro="admin_navigation">
 		<li><a tal:attributes="href python:view.application_url()">Homepagina</a></li>
-		<li><a tal:attributes="href python:view.url()">Admin Homepagina</a></li>
+		<li><a tal:attributes="href python:view.url(view.__parent__)">Admin Homepagina</a></li>
 		<li><a tal:attributes="href python:view.url('mostsimilar')">Most Similar</a></li>
 		<li><a tal:attributes="href python:view.url('sources')">Bronnen</a></li>
-		<li><a tal:attributes="href python:view.url('edit')">Gevanceerde admin dingen</a></li>
 	</ul>
     </div>     
     </div>     

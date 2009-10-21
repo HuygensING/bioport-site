@@ -47,11 +47,11 @@ class Edit(grok.EditForm):
         self.context.get_repository().db.metadata.create_all()
         self.redirect(self.url(self))
     
-    @grok.action('reset database (LOOK OUT)', name="reset_database")
-    def reset_database(self, **data):
-        self.context.get_repository().db.metadata.drop_all()
-        self.context.get_repository().db.metadata.create_all()
-        self.redirect(self.url(self))
+#    @grok.action('reset database (LOOK OUT)', name="reset_database")
+#    def reset_database(self, **data):
+#        self.context.get_repository().db.metadata.drop_all()
+#        self.context.get_repository().db.metadata.create_all()
+#        self.redirect(self.url(self))
         
     @grok.action('Fill the similarity Cache', name='fill_similarity_cache') 
     def fill_similarity_cache(self, **data):
