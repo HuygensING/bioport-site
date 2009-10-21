@@ -15,8 +15,7 @@
 		<td metal:define-macro="person">
 			<span tal:content="python:person.naam().guess_normal_form()" />
 			<a tal:attributes="href python:view.url(view.__parent__.__parent__, 'persoon', data={'bioport_id':person.get_bioport_id()})" tal:content="person/get_bioport_id" />
-			<tt tal:content="python:person.get_value('geboortedatum', '')" />
-			<tt tal:content="python:person.get_value('sterfdatum', '')" />
+			<span tal:content="python:context.format_dates(person.get_value('geboortedatum'), person.get_value('sterfdatum'))" />
 		</td>
 		</span>
 		<span tal:define="person person2">

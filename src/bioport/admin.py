@@ -3,6 +3,7 @@ import grok
 from BioPortRepository.repository import Repository
 import BioPortRepository
 from BioPortRepository.common import  BioPortException
+from common import FormatUtilities
 from zope.interface import Interface
 from zope import schema
 
@@ -13,7 +14,7 @@ class IAdminSettings(Interface):
     DB_CONNECTION = schema.TextLine(title=u'Database connection (e.g. "mysql://root@localhost/bioport_test" )')
     LIMIT = schema.Decimal(title=u'Dont download more than this amount of biographies per source (used for testing)')
 
-class Admin(grok.Container):
+class Admin(grok.Container, FormatUtilities):
     grok.implements(IAdminSettings)
     grok.template('admin_index')
     
@@ -36,7 +37,6 @@ class Admin(grok.Container):
         return self.get_repository()
     
 
-        
 class Edit(grok.EditForm):
     grok.template('edit')
     grok.context(Admin)
