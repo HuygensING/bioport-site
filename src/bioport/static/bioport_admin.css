@@ -16,6 +16,7 @@ th {
 td, th {
     border-bottom : 1px solid #999;
     padding: .5em 1em .5em 1em;
+    vertical-align : top;
 }
 th {
     padding-bottom : 0.2em;
@@ -40,3 +41,14 @@ form th {
 }
     
 
+
+a:hover {
+	text-decoration : underline;
+}
+.guess {
+        color : grey;
+    }
+    
+.sure {
+    color : black;
+} 

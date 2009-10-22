@@ -28,7 +28,7 @@
             <select name="quality">
                 
                 <option 
-                    tal:repeat="option python:context.repository().get_sources(order_by='quality')"
+                    tal:repeat="option python:context.repository().get_sources(order_by='quality', desc=True)"
                     tal:define="source_quality python:source.get_value('quality') or 0;"
                     tal:attributes="
                         value python:not option.quality and 0 or option.quality;

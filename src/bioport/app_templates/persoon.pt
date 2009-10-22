@@ -94,6 +94,7 @@
     </ul>
     </div>
     <p>
+    <tt tal:content="illustraties"/>
 <div class="illustratie" tal:repeat="url python:illustraties[1:]">
     <img
         tal:attributes="src url" 
@@ -103,7 +104,12 @@
     
     <hr />
     <br><br>
-    <a href="../list" Onclick="history.go(-1);return false;">terug naar de lijst</a>
+    <ul>
+    <li>
+    <a href="../list" Onclick="history.go(-1);return false;">terug</a>
+    <li>
+    <a tal:attributes="href python:view.url(context['admin'], 'persoon', data={'bioport_id':view.bioport_id})" >bewerk de gegevens van deze persoon</a>
+    </ul>
     
     
     

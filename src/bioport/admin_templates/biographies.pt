@@ -3,7 +3,7 @@
         
 <html metal:use-macro="context/@@admin_template/macros/master">
 <div metal:fill-slot="content">
-<h1>Biografie&euml;n</h1>
+<h1>OBSOLETE - DONT USE - go to <a href="persons">persons</a> Biografie&euml;n</h1>
 <p>
 <form tal:attributes="action string:.">
 bron:

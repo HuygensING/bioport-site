@@ -242,3 +242,6 @@
         padding-right : 1em;
     }
 
+	a:hover {
+		text-decoration : underline;	
+	}

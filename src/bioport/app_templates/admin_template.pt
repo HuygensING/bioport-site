@@ -14,6 +14,7 @@
 	<meta name="copyright" content="">
 	<meta name="author" content="">
 	<link rel="stylesheet" type="text/css"  tal:attributes="href static/bioport.css" />
+	<link rel="stylesheet" type="text/css"  tal:attributes="href static/bioport_admin.css" />
 
 
     <div metal:define-slot="extra_header_content" />
@@ -37,12 +38,15 @@
 		<li><a tal:attributes="href python:view.application_url()">Homepagina</a></li>
 		<li><a tal:attributes="href python:view.url(view.__parent__)">Admin Homepagina</a></li>
 		<li><a tal:attributes="href python:view.url('mostsimilar')">Most Similar</a></li>
+		<li><a tal:attributes="href python:view.url('persons')">Bewerk personen</a></li>
 		<li><a tal:attributes="href python:view.url('sources')">Bronnen</a></li>
+		<li><a tal:attributes="href python:view.url('edit')">Geavanceerd</a></li>
 	</ul>
     </div>     
     </div>     
 
 	<div id="content_box">
+		<div tal:condition="request/msg  |nothing" tal:content="request/msg" class="message" />
         <div metal:define-slot="content">
         body content goes here
         </div>

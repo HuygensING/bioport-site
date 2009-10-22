@@ -1,32 +1,19 @@
 import grok
-from admin import Admin
 import zope.interface
 from z3c.batching.batch import  Batch
 import random
-from common import FormatUtilities
+from common import FormatUtilities, RepositoryInterface
 
-class Bioport(grok.Application, grok.Container):
+class Bioport(grok.Application, grok.Container, FormatUtilities, RepositoryInterface):
     SVN_REPOSITORY = None
     SVN_REPOSITORY_LOCAL_COPY = None
     DB_CONNECTION = None
     debug=True
     def __init__(self, db_connection=None):
-        super(Bioport,self).__init__() #cargoculting from ingforms
+        super(Bioport,self).__init__() #cargoculting from ingforms 
+        from admin import Admin
         self['admin'] = Admin()
         self['admin'].DB_CONNECTION = db_connection
-    def get_biographies(self, **args):
-        return self.repository().get_biographies(**args)
-
-    def get_person(self, **args):
-        return self.repository().get_person(**args)
-
-    def get_persons(self):
-        return self.repository().get_persons()
-    def repository(self):
-        return self['admin'].get_repository()
-    
-    def get_auteurs(self, **args):
-        return self.repository().get_authors() 
 
 class BioPortTraverser(object):
     
@@ -118,4 +105,11 @@ class Auteurs(grok.View):
         data['batch_start'] = start 
         return self.url(data= data)
 class Test(grok.View):
+    pass
+
+class Bronnen(grok.View):
+    pass
+class Colofon(grok.View):
+    pass
+
     pass
