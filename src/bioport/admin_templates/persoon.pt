@@ -1,0 +1,219 @@
+<html metal:use-macro="context/@@admin_template/macros/master">
+<div metal:fill-slot="content"
+    tal:define="
+    
+ 		merged_bio view/biography;" 
+        >
+<div tal:condition="view/person" tal:omit-tag="">
+<h1>Bewerk gegevens van <em tal:content="python:view.person.naam().volledige_naam()" /></h1>
+De gegevens in het zwart zijn de gegevens zoals ze op het biografisch portaal worden 
+<a tal:attributes="href python:view.url(context.__parent__, 'persoon', data={'bioport_id':view.bioport_id})">getoond</a>. 
+In het lichtgrijs staan suggesties van het biografisch portaal. Klik op "verander" om deze suggesties (of uw eigen veranderingen) over te namen.
+<form action="." tal:attributes="action request/URL" method="get"
+      class="edit-form" enctype="multipart/form-data">
+      <input type="hidden" name="bioport_id" tal:attributes="value python:view.bioport_id" />
+<table>
+    <tr>
+        <th>bioport identifier</th>
+        <td tal:content="view/person/get_bioport_id" />
+    </tr>
+    
+    <tr>
+    	<th>namen</th>
+    	<td tal:content="python:view.person.naam().volledige_naam()" />
+    	<td>
+	        <span tal:replace="structure python:view.actions.byname['form.actions.change_name'].render()" />
+		</td>
+    	
+    </tr>
+    <tr tal:repeat="naam python:view.person.get_names()[1:]">
+    	<th>naamsvarianten</th>
+    	<td tal:content="naam/volledige_naam">naam1</td>
+    </tr>
+    <tr>
+    	<th></th>
+    	<td />
+    	<td><input type="submit" value="voeg een naamsvariant toe" /></td>
+    </tr>
+    
+    <!-- geboortedatum -->
+    <tr> 
+        <th>geboortedatum</th>
+        <td tal:define="ymd  python:view.ymd(merged_bio.get_value('geboortedatum', ''))">
+        	<select name="birth_d">
+        		<option />
+        		<option 
+	        		tal:repeat="option python:range(1, 32)" 
+	        		tal:attributes="selected python:ymd[2] == option"
+	        		tal:content="option"
+        		/>
+        	</select>
+        	<select name="birth_m">
+        		<option>
+        		<option 
+	        		tal:repeat="option python:range(1, 32)" 
+	        		tal:attributes="selected python:ymd[1] == option"
+	        		tal:content="option"
+        		/>
+        	</select>
+        	<input name="birth_y" type="text" size="4" style="width:4"
+        		tal:attributes="value python:ymd[0]" />
+        	
+        </td>
+        <td>
+        <span tal:replace="structure python:view.actions.byname['form.actions.save_geboortedatum'].render()" />
+        </td>
+    </tr>
+    
+    <!--  geboorteplaats -->
+     <tr> 
+        <th>geboorteplaats</th>
+        <td>
+        	<input type="tekst" name="geboorteplaats"
+        	tal:attributes="value python:merged_bio.get_value('geboorteplaats', '')" />
+        </td>
+        <td>
+	        <span tal:replace="structure python:view.actions.byname['form.actions.save_geboorteplaats'].render()" />
+        </td>
+    </tr>
+    
+    <!-- sterfdatum -->
+    <tr> 
+        <th>sterfdatum</th>
+        <td tal:define="ymd  python:view.ymd(merged_bio.get_value('sterfdatum', ''))">
+        	<select name="death_d">
+        		<option />
+        		<option 
+	        		tal:repeat="option python:range(1, 32)" 
+	        		tal:attributes="selected python:ymd[2] == option"
+	        		tal:content="option"
+        		/>
+        	</select>
+        	<select name="death_m">
+        		<option>
+        		<option 
+	        		tal:repeat="option python:range(1, 32)" 
+	        		tal:attributes="selected python:ymd[1] == option"
+	        		tal:content="option"
+        		/>
+        	</select>
+        	<input name="death_y" type="text" size="4" style="width:4"
+        		tal:attributes="value python:ymd[0]" />
+        	
+        </td>
+        <td>
+        <tt tal:replace="structure python:view.actions.byname['form.actions.save_sterfdatum'].render()" />
+        </td>
+    </tr>
+    
+    <!--  geboorteplaats -->
+     <tr> 
+        <th>Sterfplaats</th>
+        <td>
+        	<input type="tekst" name="sterfplaats"
+        	tal:attributes="value python:merged_bio.get_value('sterfplaats', '')" />
+        </td>
+        <td>
+	        <span tal:replace="structure python:view.actions.byname['form.actions.save_sterfplaats'].render()" />
+        </td>
+    </tr>
+    <tr>
+   	<th />
+   	<td><input type="submit" value="bewaar alle veranderingen" /></td> 
+    </tr>
+</table>
+</form>
+<ul>
+<h2>Tekst</h2>
+<div style="font-size: 0.8em"
+tal:content="structure python:merged_bio.get_value('tekst')">
+<p> Leck, Bart Antony van der, beeldend kunstenaar (Utrecht 26-11-1876 - Blaricum (N.H.) 13-11-1958). Zoon van Bart Antonij van der Leck, huisschilder, en Hendrika Gathier. Gehuwd op 18-7-1912 met Bertha Aleida Teerink (1883-1959), onderwijzeres. Uit dit huwelijk werden 3 dochters geboren.
+<p>
+Binnen het eenvoudige arbeidersmilieu waarin Bart van der Leck samen met twee broers en een zuster opgroeide, werd weinig waarde gehecht aan de intellectuele ontwikkeling van de kinderen. Op veertienjarige leeftijd verruilde hij de schoolbanken dan ook voor een ambachtelijke vorming in verschillende Utrechtse glasschilderateliers. In een daarvan ontmoette hij in 1893 de architect in opleiding Piet Klaarhamer, onder wiens hoede hij zich geestelijk begon te ontplooien. In zijn zoektocht naar een hem passende levenshouding schoof Van der Leck vanuit zijn christelijke achtergrond steeds meer op naar de socialistische idealen, die indertijd opgeld begonnen te doen. En hoewel hij zich nooit aansloot bij een politieke partij of een maatschappelijke groepering, bleef hij deze ideologie tot het eind van zijn leven toegedaan.
+<a href="">[toon volledige tekst]</a>
+<a href="">[bron]</a>
+</div>
+<h2>Biografie&euml;n van deze persoon</h2>
+<div tal:repeat="bio view/person/get_biographies">
+<table>
+	<tr>
+		<th>--------</th>
+	<tr>
+		<th>Bron</th>
+		<td><span tal:replace="python:bio.get_source().id"></span> - <span tal:replace="python:bio.get_source().description"></span>
+	</tr>
+	<tr>
+		<th>Namen</th>
+		<td>
+			<div tal:repeat="naam python:bio.get_namen()" tal:content="naam/volledige_naam"></div>	
+		</td>
+	</tr>
+	<tr>
+		<th>Geboortedatum</th>
+		<td>
+			<span tal:replace="python:context.format_date(bio.get_value('geboortedatum'))" />
+		</td>
+	</tr>
+	<tr>
+		<th>Geboorteplaats</th>
+		<td>
+			<span tal:replace="python:bio.get_value('geboorteplaats')" />
+		</td>
+	</tr>
+		<tr>
+		<th>Sterfdatum</th>
+		<td>
+			<span tal:replace="python:context.format_date(bio.get_value('sterfdatum'))" />
+		</td>
+	</tr>
+	<tr>
+		<th>sterfplaats</th>
+		<td>
+			<span tal:replace="python:bio.get_value('sterfplaats')" />
+		</td>
+	</tr>
+	</table>
+</div>
+</ul>
+<ul>
+<h2>Acties</h2>
+<li>
+<a href="" class="todo">Bekijk bewerk-geschiedenis</a>
+<li>
+<a href="">Zoek naar andere biografie&euml;n van deze persoon</a>
+</ul>
+</div>
+</div>
+
+    
+    <tr> 
+        <th>pre-posities</th>
+        <td><input type="text" width="50" />
+        </td><td>
+        <input type="submit" value="verander" />
+    </tr>
+    <tr> 
+        <th>voornamen</th>
+        <td><input type="text" width="50" class="guess" value="George Howard" />
+        </td><td>
+        <input type="submit" value="verander" />
+    </tr>
+    <tr> 
+        <th>intra-posities</th>
+        <td><input type="text" width="50" />
+        </td><td>
+        <input type="submit" value="verander" />
+    </tr>
+    <tr> 
+        <th>achternamen</th>
+        <td><input type="text" width="50" class="sure" value="Darwin" />
+        </td><td>
+        <input type="submit" value="verander" />
+    </tr>
+    <tr> 
+        <th>post-posities</th>
+        <td><input type="text" width="50" />
+        </td><td>
+        <input type="submit" value="verander" />
+    </tr>
+</html>

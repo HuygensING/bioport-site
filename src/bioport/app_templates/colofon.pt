@@ -1,0 +1,21 @@
+<html metal:use-macro="context/@@main_template/macros/master">
+<div metal:fill-slot="content">
+<h1>Colofon</h1>
+<ul>
+<li> Projectleiding: Els Kloek
+<li>  Grafisch Ontwerp: Jelle Hellinga
+<li>  Technische ontwerp en implementatie: <a href="http://www.gerbrandy.com">Gerbrandy SRL</a>
+<li>  Hosting en infrastructuur: <a href="http://www.inghist.nl">Instituut voor Nederlandse Geschiedenis</a>
+<li>  Met speciale dank aan Sonja Duykers van het KNAW, Marien van der Heijden van het IISG, en Diebert van Rhijn en Rik Hoekstra van het ING.  
+</ul>
+
+<p>
+Met dank aan het 
+<a href="http://www.inghist.nl">Instituut voor Nederlandse Geschiedenis</a>
+het <a href="http://www.huygensinstituut.knaw.nl">Huygens Instituut</a>, en
+het <a href="http://www.iisg.nl">International Institute of Social History</a>  voor het ter beschikking stellen van hun gegegevens. 
+<p>
+Dit prototype is tot stand gekomen met financiële steun van het NWO en het ING.
+</div>
+</html>
+
