@@ -61,40 +61,24 @@
     <li tal:repeat="biography view/person/get_biographies" >
         <a tal:attributes="href python:biography.get_value('url_biografie')"
             tal:content="python:biography.naam() and biography.naam().volledige_naam()"></a>
-         <table>
-        <tr>
-        <td colspan="">
-       </td>
-        </tr>
-        <tr tal:condition="python:biography.get_value('auteur')">
-            <th>auteur</th>
-            <td>
+        <span tal:condition="python:biography.get_value('auteur')">
+        	door
             <span tal:repeat="auteur python:biography.get_value('auteur')" 
-                tal:content="structure auteur" />
-            </td>
-        </tr>
-        <tr>
-            <th>
-            bron  
-            </th>
-            <td>
-                <a tal:attributes="href python:biography.get_value('url_publisher')"
+                tal:content="structure auteur" />,
+        </span>
+        <span>
+			in  <a tal:attributes="href python:biography.get_value('url_publisher')"
                     tal:replace="python:biography.get_value('naam_publisher')"></a>
-            </td>
-       </tr>
-       <tr tal:define="text python:biography.get_value('tekst')"
+    	</span>
+    	<div class="bio_tekst_fragment"
+    		tal:define="text python:biography.get_value('tekst')"
             tal:condition="text">
-             <th />
-             <td>
              <span tal:replace="structure python:text[:250] + text[250:].split(' ')[0] + ' ...'" />
-            </td>
-       </tr>
-        </table>
+           </div>
         </li>
     </ul>
     </div>
     <p>
-    <tt tal:content="illustraties"/>
 <div class="illustratie" tal:repeat="url python:illustraties[1:]">
     <img
         tal:attributes="src url" 

@@ -46,9 +46,26 @@ a:hover {
 	text-decoration : underline;
 }
 .guess {
-        color : grey;
     }
     
 .sure {
     color : black;
 } 
+.person_edit .tekst {
+	font-size : 0.8em;
+}
+.person_edit .info, .person .info h1, .person .info th, .person .info td {
+	font-size : 0.6em;
+}
+.person_edit .merged {
+        color : grey;
+}
+
+.person_edit .merged input, .person_edit .merged select {
+        color : grey;
+        
+}
+.person_edit .bioport {
+		color : black;
+
+}

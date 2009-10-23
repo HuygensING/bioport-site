@@ -104,8 +104,6 @@ class Auteurs(grok.View):
         data = self.request.form
         data['batch_start'] = start 
         return self.url(data= data)
-class Test(grok.View):
-    pass
 
 class Bronnen(grok.View):
     pass

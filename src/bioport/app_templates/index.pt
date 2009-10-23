@@ -2,7 +2,7 @@
 <div metal:fill-slot="content">
 <h1>Welkom</h1>
 <p>
-Dit is een prototype voor het Biografisch Portaal van Nederland. Het is bedoeld als een voorproef van wat het portaal uiteindelijk zou kunnen worden - en als <em>proof of concept</em> dat een dergelijke aanpak technisch mogelijk en conceptueel nuttig is.
+Dit is de website van het Biografisch Portaal van Nederland. 
 <p>
 Dit prototype bevat beschrijvingen van en verwijzingen naar
 <span tal:replace="python:len(context.get_biographies())" /> biografie&euml;n
@@ -11,12 +11,17 @@ van
 uit <span tal:replace="python:len(context.repository().get_sources())" /> verschillende bronnen.
 
 <ul>
-<li tal:repeat="source python:context.repository().get_sources()"
+<span tal:omit-tag=""
+	tal:repeat="source python:context.repository().get_sources()"
+	>
+<li
+	tal:condition="python:source.id != 'bioport'"
 	tal:content="python:source.description or source.id">Het  Nieuw Nederlandsch Biografisch Woordenboek (21.422 biografie&euml;n)
 </li>
+</span>
 </ul>
 De gegevens zijn opgenomen zoals ze in de bronnen zijn gevonden. Er heeft dus geen enkele nabewerking in de vorm van een controle of aanvullig van de gegevens plaats gevonden.
 <p>
-Klik <a xtal:attributes="href here/list/absolute_url">hier om in de lijst te bladeren</a>
+Klik <a tal:attributes="href python:view.url('personen')">hier om in de lijst te bladeren</a>
 </div>
 </html>

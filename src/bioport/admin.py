@@ -4,6 +4,7 @@ from BioPortRepository.repository import Repository
 import BioPortRepository
 from BioPortRepository.common import  BioPortException
 from NamenIndex.common import to_ymd, from_ymd
+from NamenIndex.naam import Naam
 from common import FormatUtilities, RepositoryInterface
 from zope.interface import Interface
 from zope import schema
@@ -191,11 +192,33 @@ class Persoon(grok.EditForm):
             assert 0, 'need bioport_id in the request'
             
         self.person  = self.context.get_person(id=self.bioport_id)  
-        self.biography  = self.person.get_merged_biography()
-            
+        self.merged_biography  = self.person.get_merged_biography()
+        self.bioport_biography = self.context.repository().get_bioport_biography(self.person) 
     def ymd(self, s):
         """take a string of the form "YYYY-MM-DD" (or "YYYY"), terurn a tuple (year, month, date) of three integers"""
         return to_ymd(s)
+    
+    def get_bioport_namen(self):
+        return self.bioport_biography.get_namen()
+    def get_non_bioport_namen(self):
+        namen = self.merged_biography.get_names()
+        namen = [naam for naam in namen if naam.to_string() not in [n.to_string() for n in self.get_bioport_namen()]]
+        return namen
+    
+    def get_value(self, k):
+        if k in ['geboortedatum', 'sterfdatum']:
+            return self.ymd(self.merged_biography.get_value(k, ''))
+        else:
+            return self.merged_biography.get_value(k, '')
+    def status_value(self, k):
+        """return 'bioport' if the value is added by the editors of the biographical portal
+        return 'merged' if the value comes from the merged_biography"""
+        if self.bioport_biography.get_value(k):
+            return 'bioport'
+        elif self.merged_biography.get_value(k):
+            return 'merged'
+        else:
+            return ''    
 
     def set_value(self, k, v):
         """set the value in the bioport biography for key "k" to the value v
@@ -210,28 +233,39 @@ class Persoon(grok.EditForm):
             
     @grok.action('bewaar veranderingen', name='save_geboortedatum')
     def save_geboortedatum(self):
+        self._save_geboortedatum()
+    def _save_geboortedatum(self):
         y = self.request.get('birth_y')
         m = self.request.get('birth_m')
         d = self.request.get('birth_d')
-        ymd = from_ymd(y, m, d)
-        self.set_value('geboortedatum', ymd)
+        if y:
+	        ymd = from_ymd(y, m, d)
+	        self.set_value('geboortedatum', ymd)
         
             
     @grok.action('bewaar veranderingen', name='save_sterfdatum')
     def save_sterfdatum(self):
+        self._save_sterfdatum()
+    def _save_sterfdatum(self):
         y = self.request.get('death_y')
         m = self.request.get('death_m')
         d = self.request.get('death_d')
-        ymd = from_ymd(y, m, d)
-        self.set_value('sterfdatum', ymd)      
-        
+        if y:
+	        ymd = from_ymd(y, m, d)
+	        self.set_value('sterfdatum', ymd)      
+	        
     @grok.action('bewaar veranderingen', name='save_geboorteplaats')  
     def save_geboorteplaats(self):
+        self._save_geboorteplaats()
+    def _save_geboorteplaats(self):
          s = self.request.get('geboorteplaats')
          self.set_value('geboorteplaats', s)
          
     @grok.action('bewaar veranderingen', name='save_sterfplaats')  
     def save_sterfplaats(self):
+        self._save_sterfplaats()
+    def _save_sterfplaats(self):
+        
          s = self.request.get('sterfplaats')
          self.set_value('sterfplaats', s)
          
@@ -239,12 +273,12 @@ class Persoon(grok.EditForm):
     def change_name(self):
          self.redirect(self.url(self.__parent__, 'changename', data={'bioport_id':self.bioport_id}))
          
-    @grok.action('bewaar veranderingen', name='save_sterfplaats')  
+    @grok.action('bewaar veranderingen', name='save_everything')  
     def save_everyting(self):
-        self.save_geboortedatum()
-        self.save_sterfdatum()
-        self.save_geboorteplaats()
-        self.save_sterfplaats()
+        self._save_geboortedatum()
+        self._save_geboorteplaats()
+        self._save_sterfdatum()
+        self._save_sterfplaats()
     
 class ChangeName(grok.EditForm): 
     
@@ -254,9 +288,54 @@ class ChangeName(grok.EditForm):
             #XXX make a userfrienlider error
             assert 0, 'need bioport_id in the request'
         self.person  = self.context.get_person(id=self.bioport_id)  
-        self.biography  = self.person.get_merged_biography()
-        self.naam  = self.biography.get_names()[0] 
+        self.bioport_biography  = self.context.repository().get_bioport_biography(self.person)
+        
+        self.idx = self.request.get('idx')         
+        if not self.idx or self.idx == u'new':
+            self.naam = None
+        else:
+            self.idx = int(self.idx) 
+            self.naam  = self.bioport_biography.get_namen()[self.idx] 
        
     @grok.action('bewaar veranderingen', name='save_changes') 
     def save_changes(self):
-        pass
+        name = Naam(
+	        repositie = self.request.get('prepositie'),
+	        voornaam = self.request.get('voornaam'),
+	        intrapositie = self.request.get('intrapositie'),
+	        geslachtsnaam = self.request.get('geslachtsnaam'),
+	        postpositie = self.request.get('postpositie'),
+	        volledige_naam = self.request.get('volledige_naam'),
+        )
+        repository = self.context.repository()
+        bio = repository.get_bioport_biography(self.person)
+        bio._replace_name(name, self.idx)
+        repository.save_biography(bio)
+        msg = 'added a name'
+        
+        self.redirect(self.url('persoon',data= {'bioport_id':self.bioport_id, 'msg':msg}))
+    
+    @grok.action('voeg toe', name='add_name') 
+    def add_name(self):
+        name = Naam(
+	        repositie = self.request.get('prepositie'),
+	        voornaam = self.request.get('voornaam'),
+	        intrapositie = self.request.get('intrapositie'),
+	        geslachtsnaam = self.request.get('geslachtsnaam'),
+	        postpositie = self.request.get('postpositie'),
+	        volledige_naam = self.request.get('volledige_naam'),
+        )
+        repository = self.context.repository()
+        bio = repository.get_bioport_biography(self.person)
+        bio._add_a_name(name)
+        repository.save_biography(bio)
+        msg = 'added a name'
+        
+        self.redirect(self.url('persoon',data= {'bioport_id':self.bioport_id, 'msg':msg}))
+    
+    
+    
+    
+    
+    
+     
