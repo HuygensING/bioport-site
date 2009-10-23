@@ -5,9 +5,9 @@
 Dit is de website van het Biografisch Portaal van Nederland. 
 <p>
 Dit prototype bevat beschrijvingen van en verwijzingen naar
-<span tal:replace="python:len(context.get_biographies())" /> biografie&euml;n
+<span tal:replace="python:context.repository().count_biographies()" /> biografie&euml;n
 van
-<span tal:replace="python:len(context.get_persons())" /> personen 
+<span tal:replace="python:context.repository().count_persons()" /> personen 
 uit <span tal:replace="python:len(context.repository().get_sources())" /> verschillende bronnen.
 
 <ul>

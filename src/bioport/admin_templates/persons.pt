@@ -65,7 +65,8 @@ levensjaren niet ingevuld <input type="checkbox" />
 	<td >
 		<a 
 	tal:content="structure python:person.naam() and person.naam().guess_normal_form() or 'XXXXX'" 
-    tal:attributes="href python:'%s/%s' % (view.url('persoon'), person.get_bioport_id())" />
+    tal:attributes="href python:view.url(context.__parent__, 'persoon', data={'bioport_id':person.get_bioport_id()})" />
+    
     <span tal:replace="python:context.format_dates(person.get_value('geboortedatum'), person.get_value('sterfdatum'))" />
 	</td>
 	<td tal:condition="person/get_bioport_id">

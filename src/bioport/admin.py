@@ -120,7 +120,8 @@ class Identify(grok.View):
         
         self.bioport_ids = bioport_ids
         self.persons = persons
-        msg = 'Identified %s' % bioport_ids
+        msg = 'Identified <a href="../persoon?bioport_id=%s">%s</a> and <a href="../persoon?bioport_id=%s">%s</a>' % (
+                     bioport_ids[0],  bioport_ids[0], bioport_ids[1],  bioport_ids[1])
         self.redirect(self.url(self.__parent__, 'mostsimilar', data={'msg':msg}))
              
 class IdentifyMoreInfo(grok.View):
@@ -140,7 +141,8 @@ class AntiIdentify(grok.View):
         
         self.bioport_ids = bioport_ids
         self.persons = persons
-        msg = 'Anti-identified %s' % bioport_ids
+        msg = 'Anti-Identified <a href="../persoon?bioport_id=%s">%s</a> and <a href="../persoon?bioport_id=%s">%s</a>' % (
+                     bioport_ids[0], persons[0].naam().volledige_naam(), bioport_ids[1], persons[1].naam().volledige_naam())
         self.redirect(self.url(self.__parent__, 'mostsimilar', data={'msg':msg}))
                       
 class Sources(grok.View):

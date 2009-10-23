@@ -20,12 +20,13 @@ De gegevens zijn grijs als ze uit de bronnen-publikaties komen, zwart als ze zij
 <table>
     <tr>
         <th>bioport identifier</th>
-        <td tal:content="view/person/get_bioport_id" />
+        <td class="bioport" tal:content="view/person/get_bioport_id" />
     </tr>
     <tr tal:define="namen view/get_bioport_namen"
     	tal:repeat="idx python:range(len(namen))">
     	<th><span tal:condition="python:idx == 0" >namen</span></th>
     	<td tal:define="naam python:namen[idx]"
+    	class="bioport"
     		tal:content="naam/volledige_naam" />
 		<td>
 			<a tal:attributes="href python:view.url('changename', data={'bioport_id':view.bioport_id, 'idx':idx})">

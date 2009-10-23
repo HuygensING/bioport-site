@@ -11,8 +11,7 @@
             <td>
                 <span tal:replace="source/id" />
                 <br>
-                (<a tal:attributes="href python:view.url(context, 'biographies', {'source_id':source.id})">
-                	<span tal:replace="python:len(context.repository().get_biographies(source=source))" /> biografie&euml;n</a>)
+                (<a tal:attributes="href python:view.url(context, 'biographies', {'source_id':source.id})"><span tal:replace="python:context.repository().count_biographies(source=source)" /> biografie&euml;n</a>)
             <td>
                 <a tal:content="source/url" tal:attributes="href source/url"></a> 
                 <br>

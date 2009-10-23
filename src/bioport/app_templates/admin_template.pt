@@ -46,7 +46,7 @@
     </div>     
 
 	<div id="content_box">
-		<div tal:condition="request/msg  |nothing" tal:content="request/msg" class="message" />
+		<div tal:condition="request/msg  |nothing" tal:content="structure request/msg" class="message" />
         <div metal:define-slot="content">
         body content goes here
         </div>

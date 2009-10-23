@@ -48,13 +48,14 @@ class Personen(BioPortTraverser,grok.View):
     
     def update(self, **kw):
         self.batch_start = int(self.request.get('batch_start', 0))
-        self.batch_size = int(self.request.get('batch_size', 50))
+        self.batch_size = int(self.request.get('batch_size', 30))
         
     def get_persons(self):
         d = {}
         #request.form has unicode keys - make strings
         for k in self.request.form:
             d[str(k)] = self.request.form[k]
+            
         ls = self.context.repository().get_persons(**d)
         
         
