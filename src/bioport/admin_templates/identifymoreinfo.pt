@@ -1,12 +1,9 @@
 <html metal:use-macro="context/@@admin_template/macros/master">
 <div metal:fill-slot="content">
 <h1>Identificeer personen</h1>
-<ul>
-<li>
-<a tal:attributes="href python:view.url('identify', data={'bioport_ids':view.bioport_ids})" >dit is één persoon</a>
-<li>
-<a tal:attributes="href python:view.url('antiidentify', data={'bioport_ids':view.bioport_ids})" >dit zijn verschillende personen</a>
-</ul>
+<tal:block define="bioport_ids view/bioport_ids">
+<ul metal:use-macro="context/@@mostsimilar/macros/identify_actions" />
+</tal:block>
 <table>
 <tr>
 	<th></th>

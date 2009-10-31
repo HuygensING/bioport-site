@@ -17,7 +17,7 @@ tal:define="persons view/get_persons">
 naam: <input type="text" name="search_term" tal:attributes="value request/search_term | nothing" />
 <br>	
 status : <select>
-	<option></option>
+	<option>nog te maken</option>
 	<option>..</option>
 	</select>
 <br>	
@@ -34,7 +34,7 @@ levensjaren niet ingevuld <input type="checkbox" />
 	<div tal:omit-tag="" metal:define-macro="aantal_resultaten">
 		<p tal:condition="python:results.grand_total == 0">Er zijn geen resultaten gevonden.</p>
 		<p tal:condition="python:results.grand_total == 1">Er is 1 resultaat gevonden.</p>
-		<p tal:condition="python:results.grand_total > 2">Er zijn <span tal:replace="results/grand_total" /> resultaten gevonden.</p>
+		<p tal:condition="python:results.grand_total > 2">Er zijn <span tal:replace="python:results.grand_total" /> resultaten gevonden.</p>
 	</div>
 </div>
 
@@ -57,9 +57,9 @@ levensjaren niet ingevuld <input type="checkbox" />
 <tr>
     <th style="width:50%">Naam</th>
     <th></th>
-    <th>laatst bewerkt</th>
-    <th>verant- woordelijk</th>
-    <th>status</th>
+    <th tal:condition="nothing">laatst bewerkt</th>
+    <th tal:condition="nothing">verant- woordelijk</th>
+    <th tal:condition="nothing">status</th>
 </tr>
 <tr tal:repeat="person python:persons">
 	<td >
@@ -82,9 +82,9 @@ levensjaren niet ingevuld <input type="checkbox" />
 	<span tal:replace="person/last_commit" />
 		door <em class="todo">jelle</em>
 		</td>
-	<td class="todo">jelle</td>
-	<td>XXX</td>
-	<td>XXX (nog te doen, af, nog checken, ...)</td>
+	<td tal:condition="nothing" class="todo">jelle</td>
+	<td tal:condition="nothing">XXX</td>
+	<td tal:condition="nothing">XXX (nog te doen, af, nog checken, ...)</td>
 </tr>
 <ul>
 </div>

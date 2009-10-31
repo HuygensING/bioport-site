@@ -1,0 +1,42 @@
+<html metal:use-macro="context/@@admin_template/macros/master">
+<div metal:fill-slot="content" >
+<h1>Moeilijke gevallen</h1>
+<p>Hieronder ziet u een lijst van wat, volgens de invoerders, moeilijke gevallen waren. 
+
+<p>Zie ook de lijsten met 
+<a tal:attributes="href python:view.url('identified')">geidentificeerde</a> personen, 
+<a tal:attributes="href python:view.url('antiidentified')">niet identieke</a> personen, 
+<a tal:attributes="href python:view.url('deferred')">de lijst met moeilijke gevallen</a>. 
+<table>
+	<div tal:repeat="x python:context.repository().get_deferred()" 
+		tal:omit-tag="">
+	<tr
+		tal:define="
+			person1 python:context.repository().get_person(x.bioport_id1);
+			person2 python:context.repository().get_person(x.bioport_id2);
+			">
+		<span tal:define="person person1">
+		<td tal:content="repeat/x/number" />
+		<td metal:define-macro="person">
+			<a tal:attributes="href python:view.url(view.__parent__.__parent__, 'persoon', data={'bioport_id':person.get_bioport_id()})" 
+				tal:content="python:person.naam() and person.naam().guess_normal_form() or 'geen naam bekend'" />
+			<br>
+			<span tal:content="python:context.format_dates(person.get_value('geboortedatum'), person.get_value('sterfdatum'))" />
+			<br>
+			<span tal:repeat="bio python:person.get_biographies()" tal:content="python:bio.get_source().id" />
+		</td>
+		</span>
+		<span tal:define="person person2">
+		<td metal:use-macro="template/macros/person" />
+		</span>
+		<td>
+		<tal:block define="bioport_ids python: [person1.get_bioport_id(), person2.get_bioport_id()]">
+			<ul metal:use-macro="context/@@mostsimilar/macros/identify_actions" />
+		</tal:block>
+		</td>
+	</tr>
+	</div>
+</table>
+
+</div>
+</html>

@@ -7,16 +7,17 @@
     	" 
     >
 <h1>Bewerk gegevens van <em tal:content="python:view.person.naam().volledige_naam()" /></h1>
+<p>
 De gegevens in het formulier zijn de gegevens zoals ze op het biografisch portaal worden 
 <a tal:attributes="href python:view.url(context.__parent__, 'persoon', data={'bioport_id':view.bioport_id})">getoond</a>. 
-
+</p>
+<p>
 De gegevens zijn grijs als ze uit de bronnen-publikaties komen, zwart als ze zijn ingevoerd door de medewerkers van het biografisch portaal.
-
+</p>
 
 <form action="." tal:attributes="action request/URL" method="get"
       class="edit-form" enctype="multipart/form-data">
       <input type="hidden" name="bioport_id" tal:attributes="value python:view.bioport_id" />
-      <p>
 <table>
     <tr>
         <th>bioport identifier</th>
@@ -26,33 +27,45 @@ De gegevens zijn grijs als ze uit de bronnen-publikaties komen, zwart als ze zij
     	tal:repeat="idx python:range(len(namen))">
     	<th><span tal:condition="python:idx == 0" >namen</span></th>
     	<td tal:define="naam python:namen[idx]"
-    	class="bioport"
+		    tal:attributes="class python:view.get_bioport_namen() and 'bioport' or 'merged'"
     		tal:content="naam/volledige_naam" />
-		<td>
+		<td >
 			<a tal:attributes="href python:view.url('changename', data={'bioport_id':view.bioport_id, 'idx':idx})">
 			verander
 			</a>
-		</td>    	
+			<span tal:condition="python:len(namen) > 1">
+			| <a href="" onclick="alert('nog niet geimplementeerd')"> verwijder </a>
+			| <a href="" onclick="alert('nog niet geimplementeerd')"> omhoog </a>
+			| <a href="" onclick="alert('nog niet geimplementeerd')"> omlaag </a>
+			</span>
+		</td>    
    	</tr>
-   	<tr>
-   		<td>
-   		</td>
-   		<td>
-	    </td>
-    <tr tal:repeat="naam view/get_non_bioport_namen">
-    	<th></th>
-    	<td class="merged"
+
+   		
+    <tr tal:condition="not:view/get_bioport_namen" 
+     tal:define="namen view/get_non_bioport_namen"
+    	tal:repeat="idx python:range(len(namen))">
+
+    	<th><span tal:condition="python:idx == 0" >namen</span></th>
+    	<td tal:define="naam python:namen[idx]"
+		    tal:attributes="class python:view.get_bioport_namen() and 'bioport' or 'merged'"
     		tal:content="naam/volledige_naam" />
+		<td >
+			<a tal:attributes="href python:view.url('changename', data={'bioport_id':view.bioport_id, 'idx':idx})">
+			verander
+			</a>
+		</td>    
+
    	</tr>
+   	
    	<tr>
-	<td></td>
-	<td></td>
-	<td>
-		<a tal:attributes="href python:view.url('changename', data={'bioport_id':view.bioport_id, 'idex':'new'})">
-		voeg een naam toe
-		</a>
-	</td>    	
-    </tr>
+   		<th></th>
+   		<td>
+			<a tal:attributes="href python:view.url('changename', data={'bioport_id':view.bioport_id})">
+			voeg een naam toe
+			</a>
+		</td>    
+	</tr>
     
     <!-- geboortedatum -->
     <tr> 
@@ -146,6 +159,7 @@ De gegevens zijn grijs als ze uit de bronnen-publikaties komen, zwart als ze zij
     </tr>
 </table>
 </form>
+<Div tal:condition="nothing">
 <h2>Acties</h2>
 <ul>
 <li>
@@ -153,8 +167,8 @@ De gegevens zijn grijs als ze uit de bronnen-publikaties komen, zwart als ze zij
 <li>
 <a href="" onclick="alert('nog niet geimplementeerd')">Zoek naar andere biografie&euml;n van deze persoon</a>
 </ul>
-
-<div class="info">
+</div>
+<div class="info" tal:condition="nothing">
 <h1>Tekst</h1>
 	<div  
 		tal:define="tekst python:merged_bio.get_value('tekst')"
@@ -164,42 +178,54 @@ De gegevens zijn grijs als ze uit de bronnen-publikaties komen, zwart als ze zij
 		<a tal:condition="tekst" href="">[toon volledige tekst]</a>
 		<a tal:condition="tekst" href="">[bron]</a>
 	</div>
-	
-<h1>Biografie&euml;n van deze persoon</h1>
+</div>	
+<div class="info">
 <div tal:repeat="bio view/person/get_biographies">
 <h2>Bron: 
+	<a tal:attributes="href python:bio.get_value('url_biografie')" >
 		<span tal:replace="python:bio.get_source().id"></span> - <span tal:replace="python:bio.get_source().description"></span>
+	</a>
 </h2>
-<table>
+<table >
 	<tr>
 		<th>Namen</th>
 		<td>
 			<div tal:repeat="naam python:bio.get_namen()" tal:content="naam/volledige_naam"></div>	
 		</td>
 	</tr>
-	<tr>
+	<tr tal:condition="python:bio.get_value('geboortedatum')">
 		<th>Geboortedatum</th>
 		<td>
 			<span tal:replace="python:context.format_date(bio.get_value('geboortedatum'))" />
 		</td>
 	</tr>
-	<tr>
+	<tr tal:condition="python:bio.get_value('geboorteplaats')">
 		<th>Geboorteplaats</th>
 		<td>
 			<span tal:replace="python:bio.get_value('geboorteplaats')" />
 		</td>
 	</tr>
-		<tr>
+	<tr tal:condition="python:bio.get_value('sterfdatum')">
 		<th>Sterfdatum</th>
 		<td>
 			<span tal:replace="python:context.format_date(bio.get_value('sterfdatum'))" />
 		</td>
 	</tr>
-	<tr>
+	<tr tal:condition="python:bio.get_value('sterfplaats')">
 		<th>Sterfplaats</th>
 		<td>
 			<span tal:replace="python:bio.get_value('sterfplaats')" />
 		</td>
+	</tr>
+	<tr tal:condition="python:bio.get_value('sterfplaats')">
+		<th>Tekst</th>
+		<td>
+			<span tal:replace="python:bio.get_value('tekst')" />
+		</td>
+	</tr>	
+	<tr tal:condition="python:bio.record.timestamp">
+		<th>laatst veranderd</th>
+		<td tal:content="python:bio.record.timestamp" ></td>
 	</tr>
 	</table>
 </div>

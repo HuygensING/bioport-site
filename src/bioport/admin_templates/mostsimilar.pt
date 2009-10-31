@@ -1,8 +1,12 @@
 <html metal:use-macro="context/@@admin_template/macros/master">
 <div metal:fill-slot="content" >
-<h1>Most similar</h1>
+<h1>Identificeer Personen</h1>
 <p>Hieronder ziet u een lijst van wat, volgens de sofware, de "meest gelijkende" persoonsnamen in de database zijn.
-<p>Om twee personen te identificeren, klik op "identificeer" in de lijst.
+
+<p>Zie ook de lijsten met 
+<a tal:attributes="href python:view.url('identified')">geidentificeerde</a> personen, 
+<a tal:attributes="href python:view.url('antiidentified')">niet identieke</a> personen, 
+<a tal:attributes="href python:view.url('deferred')">de lijst met moeilijke gevallen</a>. 
 <table>
 	<div tal:repeat="x python:context.repository().get_most_similar_persons(start=0, size=20)"
 		tal:omit-tag="">
@@ -13,9 +17,10 @@
 			person2 python:x[2];
 			">
 		<span tal:define="person person1">
-		<td tal:content="repeat/x/index" />
+		<td tal:content="repeat/x/number" />
 		<td metal:define-macro="person">
-			<a tal:attributes="href python:view.url(view.__parent__.__parent__, 'persoon', data={'bioport_id':person.get_bioport_id()})" tal:content="python:person.naam().guess_normal_form()" />
+			<a tal:attributes="href python:view.url(view.__parent__.__parent__, 'persoon', data={'bioport_id':person.get_bioport_id()})" 
+				tal:content="python:person.naam() and person.naam().guess_normal_form() or 'geen naam bekend'" />
 			<br>
 			<span tal:content="python:context.format_dates(person.get_value('geboortedatum'), person.get_value('sterfdatum'))" />
 			<br>
@@ -26,11 +31,19 @@
 		<td metal:use-macro="template/macros/person" />
 		</span>
 		<td tal:content="score" />	
-		<td>
-		<ul>
-			<li><a tal:attributes="href python:view.url('identify', data={'bioport_ids': [person1.get_bioport_id(), person2.get_bioport_id()]})" > identiek</a>
-			<li><a tal:attributes="href python:view.url('antiidentify', data={'bioport_ids': [person1.get_bioport_id(), person2.get_bioport_id()]})" > niet identiek </a>
-			<li><a tal:attributes="href python:view.url('identifymoreinfo', data={'bioport_ids': [person1.get_bioport_id(), person2.get_bioport_id()]})" > meer informatie </a>
+		<td tal:define="bioport_ids python: [person1.get_bioport_id(), person2.get_bioport_id()]">
+		<ul
+			metal:define-macro="identify_actions">
+			<li><a tal:attributes="href python:view.url(context, 'mostsimilar', data={'form.actions.identify': 'submit', 'bioport_ids':bioport_ids})" > identiek</a>
+			</li>
+			<li><a tal:attributes="href python:view.url(context, 'mostsimilar', data={'form.actions.antiidentify':'', 'bioport_ids': bioport_ids})" > niet identiek </a>
+			</li>
+			<li tal:condition="python:not view.url().endswith('deferred')">
+				<a tal:attributes="href python:view.url(context, 'mostsimilar', data={'form.actions.deferidentification':'', 'bioport_ids':bioport_ids})" > moeilijk </a>
+			</li>
+			<li tal:condition="python:not view.url().endswith('identifymoreinfo')">
+				<a tal:attributes="href python:view.url('identifymoreinfo', data={'bioport_ids':bioport_ids})" > meer informatie </a>
+			</li>
 		</ul>
 		</td>
 	</tr>

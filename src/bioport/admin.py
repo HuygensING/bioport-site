@@ -9,6 +9,8 @@ from common import FormatUtilities, RepositoryInterface
 from zope.interface import Interface
 from zope import schema
 from app import Personen
+from permissions import *
+
 class IAdminSettings(Interface):           
     SVN_REPOSITORY = schema.TextLine(title=u'URL of svn repository')
     SVN_REPOSITORY_LOCAL_COPY = schema.TextLine(title=u'path to local copy of svn repository')
@@ -59,14 +61,21 @@ class Edit(grok.EditForm):
         self.context.repository().db.fill_similarity_cache()
         self.redirect(self.url(self))
        
-    @grok.action('Refresh the similiarty cache')
-    def refresh_similirity_cache(self, **data): 
-        self.context.repository().db.fill_similarity_cache(refresh=True)
+       
+    @grok.action('Refresh the similar persons cache')
+    def fill_most_similar_persons_cache(self, **data):
+        self.context.repository().db.fill_most_similar_persons_cache(refresh=True)
         self.redirect(self.url(self))
         
-    @grok.action('Create tables')
+        
+    @grok.action('Create non-existing tables')
     def reset_database(self, **data):
         self.context.get_repository().db.metadata.create_all()
+        self.redirect(self.url(self))
+        
+    @grok.action('Refresh the similarity cache [I.E. EMPTYING IT FIRST]')
+    def refresh_similirity_cache(self, **data): 
+        self.context.repository().db.fill_similarity_cache(refresh=True)
         self.redirect(self.url(self))
         
 class Display(grok.DisplayForm):
@@ -112,39 +121,22 @@ class Source(grok.EditForm):
             msg = 'Changed source %s' % source.id
             print msg
             
-class Identify(grok.View):
-    def update(self, bioport_ids):
-        repo = self.context.repository()
-        persons = [BioPortRepository.person.Person(id, repository=repo) for id in bioport_ids]
-        repo.identify(persons)
-        
-        self.bioport_ids = bioport_ids
-        self.persons = persons
-        msg = 'Identified <a href="../persoon?bioport_id=%s">%s</a> and <a href="../persoon?bioport_id=%s">%s</a>' % (
-                     bioport_ids[0],  bioport_ids[0], bioport_ids[1],  bioport_ids[1])
-        self.redirect(self.url(self.__parent__, 'mostsimilar', data={'msg':msg}))
-             
-class IdentifyMoreInfo(grok.View):
-    def update(self, bioport_ids):
-        repo = self.context.repository()
-        persons = [BioPortRepository.person.Person(id, repository=repo) for id in bioport_ids]
-        self.bioport_ids = bioport_ids
-        self.persons = persons
+#class Identify(grok.View):
+#    def update(self, bioport_ids):
+#        repo = self.context.repository()
+#        persons = [BioPortRepository.person.Person(id, repository=repo) for id in bioport_ids]
+#        assert len(persons) == 2
+#        repo.identify(persons[0], persons[1])
+#        
+#        self.bioport_ids = bioport_ids
+#        self.persons = persons
+#        msg = 'Identified <a href="../persoon?bioport_id=%s">%s</a> and <a href="../persoon?bioport_id=%s">%s</a>' % (
+#                     bioport_ids[0],  bioport_ids[0], bioport_ids[1],  bioport_ids[1])
+#        self.redirect(self.url(self.__parent__, 'mostsimilar', data={'msg':msg}))
 
-class AntiIdentify(grok.View):      
-    #Given that we only redirect, this should not be a a view
-     def update(self, bioport_ids):
-        repo = self.context.repository()
-        persons = [BioPortRepository.person.Person(id, repository=repo) for id in bioport_ids]
-        p1, p2 = persons
-        repo.antiidentify(p1, p2)
+
         
-        self.bioport_ids = bioport_ids
-        self.persons = persons
-        msg = 'Anti-Identified <a href="../persoon?bioport_id=%s">%s</a> and <a href="../persoon?bioport_id=%s">%s</a>' % (
-                     bioport_ids[0], persons[0].naam().volledige_naam(), bioport_ids[1], persons[1].naam().volledige_naam())
-        self.redirect(self.url(self.__parent__, 'mostsimilar', data={'msg':msg}))
-                      
+               
 class Sources(grok.View):
     
 
@@ -179,9 +171,61 @@ class Sources(grok.View):
         msg = 'Deleted source with id %s ' % source_id
         print msg
         return msg
-class MostSimilar(grok.View):
-    pass
+    
+class MostSimilar(grok.Form):
+    #grok.require('bioport.EditRepository')
 
+    @grok.action('identificeer', name='identify')
+    def identify(self):
+        bioport_ids = self.request.get('bioport_ids')
+        repo = self.context.repository()
+        persons = [BioPortRepository.person.Person(id, repository=repo) for id in bioport_ids]
+        assert len(persons) == 2
+        repo.identify(persons[0], persons[1])
+        
+        self.bioport_ids = bioport_ids
+        self.persons = persons
+        msg = 'Identified <a href="../persoon?bioport_id=%s">%s</a> and <a href="../persoon?bioport_id=%s">%s</a>' % (
+                     bioport_ids[0],  bioport_ids[0], bioport_ids[1],  bioport_ids[1])
+        self.redirect(self.url(self.__parent__, 'mostsimilar', data={'msg':msg}))
+        
+    @grok.action('anti-identificieer', name='antiidentify')
+    def antiidentify(self):
+        bioport_ids = self.request.get('bioport_ids')
+        repo = self.context.repository()
+        persons = [BioPortRepository.person.Person(id, repository=repo) for id in bioport_ids]
+        p1, p2 = persons
+        repo.antiidentify(p1, p2)
+        
+        self.bioport_ids = bioport_ids
+        self.persons = persons
+        msg = 'Anti-Identified <a href="../persoon?bioport_id=%s">%s</a> and <a href="../persoon?bioport_id=%s">%s</a>' % (
+                     bioport_ids[0], persons[0].get_bioport_id(), bioport_ids[1], persons[1].get_bioport_id())
+        self.redirect(self.url(self.__parent__, 'mostsimilar', data={'msg':msg}))
+        
+        
+   
+    @grok.action('Moeilijk geval', name='deferidentification')
+    def deferidentification(self):
+        bioport_ids = self.request.get('bioport_ids') 
+        repo = self.context.repository()
+        persons = [BioPortRepository.person.Person(id, repository=repo) for id in bioport_ids]
+        p1, p2 = persons
+        repo.defer_identification(p1, p2)
+        
+        self.bioport_ids = bioport_ids
+        self.persons = persons
+        msg = 'Deferred identification of <a href="../persoon?bioport_id=%s">%s</a> and <a href="../persoon?bioport_id=%s">%s</a>' % (
+                     bioport_ids[0], persons[0].get_bioport_id(), bioport_ids[1], persons[1].get_bioport_id())
+        self.redirect(self.url(self.__parent__, 'mostsimilar', data={'msg':msg}))      
+        
+             
+class IdentifyMoreInfo(grok.View):
+    def update(self, bioport_ids):
+        repo = self.context.repository()
+        persons = [BioPortRepository.person.Person(id, repository=repo) for id in bioport_ids]
+        self.bioport_ids = bioport_ids
+        self.persons = persons
 
 class Persoon(grok.EditForm):
     """This should really be an "Edit" view on a "Person" Model
@@ -207,6 +251,9 @@ class Persoon(grok.EditForm):
         namen = [naam for naam in namen if naam.to_string() not in [n.to_string() for n in self.get_bioport_namen()]]
         return namen
     
+    def get_namen(self):
+        namen = self.merged_biography.get_names()
+        return namen
     def get_value(self, k):
         if k in ['geboortedatum', 'sterfdatum']:
             return self.ymd(self.merged_biography.get_value(k, ''))
@@ -236,13 +283,14 @@ class Persoon(grok.EditForm):
     @grok.action('bewaar veranderingen', name='save_geboortedatum')
     def save_geboortedatum(self):
         self._save_geboortedatum()
+        
     def _save_geboortedatum(self):
         y = self.request.get('birth_y')
         m = self.request.get('birth_m')
         d = self.request.get('birth_d')
         if y:
-	        ymd = from_ymd(y, m, d)
-	        self.set_value('geboortedatum', ymd)
+            ymd = from_ymd(y, m, d)
+            self.set_value('geboortedatum', ymd)
         
             
     @grok.action('bewaar veranderingen', name='save_sterfdatum')
@@ -253,9 +301,9 @@ class Persoon(grok.EditForm):
         m = self.request.get('death_m')
         d = self.request.get('death_d')
         if y:
-	        ymd = from_ymd(y, m, d)
-	        self.set_value('sterfdatum', ymd)      
-	        
+            ymd = from_ymd(y, m, d)
+            self.set_value('sterfdatum', ymd)      
+            
     @grok.action('bewaar veranderingen', name='save_geboorteplaats')  
     def save_geboorteplaats(self):
         self._save_geboorteplaats()
@@ -292,6 +340,11 @@ class ChangeName(grok.EditForm):
         self.person  = self.context.get_person(id=self.bioport_id)  
         self.bioport_biography  = self.context.repository().get_bioport_biography(self.person)
         
+        if not self.bioport_biography.get_namen():
+            for naam in self.person.get_merged_biography().get_names():
+                self.bioport_biography._add_a_name(naam)
+            self.context.repository().save_biography(self.bioport_biography)
+        
         self.idx = self.request.get('idx')         
         if not self.idx or self.idx == u'new':
             self.naam = None
@@ -301,31 +354,38 @@ class ChangeName(grok.EditForm):
        
     @grok.action('bewaar veranderingen', name='save_changes') 
     def save_changes(self):
+        bio = self.bioport_biography
+        
+        parts = ['prepositie', 'voornaam', 'intrapositie', 'geslachtsnaam', 'postpositie']
+        args = dict([(k, self.request.get(k)) for k in parts])
+        
+        volledige_naam = self.request.get('volledige_naam')
+            
+        #als de volledige naam niet is veranderd, maar een van de oude velden wel
+        #dan, ja, dan wat?
+        if volledige_naam in ' '.join(parts):
+            volledige_naam = ' '.join(parts)
+        
         name = Naam(
-	        repositie = self.request.get('prepositie'),
-	        voornaam = self.request.get('voornaam'),
-	        intrapositie = self.request.get('intrapositie'),
-	        geslachtsnaam = self.request.get('geslachtsnaam'),
-	        postpositie = self.request.get('postpositie'),
-	        volledige_naam = self.request.get('volledige_naam'),
+            volledige_naam = volledige_naam,
+            **args
         )
         repository = self.context.repository()
-        bio = repository.get_bioport_biography(self.person)
         bio._replace_name(name, self.idx)
         repository.save_biography(bio)
-        msg = 'added a name'
+        msg = 'changed a name'
         
         self.redirect(self.url('persoon',data= {'bioport_id':self.bioport_id, 'msg':msg}))
     
     @grok.action('voeg toe', name='add_name') 
     def add_name(self):
         name = Naam(
-	        repositie = self.request.get('prepositie'),
-	        voornaam = self.request.get('voornaam'),
-	        intrapositie = self.request.get('intrapositie'),
-	        geslachtsnaam = self.request.get('geslachtsnaam'),
-	        postpositie = self.request.get('postpositie'),
-	        volledige_naam = self.request.get('volledige_naam'),
+            repositie = self.request.get('prepositie'),
+            voornaam = self.request.get('voornaam'),
+            intrapositie = self.request.get('intrapositie'),
+            geslachtsnaam = self.request.get('geslachtsnaam'),
+            postpositie = self.request.get('postpositie'),
+            volledige_naam = self.request.get('volledige_naam'),
         )
         repository = self.context.repository()
         bio = repository.get_bioport_biography(self.person)
@@ -336,7 +396,14 @@ class ChangeName(grok.EditForm):
         self.redirect(self.url('persoon',data= {'bioport_id':self.bioport_id, 'msg':msg}))
     
     
-    
+class AntiIdentified(grok.View):
+    pass
+
+class Identified(grok.View):
+    pass
+
+class Deferred(grok.View):
+    pass
     
     
     

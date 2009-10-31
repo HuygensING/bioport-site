@@ -1,15 +1,28 @@
 <html metal:use-macro="context/@@admin_template/macros/master">
 <div metal:fill-slot="content" >
-<h1 tal:condition="python:view.idx == 'new'">Voeg een naam toe</h1>
-<h1 tal:condition="python:view.idx != 'new'">Verander naam</h1>
-<ul tal:condition="view/naam">
+<h1 tal:condition="not:view/naam">Voeg een naam toe</h1>
+<h1 tal:condition="view/naam">Verander naam</h1>
+<tal:block condition="view/naam">
+Deze naam wordt al volgt weergegeven:
+<ul>
 	<li>Naam: <span tal:replace="python:view.naam.volledige_naam()" />
 	<li>"Sorteernaam": <span tal:replace="python:view.naam.guess_normal_form()" />
 </ul>
+</tal:block>
 <form>
 <input type="hidden" name="bioport_id" tal:attributes="value view/bioport_id" />
 <input type="hidden" name="idx" tal:attributes="value view/idx" />
 <table>    
+    <tr>
+    	<th>volledige naam</th>
+    	<td>
+       		<input type="text"
+       			name="volledige_naam"
+       			tal:attributes="value python:view.naam and view.naam.volledige_naam()"
+       			/> 
+    	
+    	</td>
+    </tr>
     <tr> 
         <th>preposities</th>
         <td>
@@ -55,16 +68,7 @@
        			/> 
         </td>
     </tr>
-    <tr>
-    	<th>volledige naam</th>
-    	<td>
-       		<input type="text"
-       			name="volledige_naam"
-       			tal:attributes="value python:view.naam and view.naam.volledige_naam()"
-       			/> 
-    	
-    	</td>
-    </tr>
+
     <tr>
    		<th></th>
    		<td> 
@@ -75,6 +79,8 @@
 	 
     </table>
     </form>
+U kunt het veld "volledige naam" leeg laten. Maar als U dat niet doet, dan <em>moet</em> de inhoud van de preposities, voornamen, etc 
+een onderdeel zijn van de "volledige naam".
     <ul>
     	<li><a tal:attributes="href python:view.url('persoon', data={'bioport_id':view.bioport_id})">bewerk persoon</a>
     </ul>

@@ -2,7 +2,7 @@
      metal:use-macro="context/@@admin_template/macros/master">
 
 <div metal:fill-slot="content">
-    <h1>Welkom!</h1>
+    <h1>Welkom <span tal:replace="python:view.request.principal.title" /></h1>
 <p>
 U kunt de volgende dingen doen:
 <ul>

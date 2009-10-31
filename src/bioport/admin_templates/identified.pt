@@ -1,0 +1,6 @@
+<html metal:use-macro="context/@@admin_template/macros/master">
+<div metal:fill-slot="content" >
+<h1>Ge&iuml;dentificeerde personen</h1>
+<p>Deze pagina heb ik nog niet gemaakt -- jelle</p>
+</div>
+</html>
