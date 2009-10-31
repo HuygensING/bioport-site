@@ -16,19 +16,19 @@
 			person1 python:x[1];
 			person2 python:x[2];
 			">
-		<span tal:define="person person1">
+		<span tal:define="person person1" tal:omit-tag="">
 		<td tal:content="repeat/x/number" />
 		<td metal:define-macro="person">
 			<a tal:attributes="href python:view.url(view.__parent__.__parent__, 'persoon', data={'bioport_id':person.get_bioport_id()})" 
-				tal:content="python:person.naam() and person.naam().guess_normal_form() or 'geen naam bekend'" />
+				tal:content="structure python:person.naam() and person.naam().guess_normal_form() or 'geen naam bekend'" />
 			<br>
 			<span tal:content="python:context.format_dates(person.get_value('geboortedatum'), person.get_value('sterfdatum'))" />
 			<br>
 			<span tal:repeat="bio python:person.get_biographies()" tal:content="python:bio.get_source().id" />
 		</td>
 		</span>
-		<span tal:define="person person2">
-		<td metal:use-macro="template/macros/person" />
+		<span tal:define="person person2" tal:omit-tag="">
+			<td metal:use-macro="template/macros/person" />
 		</span>
 		<td tal:content="score" />	
 		<td tal:define="bioport_ids python: [person1.get_bioport_id(), person2.get_bioport_id()]">
