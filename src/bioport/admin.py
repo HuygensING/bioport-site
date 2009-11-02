@@ -265,7 +265,7 @@ class Persoon(grok.EditForm):
               'september',
               'oktober', 
               'november', 
-              'decemeber',
+              'december',
         ]
         return ls
     def ymd(self, s):
