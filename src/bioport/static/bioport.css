@@ -11,14 +11,14 @@ body, html {
 		color:#000;
         font-size : 13px;
 	}
-	body {
+body {
 		min-width:800px;
 	}
 
 p {
 	margin : .4em 0em .4em 0em;	
 	}
-	#container_box {
+#container_box {
 		background:#7894aa;
 		margin:0 auto;
 		width:800px;
@@ -87,7 +87,7 @@ p {
         margin : 0;
     }
     #content_box {
-        color : #555;
+        color : #222;
     }
     #content_box a {
         text-decoration : none;

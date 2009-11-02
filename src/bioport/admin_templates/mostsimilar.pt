@@ -8,7 +8,7 @@
 <a tal:attributes="href python:view.url('antiidentified')">niet identieke</a> personen, 
 <a tal:attributes="href python:view.url('deferred')">de lijst met moeilijke gevallen</a>. 
 <table>
-	<div tal:repeat="x python:context.repository().get_most_similar_persons(start=0, size=20)"
+	<div tal:repeat="x python:context.repository().get_most_similar_persons(start=view.start, size=view.size)"
 		tal:omit-tag="">
 	<tr
 		tal:define="
@@ -17,7 +17,7 @@
 			person2 python:x[2];
 			">
 		<span tal:define="person person1" tal:omit-tag="">
-		<td tal:content="repeat/x/number" />
+		<td tal:content="python:view.start + repeat['x'].number()" />
 		<td metal:define-macro="person">
 			<a tal:attributes="href python:view.url(view.__parent__.__parent__, 'persoon', data={'bioport_id':person.get_bioport_id()})" 
 				tal:content="structure python:person.naam() and person.naam().guess_normal_form() or 'geen naam bekend'" />
@@ -34,15 +34,15 @@
 		<td tal:define="bioport_ids python: [person1.get_bioport_id(), person2.get_bioport_id()]">
 		<ul
 			metal:define-macro="identify_actions">
-			<li><a tal:attributes="href python:view.url(context, 'mostsimilar', data={'form.actions.identify': 'submit', 'bioport_ids':bioport_ids})" > identiek</a>
+			<li><a tal:attributes="href python:view.url(context, 'mostsimilar', data={'form.actions.identify': 'submit', 'bioport_ids':bioport_ids, 'start':request.get('start', 0)})" > identiek</a>
 			</li>
-			<li><a tal:attributes="href python:view.url(context, 'mostsimilar', data={'form.actions.antiidentify':'', 'bioport_ids': bioport_ids})" > niet identiek </a>
+			<li><a tal:attributes="href python:view.url(context, 'mostsimilar', data={'form.actions.antiidentify':'', 'bioport_ids': bioport_ids, 'start':request.get('start', 0)})" > niet identiek </a>
 			</li>
 			<li tal:condition="python:not view.url().endswith('deferred')">
-				<a tal:attributes="href python:view.url(context, 'mostsimilar', data={'form.actions.deferidentification':'', 'bioport_ids':bioport_ids})" > moeilijk </a>
+				<a tal:attributes="href python:view.url(context, 'mostsimilar', data={'form.actions.deferidentification':'', 'bioport_ids':bioport_ids, 'start':request.get('start', 0)})" > moeilijk </a>
 			</li>
 			<li tal:condition="python:not view.url().endswith('identifymoreinfo')">
-				<a tal:attributes="href python:view.url('identifymoreinfo', data={'bioport_ids':bioport_ids})" > meer informatie </a>
+				<a tal:attributes="href python:view.url('identifymoreinfo', data={'bioport_ids':bioport_ids, 'start':request.get('start', 0)})" > meer informatie </a>
 			</li>
 		</ul>
 		</td>

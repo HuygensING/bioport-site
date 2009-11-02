@@ -81,11 +81,13 @@ De gegevens zijn grijs als ze uit de bronnen-publikaties komen, zwart als ze zij
         		/>
         	</select>
         	<select name="birth_m">
-        		<option>
+         		<option>
         		<option 
-	        		tal:repeat="option python:range(1, 32)" 
-	        		tal:attributes="selected python:ymd[1] == option"
-	        		tal:content="option"
+	        		tal:repeat="option python:range(1, 13)" 
+	        		tal:attributes="
+		        		selected python:ymd[1] == option;
+	        			value option;"
+	        		tal:content="python:view.maanden()[option-1]"
         		/>
         	</select>
         	<input name="birth_y" type="text" size="4" style="width:4"
@@ -123,11 +125,13 @@ De gegevens zijn grijs als ze uit de bronnen-publikaties komen, zwart als ze zij
         		/>
         	</select>
         	<select name="death_m">
-        		<option>
+         		<option>
         		<option 
-	        		tal:repeat="option python:range(1, 32)" 
-	        		tal:attributes="selected python:ymd[1] == option"
-	        		tal:content="option"
+	        		tal:repeat="option python:range(1, 13)" 
+	        		tal:attributes="
+		        		selected python:ymd[1] == option;
+	        			value option;"
+	        		tal:content="python:view.maanden()[option-1]"
         		/>
         	</select>
         	<input name="death_y" type="text" size="4" style="width:4"
@@ -155,7 +159,6 @@ De gegevens zijn grijs als ze uit de bronnen-publikaties komen, zwart als ze zij
    	<td>
         <span tal:replace="structure python:view.actions.byname['form.actions.save_everything'].render()" />
 	</td> 
-	        
     </tr>
 </table>
 </form>
@@ -217,7 +220,7 @@ De gegevens zijn grijs als ze uit de bronnen-publikaties komen, zwart als ze zij
 			<span tal:replace="python:bio.get_value('sterfplaats')" />
 		</td>
 	</tr>
-	<tr tal:condition="python:bio.get_value('sterfplaats')">
+	<tr tal:condition="python:bio.get_value('tekst')">
 		<th>Tekst</th>
 		<td>
 			<span tal:replace="python:bio.get_value('tekst')" />

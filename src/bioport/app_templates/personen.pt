@@ -28,16 +28,16 @@
 		<p tal:condition="python:results.grand_total > 2">Er zijn <span tal:replace="results/grand_total" /> resultaten gevonden.</p>
 	</div>
 </div>
-<div class="batch_navigation">	
-	<span tal:replace="python:'%s-%s van %s' % (persons.start + 1, persons.end + 1,  persons.grand_total)" />  | 
-	<span tal:condition="persons/previous">
-		<a tal:attributes="href python:view.batch_url(start=persons.previous.start)"
-			tal:content="string:vorige ${persons/previous/size}">vorige X</a>
+<div class="batch_navigation" tal:define="results persons">	
+	<span tal:replace="python:'%s-%s van %s' % (results.start + 1, results.end + 1,  results.grand_total)" />  | 
+	<span tal:condition="results/previous">
+		<a tal:attributes="href python:view.batch_url(start=results.previous.start)"
+			tal:content="string:vorige ${results/previous/size}">vorige X</a>
 	</span>  | 
 
-	<span tal:condition="persons/next">
-		<a tal:attributes="href python:view.batch_url(start=persons.next.start);"
-			tal:content="string:volgende ${persons/next/size}">vorige X</a>
+	<span tal:condition="results/next">
+		<a tal:attributes="href python:view.batch_url(start=results.next.start);"
+			tal:content="string:volgende ${results/next/size}">vorige X</a>
 	</span>
 </div>
 <ul class="biografien">
