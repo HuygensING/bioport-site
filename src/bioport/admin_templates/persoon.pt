@@ -57,7 +57,7 @@ De gegevens zijn grijs als ze uit de bronnen-publikaties komen, zwart als ze zij
 
    		
     <tr tal:condition="not:view/get_bioport_namen" 
-     tal:define="namen view/get_non_bioport_namen"
+    tal:define="namen view/get_non_bioport_namen"
     	tal:repeat="idx python:range(len(namen))">
 
     	<th><span tal:condition="python:idx == 0" >namen</span></th>
@@ -81,33 +81,35 @@ De gegevens zijn grijs als ze uit de bronnen-publikaties komen, zwart als ze zij
 		</td>    
 	</tr>
    	<tr metal:use-macro="template/macros/separator" /> 
+   	
     <!-- geboortedatum -->
     <span tal:omit-tag=""
     	 tal:define="title string:geboorte;
-    	 	prefix string:birth;"
+    	 	event_type string:birth;"
     	 >
     <div metal:define-macro="event_form"
 	    tal:define="
-        		event python:view.get_event(prefix);
-    	show_exact python:(not event) or (event.when or not (event.notAfter or event.notBefore or event.date_text));
-		show_approx python:event and (event.notAfter or event.notBefore or event.date_text) and True;
+        		event python:view.get_event(event_type);
+	    	show_exact python:(not event) or (event.when or not (event.notAfter or event.notBefore or event.date_text));
+			show_approx python:event and (event.notAfter or event.notBefore or event.date_text) and True;
+			prefix event_type;
         	">
-    <tr  tal:attributes="id prefix" > 
+    <tr  tal:attributes="id event_type" > 
         <th tal:content="title">geboorte</th>
   		<td> </td>
-       <td>
-	        <span tal:replace="structure python:view.actions.byname['form.actions.save_event_%s' % prefix].render()" />
+        <td>
+	        <span tal:replace="structure python:view.actions.byname['form.actions.save_event_%s' % event_type].render()" />
         </td> 
      </tr>
      <tr tal:attributes="
-     	id string:${prefix}_exact;
-style python:not show_exact and 'display:none'">
-     	<th class="sublabel">datum</th>
-        <td  tal:attributes="class python:view.status_value('geboortedatum')"
+     	id string:${event_type}_exact;
+		style python:not show_exact and 'display:none'">
+     	<th class="sublabel">datum
+     	</th>
+        <td  tal:attributes="class python:view.status_value(event_type, 'when')"
         	tal:define="ymd event/when_ymd | nothing">
  	
  		<span metal:define-macro="date_widget" tal:omit-tag="">
-
         	<select tal:attributes="name string:${prefix}_d">
         		<option />
         		<option 
@@ -133,64 +135,61 @@ style python:not show_exact and 'display:none'">
 		</span>	
 		<p>
     	<a href="" 
-    		tal:attributes="id string:${prefix}_button_on;
+    		tal:attributes="id string:${event_type}_button_on;
     			OnClick string:
-    				show('${prefix}_notBefore');;
-    				show('${prefix}_notAfter');;
-    				show('${prefix}_text');;
-    				hide('${prefix}_exact');;
-    				hide('${prefix}_button_on');;
+    				show('${event_type}_notBefore');;
+    				show('${event_type}_notAfter');;
+    				show('${event_type}_text');;
+    				hide('${event_type}_exact');;
+    				hide('${event_type}_button_on');;
     				return false;;">exacte datum niet bekend</a>
 	    </td>	
 	 </tr>
-	<tr tal:attributes="id string:${prefix}_notBefore;
+	<tr tal:attributes="id string:${event_type}_notBefore;
 			style python:not show_approx and 'display:none';
 			" >	 
 	
 
-		<th class="sublabel">na</th> 
-		<td  tal:define="
-				prefix string:${prefix}_notBefore;
+		<th class="sublabel">na
+		</th> 
+        <td tal:attributes="class python:view.status_value(event_type, 'notBefore')"
+            tal:define="
+				prefix string:${event_type}_notBefore;
 				ymd event/notBefore_ymd | nothing">
 				<span metal:use-macro="template/macros/date_widget"></span>
 		</td>
 	</tr>
-	<tr tal:attributes="id string:${prefix}_notAfter;
+	<tr tal:attributes="id string:${event_type}_notAfter;
 			style python:not show_approx and 'display:none';
 			" >	 
 
 		<th class="sublabel">v&oacute;&oacute;r</th> 
-		<td>	
-
-				<span  tal:define="
-					prefix string:${prefix}_notAfter;
-					ymd event/notAfter_ymd | nothing">
-					<span metal:use-macro="template/macros/date_widget" />
-				</span>	
+        <td tal:attributes="class python:view.status_value(event_type, 'notAfter')"
+			tal:define="
+				prefix string:${event_type}_notAfter;
+				ymd event/notAfter_ymd | nothing">
+			<span metal:use-macro="template/macros/date_widget" />
 		</td>
 	</tr>
-	<tr tal:attributes="id string:${prefix}_text;
+	<tr tal:attributes="id string:${event_type}_text;
 			style python:not show_approx and 'display:none';
 			" >	 
-
 		<th class="sublabel">tekst</th> 
-	
-		<td>
-			<input type="tekst" 
+        <td tal:attributes="class python:view.status_value(event_type, 'text')">
+			<input type="text" 
 				tal:attributes="
-					name string:${prefix}_text;
+					name string:${event_type}_text;
 					value event/date_text | nothing" />
 			<p>
-        		
         	<a href="" 
-        		tal:attributes="id string:${prefix}_approx_button_off;
+        		tal:attributes="id string:${event_type}_approx_button_off;
 		   			OnClick string:
-						hide('${prefix}_notBefore');;
-						hide('${prefix}_notAfter');;
-						hide('${prefix}_text');;
-						show('${prefix}_exact');;
-						show('${prefix}_button_on');;
-						hide('${prefix}_button_off');;
+						hide('${event_type}_notBefore');;
+						hide('${event_type}_notAfter');;
+						hide('${event_type}_text');;
+						show('${event_type}_exact');;
+						show('${event_type}_button_on');;
+						hide('${event_type}_button_off');;
 						return false;;">exacte datum bekend</a>
 
 	        </td>
@@ -201,9 +200,9 @@ style python:not show_exact and 'display:none'">
     <!--  plaats -->
     <tr> 
         <th class="sublabel">plaats</th>
-        <td tal:attributes="class python:view.status_value('geboorteplaats')">
+        <td tal:attributes="class python:view.status_value(event_type, 'place')">
         	<input type="tekst"  
-	        	tal:attributes="name string:${prefix}_place;
+	        	tal:attributes="name string:${event_type}_place;
 		        	value event/place | nothing" />
         </td>
 
@@ -216,7 +215,7 @@ style python:not show_exact and 'display:none'">
    	<span tal:omit-tag=""
    		 tal:define="
    		 	title string:dood;
-   		 	prefix string:death;">
+   		 	event_type string:death;">
    		 <tr metal:use-macro="template/macros/event_form" />
 	 </span>
   
@@ -228,7 +227,7 @@ style python:not show_exact and 'display:none'">
    	<span tal:omit-tag=""
    		 tal:define="
    		 	title string:doop;
-   		 	prefix string:baptism;">
+   		 	event_type string:baptism;">
    		 <tr metal:use-macro="template/macros/event_form"  />
 	 </span>
    	
@@ -237,7 +236,7 @@ style python:not show_exact and 'display:none'">
    	<span tal:omit-tag=""
    		 tal:define="
    		 	title string:begrafenis;
-   		 	prefix string:funeral;">
+   		 	event_type string:funeral;">
    		 <tr metal:use-macro="template/macros/event_form"  />
 	 </span>
 	    	<tr metal:use-macro="template/macros/separator" /> 

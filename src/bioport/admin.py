@@ -273,9 +273,16 @@ class Persoon(app.Persoon, grok.EditForm):
         else:
             return biography.get_value(k, '')
         
-    def status_value(self, k):
+    def status_value(self, event_id, attr):
         """return 'bioport' if the value is added by the editors of the biographical portal
         return 'merged' if the value comes from the merged_biography"""
+        bioport_event = self.get_event(event_id, biography=self.bioport_biography)
+#        merged_event = self.get_event(self.merged_biography)
+        if getattr(bioport_event, attr, None):
+            return 'bioport'
+        else:
+            return 'merged'
+        
         if self.bioport_biography.get_value(k):
             return 'bioport'
         elif self.merged_biography.get_value(k):
