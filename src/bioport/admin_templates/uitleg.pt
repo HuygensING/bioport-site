@@ -1,0 +1,48 @@
+<html metal:use-macro="context/@@admin_template/macros/master">
+<div metal:fill-slot="content">
+
+<h1>Uitleg bij de bewerk schermen</h1>
+
+<h2>Namen</h2>
+[Nog te schrijven]
+<h2>Gebeurtenissen (geboorte, dood, doop, etc)</h2>
+<h3>eigenschappen</h3>
+Gebeurtenissen hebben de volgende eigenschappen:
+<ul>
+	<li>"datum" - een datum - wanneer de gebeurtenis plaatsvond
+	<li>"na" - een datum - de gebeurtenis vond plaats na deze datum
+	<li>"voor"  - een datum - de gebeurtenis vond plaats voor deze datum
+	<li> "tekst" - vrije tekst - beschrijft de datum van de gebeurtenis  
+	<li> "plaats" - vrije tekst - de plek waar de gebeurtenis plaats vond [dit wordt later een keuze uit een lijst met namen]
+</ul>
+<h3>wat in te vullen?</h3>
+<ul>
+	<li>Als de plaats bekend is, die altijd invullen
+	<li>Als de preciese datum bekend is (bijv. "23 maart 1943"), die invullen, en de andere datum-velden leeg laten
+	<li>Ook als alleen de maand en het jaar (bv. "januari 1305"), of alleen het jaar bekend is, worden deze in het datum-veld ingevuld
+	<li>Gebruik in de andere gevallen de "na", "voor" en "tekst" velden. 
+	Vul deze alle drie in - de tekst wordt op de site getoond, en de "na" en "voor" velden zijn essentieel voor het zoeken.
+	<li>rond 1900oorbeeld: "ergens in de 19e eeuw" wordt: 
+		<ul>
+			<li>"na": 1800
+			<li>"voor":1900
+			<li>"tekst":"ergens in de 19e eeuw"
+		</ul>
+	<li>Soms vergt dit wat interpretatie. "rond 1900" kan bijvoorbeeld zo worden ingevuld:
+		<ul>
+			<li>"na": 1910
+			<li>"voor":1890
+			<li>"tekst":"rond 1900"
+		</ul>
+</ul>
+<h3>wat zie je op de website?</h3>
+<ul>
+	<li>De plaats (indien bekend) wordt altijd getoond
+	<li>Als het "datum" veld is ingevuld, wordt dat getoond (de andere datumvelden worden genegeerd)
+	<li>Als het "datum" veld niet is ingevuld, word het "tekst" veld op de site getoond. 
+	<li>De "voor" en "na" velden worden niet getoond, maar worden gebruikt bij het zoeken (en voor de tijdbalk, enzovoort)
+	<li>
+</li>
+	
+</div>
+</html>
