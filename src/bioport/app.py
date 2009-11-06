@@ -81,8 +81,10 @@ class Persoon(BioPortTraverser, grok.View): #, BioPortTraverser):
             self.redirect(self.url(self, redirects_to))
         self.biography  = self.merged_biography = self.person.get_merged_biography()
 
-    def get_event(self, type):
-        event_el = self.merged_biography.get_event(type)
+    def get_event(self, type, biography=None):
+        if not biography:
+            biography = self.merged_biography
+        event_el = biography.get_event(type)
         if event_el is not None:
             #we construct a conventient object
             class EventWrapper:

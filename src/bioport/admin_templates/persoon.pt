@@ -267,49 +267,37 @@ style python:not show_exact and 'display:none'">
 			<div tal:repeat="naam python:bio.get_namen()" tal:content="naam/volledige_naam"></div>	
 		</td>
 	</tr>
-	<span tal:repeat="event2 python:[('geboorte', 'birth'), ('dood', 'death'), ('doop', 'baptism'), ('begrafenis', 'funeral')]" >
+	<tal:block repeat="event2 python:[('geboorte', 'birth'), ('dood', 'death'), ('doop', 'baptism'), ('begrafenis', 'funeral')]" >
 	<span 
-		tal:repeat="attr python:['when', 'notBefore', 'notAfter']"
-		tal:define="event python:bio.get_event(event2[1]);
+		tal:define="event python:view.get_event(event2[1], biography=bio);
 			title python:event2[0]"
 		tal:condition="python:event"> 
-		<tr tal:condition="python:event.get(attr)">
-			<th tal:content="python:'%s-%s' % (title, attr)" />
-			<td tal:content="python:event.get(attr)">
+		<tr tal:condition="event/when">
+			<th tal:content="python:'%s-datum' % title" />
+			<td tal:content="event/when_formatted">
 			</td>
 		</tr> 
-			<tr tal:condition="python:event.get(attr)">
-			<th tal:content="python:'%s-%s' % (title, attr)" />
-			<td tal:content="python:event.get(attr)">
+		<tr tal:condition="event/notBefore">
+			<th tal:content="python:'%s-na' % title" />
+			<td tal:content="event/notBefore_formatted">
 			</td>
-		</tr> 	
-	</span>
-	</span>
+		</tr> 
+		<tr tal:condition="event/notAfter">
+			<th tal:content="python:'%s-voor' % title" />
+			<td tal:content="event/notAfter_formatted">
+			</td>
+		</tr> 
+		<tr tal:condition="event/date_text">
+			<th tal:content="python:'%s-datum_tekst' % title" />
+			<td tal:content="event/date_text"> </td>
+		</tr> 
+		<tr tal:condition="event/place">
+			<th tal:content="python:'%s-plaats' % title" />
+			<td tal:content="event/place"> </td>
+		</tr> 
+		</span>
+	</tal:block>
 	
-	<tr tal:condition="python:bio.get_value('geboortedatum')">
-		<th>geboortedatum</th>
-		<td>
-			<span tal:replace="python:context.format_date(bio.get_value('geboortedatum'))" />
-		</td>
-	</tr>
-	<tr tal:condition="python:bio.get_value('geboorteplaats')">
-		<th>Geboorteplaats</th>
-		<td>
-			<span tal:replace="python:bio.get_value('geboorteplaats')" />
-		</td>
-	</tr>
-	<tr tal:condition="python:bio.get_value('sterfdatum')">
-		<th>Sterfdatum</th>
-		<td>
-			<span tal:replace="python:context.format_date(bio.get_value('sterfdatum'))" />
-		</td>
-	</tr>
-	<tr tal:condition="python:bio.get_value('sterfplaats')">
-		<th>Sterfplaats</th>
-		<td>
-			<span tal:replace="python:bio.get_value('sterfplaats')" />
-		</td>
-	</tr>
 	<tr tal:condition="python:bio.get_value('tekst')">
 		<th>Tekst</th>
 		<td>

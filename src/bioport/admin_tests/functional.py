@@ -68,7 +68,7 @@ class SimpleSampleFunctionalTest(SampleFunctionalTest):
             else:
                 data = ''
             browser.open(self.base_url + '/' + url, data.encode('utf8'))
-    def xtest_admin_workflow(self):
+    def test_admin_workflow(self):
         """ test creating a bioport instance into Zope """
 
         

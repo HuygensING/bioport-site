@@ -252,8 +252,6 @@ class Persoon(app.Persoon, grok.EditForm):
             
     def to_ymd(self, s):
         return to_ymd(s)
-            
-
     
     def get_bioport_namen(self):
         return self.bioport_biography.get_namen()
@@ -267,11 +265,13 @@ class Persoon(app.Persoon, grok.EditForm):
         return namen
     
 
-    def get_value(self, k):
+    def get_value(self, k, biography=None):
+        if not biography:
+            biography = self.merged_biography
         if k in ['geboortedatum', 'sterfdatum']:
-            return to_ymd(self.merged_biography.get_value(k, ''))
+            return to_ymd(biography.get_value(k, ''))
         else:
-            return self.merged_biography.get_value(k, '')
+            return biography.get_value(k, '')
         
     def status_value(self, k):
         """return 'bioport' if the value is added by the editors of the biographical portal
