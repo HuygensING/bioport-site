@@ -6,6 +6,19 @@
     	bioport_bio view/bioport_biography; 
     	" 
     >
+<script>
+show = function(element_id) {
+	el = document.getElementById(element_id);
+	if (el) {el.style.display='';}
+}
+
+hide = function(element_id) {
+	el = document.getElementById(element_id);
+	if (el) {el.style.display='none'};
+}
+
+
+</script>
 <h1>Bewerk gegevens van <em tal:content="python:view.person.naam().volledige_naam()" /></h1>
 <p>
 De gegevens in het formulier zijn de gegevens zoals ze op het biografisch portaal worden 
@@ -16,13 +29,14 @@ De gegevens zijn grijs als ze uit de bronnen-publikaties komen, zwart als ze zij
 </p>
 
 <form action="." tal:attributes="action request/URL" method="get"
-      class="edit-form" enctype="multipart/form-data">
+      class="edit-form" >
       <input type="hidden" name="bioport_id" tal:attributes="value python:view.bioport_id" />
 <table>
     <tr>
         <th>bioport identifier</th>
         <td class="bioport" tal:content="view/person/get_bioport_id" />
     </tr>
+    <tr metal:define-macro="separator" class="separator"><td colspan="3"><hr></td></tr>
     <tr tal:define="namen view/get_bioport_namen"
     	tal:repeat="idx python:range(len(namen))">
     	<th><span tal:condition="python:idx == 0" >namen</span></th>
@@ -66,94 +80,167 @@ De gegevens zijn grijs als ze uit de bronnen-publikaties komen, zwart als ze zij
 			</a>
 		</td>    
 	</tr>
-    
+   	<tr metal:use-macro="template/macros/separator" /> 
     <!-- geboortedatum -->
-    <tr> 
-        <th>geboortedatum</th>
-        <td tal:define="ymd  python:view.get_value('geboortedatum')"
-        	tal:attributes="class python:view.status_value('geboortedatum')">
-        	<select name="birth_d">
+    <span tal:omit-tag=""
+    	 tal:define="title string:geboorte;
+    	 	prefix string:birth;"
+    	 >
+    <div metal:define-macro="event_form"
+	    tal:define="
+        		event python:view.get_event(prefix);
+    	show_exact python:(not event) or (event.when or not (event.notAfter or event.notBefore or event.date_text));
+		show_approx python:event and (event.notAfter or event.notBefore or event.date_text) and True;
+        	">
+    <tr  tal:attributes="id prefix" > 
+        <th tal:content="title">geboorte</th>
+  		<td> </td>
+       <td>
+	        <span tal:replace="structure python:view.actions.byname['form.actions.save_event_%s' % prefix].render()" />
+        </td> 
+     </tr>
+     <tr tal:attributes="
+     	id string:${prefix}_exact;
+style python:not show_exact and 'display:none'">
+     	<th class="sublabel">datum</th>
+        <td  tal:attributes="class python:view.status_value('geboortedatum')"
+        	tal:define="ymd event/when_ymd | nothing">
+ 	
+ 		<span metal:define-macro="date_widget" tal:omit-tag="">
+
+        	<select tal:attributes="name string:${prefix}_d">
         		<option />
         		<option 
 	        		tal:repeat="option python:range(1, 32)" 
-	        		tal:attributes="selected python:ymd[2] == option"
+	        		tal:attributes="selected python:ymd and ymd[2] == option"
 	        		tal:content="option"
         		/>
         	</select>
-        	<select name="birth_m">
+        	<select tal:attributes="name string:${prefix}_m">
          		<option>
         		<option 
 	        		tal:repeat="option python:range(1, 13)" 
 	        		tal:attributes="
-		        		selected python:ymd[1] == option;
+			        		selected python:ymd and ymd[1] == option;
 	        			value option;"
 	        		tal:content="python:view.maanden()[option-1]"
         		/>
         	</select>
-        	<input name="birth_y" type="text" size="4" style="width:4"
-        		tal:attributes="value python:ymd[0]" />
-        	
-        </td>
-        <td>
-        <span tal:replace="structure python:view.actions.byname['form.actions.save_geboortedatum'].render()" />
-        </td>
+        	<input  type="text" size="4" style="width:4"
+        		tal:attributes="name string:${prefix}_y;
+        			value python:ymd and ymd[0] or ''" />
+		
+		</span>	
+		<p>
+    	<a href="" 
+    		tal:attributes="id string:${prefix}_button_on;
+    			OnClick string:
+    				show('${prefix}_notBefore');;
+    				show('${prefix}_notAfter');;
+    				show('${prefix}_text');;
+    				hide('${prefix}_exact');;
+    				hide('${prefix}_button_on');;
+    				return false;;">exacte datum niet bekend</a>
+	    </td>	
+	 </tr>
+	<tr tal:attributes="id string:${prefix}_notBefore;
+			style python:not show_approx and 'display:none';
+			" >	 
+	
+
+		<th class="sublabel">na</th> 
+		<td  tal:define="
+				prefix string:${prefix}_notBefore;
+				ymd event/notBefore_ymd | nothing">
+				<span metal:use-macro="template/macros/date_widget"></span>
+		</td>
+	</tr>
+	<tr tal:attributes="id string:${prefix}_notAfter;
+			style python:not show_approx and 'display:none';
+			" >	 
+
+		<th class="sublabel">v&oacute;&oacute;r</th> 
+		<td>	
+
+				<span  tal:define="
+					prefix string:${prefix}_notAfter;
+					ymd event/notAfter_ymd | nothing">
+					<span metal:use-macro="template/macros/date_widget" />
+				</span>	
+		</td>
+	</tr>
+	<tr tal:attributes="id string:${prefix}_text;
+			style python:not show_approx and 'display:none';
+			" >	 
+
+		<th class="sublabel">tekst</th> 
+	
+		<td>
+			<input type="tekst" 
+				tal:attributes="
+					name string:${prefix}_text;
+					value event/date_text | nothing" />
+			<p>
+        		
+        	<a href="" 
+        		tal:attributes="id string:${prefix}_approx_button_off;
+		   			OnClick string:
+						hide('${prefix}_notBefore');;
+						hide('${prefix}_notAfter');;
+						hide('${prefix}_text');;
+						show('${prefix}_exact');;
+						show('${prefix}_button_on');;
+						hide('${prefix}_button_off');;
+						return false;;">exacte datum bekend</a>
+
+	        </td>
+
     </tr>
-    
-    <!--  geboorteplaats -->
-     <tr> 
-        <th>geboorteplaats</th>
+
+   	
+    <!--  plaats -->
+    <tr> 
+        <th class="sublabel">plaats</th>
         <td tal:attributes="class python:view.status_value('geboorteplaats')">
-        	<input type="tekst" name="geboorteplaats"
-        	tal:attributes="value python:view.get_value('geboorteplaats')" />
+        	<input type="tekst"  
+	        	tal:attributes="name string:${prefix}_place;
+		        	value event/place | nothing" />
         </td>
-        <td>
-	        <span tal:replace="structure python:view.actions.byname['form.actions.save_geboorteplaats'].render()" />
-        </td>
+
     </tr>
-    
-    <!-- sterfdatum -->
-    <tr> 
-        <th>sterfdatum</th>
-        <td tal:define="ymd  python:view.get_value('sterfdatum')"
-        	tal:attributes="class python:view.status_value('sterfdatum')">
-        	<select name="death_d">
-        		<option />
-        		<option 
-	        		tal:repeat="option python:range(1, 32)" 
-	        		tal:attributes="selected python:ymd[2] == option"
-	        		tal:content="option"
-        		/>
-        	</select>
-        	<select name="death_m">
-         		<option>
-        		<option 
-	        		tal:repeat="option python:range(1, 13)" 
-	        		tal:attributes="
-		        		selected python:ymd[1] == option;
-	        			value option;"
-	        		tal:content="python:view.maanden()[option-1]"
-        		/>
-        	</select>
-        	<input name="death_y" type="text" size="4" style="width:4"
-        		tal:attributes="value python:ymd[0]" />
-        	
-        </td>
-        <td>
-        <tt tal:replace="structure python:view.actions.byname['form.actions.save_sterfdatum'].render()" />
-        </td>
-    </tr>
-    
-    <!--  sterfplaats -->
-     <tr> 
-        <th>sterfplaats</th>
-        <td tal:attributes="class python:view.status_value('sterfplaats')">
-        	<input type="tekst" name="sterfplaats"
-        	tal:attributes="value python:view.get_value('sterfplaats')" />
-        </td>
-        <td>
-	        <span tal:replace="structure python:view.actions.byname['form.actions.save_sterfplaats'].render()" />
-        </td>
-    </tr>
+   </div> 
+   	</span>	 
+   	<tr metal:use-macro="template/macros/separator" /> 
+   	
+    <!-- dood -->
+   	<span tal:omit-tag=""
+   		 tal:define="
+   		 	title string:dood;
+   		 	prefix string:death;">
+   		 <tr metal:use-macro="template/macros/event_form" />
+	 </span>
+  
+
+   	<tr metal:use-macro="template/macros/separator" /> 
+
+   	
+  
+   	<span tal:omit-tag=""
+   		 tal:define="
+   		 	title string:doop;
+   		 	prefix string:baptism;">
+   		 <tr metal:use-macro="template/macros/event_form"  />
+	 </span>
+   	
+   	<tr metal:use-macro="template/macros/separator" /> 
+ 
+   	<span tal:omit-tag=""
+   		 tal:define="
+   		 	title string:begrafenis;
+   		 	prefix string:funeral;">
+   		 <tr metal:use-macro="template/macros/event_form"  />
+	 </span>
+	    	<tr metal:use-macro="template/macros/separator" /> 
     <tr>
    	<th />
    	<td>
@@ -162,26 +249,10 @@ De gegevens zijn grijs als ze uit de bronnen-publikaties komen, zwart als ze zij
     </tr>
 </table>
 </form>
-<Div tal:condition="nothing">
-<h2>Acties</h2>
-<ul>
-<li>
-<a href="" class="todo" onclick="alert('nog niet geimplementeerd')">Bekijk bewerk-geschiedenis</a>
-<li>
-<a href="" onclick="alert('nog niet geimplementeerd')">Zoek naar andere biografie&euml;n van deze persoon</a>
-</ul>
-</div>
-<div class="info" tal:condition="nothing">
-<h1>Tekst</h1>
-	<div  
-		tal:define="tekst python:merged_bio.get_value('tekst')"
-		>
-		<span tal:condition="not:tekst">Van deze biografie heeft het portaal niet de tekst beschikbaar</span>
-		<span	tal:replace="structure tekst"> </span>
-		<a tal:condition="tekst" href="">[toon volledige tekst]</a>
-		<a tal:condition="tekst" href="">[bron]</a>
-	</div>
-</div>	
+
+
+
+
 <div class="info">
 <div tal:repeat="bio view/person/get_biographies">
 <h2>Bron: 
@@ -196,8 +267,27 @@ De gegevens zijn grijs als ze uit de bronnen-publikaties komen, zwart als ze zij
 			<div tal:repeat="naam python:bio.get_namen()" tal:content="naam/volledige_naam"></div>	
 		</td>
 	</tr>
+	<span tal:repeat="event2 python:[('geboorte', 'birth'), ('dood', 'death'), ('doop', 'baptism'), ('begrafenis', 'funeral')]" >
+	<span 
+		tal:repeat="attr python:['when', 'notBefore', 'notAfter']"
+		tal:define="event python:bio.get_event(event2[1]);
+			title python:event2[0]"
+		tal:condition="python:event"> 
+		<tr tal:condition="python:event.get(attr)">
+			<th tal:content="python:'%s-%s' % (title, attr)" />
+			<td tal:content="python:event.get(attr)">
+			</td>
+		</tr> 
+			<tr tal:condition="python:event.get(attr)">
+			<th tal:content="python:'%s-%s' % (title, attr)" />
+			<td tal:content="python:event.get(attr)">
+			</td>
+		</tr> 	
+	</span>
+	</span>
+	
 	<tr tal:condition="python:bio.get_value('geboortedatum')">
-		<th>Geboortedatum</th>
+		<th>geboortedatum</th>
 		<td>
 			<span tal:replace="python:context.format_date(bio.get_value('geboortedatum'))" />
 		</td>

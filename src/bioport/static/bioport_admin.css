@@ -32,9 +32,14 @@ form td, form th {
 form th {
     text-align :right;
 }
-    
 
+form th.sublabel {
+	font-weight : normal;	
+}
+#content_box .separator hr {
 
+	background-color : #AAA;	
+	}
 a:hover {
 	text-decoration : underline;
 }
@@ -70,4 +75,9 @@ a:hover {
 }
 .person_edit table th {
 	width : 130px;
+}
+
+li {
+	margin-bottom : .2em;
+	margin-top : .3em;
 }

@@ -13,25 +13,36 @@
     <h1 tal:content="structure python:view.biography.naam() and view.biography.naam().volledige_naam()" />
     
     <table class="leefjaren">
-       <tr tal:condition="python:view.biography.get_value('geboortedatum') or view.biography.get_value('geboorteplaats' )">
-            <th>Geboren</th>
+       <tal:block define="
+	       event python:view.get_event('birth');
+   			title string:Geboren;">
+       	<tr metal:define-macro="event"
+       		tal:condition="python:event and (event.when or event.place or event.date_text)">
+            <th tal:content="title">Geboren</th>
             <td>
-             <span tal:replace="python:view.biography.get_value('geboorteplaats')" />
+             <span tal:replace="event/place" />
              </td>
              <td class="datum">
-                <span tal:replace="python:context.format_date(view.biography.get_value('geboortedatum'))" />
+                <span tal:replace="python:event.when_formatted or event.date_text" />
              </td>
          </tr>
-         <tr tal:condition="python:view.biography.get_value('sterfdatum') or view.biography.get_value('sterfplaats')">
-             <th>Gestorven</th>
-             <td>
-             <span tal:replace="python:view.biography.get_value('sterfplaats')" />
-             </td>
-             <td class="datum">
-                 <span tal:replace="python:context.format_date(view.biography.get_value('sterfdatum'))" />
-             </td>
-        </tr>
-    </table>
+		</tal:block>
+      <tal:block define="
+	       event python:view.get_event('baptism');
+   			title string:Gedoopt;">
+   			<tr metal:use-macro="template/macros/event" />
+   		</tal:block>
+       <tal:block define="
+	       event python:view.get_event('funeral');
+   			title string:Begraven;">
+   			<tr metal:use-macro="template/macros/event" />
+   		</tal:block>
+       <tal:block define="
+	       event python:view.get_event('death');
+   			title string:Gestorven;">
+   			<tr metal:use-macro="template/macros/event" />
+   		</tal:block>
+     </table>
         <div tal:condition="python:len(view.biography.get_names()) > 1">
             <h2>Naamsvarianten</h2>
             <hr>

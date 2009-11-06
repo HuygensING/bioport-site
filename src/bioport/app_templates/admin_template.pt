@@ -36,6 +36,7 @@
 		<li><a tal:attributes="href python:view.url('persons')">Bewerk personen</a></li>
 		<li><a tal:attributes="href python:view.url('sources')">Bronnen</a></li>
 		<li><a tal:attributes="href python:view.url('edit')">Geavanceerd</a></li>
+		<li><a tal:attributes="href python:view.url('uitleg')">Uitleg</a></li>
 	</ul>
     </div>     
     </div>     

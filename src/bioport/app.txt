@@ -1,7 +1,7 @@
 Do a functional doctest test on the app.
 ========================================
 
-:Test-Layer: functional
+#:Test-Layer: functional
 
 Let's first create an instance of Bioport at the top level:
 
@@ -22,7 +22,7 @@ Create a browser and visit the instance you just created:
 
    >>> from zope.testbrowser.testing import Browser
    >>> browser = Browser()
-   >>> browser.open('http://localhost/app')
+   >>> browser.open('http://localhost/app/admin')
 
 Check some basic information about the page you visit:
 

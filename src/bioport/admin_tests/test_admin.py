@@ -26,10 +26,12 @@ class SimpleSampleTest(unittest.TestCase):
         admin.DB_CONNECTION = 'mysql://root@localhost/bioport_test'
         self.app = grokapp
         self.admin = admin
-        repo = self.admin.get_repository()
+        self.repo = repo = self.admin.get_repository()
         repo.db.metadata.create_all()
         url = os.path.join(os.path.dirname(BioPortRepository.__file__), 'tests', 'data','knaw', 'list.xml')
-        repo.add_source(Source(id='knaw', url=url))
+        src = BioPortRepository.source.Source(id='knaw', url=url) 
+        repo.add_source(src)
+        
     def tearDown(self):
         self.admin.get_repository().db.metadata.drop_all()
     def test1(self):
@@ -44,11 +46,10 @@ class SimpleSampleTest(unittest.TestCase):
     def test_sources(self):
         request = TestRequest()
         sources = Sources(self.admin, request)
-        url = os.path.join(os.path.dirname(BioPortRepository.__file__), 'tests', 'data','knaw', 'list.xml')
-        sources.add_source(source_id='knaw', url=url)
         
         source = Source(Admin(), request)
-        source.update(source_id='knaw', url=url)
+        knaw_source = self.repo.get_source('knaw')
+        source.update(source_id='knaw', url=knaw_source.url)
         sources.update(action='update_source', source_id='knaw')
     
     def test_persoon(self):

@@ -2,9 +2,9 @@ import grok
 import zope.interface
 from z3c.batching.batch import  Batch
 import random
-from common import FormatUtilities, RepositoryInterface
-
-class Bioport(grok.Application, grok.Container, FormatUtilities, RepositoryInterface):
+from common import RepositoryInterface, maanden, format_date, format_dates
+from NamenIndex.common import to_ymd, from_ymd
+class Bioport(grok.Application, grok.Container, RepositoryInterface):
     SVN_REPOSITORY = None
     SVN_REPOSITORY_LOCAL_COPY = None
     DB_CONNECTION = None
@@ -14,7 +14,8 @@ class Bioport(grok.Application, grok.Container, FormatUtilities, RepositoryInter
         from admin import Admin
         self['admin'] = Admin()
         self['admin'].DB_CONNECTION = db_connection
-
+    def format_dates(self, s1, s2):
+        return  format_dates(s1, s2)
 class BioPortTraverser(object):
     
     #CODE for construction traverse_subpath from 
@@ -78,8 +79,33 @@ class Persoon(BioPortTraverser, grok.View): #, BioPortTraverser):
         redirects_to = self.person.redirects_to()
         if redirects_to:
             self.redirect(self.url(self, redirects_to))
-        self.biography  = self.person.get_merged_biography()
+        self.biography  = self.merged_biography = self.person.get_merged_biography()
+
+    def get_event(self, type):
+        event_el = self.merged_biography.get_event(type)
+        if event_el is not None:
+            #we construct a conventient object
+            class EventWrapper:
+                def __init__(self, el):
+                    self.when = el.get('when')
+                    self.when_ymd = to_ymd(self.when) 
+                    self.when_formatted = format_date(self.when)
+                    self.notBefore = el.get('notBefore')
+                    self.notBefore_ymd = to_ymd(self.notBefore) 
+                    self.notBefore_formatted = format_date(self.notBefore)
+                    self.notAfter = el.get('notAfter')
+                    self.notAfter_ymd = to_ymd(self.notAfter) 
+                    self.notAfter_formatted = format_date(self.notAfter)
+                    self.date_text = el.find('date') is not None and el.find('date').text or ''
+                    self.place = el.find('place') is not None and el.find('place').text or ''
+                    self.type = el.get('type')
+            return EventWrapper(event_el)
+        else:
+            return None      
         
+    def maanden(self):
+        return maanden
+    
 class Zoek(grok.View):
     pass
 

@@ -4,7 +4,7 @@ tal:define="persons view/get_persons">
 		<h1>Persons</h1>
 <span tal:repeat="letter string:abcdefghijklmnopqrstuvwxyz"
     tal:attributes="class python:letter == request.get('beginletter') and 'alfabet selected' or 'alfabet'"
-    ><a tal:attributes="href string:${view/url}?beginletter=${letter}" ><span tal:replace="letter/upper" /></a></span>
+    ><a tal:attributes="href python:view.url(view, data={'beginletter':letter})" ><span tal:replace="letter/upper" /></a></span>
 <p>
 <form tal:attributes="action view/url">
 	<span tal:repeat="source python:context.repository().get_sources()"
@@ -15,6 +15,15 @@ tal:define="persons view/get_persons">
 	    <span class="alfabet" tal:condition="nothing">
 	    <a tal:attributes="href string:${view/url}?beginletter=%" >alle namen</a></span>
 naam: <input type="text" name="search_term" tal:attributes="value request/search_term | nothing" />
+
+bron:
+<select name="source_id">
+	<option>
+	<option tal:repeat="source python:[s for s in context.repository().get_sources() if s.id != 'bioport']" 
+		tal:attributes="value source/id;
+			selected python:source.id == request.get('source_id')"
+		tal:content="python:source.id" />
+</select>
 <br>	
 status : <select>
 	<option>nog te maken</option>
