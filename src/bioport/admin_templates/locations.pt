@@ -1,0 +1,19 @@
+<html metal:use-macro="context/@@admin_template/macros/master">
+<div metal:fill-slot="content" >
+<h1>Locations</h1>
+<span metal:define-macro="alfabet" tal:repeat="letter string:abcdefghijklmnopqrstuvwxyz"
+    tal:attributes="class python:letter == request.get('beginletter') and 'alfabet selected' or 'alfabet'"
+    ><a tal:attributes="href string:${view/url}?startswith=${letter}&batch_size=99999" ><span tal:replace="letter/upper" /></a></span>
+
+<table>
+	<tr tal:repeat="location python:view.get_locations()">
+		<td tal:content="location/ufi" />
+		<td tal:content="location/full_name" />
+		<td tal:content="location/province" />
+		<td><a target="googlemaps" tal:attributes="href string:http://maps.google.com/maps?q=${location/lat},${location/long}&z=14" 
+			tal:content="string:${location/long}, ${location/lat}" ></a>
+		</td>
+	</tr>
+</table>
+</div>
+</html>
