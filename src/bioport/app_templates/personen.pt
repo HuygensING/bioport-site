@@ -2,7 +2,7 @@
     tal:define="persons view/get_persons">
 <html metal:use-macro="context/@@main_template/macros/master">
 <div metal:fill-slot="content">
-<span tal:repeat="letter string:abcdefghijklmnopqrstuvwxyz"
+<span metal:define-macro="alfabet" tal:repeat="letter string:abcdefghijklmnopqrstuvwxyz"
     tal:attributes="class python:letter == request.get('beginletter') and 'alfabet selected' or 'alfabet'"
     ><a tal:attributes="href string:${view/url}?beginletter=${letter}" ><span tal:replace="letter/upper" /></a></span>
 <p>

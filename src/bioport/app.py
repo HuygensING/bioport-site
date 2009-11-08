@@ -138,5 +138,3 @@ class Bronnen(grok.View):
     pass
 class Colofon(grok.View):
     pass
-
-    pass

@@ -61,6 +61,7 @@ class SimpleSampleFunctionalTest(SampleFunctionalTest):
             'admin/mostsimilar',
             'admin/persons',
             ('admin/persoon', 'bioport_id=%s' % some_bioport_id),
+            'admin/locations',
             ]:
             print 'opening', url
             if type(url) == type(('', '')):

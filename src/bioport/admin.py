@@ -10,6 +10,7 @@ from zope.interface import Interface
 from zope import schema
 import app
 from permissions import *
+from z3c.batching.batch import  Batch
 
 class IAdminSettings(Interface):           
     SVN_REPOSITORY = schema.TextLine(title=u'URL of svn repository', required=False)
@@ -80,6 +81,11 @@ class Edit(grok.EditForm):
     @grok.action('Refresh the similarity cache [I.E. EMPTYING IT FIRST]')
     def refresh_similirity_cache(self, **data): 
         self.context.repository().db.fill_similarity_cache(refresh=True)
+        self.redirect(self.url(self))
+        
+    @grok.action('Fill geolocations table')
+    def refresh_similirity_cache(self, **data): 
+        self.context.repository().db._update_geolocations_table()
         self.redirect(self.url(self))
         
 class Display(grok.DisplayForm):
@@ -431,4 +437,17 @@ class Deferred(grok.View):
 class Uitleg(grok.View): 
     pass
     
-     
+class Locations(grok.View):     
+    def update(self, **kw):
+        self.batch_start = int(self.request.get('batch_start', 0))
+        self.batch_size = int(self.request.get('batch_size', 30))
+        self.startswith = self.request.get('startswith', None)
+        self.name = self.request.get('name', None)
+        
+    def get_locations(self):
+        ls = self.context.repository().db.get_locations(startswith=self.startswith, name=self.name)
+        
+        batch = Batch(ls, start=self.batch_start, size=self.batch_size)
+        batch.grand_total = len(ls)
+        return batch
+    
