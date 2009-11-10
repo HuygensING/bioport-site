@@ -80,8 +80,21 @@ De gegevens zijn grijs als ze uit de bronnen-publikaties komen, zwart als ze zij
 			</a>
 		</td>    
 	</tr>
+   	<tr tal:condition="nothing">
+   		<th>beroep</th>
+   		<td>
+   			<select name="occupation">
+   				<option></option>
+   				<option tal:repeat="occupation python:view.repository.get_occupations()" 
+   					tal:content="occupation/name"
+   					tal:attributes="id occupation/id"></option>
+   			</select>	
+   		</td>
+        <td>
+	        <span tal:replace="structure python:view.actions.byname['form.actions.save_occupation'].render()" />
+        </td> 
+   	</tr>	
    	<tr metal:use-macro="template/macros/separator" /> 
-   	
     <!-- geboortedatum -->
     <span tal:omit-tag=""
     	 tal:define="title string:geboorte;
@@ -106,7 +119,7 @@ De gegevens zijn grijs als ze uit de bronnen-publikaties komen, zwart als ze zij
 		style python:not show_exact and 'display:none'">
      	<th class="sublabel">datum
      	</th>
-        <td  tal:attributes="class python:view.status_value(event_type, 'when')"
+        <td colspan="2"  tal:attributes="class python:view.status_value(event_type, 'when')"
         	tal:define="ymd event/when_ymd | nothing">
  	
  		<span metal:define-macro="date_widget" tal:omit-tag="">
@@ -133,8 +146,8 @@ De gegevens zijn grijs als ze uit de bronnen-publikaties komen, zwart als ze zij
         			value python:ymd and ymd[0] or ''" />
 		
 		</span>	
-		<p>
-    	<a href="" 
+
+    	[<a href="" 
     		tal:attributes="id string:${event_type}_button_on;
     			OnClick string:
     				show('${event_type}_notBefore');;
@@ -142,7 +155,8 @@ De gegevens zijn grijs als ze uit de bronnen-publikaties komen, zwart als ze zij
     				show('${event_type}_text');;
     				hide('${event_type}_exact');;
     				hide('${event_type}_button_on');;
-    				return false;;">exacte datum niet bekend</a>
+    				return false;;">exacte datum niet bekend</a>]
+
 	    </td>	
 	 </tr>
 	<tr tal:attributes="id string:${event_type}_notBefore;
@@ -175,13 +189,14 @@ De gegevens zijn grijs als ze uit de bronnen-publikaties komen, zwart als ze zij
 			style python:not show_approx and 'display:none';
 			" >	 
 		<th class="sublabel">tekst</th> 
-        <td tal:attributes="class python:view.status_value(event_type, 'text')">
+        <td colspan="2"
+        	tal:attributes="class python:view.status_value(event_type, 'text')">
 			<input type="text" 
 				tal:attributes="
 					name string:${event_type}_text;
 					value event/date_text | nothing" />
-			<p>
-        	<a href="" 
+        	[<a href="" 
+        	
         		tal:attributes="id string:${event_type}_approx_button_off;
 		   			OnClick string:
 						hide('${event_type}_notBefore');;
@@ -190,7 +205,7 @@ De gegevens zijn grijs als ze uit de bronnen-publikaties komen, zwart als ze zij
 						show('${event_type}_exact');;
 						show('${event_type}_button_on');;
 						hide('${event_type}_button_off');;
-						return false;;">exacte datum bekend</a>
+						return false;;">exacte datum bekend</a>]
 
 	        </td>
 
@@ -198,16 +213,50 @@ De gegevens zijn grijs als ze uit de bronnen-publikaties komen, zwart als ze zij
 
    	
     <!--  plaats -->
-    <tr> 
+   <tr tal:condition="nothing">
+    	<th class="sublabel">xxx</th>
+        <td colspan="2"
+        	tal:attributes="class python:view.status_value(event_type, 'place')">
+        	<input type="hidden"  
+	        	tal:attributes="name string:${event_type}_place_id;
+		        	value event/place_id | nothing" />
+		    <a 
+		    
+		    	tal:define="
+		    		element_id string:${event_type}_place_id;
+		    		url python:view.url('changelocation', data={
+			    	'place_id':event and event.place_id,
+			    	'element_id':element_id,
+			    	})"
+		    		href=""
+		     
+		    	tal:attributes="
+		    		id element_id;
+			    	onClick  string:window.open('${url}', 'locations', 'width=500,height=600,scrollbars=yes');; return false;;"
+		    	tal:content="python:(event and event.place_id) or 'kies een plaats'" /> 
+	        	<span tal:attributes="id string:${event_type}_place_button_on;
+			        	style python:event and event.place and 'display:none';">
+	        		[<a href="" 
+	        		tal:attributes="OnClick string:
+						show('${event_type}_place');;
+						show('${event_type}_place_id');;
+						hide('${event_type}_place_button_on');;
+						return false;;">exacte plaats niet bekend</a>] 
+
+				</span>
+        </td>
+    </tr>
+    <tr tal:attributes="id string:${event_type}_place;
+    	xstyle python:event and event.place or 'display:none';
+    	"> 
         <th class="sublabel">plaats</th>
-        <td tal:attributes="class python:view.status_value(event_type, 'place')">
+        <td colspan="2" tal:attributes="class python:view.status_value(event_type, 'place')">
         	<input type="tekst"  
 	        	tal:attributes="name string:${event_type}_place;
 		        	value event/place | nothing" />
         </td>
-
     </tr>
-   </div> 
+     </div> 
    	</span>	 
    	<tr metal:use-macro="template/macros/separator" /> 
    	

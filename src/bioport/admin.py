@@ -84,8 +84,13 @@ class Edit(grok.EditForm):
         self.redirect(self.url(self))
         
     @grok.action('Fill geolocations table')
-    def refresh_similirity_cache(self, **data): 
+    def fill_geolocations_table(self, **data): 
         self.context.repository().db._update_geolocations_table()
+        self.redirect(self.url(self))
+        
+    @grok.action('Fill occupations table')
+    def fill_occupations_table(self, **data): 
+        self.context.repository().db._update_occupations_table()
         self.redirect(self.url(self))
         
 class Display(grok.DisplayForm):
@@ -312,7 +317,12 @@ class Persoon(app.Persoon, grok.EditForm):
         date_text = self.request.get('%s_text' % type)
         place = self.request.get('%s_place' % type)
         self.bioport_biography._add_or_update_event(type, when=when, date_text=date_text, notBefore=notBefore, notAfter=notAfter, place=place)
-           
+    
+    @grok.action('bewaar veranderingen', name="save_occupation")
+    def save_occupation(self):
+        id = self.request.get('occupation')
+        name = self.repository.get_occupation(id).name
+        self.bioport_biography._add_or_update_occupation(occupation_id=id, occupation=name)
     @grok.action('bewaar veranderingen', name="save_event_birth", validator=validate_event)
     def save_event_birth(self):
         self._set_event('birth')
@@ -451,3 +461,8 @@ class Locations(grok.View):
         batch.grand_total = len(ls)
         return batch
     
+class ChangeLocation(Locations):    
+    def update(self, **kw):
+        Locations.update(self)
+        self.location = self.request.get('place_id')
+        

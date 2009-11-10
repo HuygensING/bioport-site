@@ -78,7 +78,7 @@ class SimpleSampleFunctionalTest(SampleFunctionalTest):
         link.click()
         
         #click on one of the "bewerk" links
-        link = browser.getLink('bewerk gegevens', index=2)
+        link = browser.getLink('bewerk gegevens', index=1)
         link.click()
         
         assert 'Bewerk gegevens van' in browser.contents, browser.contents

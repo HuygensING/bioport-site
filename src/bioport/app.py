@@ -38,6 +38,10 @@ class BioPortTraverser(object):
 class Index(grok.View):
     pass # see app_templates/index.pt
 
+class Popup_Template(grok.View):
+    #make the main template avaible for everything
+    grok.context(zope.interface.Interface)
+    
 class Main_Template(grok.View):
     #make the main template avaible for everything
     grok.context(zope.interface.Interface)
@@ -100,6 +104,7 @@ class Persoon(BioPortTraverser, grok.View): #, BioPortTraverser):
                     self.notAfter_formatted = format_date(self.notAfter)
                     self.date_text = el.find('date') is not None and el.find('date').text or ''
                     self.place = el.find('place') is not None and el.find('place').text or ''
+                    self.place_id = el.get('place_id')
                     self.type = el.get('type')
             return EventWrapper(event_el)
         else:

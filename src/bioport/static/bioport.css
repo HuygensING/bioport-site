@@ -252,4 +252,16 @@ p {
 	a:hover {
 		text-decoration : underline;	
 	}
+#popup #container_box {
+	width : 500px;	
+	}	
 	
+	#popup #content_box {
+	width : 460px;	
+	}	
+body#popup {
+	width : 500px;	
+	min-width : 500px;
+	}	
+
+}
