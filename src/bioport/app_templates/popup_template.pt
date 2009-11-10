@@ -1,0 +1,34 @@
+<metal:block define-macro="master">
+  <metal:block define-slot="doctype">
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+        "http://www.w3.org/TR/html4/strict.dtd">
+  </metal:block> 
+<html lang="en">
+<head>
+    <title metal:define-slot="head_title" tal:content="string:Het Biografisch Portaal van Nederland" />
+
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<title></title>
+	<meta name="description" content="">
+	<meta name="copyright" content="">
+	<meta name="author" content="">
+	<link rel="stylesheet" type="text/css"  tal:attributes="href static/bioport.css" />
+	<link rel="stylesheet" type="text/css"  tal:attributes="href static/bioport_admin.css" />
+
+
+    <div metal:define-slot="extra_header_content" />
+</head>
+<body id="popup">
+<div id="container_box">
+	<div id="content_box">
+		<div tal:condition="request/msg  |nothing" tal:content="structure request/msg" class="message" />
+        <div metal:define-slot="content">
+        body content goes here
+        </div>
+	</div>
+	<div id="footer" />
+</div>
+</body>
+</html>
+</metal:block>
