@@ -68,7 +68,10 @@ class SimpleSampleFunctionalTest(SampleFunctionalTest):
                 url, data = url
             else:
                 data = ''
-            browser.open(self.base_url + '/' + url, data.encode('utf8'))
+            try:
+	            browser.open(self.base_url + '/' + url, data.encode('utf8'))
+            except:
+                assert 0, 'error opening %s?%s' % (self.base_url + '/' + url, data.encode('utf8'))
     def test_admin_workflow(self):
         """ test creating a bioport instance into Zope """
 
@@ -78,7 +81,7 @@ class SimpleSampleFunctionalTest(SampleFunctionalTest):
         link.click()
         
         #click on one of the "bewerk" links
-        link = browser.getLink('bewerk gegevens', index=1)
+        link = browser.getLink('bewerk gegevens', index=0)
         link.click()
         
         assert 'Bewerk gegevens van' in browser.contents, browser.contents
@@ -86,6 +89,7 @@ class SimpleSampleFunctionalTest(SampleFunctionalTest):
         #remove the birth date
         form = browser.getForm()
         form.getControl(name='birth_y').value=''
+        form.getControl(name='birth_text').value=''
         form.getControl(name='form.actions.save_event_birth').click()
        
         
@@ -93,7 +97,7 @@ class SimpleSampleFunctionalTest(SampleFunctionalTest):
         browser.getLink('getoond').click()
         public_url = browser.url
         #now we should have an empty birth date
-        assert re.findall('Geboren.*?<td class="datum">\s*?</td>', browser.contents, re.DOTALL)
+        assert re.findall('Geboren.*?<td class="datum">\s*?</td>', browser.contents, re.DOTALL), browser.contents
        
         browser.open(edit_url)
         form = browser.getForm()
@@ -130,3 +134,35 @@ class SimpleSampleFunctionalTest(SampleFunctionalTest):
         browser.open(public_url)
         assert re.findall('<td class="datum">\s*?4444\s*?</td>', browser.contents, re.DOTALL)
         
+        #geslacht
+        browser.open(edit_url)
+        form = browser.getForm()
+        form.getControl(name='sex').value=['2']
+        form.getControl(name='form.actions.save_sex').click()
+        browser.open(public_url)
+        assert re.findall('vrouw', browser.contents, re.DOTALL)
+ 
+        """does the 'save everyting' button indeed save everything? """
+        browser.open(edit_url)
+        form = browser.getForm()
+        form.getControl(name='sex').value=['1']
+        form.getControl(name='baptism_y').value='555'
+        form.getControl(name='birth_text').value='ongeveer rond 200 geboren'
+        form.getControl(name='birth_y').value=''
+        form.getControl(name='state_floruit_from_y').value='1222'
+        form.getControl(name='status').value=['2']
+        form.getControl(name='remarks').value='het opmerkingen veld'
+        form.getControl(name='form.actions.save_everything').click()
+
+        browser.open(public_url)
+        assert re.findall('man', browser.contents, re.DOTALL), browser.contents
+        assert re.findall('<td class="datum">\s*?555\s*?</td>', browser.contents, re.DOTALL)
+        assert re.findall('ongeveer rond 200', browser.contents, re.DOTALL), browser.contents
+        assert re.findall('1222', browser.contents, re.DOTALL), browser.contents
+        
+        #changes in, e.g., birth events, should turn up in the master list
+        browser = Browser('http://localhost/app/admin')
+        link = browser.getLink('Bewerk personen')
+        link.click()
+        #XXX but the next test might fail if we do not have one of the first persons...
+        assert re.findall('ongeveer rond 200', browser.contents, re.DOTALL)

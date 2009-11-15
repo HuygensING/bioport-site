@@ -39,7 +39,8 @@ def format_date( s):
     returns:
         a string
     """
-    if s is None: return ''
+    if s is None: 
+        return ''
     s = str(s)
         
 
@@ -58,7 +59,16 @@ def format_date( s):
         return '%s %s %s' % (int(d), maanden[int(m) - 1], int(y))
     else:
         raise
-        
+
 def format_dates( date1='', date2=''):    
     if date1 or date2:
-        return '(%s-%s)' % (format_date(date1), format_date(date2))
+        #try to format the dates prettily
+        try:
+            date1 = format_date(date1)
+        except:
+            pass
+        try:
+            date2 = format_date(date2)
+        except:
+            pass
+        return '(%s-%s)' % (date1 or '?', date2 or '?')

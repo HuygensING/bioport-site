@@ -1,5 +1,6 @@
 
 import grok
+import sys
 from BioPortRepository.repository import Repository
 import BioPortRepository
 from BioPortRepository.common import  BioPortException
@@ -42,6 +43,7 @@ class Admin(grok.Container,  RepositoryInterface):
     
     def format_date(self, s):
         return format_date(s)
+    
     def format_dates(self, s1, s2):
         return  format_dates(s1, s2)
     
@@ -114,8 +116,9 @@ class Biography(grok.View):
 
 
 class Persons(app.Personen):
-    pass
-
+    def get_status_values(self, k=None):
+        return self.context.repository().get_status_values(k)
+    
 class Source(grok.EditForm):
     def get_repository(self):
         repository = self.context.repository()
@@ -243,15 +246,22 @@ class Persoon(app.Persoon, grok.EditForm):
     """This should really be an "Edit" view on a "Person" Model
     
     But I am in an incredible hurry and have no time to learn :-("""
+    def title(self):
+        n = self.person.naam()
+        if n:
+            return n.volledige_naam()
+        else:
+            return '' 
+        
     def update(self, **args):
         self.bioport_id = self.request.get('bioport_id')         
         if not self.bioport_id:
             #XXX make a userfrienlider error
             assert 0, 'need bioport_id in the request'
             
-        self.person  = self.context.get_person(id=self.bioport_id)  
-        self.merged_biography  = self.person.get_merged_biography()
         self.repository = self.context.repository()
+        self.person  = self.repository.get_person(bioport_id=self.bioport_id)  
+        self.merged_biography  = self.person.get_merged_biography()
         self.bioport_biography =  self.repository.get_bioport_biography(self.person) 
         event_birth = self.bioport_biography.get_event('birth')
         if event_birth is not None:
@@ -260,12 +270,17 @@ class Persoon(app.Persoon, grok.EditForm):
         else:
             self.birth_notBefore = ''
             self.birth_notAfter = ''
-            
+        self.occupations = self.get_states(type='occupation')
+        
+    def sex_options(self):
+        return [('1', 'man'), ('2', 'vrouw'), ('0', 'onbekend')]
+    
     def to_ymd(self, s):
         return to_ymd(s)
     
     def get_bioport_namen(self):
         return self.bioport_biography.get_namen()
+    
     def get_non_bioport_namen(self):
         namen = self.merged_biography.get_names()
         namen = [naam for naam in namen if naam.to_string() not in [n.to_string() for n in self.get_bioport_namen()]]
@@ -275,7 +290,6 @@ class Persoon(app.Persoon, grok.EditForm):
         namen = self.merged_biography.get_names()
         return namen
     
-
     def get_value(self, k, biography=None):
         if not biography:
             biography = self.merged_biography
@@ -288,6 +302,8 @@ class Persoon(app.Persoon, grok.EditForm):
         """return 'bioport' if the value is added by the editors of the biographical portal
         return 'merged' if the value comes from the merged_biography"""
         bioport_event = self.get_event(event_id, biography=self.bioport_biography)
+        if bioport_event is None:
+            bioport_event = self.get_state(event_id)
 #        merged_event = self.get_event(self.merged_biography)
         if getattr(bioport_event, attr, None):
             return 'bioport'
@@ -303,7 +319,7 @@ class Persoon(app.Persoon, grok.EditForm):
         
     def validate_event(self, action, data):
         pass
-    def _get_event_date_from_request(self, prefix):
+    def _get_date_from_request(self, prefix):
         y = self.request.get('%s_y' % prefix)
         m = self.request.get('%s_m' % prefix)
         d = self.request.get('%s_d' % prefix)
@@ -311,44 +327,91 @@ class Persoon(app.Persoon, grok.EditForm):
         return ymd or ''
     
     def _set_event(self, type):
-        when = self._get_event_date_from_request('%s' % type )
-        notBefore = self._get_event_date_from_request('%s_notBefore' % type)
-        notAfter = self._get_event_date_from_request('%s_notAfter' % type)
+        when = self._get_date_from_request('%s' % type )
+        notBefore = self._get_date_from_request('%s_notBefore' % type)
+        notAfter = self._get_date_from_request('%s_notAfter' % type)
         date_text = self.request.get('%s_text' % type)
         place = self.request.get('%s_place' % type)
         self.bioport_biography._add_or_update_event(type, when=when, date_text=date_text, notBefore=notBefore, notAfter=notAfter, place=place)
-    
+        
+    def _save_state(self, type):
+        frm = self._get_date_from_request(prefix='state_%s_from' % type)
+        to = self._get_date_from_request(prefix='state_%s_to' % type)
+        self.bioport_biography.add_or_update_state(type, frm=frm, to=to)
+        
     @grok.action('bewaar veranderingen', name="save_occupation")
     def save_occupation(self):
-        id = self.request.get('occupation')
-        name = self.repository.get_occupation(id).name
-        self.bioport_biography._add_or_update_occupation(occupation_id=id, occupation=name)
+        self._set_occupation()
+        self.save_biography()
+        msg = 'beroep bewaard' 
+        self.redirect(self.url(self, data={'msg':msg, 'bioport_id':self.bioport_id}))
+    
+    
+    def _set_occupation(self):
+        occupation_ids = self.request.get('occupation_id', [])
+        to_delete = []
+        if type(occupation_ids) != type([]):
+            occupation_ids = [occupation_ids]
+        for idx in range(len(occupation_ids)):
+            occupation_id = occupation_ids[idx] 
+            if occupation_id:
+                name = self.repository.get_occupation(occupation_id).name  
+                self.bioport_biography.add_or_update_state(type='occupation', idno=occupation_id, text=name, idx=idx)
+            else:
+                to_delete.append(idx) 
+                
+        to_delete.reverse()
+        for idx in to_delete:
+            self.bioport_biography.remove_state(type='occupation', idx=idx)
+            
+        new_occupation_id = self.request.get('new_occupation_id')
+        if new_occupation_id:
+            name = self.repository.get_occupation(new_occupation_id).name 
+            self.bioport_biography.add_state(type='occupation', idno=new_occupation_id, text=name)
+    
+
+    def save_biography(self):
+        if not self.person.status:
+            self.person.status = 2 #set status to bewerkt
+        self.repository.save_person(self.person)
+        self.repository.save_biography(self.bioport_biography)
+        
+    @grok.action('bewaar veranderingen', name="save_sex")
+    def save_sex(self):
+        self._set_sex()
+        self.save_biography()
+        msg = 'geslacht bewaard' 
+        self.redirect(self.url(self, data={'msg':msg, 'bioport_id':self.bioport_id}))
+        
+    def _set_sex(self): 
+        self.bioport_biography.set_value('geslacht', self.request.get('sex'))
+        
     @grok.action('bewaar veranderingen', name="save_event_birth", validator=validate_event)
     def save_event_birth(self):
         self._set_event('birth')
-        self.repository.save_biography(self.bioport_biography)
-        msg = 'saved geboortedatum'
+        self.save_biography()
+        msg = 'geboortedatum bewaard'
         self.redirect(self.url(self, data={'msg':msg, 'bioport_id':self.bioport_id}))
         
            
     @grok.action('bewaar veranderingen', name='save_event_death')
     def save_event_death(self):
         self._set_event('death')
-        self.repository.save_biography(self.bioport_biography)
-        msg = 'saved sterdatum'
+        self.save_biography()
+        msg = 'sterfdatum bewaard'
         self.redirect(self.url(self, data={'msg':msg, 'bioport_id':self.bioport_id}))
         
     @grok.action('bewaar veranderingen', name='save_event_baptism')
     def save_event_baptism(self):
         self._set_event('baptism')
-        self.repository.save_biography(self.bioport_biography)
+        self.save_biography()
         msg = 'doopdatum veranderd'
         self.redirect(self.url(self, data={'msg':msg, 'bioport_id':self.bioport_id}))
             
     @grok.action('bewaar veranderingen', name='save_event_funeral')
     def save_event_funeral(self):
         self._set_event('funeral')
-        self.repository.save_biography(self.bioport_biography)
+        self.save_biography()
         msg = 'begraafdatum veranderd'
         self.redirect(self.url(self, data={'msg':msg, 'bioport_id':self.bioport_id}))
             
@@ -356,19 +419,91 @@ class Persoon(app.Persoon, grok.EditForm):
     @grok.action('verander naam', name='change_name')  
     def change_name(self):
          self.redirect(self.url(self.__parent__, 'changename', data={'bioport_id':self.bioport_id}))
-         
+    
+    @grok.action('bewaar veranderingen', name='save_state_floruit')
+    def save_state_floruit(self): 
+        self._save_state('floruit')
+        self.save_biography()
+        msg = 'actief veranderd'
+        self.redirect(self.url(self, data={'msg':msg, 'bioport_id':self.bioport_id}))
+        
+    @grok.action('bewaar veranderingen', name='save_status')
+    def save_status(self): 
+        self._set_status()
+        msg = 'status veranderd'
+        self.save_biography()
+        self.redirect(self.url(self, data={'msg':msg, 'bioport_id':self.bioport_id}))
+    
+    def _set_status(self):
+        status = self.request.get('status')
+        if status: 
+            status = int(status)
+        self.person.status = status 
+    
+
+        
+    @grok.action('bewaar veranderingen', name='save_remarks')
+    def save_remarks(self): 
+        self._save_remarks()
+        msg = 'opmerkingen bewaard'
+        self.redirect(self.url(self, data={'msg':msg, 'bioport_id':self.bioport_id}))
+    
+    def _save_remarks(self): 
+        self.person.remarks = self.request.get('remarks')
+        self.repository.save_person(self.person)
+       
+        
     @grok.action('bewaar alle veranderingen', name='save_everything')  
     def save_everything(self):
         self._set_event('birth')
         self._set_event('death')
         self._set_event('funeral')
         self._set_event('baptism')
-        self.repository.save_biography(self.bioport_biography)
-        msg = 'saved values'
+        self._set_sex()
+        self._set_occupation()
+        self._save_state('floruit')
+        self._set_status()
+        self._save_remarks()
+        self.save_biography()
+        msg = 'alle ingevulde waardes bewaard'
         print self.bioport_biography.to_string()
         self.redirect(self.url(self, data={'msg':msg, 'bioport_id':self.bioport_id}))
+        
+    @grok.action('voeg toe', name='add_name') 
+    def add_name(self):
+        name = Naam(
+#            repositie = self.request.get('prepositie'),
+#            voornaam = self.request.get('voornaam'),
+#            intrapositie = self.request.get('intrapositie'),
+#            geslachtsnaam = self.request.get('geslachtsnaam'),
+#            postpositie = self.request.get('postpositie'),
+            volledige_naam = self.request.get('name_new'),
+        )
+        
+        #add the namen van de "merged biographies" als we dat nog niet hebben gedaan
+        if not self.bioport_biography.get_namen():
+            for naam in self.merged_biography.get_names():
+                self.bioport_biography._add_a_name(naam)
+        
+        self.bioport_biography._add_a_name(name)
+        self.save_biography()
+        msg = 'added a name'
+        self.redirect(self.url(self, data={'msg':msg, 'bioport_id':self.bioport_id}))
     
-    
+    @grok.action('verwijder', name='remove_name')
+    def remove_name(self):
+        idx = self.request.get('naam_idx')
+        idx = int(idx)
+        if len(self.bioport_biography.get_namen()) == 1:
+	        msg = 'naam kon niet worden verwijderd: er is tenminste 1 naam nodig'
+	        self.redirect(self.url(self, data={'msg':msg, 'bioport_id':self.bioport_id}))
+        else: 
+	        self.bioport_biography.remove_name(idx)
+	        self.save_biography()
+	        msg = 'naam verwijderd'
+	        self.redirect(self.url(self, data={'msg':msg, 'bioport_id':self.bioport_id}))
+        
+        
 class ChangeName(grok.EditForm): 
     
     def update(self, **args):
@@ -376,13 +511,13 @@ class ChangeName(grok.EditForm):
         if not self.bioport_id:
             #XXX make a userfrienlider error
             assert 0, 'need bioport_id in the request'
-        self.person  = self.context.get_person(id=self.bioport_id)  
+        self.person  = self.context.get_person(bioport_id=self.bioport_id)  
         self.bioport_biography  = self.context.repository().get_bioport_biography(self.person)
         
         if not self.bioport_biography.get_namen():
             for naam in self.person.get_merged_biography().get_names():
                 self.bioport_biography._add_a_name(naam)
-            self.context.repository().save_biography(self.bioport_biography)
+	        self.save_biography()
         
         self.idx = self.request.get('idx')         
         if not self.idx or self.idx == u'new':
@@ -416,23 +551,7 @@ class ChangeName(grok.EditForm):
         
         self.redirect(self.url('persoon',data= {'bioport_id':self.bioport_id, 'msg':msg}))
     
-    @grok.action('voeg toe', name='add_name') 
-    def add_name(self):
-        name = Naam(
-            repositie = self.request.get('prepositie'),
-            voornaam = self.request.get('voornaam'),
-            intrapositie = self.request.get('intrapositie'),
-            geslachtsnaam = self.request.get('geslachtsnaam'),
-            postpositie = self.request.get('postpositie'),
-            volledige_naam = self.request.get('volledige_naam'),
-        )
-        repository = self.context.repository()
-        bio = repository.get_bioport_biography(self.person)
-        bio._add_a_name(name)
-        repository.save_biography(bio)
-        msg = 'added a name'
-        
-        self.redirect(self.url('persoon',data= {'bioport_id':self.bioport_id, 'msg':msg}))
+
     
     
 class AntiIdentified(grok.View):

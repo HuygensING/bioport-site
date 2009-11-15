@@ -74,7 +74,7 @@ p {
 	#content_box {
         font-family: Georgia,"Nimbus Roman No9 L",serif;
 		background:#FFF;
-		float:right;
+		float:left;
         _height : 600px;
         min-height : 600px;
 		width:620px;

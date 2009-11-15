@@ -19,7 +19,8 @@ hide = function(element_id) {
 
 
 </script>
-<h1>Bewerk gegevens van <em tal:content="python:view.person.naam().volledige_naam()" /></h1>
+
+<h1>Bewerk gegevens van <em tal:content="view/title" /></h1>
 <p>
 De gegevens in het formulier zijn de gegevens zoals ze op het biografisch portaal worden 
 <a tal:attributes="href python:view.url(context.__parent__, 'persoon', data={'bioport_id':view.bioport_id})">getoond</a>. 
@@ -27,7 +28,6 @@ De gegevens in het formulier zijn de gegevens zoals ze op het biografisch portaa
 <p>
 De gegevens zijn grijs als ze uit de bronnen-publikaties komen, zwart als ze zijn ingevoerd door de medewerkers van het biografisch portaal.
 </p>
-
 <form action="." tal:attributes="action request/URL" method="get"
       class="edit-form" >
       <input type="hidden" name="bioport_id" tal:attributes="value python:view.bioport_id" />
@@ -36,19 +36,39 @@ De gegevens zijn grijs als ze uit de bronnen-publikaties komen, zwart als ze zij
         <th>bioport identifier</th>
         <td class="bioport" tal:content="view/person/get_bioport_id" />
     </tr>
+    <tr metal:use-macro="template/macros/separator" ></tr> 
+    <tr>
+       <th>status</th>
+       <td>
+           <select name="status">
+               <option></option> 
+               <option tal:repeat="option python:context.repository().get_status_values()"
+                   tal:attributes="value python:option[0];
+                       selected python:option[0]==view.person.status"
+                       tal:content="python:option[1]"></option>
+           </select>
+       </td>
+       <td>
+            <span tal:replace="structure python:view.actions.byname['form.actions.save_status'].render()" ></span>
+       </td>
+    </tr>
     <tr metal:define-macro="separator" class="separator"><td colspan="3"><hr></td></tr>
     <tr tal:define="namen view/get_bioport_namen"
     	tal:repeat="idx python:range(len(namen))">
     	<th><span tal:condition="python:idx == 0" >namen</span></th>
     	<td tal:define="naam python:namen[idx]"
-		    tal:attributes="class python:view.get_bioport_namen() and 'bioport' or 'merged'"
-    		tal:content="naam/volledige_naam" />
+		    tal:attributes="class python:view.get_bioport_namen() and 'bioport' or 'merged'">
+    		<span tal:content="naam/volledige_naam" />
+    		<span tal:define="normal_form naam/guess_normal_form"
+    		  tal:condition="python:repeat['idx'].start() and naam.volledige_naam() != normal_form"
+    		  tal:content="string:[${normal_form}]"  />
+		    </td>
 		<td >
 			<a tal:attributes="href python:view.url('changename', data={'bioport_id':view.bioport_id, 'idx':idx})">
 			verander
 			</a>
 			<span tal:condition="python:len(namen) > 1">
-			| <a href="" onclick="alert('nog niet geimplementeerd')"> verwijder </a>
+			| <a tal:attributes="href python:view.url(data={'form.actions.remove_name':'', 'naam_idx':idx, 'bioport_id':view.bioport_id})"  >verwijder </a>
 			| <a href="" onclick="alert('nog niet geimplementeerd')"> omhoog </a>
 			| <a href="" onclick="alert('nog niet geimplementeerd')"> omlaag </a>
 			</span>
@@ -62,8 +82,12 @@ De gegevens zijn grijs als ze uit de bronnen-publikaties komen, zwart als ze zij
 
     	<th><span tal:condition="python:idx == 0" >namen</span></th>
     	<td tal:define="naam python:namen[idx]"
-		    tal:attributes="class python:view.get_bioport_namen() and 'bioport' or 'merged'"
-    		tal:content="naam/volledige_naam" />
+		    tal:attributes="class python:view.get_bioport_namen() and 'bioport' or 'merged'">
+    		<span tal:replace="naam/volledige_naam" />
+    		<span tal:define="normal_form naam/guess_normal_form"
+    		  tal:condition="python:repeat['idx'].start() and naam.volledige_naam() != normal_form"
+    		  tal:content="string:[${normal_form}]"  />
+	    </td>
 		<td >
 			<a tal:attributes="href python:view.url('changename', data={'bioport_id':view.bioport_id, 'idx':idx})">
 			verander
@@ -74,26 +98,64 @@ De gegevens zijn grijs als ze uit de bronnen-publikaties komen, zwart als ze zij
    	
    	<tr>
    		<th></th>
-   		<td>
-			<a tal:attributes="href python:view.url('changename', data={'bioport_id':view.bioport_id})">
-			voeg een naam toe
-			</a>
+   		<td colspan="2">
+   	        <input name="name_new" type="text" id="name_new"  />
+	        <span tal:replace="structure python:view.actions.byname['form.actions.add_name'].render()" ></span>
 		</td>    
 	</tr>
-   	<tr tal:condition="nothing">
-   		<th>beroep</th>
+   	<tr metal:use-macro="template/macros/separator" /> 	
+	<tr>
+		<th>geslacht</th>
+		<td tal:define="sex python:view.merged_biography.get_value('geslacht')"
+			tal:attributes="class python:not view.bioport_biography.get_value('geslacht') and 'merged'">
+			<select name="sex">
+				<option></option>	
+				<option tal:repeat="option view/sex_options"
+					tal:attributes="value python:option[0];
+						selected python:option[0] == view.merged_biography.get_value('geslacht') "
+					tal:content="python:option[1]">man</option>
+			</select>	
+		
+		</td>
+		<td>
+	        <span tal:replace="structure python:view.actions.byname['form.actions.save_sex'].render()" />
+        </td> 
+	</tr>
+   	<tr metal:use-macro="template/macros/separator" /> 	
+   	<tal:block repeat="state view/occupations">
+   	<tr tal:condition="state/idno" >
+   		<th><span tal:condition="repeat/state/start">beroep</span></th>
    		<td>
-   			<select name="occupation">
+   			<select tal:attributes="name string:occupation_id">
    				<option></option>
    				<option tal:repeat="occupation python:view.repository.get_occupations()" 
    					tal:content="occupation/name"
-   					tal:attributes="id occupation/id"></option>
+   					tal:attributes="value occupation/id;
+   					    selected python:state.idno == str(occupation.id)"></option>
    			</select>	
    		</td>
         <td>
-	        <span tal:replace="structure python:view.actions.byname['form.actions.save_occupation'].render()" />
+	        <span 
+	           tal:condition="repeat/state/start" tal:replace="structure python:view.actions.byname['form.actions.save_occupation'].render()" />
         </td> 
    	</tr>	
+   	</tal:block>
+   	<tr>
+        <th><span tal:condition="not:view/occupations">beroep</span></th>	
+        <td>
+    			<select name="new_occupation_id">
+   				<option></option>
+   				<option tal:repeat="occupation python:view.repository.get_occupations()" 
+   					tal:content="occupation/name"
+   					tal:attributes="value occupation/id;"></option>
+   			</select>	
+         
+        </td>
+        <td>
+	        <span 
+	           tal:condition="not:view/occupations" tal:replace="structure python:view.actions.byname['form.actions.save_occupation'].render()" />
+        </td>
+   	</tr>
    	<tr metal:use-macro="template/macros/separator" /> 
     <!-- geboortedatum -->
     <span tal:omit-tag=""
@@ -155,17 +217,14 @@ De gegevens zijn grijs als ze uit de bronnen-publikaties komen, zwart als ze zij
     				show('${event_type}_text');;
     				hide('${event_type}_exact');;
     				hide('${event_type}_button_on');;
-    				return false;;">exacte datum niet bekend</a>]
+    				return false;;">exact jaar niet bekend</a>]
 
 	    </td>	
 	 </tr>
 	<tr tal:attributes="id string:${event_type}_notBefore;
 			style python:not show_approx and 'display:none';
 			" >	 
-	
-
-		<th class="sublabel">na
-		</th> 
+		<th class="sublabel">na</th> 
         <td tal:attributes="class python:view.status_value(event_type, 'notBefore')"
             tal:define="
 				prefix string:${event_type}_notBefore;
@@ -190,7 +249,7 @@ De gegevens zijn grijs als ze uit de bronnen-publikaties komen, zwart als ze zij
 			" >	 
 		<th class="sublabel">tekst</th> 
         <td colspan="2"
-        	tal:attributes="class python:view.status_value(event_type, 'text')">
+        	tal:attributes="class python:view.status_value(event_type, 'date_text')">
 			<input type="text" 
 				tal:attributes="
 					name string:${event_type}_text;
@@ -205,7 +264,7 @@ De gegevens zijn grijs als ze uit de bronnen-publikaties komen, zwart als ze zij
 						show('${event_type}_exact');;
 						show('${event_type}_button_on');;
 						hide('${event_type}_button_off');;
-						return false;;">exacte datum bekend</a>]
+						return false;;">exact jaar bekend</a>]
 
 	        </td>
 
@@ -246,9 +305,7 @@ De gegevens zijn grijs als ze uit de bronnen-publikaties komen, zwart als ze zij
 				</span>
         </td>
     </tr>
-    <tr tal:attributes="id string:${event_type}_place;
-    	xstyle python:event and event.place or 'display:none';
-    	"> 
+    <tr tal:attributes="id string:${event_type}_place;"> 
         <th class="sublabel">plaats</th>
         <td colspan="2" tal:attributes="class python:view.status_value(event_type, 'place')">
         	<input type="tekst"  
@@ -259,18 +316,6 @@ De gegevens zijn grijs als ze uit de bronnen-publikaties komen, zwart als ze zij
      </div> 
    	</span>	 
    	<tr metal:use-macro="template/macros/separator" /> 
-   	
-    <!-- dood -->
-   	<span tal:omit-tag=""
-   		 tal:define="
-   		 	title string:dood;
-   		 	event_type string:death;">
-   		 <tr metal:use-macro="template/macros/event_form" />
-	 </span>
-  
-
-   	<tr metal:use-macro="template/macros/separator" /> 
-
    	
   
    	<span tal:omit-tag=""
@@ -288,11 +333,62 @@ De gegevens zijn grijs als ze uit de bronnen-publikaties komen, zwart als ze zij
    		 	event_type string:funeral;">
    		 <tr metal:use-macro="template/macros/event_form"  />
 	 </span>
-	    	<tr metal:use-macro="template/macros/separator" /> 
+	 
+   	<tr metal:use-macro="template/macros/separator" /> 
+	    	
+    <!-- dood -->
+   	<span tal:omit-tag=""
+   		 tal:define="
+   		 	title string:dood;
+   		 	event_type string:death;">
+   		 <tr metal:use-macro="template/macros/event_form" />
+	 </span>
+	 
+  	<tr metal:use-macro="template/macros/separator" ></tr> 
+  	
+  	<tal:block define="state python:view.get_state('floruit')">
+   	<tr>
+        <th>actief</th>	
+        <td></td>
+        <td>
+	        <span tal:replace="structure python:view.actions.byname['form.actions.save_state_floruit'].render()" ></span>
+ 	   </td>
+   	</tr>
+   	<tr>
+   	    <th class="sublabel">van</th>
+        <td tal:attributes="class python:view.status_value('floruit', 'frm')"
+            tal:define="
+				prefix string:state_floruit_from;
+				ymd state/frm_ymd | nothing">
+				<span metal:use-macro="template/macros/date_widget"></span>
+		</td>
+    </tr>
+   	<tr>
+   	    <th class="sublabel">tot</th>
+         <td tal:attributes="class python:view.status_value('floruit', 'to')"
+            tal:define="
+				prefix string:state_floruit_to;
+				ymd state/to_ymd| nothing">
+				<span metal:use-macro="template/macros/date_widget"></span>
+		</td>
+    </tr>
+  	</tal:block>
+	
+	   	<tr metal:use-macro="template/macros/separator" ></tr> 
+   	<tr>
+        <th>opmerkingen (voor en door bewerkers)</th>	
+        <td>
+            <textarea name="remarks" style="width:200px" tal:content="view/person/remarks"></textarea>
+        <td>
+	        <span tal:replace="structure python:view.actions.byname['form.actions.save_remarks'].render()" ></span>
+    	</td>
+   	</tr>
+<tr metal:use-macro="template/macros/separator" ></tr> 
     <tr>
    	<th />
    	<td>
-        <span tal:replace="structure python:view.actions.byname['form.actions.save_everything'].render()" />
+        <span tal:replace="structure python:view.actions.byname['form.actions.save_everything'].render()" class="default"  />
+	        <input type="reset" value="reset" />
 	</td> 
     </tr>
 </table>
@@ -304,15 +400,27 @@ De gegevens zijn grijs als ze uit de bronnen-publikaties komen, zwart als ze zij
 <div class="info">
 <div tal:repeat="bio view/person/get_biographies">
 <h2>Bron: 
-	<a tal:attributes="href python:bio.get_value('url_biografie')" >
+	<a tal:attributes="
+	   href python:bio.get_value('url_biografie'); 
+	   target python:bio.get_source().id" >
 		<span tal:replace="python:bio.get_source().id"></span> - <span tal:replace="python:bio.get_source().description"></span>
 	</a>
 </h2>
 <table >
+    <tr tal:condition="python:bio.get_source().id == 'bioport'">
+        <th>status</th>
+	    <td tal:content="python:view.person.status and context.repository().get_status_values(view.person.status)" ></td>
+    </tr>
 	<tr>
-		<th>Namen</th>
+		<th>namen</th>
 		<td>
 			<div tal:repeat="naam python:bio.get_namen()" tal:content="naam/volledige_naam"></div>	
+		</td>
+	</tr>
+	<tr tal:Condition="python:bio.get_value('geslacht')">
+		<th>geslacht</th>
+		<td>
+			<span tal:replace="python:dict(view.sex_options()).get(bio.get_value('geslacht'))" />
 		</td>
 	</tr>
 	<tal:block repeat="event2 python:[('geboorte', 'birth'), ('dood', 'death'), ('doop', 'baptism'), ('begrafenis', 'funeral')]" >
@@ -344,20 +452,79 @@ De gegevens zijn grijs als ze uit de bronnen-publikaties komen, zwart als ze zij
 			<td tal:content="event/place"> </td>
 		</tr> 
 		</span>
+
+	  </tal:block> 
+<tal:block repeat="state2 python:[('beroep', 'occupation'), ('actief', 'floruit')]">
+		<tal:block define="
+		  state python:view.get_state(state2[1], biography=bio);
+		  title python:state2[0];" 
+		  
+		  tal:condition="state">
+		  <tr tal:condition="state/idno">
+		      <th tal:content="string:${title} - idno"></th>
+		      <td tal:content="state/idno" />
+		  </tr> 
+		  <tr tal:condition="state/text">
+		      <th tal:content="string:${title} - text"></th>
+		      <td tal:content="state/text" />
+		  </tr> 
+		  <tr tal:condition="state/frm">
+		      <th tal:content="string:${title} - van"></th>
+		      <td tal:content="state/frm" />
+		  </tr> 
+		  <tr tal:condition="state/to">
+		      <th tal:content="string:${title} - tot"></th>
+		      <td tal:content="state/to" />
+		  </tr> 
+		</tal:block>
+
 	</tal:block>
-	
 	<tr tal:condition="python:bio.get_value('tekst')">
-		<th>Tekst</th>
+		<th>tekst</th>
 		<td>
 			<span tal:replace="python:bio.get_value('tekst')" />
 		</td>
+	
 	</tr>	
+    <tr tal:condition="python:bio.get_source().id == 'bioport' and view.person.remarks">
+        <th>opmerkingen</th>
+        <td tal:content="python:view.person.remarks" ></td>
+    </tr>
 	<tr tal:condition="python:bio.record.timestamp">
 		<th>laatst veranderd</th>
 		<td tal:content="python:bio.record.timestamp" ></td>
 	</tr>
 	</table>
 </div>
+
 </div>
+<div id="right_column">
+	<tal:block repeat="bio view/person/get_biographies" >
+		<div class="right_column_content"
+		    tal:define="tekst python:bio.get_value('tekst')"
+			tal:condition="python:bio.get_source().id != 'bioport'">
+			<h1 tal:content="python:bio.get_source().id"></h1>
+			<div tal:content="tekst"></div>
+			<p>
+			 <a tal:attributes="
+       href python:bio.get_value('url_biografie'); 
+       target python:bio.get_source().id" >[link]</a>
+			</p>
+		</div>
+	</tal:block>
+</div>
+ <script>
+ $(function() {
+        $("form input").keypress(function (e) {
+            if ((e.which && e.which == 13) || (e.keyCode && e.keyCode == 13)) {
+                $('input[name="form.actions.save_everything"]').click()
+                return false;
+            } else {
+                return true;
+            }
+        });
+    });
+
+ </script>
 </div>
 </html>

@@ -52,6 +52,7 @@ class Admin_Template(grok.View):
 class Personen(BioPortTraverser,grok.View):
     
     def update(self, **kw):
+        
         self.batch_start = int(self.request.get('batch_start', 0))
         self.batch_size = int(self.request.get('batch_size', 30))
         
@@ -79,7 +80,7 @@ class Persoon(BioPortTraverser, grok.View): #, BioPortTraverser):
         if not self.bioport_id:
             self.bioport_id = random.choice(self.context.repository().get_bioport_ids())
             self.redirect(self.url(self) + '/'+ self.bioport_id)
-        self.person  = self.context.get_person(id=self.bioport_id) 
+        self.person  = self.context.get_person(bioport_id=self.bioport_id) 
         redirects_to = self.person.redirects_to()
         if redirects_to:
             self.redirect(self.url(self, redirects_to))
@@ -90,7 +91,7 @@ class Persoon(BioPortTraverser, grok.View): #, BioPortTraverser):
             biography = self.merged_biography
         event_el = biography.get_event(type)
         if event_el is not None:
-            #we construct a conventient object
+            #we construct a convenient object
             class EventWrapper:
                 def __init__(self, el):
                     self.when = el.get('when')
@@ -109,6 +110,28 @@ class Persoon(BioPortTraverser, grok.View): #, BioPortTraverser):
             return EventWrapper(event_el)
         else:
             return None      
+    
+    def get_states(self,type, biography=None):
+        if not biography:
+            biography = self.merged_biography
+        result = []
+        for el in  biography.get_states(type):
+	        if el is not None:
+	            class StateWrapper:
+	                def __init__(self, el):
+	                    self.frm = el.get('from')
+	                    self.frm_ymd  = to_ymd(self.frm)
+	                    self.to = el.get('to')
+	                    self.to_ymd = to_ymd(self.to)
+	                    self.type = type
+	                    self.text = el.text
+	                    self.idno = el.get('idno')
+	            result.append(StateWrapper(el))
+        return result
+    def get_state(self, type, biography=None):
+        states = self.get_states(type, biography)
+        if states:
+	        return states[0]
         
     def maanden(self):
         return maanden

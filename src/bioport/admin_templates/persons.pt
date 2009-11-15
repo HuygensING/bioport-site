@@ -4,7 +4,7 @@ tal:define="persons view/get_persons">
 		<h1>Persons</h1>
 <span tal:repeat="letter string:abcdefghijklmnopqrstuvwxyz"
     tal:attributes="class python:letter == request.get('beginletter') and 'alfabet selected' or 'alfabet'"
-    ><a tal:attributes="href python:view.url(view, data={'beginletter':letter})" ><span tal:replace="letter/upper" /></a></span>
+    ><a tal:attributes="href python:view.url(view, data={'beginletter':letter, 'source_id':request.get('source_id', ''), 'status':request.get('status', '')})" ><span tal:replace="letter/upper" /></a></span>
 <p>
 <form tal:attributes="action view/url">
 	<span tal:repeat="source python:context.repository().get_sources()"
@@ -25,13 +25,19 @@ bron:
 		tal:content="python:source.id" />
 </select>
 <br>	
-status : <select>
-	<option>nog te maken</option>
-	<option>..</option>
-	</select>
+status : 
+<select name="status">
+	<option></option>
+	<option tal:repeat="status view/get_status_values" 
+	   tal:attributes="value python:status[0];
+	       selected python:str(status[0]) == request.get('status')"
+	   tal:content="python:status[1]">..</option>
+</select>
+<span tal:condition="nothing">
 <br>	
 levensjaren niet ingevuld <input type="checkbox" />
 <br>	
+</span>
 	<input type="submit" value=" zoek " />
 	<br>
 </form>
@@ -65,7 +71,8 @@ levensjaren niet ingevuld <input type="checkbox" />
 <table>
 <tr>
     <th style="width:50%">Naam</th>
-    <th></th>
+    <th>status</th>
+    <th>bron</th>
     <th tal:condition="nothing">laatst bewerkt</th>
     <th tal:condition="nothing">verant- woordelijk</th>
     <th tal:condition="nothing">status</th>
@@ -76,15 +83,22 @@ levensjaren niet ingevuld <input type="checkbox" />
 	tal:content="structure python:person.naam() and person.naam().guess_normal_form() or 'XXXXX'" 
     tal:attributes="href python:view.url(context.__parent__, 'persoon', data={'bioport_id':person.get_bioport_id()})" />
     
-    <span tal:replace="python:context.format_dates(person.get_value('geboortedatum'), person.get_value('sterfdatum'))" />
+    <span tal:replace="python:context.format_dates(person.get_merged_biography().geboortedatum(), person.get_merged_biography().sterfdatum())" />
+	</td>
+	<td>
+        <span tal:replace="python:person.status and view.get_status_values(person.status)"	 />
+	</td>
+	<td>
+	   <span tal:repeat="source python:person.get_sources()">
+	   <Span
+	       tal:condition="python:source.id != 'bioport'"
+	       tal:content="python:source.description or source.id" />
+	   </span>
 	</td>
 	<td tal:condition="person/get_bioport_id">
 	    <a tal:attributes="href python:view.url(context,'persoon', data={'bioport_id':person.get_bioport_id()})">
 	    	bewerk gegevens
 	     </a>
-	</td>
-	<td tal:condition="not:person/get_bioport_id">
-	    [<a tal:attributes="href python:view.url('biography_identify')"  x="{'source_id':bio.get_source().id,'bio_id':person.id})" >identify</a>]
 	</td>
 	<td tal:condition="nothing">
 	TODO

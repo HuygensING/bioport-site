@@ -6,6 +6,11 @@
 #content_box {
     font-family: arial, sans-serif;
     }
+#container_box {
+		background:#7894aa;
+		margin : 0;
+        padding : 0;
+	}
 
 
 th {
@@ -51,6 +56,7 @@ a:hover {
 } 
 .person_edit .info, .person .info h1, .person .info th, .person .info td {
 	font-size : 0.8em;
+        color : grey;
 }
 .person_edit .merged {
         color : grey;
@@ -80,4 +86,19 @@ a:hover {
 li {
 	margin-bottom : .2em;
 	margin-top : .3em;
+}
+#content_box div#right_column {
+	position: absolute;
+    left:819px;
+    top:200px;
+}
+#content_box div#right_column .right_column_content {
+	display: inline;
+    float : left;
+    width:358px;
+	background-color : white;
+	border : 1px solid black;
+    padding : .6em;
+    margin-right: 1em;
+    margin-bottom: 1em;
 }
