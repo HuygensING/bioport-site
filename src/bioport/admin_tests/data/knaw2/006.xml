@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="latin1"?>
+<biodes version="1.0">
+  <fileDesc>
+    <title>Ekama, Cornelis</title>
+    <author>Tex, C.A. den</author>
+    <ref target="http://www.digitallibrary.nl/levensberichten/authors_detail.cfm?RecordId=4484"/>
+    <publisher>
+      <name>KNAW - Levensberichten en Herdenkingen</name>
+      <ref target="http://www.digitallibrary.nl/levensberichten/works.cfm"/>
+    </publisher>
+  </fileDesc>
+  <person>
+    <idno type="id">006</idno>
+    <persName><name type="voornaam">Cornelis</name> <name type="geslachtsnaam">Ekama</name></persName>
+    <sex value="1"/>
+    <event type="birth" when="1773-03-31">
+      <place>Paesens, Frankrijk</place>
+    </event>
+    <event type="death" when="1826-02-24">
+      <place>Leiden</place>
+    </event>
+    <state type="occupation">Natuurkunde</state>
+    <state type="occupation">Zeevaartkunde</state>
+  </person>
+  <biography/>
+</biodes>

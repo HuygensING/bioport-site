@@ -1,0 +1,12 @@
+<html metal:use-macro="context/@@admin_template/macros/master">
+<div metal:fill-slot="content">
+
+AntiIdentified the following persons: 
+
+ <li tal:repeat="person view/persons" >	
+ <a tal:attributes="href python:view.url(view.__parent__.__parent__,  '/persoon', data={'bioport_id':person.get_bioport_id()})"
+ tal:content="python:view.url(view.__parent__.__parent__, 'persoon', data={'bioport_id':person.get_bioport_id()})" />
+ 	
+ 	</li>
+</div>
+</html>

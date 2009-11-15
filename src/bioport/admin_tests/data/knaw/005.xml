@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="latin1"?>
+<biodes version="1.0">
+  <fileDesc>
+    <title>Heynsbergen, C. van</title>
+    <ref target="http://www.digitallibrary.nl/levensberichten/authors_detail.cfm?RecordId=4610"/>
+    <publisher>
+      <name>KNAW - Levensberichten en Herdenkingen</name>
+      <ref target="http://www.digitallibrary.nl/levensberichten/works.cfm"/>
+    </publisher>
+  </fileDesc>
+  <person>
+    <idno type="id">005</idno>
+    <persName><name type="voornaam">C.</name> <name type="intrapositie">van</name> <name type="geslachtsnaam">Heynsbergen</name></persName>
+    <sex value="1"/>
+    <event type="birth" when="1788-01-01">
+      <place>Ameide</place>
+    </event>
+    <event type="death" when="1847-03-20"/>
+    <state type="occupation">Wiskunde</state>
+    <state type="occupation">Zeevaartkunde</state>
+  </person>
+  <biography/>
+</biodes>

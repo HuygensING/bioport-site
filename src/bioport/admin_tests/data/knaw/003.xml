@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="latin1"?>
+<biodes version="1.0">
+  <fileDesc>
+    <title>Kraemer, Hendrik</title>
+    <author>Visser - 't Hooft, W.A.</author>
+    <ref target="http://www.digitallibrary.nl/levensberichten/authors_detail.cfm?RecordId=1046"/>
+    <publisher>
+      <name>KNAW - Levensberichten en Herdenkingen</name>
+      <ref target="http://www.digitallibrary.nl/levensberichten/works.cfm"/>
+    </publisher>
+  </fileDesc>
+  <person>
+    <idno type="id">003</idno>
+    <persName><name type="voornaam">Hendrik</name> <name type="geslachtsnaam">Kraemer</name></persName>
+    <sex value="1"/>
+    <event type="birth" when="1888-05-17">
+      <place>Amsterdam</place>
+    </event>
+    <event type="death" when="1965-11-11">
+      <place>Driebergen</place>
+    </event>
+    <state type="occupation">Theologie</state>
+    <state type="occupation">Zendingswetenschappen</state>
+  </person>
+  <biography/>
+</biodes>

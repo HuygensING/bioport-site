@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="latin1"?>
+<biodes version="1.0">
+  <fileDesc>
+    <title>Dijksterhuis, Eduard Jan</title>
+    <author>Hooykaas, R.</author>
+    <ref target="http://www.digitallibrary.nl/levensberichten/authors_detail.cfm?RecordId=478"/>
+    <publisher>
+      <name>KNAW - Levensberichten en Herdenkingen</name>
+      <ref target="http://www.digitallibrary.nl/levensberichten/works.cfm"/>
+    </publisher>
+  </fileDesc>
+  <person>
+    <idno type="id">009</idno>
+    <persName><name type="voornaam">Eduard Jan</name> <name type="geslachtsnaam">Dijksterhuis</name></persName>
+    <persName><name type="voornaam">C.</name> <name type="intrapositie">van</name> <name type="geslachtsnaam">Heynsbergen</name></persName>
+    <sex value="1"/>
+    <event type="birth" when="1892-10-28">
+      <place>Tilburg</place>
+    </event>
+    <event type="death" when="1965-05-18">
+      <place>De Bilt</place>
+    </event>
+    <state type="occupation">Geschiedenis der exacte wetenschappen</state>
+    <state type="occupation">Wiskunde</state>
+  </person>
+  <biography/>
+</biodes>
