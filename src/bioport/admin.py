@@ -96,6 +96,10 @@ class Edit(grok.EditForm):
         self.context.repository().db._update_occupations_table()
         self.redirect(self.url(self))
         
+    @grok.action('Set state of edited persons to "bewerkt" (JG: DELETE THIS BUTTON WHEN DONE)')
+    def set_state_to_bewerkt(self, **data):
+        from BioPortRepository.upgrade import upgrade_persons
+        upgrade_persons(self.context.repository())
 class Display(grok.DisplayForm):
     grok.context(Admin)
     form_fields = grok.Fields(IAdminSettings)
