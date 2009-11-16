@@ -6,6 +6,9 @@
     	bioport_bio view/bioport_biography; 
     	" 
     >
+ <style>
+
+ </style>
 <script>
 show = function(element_id) {
 	el = document.getElementById(element_id);
@@ -18,6 +21,26 @@ hide = function(element_id) {
 }
 
 
+</script>
+ <script>
+ $(document).ready(function(){
+
+	 //on pressing return, make the form submit everything
+	 $(function() {
+	        $("form input").keypress(function (e) {
+	            if ((e.which && e.which == 13) || (e.keyCode && e.keyCode == 13)) {
+	                $('input[name="form.actions.save_everything"]').click()
+	                return false;
+	            } else {
+	                return true;
+	            }
+	        });
+	    });
+
+   $('.form_baptism').hide();
+   $('.form_funeral').hide();
+   $('.form_floruit').hide();
+	 });
 </script>
 
 <h1>Bewerk gegevens van <em tal:content="view/title" /></h1>
@@ -52,7 +75,7 @@ De gegevens zijn grijs als ze uit de bronnen-publikaties komen, zwart als ze zij
             <span tal:replace="structure python:view.actions.byname['form.actions.save_status'].render()" ></span>
        </td>
     </tr>
-    <tr metal:define-macro="separator" class="separator"><td colspan="3"><hr></td></tr>
+    <tr metal:define-macro="separator" class="separator" ><td colspan="3"><hr></td></tr>
     <tr tal:define="namen view/get_bioport_namen"
     	tal:repeat="idx python:range(len(namen))">
     	<th><span tal:condition="python:idx == 0" >namen</span></th>
@@ -121,42 +144,7 @@ De gegevens zijn grijs als ze uit de bronnen-publikaties komen, zwart als ze zij
 	        <span tal:replace="structure python:view.actions.byname['form.actions.save_sex'].render()" />
         </td> 
 	</tr>
-   	<tr metal:use-macro="template/macros/separator" /> 	
-   	<tal:block repeat="state view/occupations">
-   	<tr tal:condition="state/idno" >
-   		<th><span tal:condition="repeat/state/start">beroep</span></th>
-   		<td>
-   			<select tal:attributes="name string:occupation_id">
-   				<option></option>
-   				<option tal:repeat="occupation python:view.repository.get_occupations()" 
-   					tal:content="occupation/name"
-   					tal:attributes="value occupation/id;
-   					    selected python:state.idno == str(occupation.id)"></option>
-   			</select>	
-   		</td>
-        <td>
-	        <span 
-	           tal:condition="repeat/state/start" tal:replace="structure python:view.actions.byname['form.actions.save_occupation'].render()" />
-        </td> 
-   	</tr>	
-   	</tal:block>
-   	<tr>
-        <th><span tal:condition="not:view/occupations">beroep</span></th>	
-        <td>
-    			<select name="new_occupation_id">
-   				<option></option>
-   				<option tal:repeat="occupation python:view.repository.get_occupations()" 
-   					tal:content="occupation/name"
-   					tal:attributes="value occupation/id;"></option>
-   			</select>	
-         
-        </td>
-        <td>
-	        <span 
-	           tal:condition="not:view/occupations" tal:replace="structure python:view.actions.byname['form.actions.save_occupation'].render()" />
-        </td>
-   	</tr>
-   	<tr metal:use-macro="template/macros/separator" /> 
+
     <!-- geboortedatum -->
     <span tal:omit-tag=""
     	 tal:define="title string:geboorte;
@@ -164,20 +152,29 @@ De gegevens zijn grijs als ze uit de bronnen-publikaties komen, zwart als ze zij
     	 >
     <div metal:define-macro="event_form"
 	    tal:define="
-        		event python:view.get_event(event_type);
+    		event python:view.get_event(event_type);
 	    	show_exact python:(not event) or (event.when or not (event.notAfter or event.notBefore or event.date_text));
 			show_approx python:event and (event.notAfter or event.notBefore or event.date_text) and True;
+    		has_data python:show_approx or (event and event.when);
 			prefix event_type;
         	">
-    <tr  tal:attributes="id event_type" > 
+	<tr tal:attributes="class string:separator" ><td colspan="3"><hr></td></tr>
+   
+    <tr  tal:attributes="id event_type; 
+	    "> 
         <th tal:content="title">geboorte</th>
-  		<td> </td>
-        <td>
+         <td><a href="" 
+            tal:condition="not:has_data" 
+            tal:attributes="onClick string: jQuery('.form_${event_type}').show();; jQuery(this).hide();;  return false;;;
+            class string:button_show_${event_type};"
+            >[toon]</a></td>
+        <td  tal:attributes="class python:not has_data and 'form_%s' % event_type;">
 	        <span tal:replace="structure python:view.actions.byname['form.actions.save_event_%s' % event_type].render()" />
         </td> 
      </tr>
      <tr tal:attributes="
      	id string:${event_type}_exact;
+        class python:not has_data and 'form_%s' % event_type;
 		style python:not show_exact and 'display:none'">
      	<th class="sublabel">datum
      	</th>
@@ -212,11 +209,11 @@ De gegevens zijn grijs als ze uit de bronnen-publikaties komen, zwart als ze zij
     	[<a href="" 
     		tal:attributes="id string:${event_type}_button_on;
     			OnClick string:
-    				show('${event_type}_notBefore');;
-    				show('${event_type}_notAfter');;
-    				show('${event_type}_text');;
-    				hide('${event_type}_exact');;
-    				hide('${event_type}_button_on');;
+                    jQuery('#${event_type}_notBefore').show();;
+                    jQuery('#${event_type}_notAfter').show();;
+                    jQuery('#${event_type}_text').show();;
+                    jQuery('#${event_type}_exact').hide();;
+                    jQuery('#${event_type}_button_on').hide();;
     				return false;;">exact jaar niet bekend</a>]
 
 	    </td>	
@@ -258,19 +255,35 @@ De gegevens zijn grijs als ze uit de bronnen-publikaties komen, zwart als ze zij
         	
         		tal:attributes="id string:${event_type}_approx_button_off;
 		   			OnClick string:
-						hide('${event_type}_notBefore');;
-						hide('${event_type}_notAfter');;
-						hide('${event_type}_text');;
-						show('${event_type}_exact');;
-						show('${event_type}_button_on');;
-						hide('${event_type}_button_off');;
+						jQuery('#${event_type}_notBefore').hide();;
+						jQuery('#${event_type}_notAfter').hide();;
+						jQuery('#${event_type}_text').hide();;
+						jQuery('#${event_type}_exact').show();;
+						jQuery('#${event_type}_button_on').show();;
+						jQuery('#${event_type}_button_off').hide();;
+						
 						return false;;">exact jaar bekend</a>]
 
 	        </td>
 
     </tr>
 
-   	
+   
+    <tr tal:attributes="id string:${event_type}_place;
+	        class string:form_${event_type};
+	        "> 
+        <th class="sublabel">plaats</th>
+        <td colspan="2" tal:attributes="class python:view.status_value(event_type, 'place')">
+        	<input type="tekst"  
+	        	tal:attributes="name string:${event_type}_place;
+		        	value event/place | nothing" />
+        </td>
+    </tr>
+     </div> 
+   	</span>	 
+   	<!--  /geboorte -->
+ 
+ 	
     <!--  plaats -->
    <tr tal:condition="nothing">
     	<th class="sublabel">xxx</th>
@@ -305,36 +318,7 @@ De gegevens zijn grijs als ze uit de bronnen-publikaties komen, zwart als ze zij
 				</span>
         </td>
     </tr>
-    <tr tal:attributes="id string:${event_type}_place;"> 
-        <th class="sublabel">plaats</th>
-        <td colspan="2" tal:attributes="class python:view.status_value(event_type, 'place')">
-        	<input type="tekst"  
-	        	tal:attributes="name string:${event_type}_place;
-		        	value event/place | nothing" />
-        </td>
-    </tr>
-     </div> 
-   	</span>	 
-   	<tr metal:use-macro="template/macros/separator" /> 
-   	
-  
-   	<span tal:omit-tag=""
-   		 tal:define="
-   		 	title string:doop;
-   		 	event_type string:baptism;">
-   		 <tr metal:use-macro="template/macros/event_form"  />
-	 </span>
-   	
-   	<tr metal:use-macro="template/macros/separator" /> 
- 
-   	<span tal:omit-tag=""
-   		 tal:define="
-   		 	title string:begrafenis;
-   		 	event_type string:funeral;">
-   		 <tr metal:use-macro="template/macros/event_form"  />
-	 </span>
-	 
-   	<tr metal:use-macro="template/macros/separator" /> 
+    <!--  plaats -->
 	    	
     <!-- dood -->
    	<span tal:omit-tag=""
@@ -343,18 +327,50 @@ De gegevens zijn grijs als ze uit de bronnen-publikaties komen, zwart als ze zij
    		 	event_type string:death;">
    		 <tr metal:use-macro="template/macros/event_form" />
 	 </span>
+	 <!-- /dood -->
+	
+
+    <!--  doop --> 
+   	<span tal:omit-tag="" 
+   		 tal:define="
+   		 	title string:doop;
+   		 	event_type string:baptism;">
+   		 <tr metal:use-macro="template/macros/event_form" />
+	 </span>
+    <!--  /doop -->	
+    
+    <!--  begrafenis --> 
+   	<span tal:omit-tag=""
+   		 tal:define="
+   		 	title string:begrafenis;
+   		 	event_type string:funeral;">
+   		 <tr metal:use-macro="template/macros/event_form"  />
+	 </span>
+	 <!-- /begrafenis --> 
 	 
-  	<tr metal:use-macro="template/macros/separator" ></tr> 
   	
-  	<tal:block define="state python:view.get_state('floruit')">
+  	<!--  floruit -->
+  	<tal:block define="
+  	     state_id string:floruit;
+	  	 state python:view.get_state(state_id);
+	  	 has_data python:state and (state.frm or state.to or state.text)">
+  	<script>
+//    
+  	</script>
+	<tr tal:attributes="class string:separator" ><td colspan="3"><hr></td></tr>
    	<tr>
         <th>actief</th>	
-        <td></td>
-        <td>
+        <td><a 
+            tal:condition="not:has_data"
+            href="" onClick="
+			$('.form_floruit').show();	
+            $(this).hide(); 
+            return false;">[toon]</a></td>
+        <td tal:attributes="class python:not has_data and 'form_%s'  % state_id">
 	        <span tal:replace="structure python:view.actions.byname['form.actions.save_state_floruit'].render()" ></span>
  	   </td>
    	</tr>
-   	<tr>
+   	<tr tal:attributes="class python:not has_data and 'form_%s' % state_id">
    	    <th class="sublabel">van</th>
         <td tal:attributes="class python:view.status_value('floruit', 'frm')"
             tal:define="
@@ -363,7 +379,7 @@ De gegevens zijn grijs als ze uit de bronnen-publikaties komen, zwart als ze zij
 				<span metal:use-macro="template/macros/date_widget"></span>
 		</td>
     </tr>
-   	<tr>
+   	<tr tal:attributes="class python:not has_data and 'form_%s' % state_id">
    	    <th class="sublabel">tot</th>
          <td tal:attributes="class python:view.status_value('floruit', 'to')"
             tal:define="
@@ -372,8 +388,67 @@ De gegevens zijn grijs als ze uit de bronnen-publikaties komen, zwart als ze zij
 				<span metal:use-macro="template/macros/date_widget"></span>
 		</td>
     </tr>
+   	<tr tal:attributes="class python:not has_data and 'form_%s' % state_id">
+        <th class="sublabel">tekst</th>
+        <td tal:attributes="class python:view.status_value('floruit', 'text')">
+            <input tal:attributes="name python:'state_%s_text' % 'floruit';
+                value state/text | nothing;
+                " >
+        </td>
+    </tr>
   	</tal:block>
-	
+  	<!--  /floruit -->
+	   	
+  	<tr metal:use-macro="template/macros/separator" ></tr> 
+  	
+   	<!--  beroep -->
+   	<tal:block repeat="state view/occupations">
+   	<tr tal:condition="state/idno" >
+   		<th><span tal:condition="repeat/state/start">beroepen</span></th>
+   		<td>
+   			<select tal:attributes="name string:occupation_id">
+   				<option></option>
+   				<option tal:repeat="occupation python:view.repository.get_occupations()" 
+   					tal:content="occupation/name"
+   					tal:attributes="value occupation/id;
+   					    selected python:state.idno == str(occupation.id)"></option>
+   			</select>	
+   		</td>
+        <td>
+	        <span 
+	           tal:condition="repeat/state/start" tal:replace="structure python:view.actions.byname['form.actions.save_occupation'].render()" />
+        </td> 
+   	</tr>	
+   	</tal:block>
+   	<tr>
+        <th><span tal:condition="not:view/occupations">beroepen</span></th>	
+        <td>
+    			<select name="new_occupation_id">
+   				<option></option>
+   				<option tal:repeat="occupation python:view.repository.get_occupations()" 
+   					tal:content="occupation/name"
+   					tal:attributes="value occupation/id;"></option>
+   			</select>	
+        </td>
+        <td>
+	        <span 
+	           tal:condition="not:view/occupations" tal:replace="structure python:view.actions.byname['form.actions.save_occupation'].render()" />
+        </td>
+   	</tr>
+   	    <tr tal:repeat="i python:range(len(view.occupations), 2)">
+        <th></th>   
+        <td>
+                <select name="new_occupation_id">
+                <option></option>
+                <option tal:repeat="occupation python:view.repository.get_occupations()" 
+                    tal:content="occupation/name"
+                    tal:attributes="value occupation/id;"></option>
+            </select>   
+        </td>
+        <td>
+        </td>
+    </tr>
+    <!--  /beroep --> 
 	   	<tr metal:use-macro="template/macros/separator" ></tr> 
    	<tr>
         <th>opmerkingen (voor en door bewerkers)</th>	
@@ -513,18 +588,5 @@ De gegevens zijn grijs als ze uit de bronnen-publikaties komen, zwart als ze zij
 		</div>
 	</tal:block>
 </div>
- <script>
- $(function() {
-        $("form input").keypress(function (e) {
-            if ((e.which && e.which == 13) || (e.keyCode && e.keyCode == 13)) {
-                $('input[name="form.actions.save_everything"]').click()
-                return false;
-            } else {
-                return true;
-            }
-        });
-    });
-
- </script>
 </div>
 </html>

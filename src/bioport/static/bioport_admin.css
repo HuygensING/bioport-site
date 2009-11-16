@@ -102,3 +102,17 @@ li {
     margin-right: 1em;
     margin-bottom: 1em;
 }
+div.row {
+	display : block;
+	}
+div.column_header {
+    display: inline;
+    font-weight : bold;
+    width : 20em;
+}
+div.table {
+    display : block;	
+	}
+div.cell, div.merged, div.bioport {
+    display: inline;
+}
