@@ -1,7 +1,7 @@
 
       [console_scripts]
-#      bioport-debug = grokcore.startup:interactive_debug_prompt
-#      bioport-ctl = grokcore.startup:zdaemon_controller
+      bioport-debug = grokcore.startup:interactive_debug_prompt
+      bioport-ctl = grokcore.startup:zdaemon_controller
       [paste.app_factory]
       main = grokcore.startup:application_factory
       

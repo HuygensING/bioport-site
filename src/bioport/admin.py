@@ -96,7 +96,7 @@ class Edit(grok.EditForm):
         self.context.repository().db._update_occupations_table()
         self.redirect(self.url(self))
         
-    @grok.action('Set state of edited persons to bewerkt (JG: DELETE THIS BUTTON WHEN DONE)')
+    @grok.action('Set state of edited persons to bewerkte(JG: DELETE THIS BUTTON WHEN DONE)')
     def set_state_to_bewerkt(self, **data):
         from BioPortRepository.upgrade import upgrade_persons
         upgrade_persons(self.context.repository())
@@ -381,7 +381,7 @@ class Persoon(app.Persoon, grok.EditForm):
         new_occupation_ids = self.request.get('new_occupation_id')
         if type(new_occupation_ids) != type([]):
             new_occupation_ids = [new_occupation_ids]
-            new_occupation_ids = [s for s in new_occupation_ids if s ]
+        new_occupation_ids = [s for s in new_occupation_ids if s ]
         for new_occupation_id in new_occupation_ids:
             name = self.repository.get_occupation(new_occupation_id).name 
             self.bioport_biography.add_state(type='occupation', idno=new_occupation_id, text=name)

@@ -100,7 +100,7 @@ De gegevens zijn grijs als ze uit de bronnen-publikaties komen, zwart als ze zij
 
    		
     <tr tal:condition="not:view/get_bioport_namen" 
-    tal:define="namen view/get_non_bioport_namen"
+	    tal:define="namen view/get_non_bioport_namen"
     	tal:repeat="idx python:range(len(namen))">
 
     	<th><span tal:condition="python:idx == 0" >namen</span></th>
@@ -270,7 +270,7 @@ De gegevens zijn grijs als ze uit de bronnen-publikaties komen, zwart als ze zij
 
    
     <tr tal:attributes="id string:${event_type}_place;
-	        class string:form_${event_type};
+	        class python:not has_data and 'form_%s' % event_type;
 	        "> 
         <th class="sublabel">plaats</th>
         <td colspan="2" tal:attributes="class python:view.status_value(event_type, 'place')">
