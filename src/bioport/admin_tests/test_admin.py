@@ -14,6 +14,8 @@ from bioport.app import Bioport
 from zope.publisher.browser import TestRequest
 import BioPortRepository
 import os
+from settings import DB_CONNECTION
+
 class SimpleSampleTest(unittest.TestCase):
     "Test the Sample application"
 
@@ -21,28 +23,24 @@ class SimpleSampleTest(unittest.TestCase):
         grokapp = Bioport()
         
         admin = grokapp['admin']
-        admin.SVN_REPOSITORY = '/home/jelle/projects_active/bioport/bioport_repository'
-        admin.SVN_REPOSITORY_LOCAL_COPY = '/home/jelle/projects_active/bioport/bioport_repository_local_copy'
+#        admin.SVN_REPOSITORY = None-
+#        admin.SVN_REPOSITORY_LOCAL_COPY = None
         admin.DB_CONNECTION = 'mysql://root@localhost/bioport_test'
         self.app = grokapp
         self.admin = admin
         self.repo = repo = self.admin.get_repository()
+        self.repo.db.metadata.drop_all()
         repo.db.metadata.create_all()
         url = os.path.join(os.path.dirname(BioPortRepository.__file__), 'tests', 'data','knaw', 'list.xml')
         src = BioPortRepository.source.Source(id='knaw', url=url) 
         repo.add_source(src)
         
     def tearDown(self):
-        self.admin.get_repository().db.metadata.drop_all()
+        self.repo.db.metadata.drop_all()
     def test1(self):
         "Test that something works"
         assert self.admin.get_repository()
         
-    def test_biographies(self):
-        
-        request = TestRequest()
-        Biographies(Admin(), request)()
-    
     def test_sources(self):
         request = TestRequest()
         sources = Sources(self.admin, request)

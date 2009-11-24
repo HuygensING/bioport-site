@@ -1,0 +1,33 @@
+<html
+     metal:use-macro="context/@@admin_template/macros/master">
+
+<div metal:fill-slot="content">
+<h1>Uitleg bij het zoeken</h1>
+
+<ul>
+
+<li>
+ Als je zoekt naar een woord, vind je alle personen waarin het woord in the naam voorkomt.
+ 
+ Dus, met zoeken op "Jan" vind je wel "Jan Klaassen"  maar niet "Klaas Jansen"
+<li>
+Als je twee woorden invult, vind je alle namen waar beide woorden in voorkomen
+
+Dus, als je zoekt op "Klaassen Jan" dan vindt je ook "Jan Klaassen"
+<li>
+Hoofdletters worden genegeerd
+<li>
+Een sterretje "*" staat voor een willekeurig aantal karakters. 
+<li>
+Met zoeken op "jan*" vindt je "Jan" en "Jansen", maar niet "Jongejan".
+<li>
+Met zoeken op "*jan" vindt je "Jan" en "Jongejan", mnaar niet "Jansen"
+<li>
+Met zoeken op  "*jan*" vindt je "Jan" en "Jongenjan" en "Jansen".
+</li>
+<li>
+Het vraagteken "?" staat voor een enkel karakter. Dus zoeken op "Ja?ob" vindt je "Jakob" en "Jacob" maar niet "Jackob".
+</li>
+</ul>
+</div>
+</html>

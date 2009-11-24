@@ -1,17 +1,25 @@
 <html metal:use-macro="context/@@admin_template/macros/master">
 <div metal:fill-slot="content">
 <h1>Identificeer personen</h1>
-<tal:block define="bioport_ids view/bioport_ids">
+<tal:block define="bioport_ids view/bioport_ids;
+    redirect_to python:view.request.get('HTTP_REFERER', '')">
 <ul metal:use-macro="context/@@mostsimilar/macros/identify_actions" />
 </tal:block>
-<table>
+<table metal:define-macro="compare_persons">
+
 <tr>
 	<th></th>
 	<td tal:repeat="p view/persons" style="width:40%">
 		 <a tal:attributes="href python:view.url(view.__parent__.__parent__,  '/persoon', data={'bioport_id':p.get_bioport_id()})"
-		 tal:content="python:p.naam().get_volledige_naam()" />
+		 tal:content="python:p.naam() and p.naam().get_volledige_naam()" />
 	</td>
 </tr>	
+<tr>
+    <th>Bioport id</th>
+    <td tal:repeat="p view/persons">
+	    <a tal:attributes="href python:view.url(view.__parent__.__parent__,  '/persoon', data={'bioport_id':p.get_bioport_id()})"
+	         tal:content="p/bioport_id" /></td>
+</tr>
 <tr>
 	<th>Geboortedatum</th>
 	<td tal:repeat="p view/persons" tal:content="python:context.format_date(p.get_value('geboortedatum'))" />
@@ -32,8 +40,12 @@
 	<th>Bron</th>
 	
 	<td tal:repeat="p view/persons">
-		<div tal:repeat="bio python:p.get_biographies()" 
+		<div tal:repeat="bio python:p.get_biographies()">
+	       <a tal:attributes="href python:bio.get_value('url_biografie');
+		           target python:bio.get_source().id"	
+	           
 			tal:content="python:bio.get_source().description or bio.get_source().id" />
+		</div> 
 	</td>
 </tr>
 <tr>

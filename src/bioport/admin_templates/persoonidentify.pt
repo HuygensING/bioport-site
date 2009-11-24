@@ -1,0 +1,112 @@
+<html metal:use-macro="context/@@admin_template/macros/master">
+<div metal:fill-slot="content"
+    tal:define="batch view/persons" >
+
+<h1>Identificeer Persoon</h1>
+
+
+<!--  the chosen persons -->
+<table tal:condition="view/selected_persons">
+<tr tal:repeat="person view/selected_persons">
+    <td tal:content="person/bioport_id"> </td>
+    <td><a 
+        tal:attributes="href python:view.url('persoon', data={'bioport_id':person.bioport_id})"
+        tal:content="person/title"></a> </td>
+    <td tal:define="other_persons python:[p.bioport_id for p in view.selected_persons if p != person]">
+        [<a tal:attributes="href python:view.url(data ={'bioport_ids': other_persons, 'search_term':request.get('search_term', '')})">verwijder keuze</a>]</td>
+</tr>
+</table>
+<div 
+    tal:define="bioport_ids view/bioport_ids"
+    tal:condition="python:len(view.selected_persons) == 2">
+    
+<ul metal:use-macro="context/@@mostsimilar/macros/identify_actions" />
+
+</div> 
+<div style="clear:both" />
+<p tal:condition="python:len(view.selected_persons) == 0">Zoek een persoon om te vergelijken, en klik op [kies]</p>
+<p tal:condition="python:len(view.selected_persons) == 1">Kies nog een persoon om te vergelijken,
+of <a metal:define-macro="button_begin_opnieuw" tal:attributes="href python:view.url(data={'bioport_ids': [], 'search_term':request.get('search_term', '')})">begin opnieuw</a></p>
+<p tal:condition="python:len(view.selected_persons) == 2"><a metal:use-macro="template/macros/button_begin_opnieuw"></a></p>
+
+
+<form tal:condition="python:len(view.selected_persons) < 2">
+<input tal:repeat="bioport_id view/bioport_ids"
+    type="hidden" name="bioport_ids" tal:attributes="value bioport_id" >
+<table>
+<tr metal:define-macro="search_field_naam">
+    <th>zoek op naam</th>
+    <td><input type="text" name="search_term"
+        tal:attributes="value request/search_term | nothing">
+        
+        [<a tal:attributes="href python:view.url('uitleg_zoek')">tips voor het zoeken</a>]</td>
+</tr>
+<tr metal:define-macro="search_field_bioportid">
+    <th>bioport id</th>
+    <td><input type="text" name="bioport_id" tal:attributes="value request/bioport_id | nothing" /></td>
+</tr>
+<tr>
+    <th></th>
+    <td>
+    <span tal:replace="structure python:view.actions.byname['form.actions.search_persons'].render()" ></span>
+
+	<span tal:condition="python:len(view.selected_persons) == 1" 
+	    tal:replace="structure python:view.actions.byname['form.actions.similar_persons'].render()" ></span>
+	</td>
+</tr>
+</table>
+</form>
+
+<div tal:condition="python:len(view.selected_persons) < 2">
+<div  metal:use-macro="context/@@sitemacros/macros/aantal_resultaten" />
+<div  metal:use-macro="context/@@sitemacros/macros/batch_navigation" />
+	
+<table >
+
+<tal:block repeat="person batch">
+    <tr tal:attributes="class python:person.bioport_id in view.bioport_ids and 'grey' or ''">
+    <td>
+        <span tal:replace="person/bioport_id" />
+    </td>
+    <td >
+        <a 
+    tal:content="structure person/title" 
+    tal:attributes="href python:view.url(context.__parent__, 'persoon', data={'bioport_id':person.get_bioport_id()})" />
+    
+    <span tal:replace="python:context.format_dates(person.get_merged_biography().geboortedatum(), person.get_merged_biography().sterfdatum())" />
+    </td>
+    <td>
+       <span tal:repeat="source python:person.get_sources()">
+       <Span
+           tal:condition="python:source.id != 'bioport'"
+           tal:content="source/id" />
+       </span>
+    </td>
+    <!-- 
+    <td tal:condition="person/get_bioport_id">
+        <a tal:attributes="href python:view.url(context,'persoon', data={'bioport_id':person.get_bioport_id()})">
+            klik hier als dit <span tal:replace="view/title" />  is
+         </a>
+    </td>
+    <td tal:condition="person/get_bioport_id">
+    </td>
+     -->
+    <td tal:content="person/score" />
+    <td>
+    <span tal:condition="python:person.bioport_id not in view.bioport_ids"> [<a tal:attributes="href python:view.url(data={
+        'form.actions.search_person':'', 
+        'bioport_ids':view.bioport_ids,
+        'new_bioport_id':person.get_bioport_id(),
+        'search_term':request.get('search_term', ''),
+        })">kies</a>]
+        <br>
+        </span>
+        [<a tal:attributes="href python:view.url(context,'persoon', data={'bioport_id':person.get_bioport_id()})">bewerk</a>]
+    </Td>
+</tr>
+</tal:block>
+
+</table>
+</div>
+</div>
+</html>

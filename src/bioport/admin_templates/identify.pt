@@ -1,0 +1,15 @@
+<html metal:use-macro="context/@@admin_template/macros/master">
+<div metal:fill-slot="content" >
+<h1>Identificeer personen</h1>
+<p>Er zijn twee manieren om personen te identificeren:
+</p>
+<ul>
+    <li>U kunt <a tal:attributes="href python:view.url('persoonidentify')">in de lijst met personen zoeken</a> en
+    zo proberen twee bij elkaar horende personen te vinden</li>
+    <li>U kunt de lijst met paren van personen bekijken die volgens de software 
+    <a tal:attributes="href python:view.url('mostsimilar')">
+    het meest op elkaar lijken</a>.
+    </li>
+</ul>
+</div>
+</html>

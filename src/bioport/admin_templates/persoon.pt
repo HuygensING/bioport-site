@@ -9,7 +9,9 @@
  <style>
 
  </style>
+<!--  XXX: functions in following script should be replaced by corresponding jQuery calls -->
 <script>
+
 show = function(element_id) {
 	el = document.getElementById(element_id);
 	if (el) {el.style.display='';}
@@ -42,8 +44,8 @@ hide = function(element_id) {
    $('.form_floruit').hide();
 	 });
 </script>
-
 <h1>Bewerk gegevens van <em tal:content="view/title" /></h1>
+
 <p>
 De gegevens in het formulier zijn de gegevens zoals ze op het biografisch portaal worden 
 <a tal:attributes="href python:view.url(context.__parent__, 'persoon', data={'bioport_id':view.bioport_id})">getoond</a>. 
@@ -51,9 +53,15 @@ De gegevens in het formulier zijn de gegevens zoals ze op het biografisch portaa
 <p>
 De gegevens zijn grijs als ze uit de bronnen-publikaties komen, zwart als ze zijn ingevoerd door de medewerkers van het biografisch portaal.
 </p>
+<p>
+    <a tal:attributes="href python:view.url('persoonidentify', data={'bioport_ids':view.bioport_id})">identficeer deze persoon</a>
+    |
+    <a tal:attributes="OnClick string:history.go(-${view/history_counter});;return false;;" href="">terug</a>
+    </p>
 <form action="." tal:attributes="action request/URL" method="get"
       class="edit-form" >
       <input type="hidden" name="bioport_id" tal:attributes="value python:view.bioport_id" />
+      <input type="hidden" name="history_counter" tal:attributes="value python:view.history_counter" />
 <table>
     <tr>
         <th>bioport identifier</th>
@@ -402,7 +410,7 @@ De gegevens zijn grijs als ze uit de bronnen-publikaties komen, zwart als ze zij
   	<tr metal:use-macro="template/macros/separator" ></tr> 
   	
    	<!--  beroep -->
-   	<tal:block repeat="state view/occupations">
+   	<tal:block repeat="state view/occupations_with_id">
    	<tr tal:condition="state/idno" >
    		<th><span tal:condition="repeat/state/start">beroepen</span></th>
    		<td>
@@ -421,7 +429,7 @@ De gegevens zijn grijs als ze uit de bronnen-publikaties komen, zwart als ze zij
    	</tr>	
    	</tal:block>
    	<tr>
-        <th><span tal:condition="not:view/occupations">beroepen</span></th>	
+        <th><span tal:condition="not:view/occupations_with_id">beroepen</span></th>	
         <td>
     			<select name="new_occupation_id">
    				<option></option>
@@ -432,10 +440,10 @@ De gegevens zijn grijs als ze uit de bronnen-publikaties komen, zwart als ze zij
         </td>
         <td>
 	        <span 
-	           tal:condition="not:view/occupations" tal:replace="structure python:view.actions.byname['form.actions.save_occupation'].render()" />
+	           tal:condition="not:view/occupations_with_id" tal:replace="structure python:view.actions.byname['form.actions.save_occupation'].render()" />
         </td>
    	</tr>
-   	    <tr tal:repeat="i python:range(len(view.occupations), 2)">
+   	    <tr tal:repeat="i python:range(len(view.occupations_with_id), 2)">
         <th></th>   
         <td>
                 <select name="new_occupation_id">

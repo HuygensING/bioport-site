@@ -48,6 +48,9 @@ class Main_Template(grok.View):
 class Admin_Template(grok.View):
     #make the main template avaible for everything
     grok.context(zope.interface.Interface)   
+
+class SiteMacros(grok.View):
+    grok.context(zope.interface.Interface)   
     
 class Personen(BioPortTraverser,grok.View):
     
@@ -57,14 +60,26 @@ class Personen(BioPortTraverser,grok.View):
         self.batch_size = int(self.request.get('batch_size', 30))
         
     def get_persons(self):
-        d = {}
+        qry = {}
         #request.form has unicode keys - make strings
-        for k in self.request.form:
-            d[str(k)] = self.request.form[k]
-            
-        ls = self.context.repository().get_persons(**d)
+        for k in [
+            'batch_start',
+            'batch_size',
+            'beginletter',
+            'geslacht',
+            'order_by', 
+            'search_term',
+            'source_id',
+            'bioport_id', 
+            'status',
+              ]:
+            if k in self.request.keys():
+	            qry[k] = self.request[k]
+        if qry.get('search_term'):
+            qry['search_term'] = qry['search_term']
         
-        
+        ls = self.context.repository().get_persons(**qry)
+        self.qry = qry
         batch = Batch(ls, start=self.batch_start, size=self.batch_size)
         batch.grand_total = len(ls)
         return batch

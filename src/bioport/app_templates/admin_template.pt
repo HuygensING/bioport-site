@@ -33,7 +33,8 @@
 	<ul metal:define-macro="admin_navigation">
 		<li><a tal:attributes="href python:view.application_url()">Homepagina</a></li>
 		<li><a tal:attributes="href python:view.url(view.__parent__)">Admin Homepagina</a></li>
-		<li><a tal:attributes="href python:view.url('mostsimilar')">Identificeer Personen</a></li>
+		<li><a tal:attributes="href python:view.url('persoonidentify')">Identificeer personen</a></li>
+		<li><a tal:attributes="href python:view.url('mostsimilar')">Meest gelijkende personen</a></li>
 		<li><a tal:attributes="href python:view.url('persons')">Bewerk personen</a></li>
 		<li><a tal:attributes="href python:view.url('sources')">Bronnen</a></li>
 		<li><a tal:attributes="href python:view.url('edit')">Geavanceerd</a></li>
@@ -43,7 +44,7 @@
     </div>     
 
 	<div id="content_box">
-		<div tal:condition="request/msg  |nothing" tal:content="structure request/msg" class="message" />
+		<div tal:condition="view/msg | request/msg  |nothing" tal:content="structure view/msg | request/msg" class="message" />
         <div metal:define-slot="content">
         body content goes here
         </div>

@@ -14,8 +14,10 @@
 		tal:define="
 			person1 python:context.repository().get_person(x.bioport_id1);
 			person2 python:context.repository().get_person(x.bioport_id2);
-			">
-		<span tal:define="person person1">
+			"
+		tal:condition="python:person1 and person2">
+		<span tal:define="person person1"
+		  tal:condition="person">
 		<td tal:content="repeat/x/number" />
 		<td metal:define-macro="person">
 			<a tal:attributes="href python:view.url(view.__parent__.__parent__, 'persoon', data={'bioport_id':person.get_bioport_id()})" 
@@ -26,11 +28,13 @@
 			<span tal:repeat="bio python:person.get_biographies()" tal:content="python:bio.get_source().id" />
 		</td>
 		</span>
-		<span tal:define="person person2">
+		<span tal:define="person person2"
+		  tal:condition="person">
 		<td metal:use-macro="template/macros/person" />
 		</span>
-		<td>
-		<tal:block define="bioport_ids python: [person1.get_bioport_id(), person2.get_bioport_id()]">
+		<td tal:condition="python:person1 and person2">
+		<tal:block  
+		      define="bioport_ids python: [person1.get_bioport_id(), person2.get_bioport_id()]">
 			<ul metal:use-macro="context/@@mostsimilar/macros/identify_actions" />
 		</tal:block>
 		</td>

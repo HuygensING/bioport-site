@@ -13,12 +13,20 @@
 	}
 
 
+table{
+	   border-collapse:collapse; 
+	   width:100%;
+    border-top : 1px solid #999;
+    margin-top : 1em;
+	   }
+
 th {
     text-align : left;
 }  
-
-td, th {
-    border-top : 1px solid #999;
+tr {
+    border-bottom : 1px solid #999;
+}
+th, td {
     padding: .5em .5em .5em .5em;
     vertical-align : top;
 }
@@ -28,9 +36,15 @@ td ul {
     margin-top : 0;
     margin-bottom : 0;
 }
+form table {
+    margin-top : .5em;
+    margin-bottom : .5em;	
+	}
+form tr, form table {
+    border :0;
+	}
 
 form td, form th {
-    border :0;
     padding : 0em 0.3em 0.3em 0.3em;
     vertical-align : top;
 }
@@ -115,4 +129,8 @@ div.table {
 	}
 div.cell, div.merged, div.bioport {
     display: inline;
+}
+
+.grey, grey a {
+    color : grey;
 }

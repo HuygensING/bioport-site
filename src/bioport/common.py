@@ -7,8 +7,7 @@ class RepositoryInterface:
     def get_person(self, **args):
         return self.repository().get_person(**args)
 
-    def get_persons(self):
-        return self.repository().get_persons()
+
 
     
     def get_auteurs(self, **args):
@@ -72,3 +71,10 @@ def format_dates( date1='', date2=''):
         except:
             pass
         return '(%s-%s)' % (date1 or '?', date2 or '?')
+def splitthousands(s, sep=','):  
+    if len(s) <= 3: return s  
+    return splitthousands(s[:-3], sep) + sep + s[-3:]
+
+def format_number(s):
+    s = str(s)
+    return splitthousands(s, sep='.')

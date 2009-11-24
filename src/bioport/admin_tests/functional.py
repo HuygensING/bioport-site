@@ -6,9 +6,10 @@ Do a functional test on the app.
 from bioport.app import Bioport
 from bioport.tests import FunctionalLayer
 from zope.app.testing.functional import FunctionalTestCase
-from zope.testbrowser import Browser
+from zope.testbrowser.testing import Browser
 import os
 import re
+from settings import DB_CONNECTION
 class SampleFunctionalTest(FunctionalTestCase):
     layer = FunctionalLayer
 class SimpleSampleFunctionalTest(SampleFunctionalTest):
@@ -23,14 +24,16 @@ class SimpleSampleFunctionalTest(SampleFunctionalTest):
         self.base_url = 'http://localhost/app'
         self.browser = browser = Browser('http://localhost/app/admin')
         browser.handleErrors = False #show some information when an arror occurs
-        
-        link = browser.getLink('Gevanceerd')
-        link.click()
+        print self.base_url + '/admin/edit'
+#        link = browser.getLink(url=self.base_url + '/admin/edit')
+#        link.click()
+        browser.open(self.base_url + '/admin/edit')
         form = browser.getForm()
-        form.getControl(name='form.DB_CONNECTION').value = 'mysql://root@localhost/bioport_test'
+        form.getControl(name='form.DB_CONNECTION').value = DB_CONNECTION
         form.getControl(name='form.LIMIT').value = '20'
         form.submit('Edit')
         
+        self.app.repository().db.metadata.create_all()
         #add a source
         this_dir = os.path.dirname(__file__)
         source_url = 'file://%s' % os.path.join(this_dir, 'data/knaw/list.xml')
@@ -47,7 +50,8 @@ class SimpleSampleFunctionalTest(SampleFunctionalTest):
         #download the biographies for this source
         browser.open('http://localhost:8080/app/admin/sources', 'action=update_source&source_id=knaw_test')
         
-                
+    def tearDown(self):
+        self.app.repository().db.metadata.drop_all()
     def test_if_pages_work(self):
         
         browser = self.browser
@@ -71,8 +75,63 @@ class SimpleSampleFunctionalTest(SampleFunctionalTest):
             try:
 	            browser.open(self.base_url + '/' + url, data.encode('utf8'))
             except:
+                raise
                 assert 0, 'error opening %s?%s' % (self.base_url + '/' + url, data.encode('utf8'))
-    def test_admin_workflow(self):
+            print '... ok'
+    def test_personidentify_workflow(self):
+        browser = Browser('http://localhost/app/admin')
+        
+        link = browser.getLink('Identificeer personen')
+        link.click()
+        
+        #search for the first person
+        form = browser.getForm(index=0)
+        form.getControl(name='search_term').value='hilbrand'
+        form.getControl(name='form.actions.search_persons').click()
+        assert 'Hilbrand' in browser.contents, browser.contents
+        
+        #choose it and put it in the list
+        browser.getLink('kies').click()
+       
+        #we now selected the person
+        #we can find the name of the person, followed by a 'verwijder' link
+        assert re.findall('Hilbrand.*verwijder', browser.contents, re.DOTALL), browser.contents
+        
+        
+        #the page remembered the serach term
+        form = browser.getForm()
+        self.assertEqual(form.getControl(name='search_term').value, 'hilbrand')
+        
+        #search for a second person, using a wildcard pattern
+        form.getControl(name='search_term').value =  'Heyns*'
+        form.getControl(name='form.actions.search_persons').click()
+        
+        #choose it as well
+        browser.getLink('kies').click()
+        
+        assert re.findall('Hilbrand.*verwijder', browser.contents, re.DOTALL), browser.contents
+        assert re.findall('Heyns.*verwijder', browser.contents, re.DOTALL), browser.contents
+        #remove the frist person
+        browser.getLink('verwijder keuze').click()
+        
+        assert not re.findall('Hilbrand.*verwijder', browser.contents, re.DOTALL), browser.contents
+        assert re.findall('Heyns.*verwijder', browser.contents, re.DOTALL), browser.contents
+        
+        
+        #choose another person
+        form = browser.getForm()
+        form.getControl(name='search_term').value= 'kraemer'
+        form.getControl(name='form.actions.search_persons').click()
+        browser.getLink('kies').click()
+        
+        
+        #identify the two
+        browser.getLink('identiek').click()
+        
+        #now the two items names are identifed (but how to check?)
+    def test_most_similar_workflow(self): 
+        pass
+    def test_edit_workflow(self):
         """ test creating a bioport instance into Zope """
 
         
@@ -145,24 +204,31 @@ class SimpleSampleFunctionalTest(SampleFunctionalTest):
         """does the 'save everyting' button indeed save everything? """
         browser.open(edit_url)
         form = browser.getForm()
-        form.getControl(name='sex').value=['1']
-        form.getControl(name='baptism_y').value='555'
-        form.getControl(name='birth_text').value='ongeveer rond 200 geboren'
-        form.getControl(name='birth_y').value=''
-        form.getControl(name='state_floruit_from_y').value='1222'
-        form.getControl(name='status').value=['2']
-        form.getControl(name='remarks').value='het opmerkingen veld'
+        vals = [
+            ('sex', ['1']),
+            ('baptism_y', '555'),
+            ('birth_text', 'ladida'),
+            ('birth_y', ''),
+            ('state_floruit_from_y', '2000'),
+            ('status', ['1']),
+            ('remarks', 'ongeveer rond'),
+        ]
+        for k, v in vals:
+            try:
+	            form.getControl(name=k).value = v
+            except:
+                print '********', k, v
+                raise
         form.getControl(name='form.actions.save_everything').click()
-
+        form = browser.getForm()
+        for k,v in vals:
+            self.assertEqual(form.getControl(name=k).value, v)
+            
         browser.open(public_url)
         assert re.findall('man', browser.contents, re.DOTALL), browser.contents
-        assert re.findall('<td class="datum">\s*?555\s*?</td>', browser.contents, re.DOTALL)
-        assert re.findall('ongeveer rond 200', browser.contents, re.DOTALL), browser.contents
-        assert re.findall('1222', browser.contents, re.DOTALL), browser.contents
+        assert re.findall('<td class="datum">\s*?%s\s*?</td>' % dict(vals)['baptism_y'], browser.contents, re.DOTALL)
+        assert re.findall(dict(vals)['birth_text'], browser.contents, re.DOTALL), browser.contents
         
         #changes in, e.g., birth events, should turn up in the master list
-        browser = Browser('http://localhost/app/admin')
-        link = browser.getLink('Bewerk personen')
-        link.click()
+        browser = Browser('http://localhost/app/admin/persons')
         #XXX but the next test might fail if we do not have one of the first persons...
-        assert re.findall('ongeveer rond 200', browser.contents, re.DOTALL)

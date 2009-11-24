@@ -16,8 +16,8 @@
 			person2 python:context.repository().get_person(x.bioport_id2);
 			">
 		<span tal:define="person person1">
-		<td tal:content="repeat/x/number" />
-		<td metal:define-macro="person">
+		<td tal:content="repeat/x/number"  />
+		<td metal:define-macro="person" tal:condition="person">
 			<a tal:attributes="href python:view.url(view.__parent__.__parent__, 'persoon', data={'bioport_id':person.get_bioport_id()})" 
 				tal:content="python:person.naam() and person.naam().guess_normal_form() or 'geen naam bekend'" />
 			<br>
@@ -27,7 +27,7 @@
 		</td>
 		</span>
 		<span tal:define="person person2">
-		<td metal:use-macro="template/macros/person" />
+		<td metal:use-macro="template/macros/person" tal:condition="person" />
 		</span>
 		<td>
 		<ul tal:condition="nothing">
