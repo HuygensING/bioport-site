@@ -6,7 +6,7 @@
 
 
 <div class="batch_navigation" metal:define-macro="batch_navigation"
-    tal:condition="python:0 and batch and len(batch)">
+    tal:condition="python:batch and len(batch)">
  <div tal:omit-tag=""
     tal:define="
         last_batch python:batch.batches[-1];
