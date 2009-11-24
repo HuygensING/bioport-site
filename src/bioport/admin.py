@@ -568,7 +568,7 @@ class PersoonIdentify(MostSimilar, Persons, Persoon):
         #Persoon.update(self, **args)
 #        self.persons =Batch([])
 #        self.persons.grand_total = 0
-#        self.bioport_ids = self.request.get('bioport_ids', [])
+        self.bioport_ids = self.request.get('bioport_ids', [])
         if type(self.bioport_ids) != type([]):
             self.bioport_ids = [self.bioport_ids]
         if self.request.get('new_bioport_id'):
