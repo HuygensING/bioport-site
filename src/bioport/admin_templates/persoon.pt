@@ -587,7 +587,7 @@ De gegevens zijn grijs als ze uit de bronnen-publikaties komen, zwart als ze zij
 		    tal:define="tekst python:bio.get_value('tekst')"
 			tal:condition="python:bio.get_source().id != 'bioport'">
 			<h1 tal:content="python:bio.get_source().id"></h1>
-			<div tal:content="tekst"></div>
+			<div tal:content="structure tekst"></div>
 			<p>
 			 <a tal:attributes="
        href python:bio.get_value('url_biografie'); 
