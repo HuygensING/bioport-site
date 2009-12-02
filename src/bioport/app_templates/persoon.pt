@@ -2,13 +2,16 @@
     <title metal:fill-slot="head_title"
         tal:content="structure python:view.biography.title()" ></title> 
     <div metal:fill-slot="content"
-    	tal:define="illustraties  python:view.biography.get_illustrations(default= [static['geen_plaatje.png']])"
+    	tal:define="illustraties  python:view.biography.get_illustrations()"
     	>
     <div class="illustratie" tal:repeat="ill python:illustraties[:1]">
     <img
         tal:attributes="src ill/cached_url" 
         alt="illustratie bij deze biografie" />
         <tt tal:content="ill/cached_url" />
+    </div>
+    <div class="illustratie" tal:condition="not:illustraties">
+        <img tal:attributes="src static/geen_plaatje.png" />
     </div>
     <div id="bioinfo" >
     <h1 tal:content="structure python:view.biography.naam() and view.biography.naam().volledige_naam()" />
