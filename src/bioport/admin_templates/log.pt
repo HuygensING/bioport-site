@@ -1,0 +1,19 @@
+<html metal:use-macro="context/@@admin_template/macros/master">
+<div metal:fill-slot="content" >
+<h1>Log</h1>
+<span metal:define-macro="alfabet" tal:repeat="letter string:abcdefghijklmnopqrstuvwxyz"
+    tal:attributes="class python:letter == request.get('beginletter') and 'alfabet selected' or 'alfabet'"
+    ><a tal:attributes="href string:${view/url}?startswith=${letter}&batch_size=99999" ><span tal:replace="letter/upper" /></a></span>
+
+<table>
+	<tr tal:repeat="r python:view.get_log_messages()">
+		<td tal:content="r/timestamp" />
+		<td tal:content="r/user" />
+		<td tal:content="r/msg" />
+		<td tal:content="r/table" />
+		<td tal:content="r/record_id_int" />
+		<td tal:content="r/record_id_str" />
+	</tr>
+</table>
+</div>
+</html>
