@@ -7,7 +7,7 @@ tal:define="batch view/get_persons">
     ><a tal:attributes="href python:view.url(view, data={'beginletter':letter, 'source_id':request.get('source_id', ''), 'status':request.get('status', '')})" ><span tal:replace="letter/upper" /></a></span>
 <p>
 <form tal:attributes="action view/url">
-	<span tal:repeat="source python:context.repository().get_sources()"
+	<span tal:repeat="source python:view.repository().get_sources()"
 		tal:condition="nothing"
 	    tal:attributes="class python:source.id == request.get('source_id') and 'alfabet selected' or 'alfabet'"
 	>
@@ -19,7 +19,7 @@ naam: <input type="text" name="search_term" tal:attributes="value request/search
 bron:
 <select name="source_id">
 	<option>
-	<option tal:repeat="source python:[s for s in context.repository().get_sources() if s.id != 'bioport']" 
+	<option tal:repeat="source python:[s for s in view.get_sources() if s.id != 'bioport']" 
 		tal:attributes="value source/id;
 			selected python:source.id == request.get('source_id')"
 		tal:content="python:source.id" />
@@ -42,7 +42,7 @@ levensjaren niet ingevuld <input type="checkbox" />
 	<br>
 </form>
 <ul>
-<li tal:condition="request/auteur_id | nothing">U zocht naar biografie&euml;n met <em tal:content="structure python:context.repository().get_author(request.form['auteur_id']).name"></em> als auteur.</li>
+<li tal:condition="request/auteur_id | nothing">U zocht naar biografie&euml;n met <em tal:content="structure python:view.repository().get_author(request.form['auteur_id']).name"></em> als auteur.</li>
 <li tal:condition="request/beroep_id | nothing">U zocht naar biografie&euml;n met <em tal:content="structure python:here.get_beroep(request.beroep_id).naam"></em> als beroep.</li>
 </ul>
 

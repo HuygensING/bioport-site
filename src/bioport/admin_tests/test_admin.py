@@ -28,7 +28,7 @@ class SimpleSampleTest(unittest.TestCase):
         admin.DB_CONNECTION = 'mysql://root@localhost/bioport_test'
         self.app = grokapp
         self.admin = admin
-        self.repo = repo = self.admin.get_repository()
+        self.repo = repo = self.admin.repository(user=None)
         self.repo.db.metadata.drop_all()
         repo.db.metadata.create_all()
         url = os.path.join(os.path.dirname(BioPortRepository.__file__), 'tests', 'data','knaw', 'list.xml')
@@ -37,9 +37,6 @@ class SimpleSampleTest(unittest.TestCase):
         
     def tearDown(self):
         self.repo.db.metadata.drop_all()
-    def test1(self):
-        "Test that something works"
-        assert self.admin.get_repository()
         
     def test_sources(self):
         request = TestRequest()

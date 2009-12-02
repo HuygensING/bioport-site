@@ -2,7 +2,7 @@
 <div metal:fill-slot="content"
     tal:define="
         source_id python:request.get('source_id');
-        source python:context.repository().get_source(source_id);"
+        source python:view.repository().get_source(source_id);"
         >
 
 <h1>Bewerk bron <em tal:content="source/id" /></h1>
@@ -28,7 +28,7 @@
             <select name="quality">
                 
                 <option 
-                    tal:repeat="option python:context.repository().get_sources(order_by='quality', desc=True)"
+                    tal:repeat="option python:view.repository().get_sources(order_by='quality', desc=True)"
                     tal:define="source_quality python:source.get_value('quality') or 0;"
                     tal:attributes="
                         value python:not option.quality and 0 or option.quality;

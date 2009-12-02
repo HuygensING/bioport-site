@@ -43,7 +43,7 @@
      </span>
   </span>
 </form>
-<p>[Use "fill the similairty cache" if you have added new sources.  Use the "refresh similarity cache" if the algorithm has changed.
+<p>[Use "fill the similarity cache" if you have added new sources.  Use the "refresh similarity cache" if the algorithm has changed.
 (the first addes only records for new names, the second completely reconstructs the table. And BE PATIENT (it can take hours)]
 
 </div>

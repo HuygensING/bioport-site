@@ -2,9 +2,26 @@ import grok
 import zope.interface
 from z3c.batching.batch import  Batch
 import random
-from common import RepositoryInterface, maanden, format_date, format_dates
+from common import  maanden, format_date, format_dates
 from NamenIndex.common import to_ymd, from_ymd
-class Bioport(grok.Application, grok.Container, RepositoryInterface):
+
+class RepositoryView:
+    def repository(self):
+        principal = self.request.principal
+        user = principal and principal.id
+        return self.context.repository(user=user)
+    
+    def get_sources(self):
+        return self.repository().get_sources()
+    
+    def get_person(self, **args):
+        return self.repository().get_person(**args)
+    
+    def get_status_values(self, k=None):
+        return self.repository().get_status_values(k)
+    
+class Bioport(grok.Application, grok.Container):
+              
     SVN_REPOSITORY = None
     SVN_REPOSITORY_LOCAL_COPY = None
     DB_CONNECTION = None
@@ -16,6 +33,11 @@ class Bioport(grok.Application, grok.Container, RepositoryInterface):
         self['admin'].DB_CONNECTION = db_connection
     def format_dates(self, s1, s2):
         return  format_dates(s1, s2)
+
+    def repository(self, user):
+        return self['admin'].repository(user=user)
+
+#    
 class BioPortTraverser(object):
     
     #CODE for construction traverse_subpath from 
@@ -35,7 +57,7 @@ class BioPortTraverser(object):
         else:
             return default   
         
-class Index(grok.View):
+class Index(grok.View, RepositoryView):
     pass # see app_templates/index.pt
 
 class Popup_Template(grok.View):
@@ -52,7 +74,7 @@ class Admin_Template(grok.View):
 class SiteMacros(grok.View):
     grok.context(zope.interface.Interface)   
     
-class Personen(BioPortTraverser,grok.View):
+class Personen(BioPortTraverser,grok.View,RepositoryView):
     
     def update(self, **kw):
         
@@ -78,7 +100,7 @@ class Personen(BioPortTraverser,grok.View):
         if qry.get('search_term'):
             qry['search_term'] = qry['search_term']
         
-        ls = self.context.repository().get_persons(**qry)
+        ls = self.repository().get_persons(**qry)
         self.qry = qry
         batch = Batch(ls, start=self.batch_start, size=self.batch_size)
         batch.grand_total = len(ls)
@@ -89,13 +111,13 @@ class Personen(BioPortTraverser,grok.View):
         data['batch_start'] = start 
         return self.url(data= data)
     
-class Persoon(BioPortTraverser, grok.View): #, BioPortTraverser):
+class Persoon(BioPortTraverser, grok.View,RepositoryView): #, BioPortTraverser):
     def update(self, **args):
         self.bioport_id = self.traverse_subpath_helper(0) or self.request.get('bioport_id')
         if not self.bioport_id:
-            self.bioport_id = random.choice(self.context.repository().get_bioport_ids())
+            self.bioport_id = random.choice(self.repository().get_bioport_ids())
             self.redirect(self.url(self) + '/'+ self.bioport_id)
-        self.person  = self.context.get_person(bioport_id=self.bioport_id) 
+        self.person  = self.repository().get_person(bioport_id=self.bioport_id) 
         redirects_to = self.person.redirects_to()
         if redirects_to:
             self.redirect(self.url(self, redirects_to))
@@ -155,7 +177,7 @@ class Zoek(grok.View):
     pass
 
 
-class Auteurs(grok.View):
+class Auteurs(grok.View,RepositoryView):
     def update(self, **kw):
         self.batch_start = int(self.request.get('batch_start', 0))
         self.batch_size = int(self.request.get('batch_size', 50))
@@ -166,7 +188,7 @@ class Auteurs(grok.View):
         for k in self.request.form:
             d[str(k)] = self.request.form[k]
         
-        ls = self.context.repository().get_authors(**d) 
+        ls = self.repository().get_authors(**d) 
         
         batch = Batch(ls, start=self.batch_start, size=self.batch_size)
         batch.grand_total = len(ls)

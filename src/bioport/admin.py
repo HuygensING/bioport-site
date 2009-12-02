@@ -6,15 +6,17 @@ import BioPortRepository
 from BioPortRepository.common import  BioPortException
 from NamenIndex.common import to_ymd, from_ymd
 from NamenIndex.naam import Naam
-from common import RepositoryInterface, format_date, format_dates, format_number
+from common import format_date, format_dates, format_number
 from zope.interface import Interface
 from zope import schema
 import app
+from app import RepositoryView
 from permissions import *
 from z3c.batching.batch import  Batch
 
 from zope.session.interfaces import ISession
 
+    
 class IAdminSettings(Interface):           
     SVN_REPOSITORY = schema.TextLine(title=u'URL of svn repository', required=False)
     SVN_REPOSITORY_LOCAL_COPY = schema.TextLine(title=u'path to local copy of svn repository', required=False)
@@ -22,17 +24,20 @@ class IAdminSettings(Interface):
     DB_CONNECTION = schema.TextLine(title=u'Database connection (e.g. "mysql://root@localhost/bioport_test" )', required=False)
     LIMIT = schema.Decimal(title=u'Dont download more than this amount of biographies per source (used for testing)', required=False)
 
-    
-class Admin(grok.Container,  RepositoryInterface):
+    IMAGES_CACHE_LOCAL = schema.TextLine(title=u'Local path to the place where images are kept', required=False) 
+    IMAGES_CACHE_URL = schema.TextLine(title=u'URL to the place where images are kept', required=False) 
+
+class Admin(grok.Container  ):
+    grok.require('bioport.Edit')
     grok.implements(IAdminSettings)
     grok.template('admin_index')
-    
     SVN_REPOSITORY = None
     SVN_REPOSITORY_LOCAL_COPY = None
     DB_CONNECTION = None
     LIMIT = None
-    
-    def get_repository(self):
+    IMAGES_CACHE_LOCAL = None
+    IMAGES_CACHE_URL = None
+    def repository(self, user):
         try:
             return self._repo
         except:
@@ -40,16 +45,21 @@ class Admin(grok.Container,  RepositoryInterface):
 	            svn_repository=self.SVN_REPOSITORY, 
 	            svn_repository_local_copy=self.SVN_REPOSITORY_LOCAL_COPY,
 	            db_connection=self.DB_CONNECTION,
+                images_cache_local=self.IMAGES_CACHE_LOCAL,
+                images_cache_url=self.IMAGES_CACHE_URL,
+                user=user,
 	            ZOPE_SESSIONS=False, #use z3c.saconfig package
 	        ) 
 	    return self._repo
 
     def __getstate__(self):
         #we cannot (And dont want to) pickle the repository -- like this we exclude it
-        del self.__dict__['_repo']
+        try:
+	        del self.__dict__['_repo']
+        except KeyError:
+            pass
         return self.__dict__
-    def repository(self):
-        return self.get_repository()
+
     
     def format_date(self, s):
         return format_date(s)
@@ -59,89 +69,91 @@ class Admin(grok.Container,  RepositoryInterface):
     
     def format_number(self, s):
         return format_number(s)
+
+
     
-class Edit(grok.EditForm):
+    def get_auteurs(self, **args):
+        return self.repository().get_authors()   
+    
+class Edit(grok.EditForm,RepositoryView):
+    grok.require('bioport.Manage')
     grok.template('edit')
     grok.context(Admin)
     form_fields = grok.Fields(IAdminSettings)
     @grok.action(u"Edit Admin settings", name="edit_settings")
     def edit_admin(self, **data):
         self.applyData(self.context, **data)
-        self.context.get_repository().db.metadata.create_all()
+        self.repository().db.metadata.create_all()
+        
         self.redirect(self.url(self))
     
-#    @grok.action('reset database (LOOK OUT)', name="reset_database")
-#    def reset_database(self, **data):
-#        self.context.get_repository().db.metadata.drop_all()
-#        self.context.get_repository().db.metadata.create_all()
-#        self.redirect(self.url(self))
-        
     @grok.action('Fill the similarity Cache', name='fill_similarity_cache') 
     def fill_similarity_cache(self, **data):
-        self.context.repository().db.fill_similarity_cache()
+        self.repository().db.fill_similarity_cache()
         self.redirect(self.url(self))
        
        
     @grok.action('Refresh the similar persons cache')
     def fill_most_similar_persons_cache(self, **data):
-        self.context.repository().db.fill_most_similar_persons_cache(refresh=True)
+        self.repository().db.fill_most_similar_persons_cache(refresh=True)
         self.redirect(self.url(self))
         
         
     @grok.action('Create non-existing tables')
     def reset_database(self, **data):
-        self.context.get_repository().db.metadata.create_all()
+        self.repository().db.metadata.create_all()
         self.redirect(self.url(self))
         
     @grok.action('Refresh the similarity cache [I.E. EMPTYING IT FIRST]')
     def refresh_similirity_cache(self, **data): 
-        self.context.repository().db.fill_similarity_cache(refresh=True)
+        self.repository().db.fill_similarity_cache(refresh=True)
         self.redirect(self.url(self))
         
     @grok.action('Fill geolocations table')
     def fill_geolocations_table(self, **data): 
-        self.context.repository().db._update_geolocations_table()
+        self.repository().db._update_geolocations_table()
         self.redirect(self.url(self))
         
     @grok.action('Fill occupations table')
     def fill_occupations_table(self, **data): 
-        self.context.repository().db._update_occupations_table()
+        self.repository().db._update_occupations_table()
         self.redirect(self.url(self))
         
     @grok.action('Set state of edited persons to bewerkte(JG: DELETE THIS BUTTON WHEN DONE)')
     def set_state_to_bewerkt(self, **data):
         from BioPortRepository.upgrade import upgrade_persons
-        upgrade_persons(self.context.repository())
+        upgrade_persons(self.repository())
 class Display(grok.DisplayForm):
+    grok.require('bioport.Edit')
     grok.context(Admin)
     form_fields = grok.Fields(IAdminSettings)
  
 class Index(grok.View):
-    pass
+    grok.require('bioport.Edit')
     
-class Biographies(grok.View):
+class Biographies(grok.View, RepositoryView):
+    grok.require('bioport.Edit')
     grok.context(Admin)
     
     def get_biographies(self):
-        return self.context.get_repository().get_biographies()
+        return self.repository().get_biographies()
 
 
 class Biography(grok.View):
+    grok.require('bioport.Edit')
     pass
 
 
-class Persons(app.Personen):
-    def get_status_values(self, k=None):
-        return self.context.repository().get_status_values(k)
+class Persons(app.Personen,RepositoryView):
+    grok.require('bioport.Edit')
+
     
-class Source(grok.EditForm):
-    def get_repository(self):
-        repository = self.context.repository()
-        return repository
-    
+class Source(grok.EditForm,RepositoryView):
+    grok.require('bioport.Edit')
+
     def update(self, source_id=None, description=None, url=None, quality=None):
         if source_id:
-            repository = self.get_repository()
+            repository = self.repository()
             source = repository.get_source(source_id) 
             if url is not None:
                 source.set_value(url=url)
@@ -157,8 +169,9 @@ class Source(grok.EditForm):
             
         
                
-class Sources(grok.View):
+class Sources(grok.View,RepositoryView):
     
+    grok.require('bioport.Manage')
 
     def update(self, action=None, source_id=None, url=None, description=None):
         if action == 'update_source':
@@ -168,23 +181,29 @@ class Sources(grok.View):
             self.source_delete(source_id)
         elif action=='add_source':
             self.add_source(source_id, url, description)   
-            
+        elif action=='download_illustrations':
+            self.download_illustrations(source_id) 
     def update_source(self, source_id):
-        repo = self.context.repository()
+        repo = self.repository()
         source =repo.get_source(source_id)
         repo.update_source(source, limit=int(self.context.LIMIT))
+    
+    def download_illustrations(self, source_id): 
+        repo = self.repository()
+        source =repo.get_source(source_id)
+        repo.download_illustrations(source, limit=int(self.context.LIMIT))
         
     def download_data(self, source_id):
-        repository = self.context.repository()
+        repository = self.repository()
         source = repository.get_source(id=source_id)
         repository.download_biographies(source=source)
         self.redirect(self.url())
     def add_source(self, source_id, url, description=None):
-        source = self.context.repository().add_source(BioPortRepository.source.Source(source_id, url, description))
+        source = self.repository().add_source(BioPortRepository.source.Source(source_id, url, description))
  
     def source_delete(self, source_id):
-        repo = self.context.repository() 
-        source = self.context.repository().get_source(source_id)
+        repo = self.repository() 
+        source = self.repository().get_source(source_id)
         repo.commit(source)
         repo.delete_source(source)
         
@@ -192,14 +211,15 @@ class Sources(grok.View):
         print msg
         return msg
     
-class MostSimilar(grok.Form):
-    #grok.require('bioport.EditRepository')
+class MostSimilar(grok.Form,RepositoryView):
+    grok.require('bioport.Edit')
+
     def update(self):
         self.start = int(self.request.get('start', 0))
         self.size = int(self.request.get('size', 20))
         self.similar_to = self.request.get('similar_to', None)
         self.redirect_to = None
-        self.most_similar_persons = self.context.repository().get_most_similar_persons(start=self.start, size=self.size, similar_to = self.similar_to)
+        self.most_similar_persons = self.repository().get_most_similar_persons(start=self.start, size=self.size, similar_to = self.similar_to)
     def goback(self,  data = None):
         redirect_url = self.url(data=data)
         if self.redirect_to:
@@ -209,7 +229,7 @@ class MostSimilar(grok.Form):
     @grok.action('identificeer', name='identify')
     def identify(self):
         bioport_ids = self.request.get('bioport_ids')
-        repo = self.context.repository()
+        repo = self.repository()
         persons = [BioPortRepository.person.Person(id, repository=repo) for id in bioport_ids]
         assert len(persons) == 2
         repo.identify(persons[0], persons[1])
@@ -227,7 +247,7 @@ class MostSimilar(grok.Form):
     @grok.action('anti-identificeer', name='antiidentify')
     def antiidentify(self):
         bioport_ids = self.request.get('bioport_ids')
-        repo = self.context.repository()
+        repo = self.repository()
         persons = [BioPortRepository.person.Person(id, repository=repo) for id in bioport_ids]
         p1, p2 = persons
         repo.antiidentify(p1, p2)
@@ -246,7 +266,7 @@ class MostSimilar(grok.Form):
     @grok.action('Moeilijk geval', name='deferidentification')
     def deferidentification(self):
         bioport_ids = self.request.get('bioport_ids') 
-        repo = self.context.repository()
+        repo = self.repository()
         persons = [BioPortRepository.person.Person(id, repository=repo) for id in bioport_ids]
         p1, p2 = persons
         repo.defer_identification(p1, p2)
@@ -270,7 +290,7 @@ class MostSimilar(grok.Form):
         self.update()
         if len(self.selected_persons) == 1:
             person = self.selected_persons[0]
-            ls = self.context.repository().get_most_similar_persons(similar_to=person.bioport_id)
+            ls = self.repository().get_most_similar_persons(similar_to=person.bioport_id)
             def other_person(i):
                 score, p1, p2 = i
                 if person.bioport_id == p1.bioport_id:
@@ -286,20 +306,21 @@ class MostSimilar(grok.Form):
             self.persons = batch 
             self.persons.grand_total = len(ls)
 
-class Persoon(app.Persoon, grok.EditForm):
+class Persoon(app.Persoon, grok.EditForm, RepositoryView):
     """This should really be an "Edit" view on a "Person" Model
     
     But I am in an incredible hurry and have no time to learn :-("""
    
+    grok.require('bioport.Edit')
     def update(self, **args):
         self.bioport_id = self.request.get('bioport_id')         
         if not self.bioport_id:
             #XXX make a userfrienlider error
             assert 0, 'need bioport_id in the request'
-            
-        self.repository = self.context.repository()
-        self.person  = self.repository.get_person(bioport_id=self.bioport_id)  
-        self.bioport_biography =  self.repository.get_bioport_biography(self.person) 
+        repository= self.repository() 
+        self.person  = repository.get_person(bioport_id=self.bioport_id)  
+        assert self.person, 'NO PERSON FOUND WITH THIS ID %s' % self.bioport_id
+        self.bioport_biography =  repository.get_bioport_biography(self.person) 
         self.merged_biography  = self.person.get_merged_biography()
 
         self.occupations = self.get_states(type='occupation')
@@ -419,7 +440,7 @@ class Persoon(app.Persoon, grok.EditForm):
         for idx in range(len(occupation_ids)):
             occupation_id = occupation_ids[idx] 
             if occupation_id:
-                name = self.repository.get_occupation(occupation_id).name  
+                name = self.repository().get_occupation(occupation_id).name  
                 self.bioport_biography.add_or_update_state(type='occupation', idno=occupation_id, text=name, idx=idx)
             else:
                 to_delete.append(idx) 
@@ -433,15 +454,15 @@ class Persoon(app.Persoon, grok.EditForm):
             new_occupation_ids = [new_occupation_ids]
         new_occupation_ids = [s for s in new_occupation_ids if s ]
         for new_occupation_id in new_occupation_ids:
-            name = self.repository.get_occupation(new_occupation_id).name 
+            name = self.repository().get_occupation(new_occupation_id).name 
             self.bioport_biography.add_state(type='occupation', idno=new_occupation_id, text=name)
     
 
     def save_biography(self):
         if not self.person.status:
             self.person.status = 2 #set status to bewerkt
-        self.repository.save_person(self.person)
-        self.repository.save_biography(self.bioport_biography)
+        self.repository().save_person(self.person)
+        self.repository().save_biography(self.bioport_biography)
         #we need to reload merged_biography because changes are not automatically picked up
         self.person.refresh()
         self.merged_biography  = self.person.get_merged_biography()
@@ -512,7 +533,7 @@ class Persoon(app.Persoon, grok.EditForm):
     
     def _save_remarks(self): 
         self.person.remarks = self.request.get('remarks')
-        self.repository.save_person(self.person)
+        self.repository().save_person(self.person)
        
         
     @grok.action('bewaar alle veranderingen', name='save_everything')  
@@ -562,6 +583,7 @@ class Persoon(app.Persoon, grok.EditForm):
             
 class PersoonIdentify(MostSimilar, Persons, Persoon):
     
+    grok.require('bioport.Edit')
     def update(self, **args):
         Persons.update(self, **args)
         MostSimilar.update(self, **args)
@@ -573,26 +595,32 @@ class PersoonIdentify(MostSimilar, Persons, Persoon):
             self.bioport_ids = [self.bioport_ids]
         if self.request.get('new_bioport_id'):
             self.bioport_ids.append(self.request.get('new_bioport_id'))
-        self.selected_persons = [self.context.repository().get_person(bioport_id) for bioport_id in self.bioport_ids]
+        self.selected_persons = [self.repository().get_person(bioport_id) for bioport_id in self.bioport_ids]
         self.selected_persons = [p for p in self.selected_persons if p]
 
         self.persons = []
         
 
 
-class IdentifyMoreInfo(MostSimilar, Persons, Persoon):
+class IdentifyMoreInfo(MostSimilar, Persons, Persoon,RepositoryView):
+    grok.require('bioport.Edit')
     def update(self, bioport_ids=[]):
-        MostSimilar.update(self)
-        repo = self.context.repository()
+        repo = self.repository()
         persons = [BioPortRepository.person.Person(id, repository=repo) for id in bioport_ids]
         self.bioport_ids = bioport_ids
         self.persons = persons
-        self.redirect_to = self.request.get('redirect_to') or self.request.get('HTTP_REFERER')
-        if self.redirect_to:
-            self.redirect_to = self.redirect_to.split('?')[0]
-        
+        self.start = int(self.request.get('start', 0))
+        self.redirect_to = None
+    def goback(self,  data = None):
+        most_similar_persons = self.repository().get_most_similar_persons(start=self.start, size=5)
+        score, p1, p2= most_similar_persons[0]
+        data = {'bioport_ids':[p1.bioport_id, p2.bioport_id], 'start':self.start}
+        redirect_url = self.url(data=data)
+        self.redirect(redirect_url) 
+       
 
-class ChangeName(Persoon, grok.EditForm): 
+class ChangeName(Persoon, grok.EditForm,RepositoryView): 
+    grok.require('bioport.Edit')
     
     def update(self, **args):
         Persoon.update(self, **args)
@@ -601,7 +629,7 @@ class ChangeName(Persoon, grok.EditForm):
             #XXX make a userfrienlider error
             assert 0, 'need bioport_id in the request'
         self.person  = self.context.get_person(bioport_id=self.bioport_id)  
-        self.bioport_biography  = self.context.repository().get_bioport_biography(self.person)
+        self.bioport_biography  = self.repository().get_bioport_biography(self.person)
         
         if not self.bioport_biography.get_namen():
             for naam in self.person.get_merged_biography().get_names():
@@ -633,7 +661,7 @@ class ChangeName(Persoon, grok.EditForm):
             volledige_naam = volledige_naam,
             **args
         )
-        repository = self.context.repository()
+        repository = self.repository()
         bio._replace_name(name, self.idx)
         repository.save_biography(bio)
         self.msg = 'changed a name'
@@ -643,12 +671,15 @@ class ChangeName(Persoon, grok.EditForm):
     
     
 class AntiIdentified(grok.View):
+    grok.require('bioport.Edit')
     pass
 
 class Identified(grok.View):
+    grok.require('bioport.Edit')
     pass
 
 class Deferred(grok.View):
+    grok.require('bioport.Edit')
     def update(self, **args):
         self.redirect_to = None
     
@@ -658,7 +689,8 @@ class Uitleg(grok.View):
 class Uitleg_Zoek(grok.View):        
     pass   
     
-class Locations(grok.View):     
+class Locations(grok.View,RepositoryView):     
+    grok.require('bioport.Edit')
     def update(self, **kw):
         self.batch_start = int(self.request.get('batch_start', 0))
         self.batch_size = int(self.request.get('batch_size', 30))
@@ -666,16 +698,26 @@ class Locations(grok.View):
         self.name = self.request.get('name', None)
         
     def get_locations(self):
-        ls = self.context.repository().db.get_locations(startswith=self.startswith, name=self.name)
+        ls = self.repository().db.get_locations(startswith=self.startswith, name=self.name)
         
         batch = Batch(ls, start=self.batch_start, size=self.batch_size)
         batch.grand_total = len(ls)
         return batch
     
 class ChangeLocation(Locations):    
+    grok.require('bioport.Edit')
     def update(self, **kw):
         Locations.update(self)
         self.location = self.request.get('place_id')
 
 class Identify(grok.View):
+    grok.require('bioport.Edit')
+    pass
+
+
+class Log(grok.View,RepositoryView):
+    grok.require('bioport.Edit')
+    def get_log_messages(self):
+        return self.repository().get_log_messages()
+    
     pass

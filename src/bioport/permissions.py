@@ -1,6 +1,9 @@
 
 import grok
 
-class EditRepository(grok.Permission):
-    grok.name('bioport.EditRepository')
+class Edit(grok.Permission):
+    grok.name('bioport.Edit')
     
+class Manage(grok.Permission):
+    grok.name('bioport.Manage')
+       

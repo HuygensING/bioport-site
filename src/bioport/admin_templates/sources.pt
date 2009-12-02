@@ -6,12 +6,12 @@
     <p tal:condition="python:order_by == 'quality'">De bronnen staan in volgorde van kwaliteit - de beste staan bovenaan</p>
     <table>
     <tr><th>Id</th><th>URL</th><th>Quality</th><th>actions</th></tr>
-    <div tal:repeat="source python:context.repository().get_sources(order_by=order_by, desc=True)" tal:omit-tag="">
+    <div tal:repeat="source python:view.repository().get_sources(order_by=order_by, desc=True)" tal:omit-tag="">
         <tr>
             <td>
                 <span tal:replace="source/id" />
                 <br>
-                (<a tal:attributes="href python:view.url(context, 'biographies', {'source_id':source.id})"><span tal:replace="python:context.repository().count_biographies(source=source)" /> biografie&euml;n</a>)
+                (<a tal:attributes="href python:view.url(context, 'persons', {'source_id':source.id})"><span tal:replace="python:view.repository().count_biographies(source=source)" /> biografie&euml;n</a>)
             <td>
                 <a tal:content="source/url" tal:attributes="href source/url"></a> 
                 <br>
@@ -25,6 +25,7 @@
             <td>
     <ul>
 <li>    <a tal:attributes="href string:${view/url}?action=update_source&source_id=${source/id}">download biographies</a>
+<li>    <a tal:attributes="href string:${view/url}?action=download_illustrations&source_id=${source/id}">download illustrations [to the local cache]</a>
 <li>    <a tal:attributes="href string:source?source_id=${source/id}">edit</a>
 <li>    <a tal:attributes="href string:${view/url}?action=source_delete&source_id=${source/id}">delete</a>
             </ul>

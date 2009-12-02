@@ -33,7 +33,7 @@ class SimpleSampleFunctionalTest(SampleFunctionalTest):
         form.getControl(name='form.LIMIT').value = '20'
         form.submit('Edit')
         
-        self.app.repository().db.metadata.create_all()
+        self.app.repository(user=None).db.metadata.create_all()
         #add a source
         this_dir = os.path.dirname(__file__)
         source_url = 'file://%s' % os.path.join(this_dir, 'data/knaw/list.xml')
@@ -51,11 +51,11 @@ class SimpleSampleFunctionalTest(SampleFunctionalTest):
         browser.open('http://localhost:8080/app/admin/sources', 'action=update_source&source_id=knaw_test')
         
     def tearDown(self):
-        self.app.repository().db.metadata.drop_all()
+        self.app.repository(user=None).db.metadata.drop_all()
     def test_if_pages_work(self):
         
         browser = self.browser
-        some_bioport_id = self.app.repository().get_bioport_ids()[2]
+        some_bioport_id = self.app.repository(user=None).get_bioport_ids()[2]
         for url in [
             '',
             'personen',

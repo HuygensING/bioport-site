@@ -8,12 +8,12 @@
 <a tal:attributes="href python:view.url('antiidentified')">niet identieke</a> personen, 
 <a tal:attributes="href python:view.url('deferred')">de lijst met moeilijke gevallen</a>. 
 <table>
-	<div tal:repeat="x python:context.repository().get_deferred()" 
+	<div tal:repeat="x python:view.repository().get_deferred()" 
 		tal:omit-tag="">
 	<tr
 		tal:define="
-			person1 python:context.repository().get_person(x.bioport_id1);
-			person2 python:context.repository().get_person(x.bioport_id2);
+			person1 python:view.repository().get_person(x.bioport_id1);
+			person2 python:view.repository().get_person(x.bioport_id2);
 			"
 		tal:condition="python:person1 and person2">
 		<span tal:define="person person1"

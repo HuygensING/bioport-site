@@ -6,43 +6,39 @@
     	bioport_bio view/bioport_biography; 
     	" 
     >
- <style>
-
- </style>
 <!--  XXX: functions in following script should be replaced by corresponding jQuery calls -->
 <script>
-
-show = function(element_id) {
-	el = document.getElementById(element_id);
-	if (el) {el.style.display='';}
-}
-
-hide = function(element_id) {
-	el = document.getElementById(element_id);
-	if (el) {el.style.display='none'};
-}
-
+	
+	show = function(element_id) {
+		el = document.getElementById(element_id);
+		if (el) {el.style.display='';}
+	}
+	
+	hide = function(element_id) {
+		el = document.getElementById(element_id);
+		if (el) {el.style.display='none'};
+	}
+	
 
 </script>
  <script>
  $(document).ready(function(){
-
-	 //on pressing return, make the form submit everything
-	 $(function() {
-	        $("form input").keypress(function (e) {
-	            if ((e.which && e.which == 13) || (e.keyCode && e.keyCode == 13)) {
-	                $('input[name="form.actions.save_everything"]').click()
-	                return false;
-	            } else {
-	                return true;
-	            }
-	        });
+	//on pressing return, make the form submit everything
+	$(function() {
+	   $("form input").keypress(function (e) {
+            if ((e.which && e.which == 13) || (e.keyCode && e.keyCode == 13)) {
+                $('input[name="form.actions.save_everything"]').click()
+                return false;
+            } else {
+                return true;
+            }
 	    });
-
-   $('.form_baptism').hide();
-   $('.form_funeral').hide();
-   $('.form_floruit').hide();
-	 });
+	});
+	
+	$('.form_baptism').hide();
+	$('.form_funeral').hide();
+	$('.form_floruit').hide();
+});
 </script>
 <h1>Bewerk gegevens van <em tal:content="view/title" /></h1>
 
@@ -73,7 +69,7 @@ De gegevens zijn grijs als ze uit de bronnen-publikaties komen, zwart als ze zij
        <td>
            <select name="status">
                <option></option> 
-               <option tal:repeat="option python:context.repository().get_status_values()"
+               <option tal:repeat="option python:view.repository().get_status_values()"
                    tal:attributes="value python:option[0];
                        selected python:option[0]==view.person.status"
                        tal:content="python:option[1]"></option>
@@ -416,7 +412,7 @@ De gegevens zijn grijs als ze uit de bronnen-publikaties komen, zwart als ze zij
    		<td>
    			<select tal:attributes="name string:occupation_id">
    				<option></option>
-   				<option tal:repeat="occupation python:view.repository.get_occupations()" 
+   				<option tal:repeat="occupation python:view.repository().get_occupations()" 
    					tal:content="occupation/name"
    					tal:attributes="value occupation/id;
    					    selected python:state.idno == str(occupation.id)"></option>
@@ -433,7 +429,7 @@ De gegevens zijn grijs als ze uit de bronnen-publikaties komen, zwart als ze zij
         <td>
     			<select name="new_occupation_id">
    				<option></option>
-   				<option tal:repeat="occupation python:view.repository.get_occupations()" 
+   				<option tal:repeat="occupation python:view.repository().get_occupations()" 
    					tal:content="occupation/name"
    					tal:attributes="value occupation/id;"></option>
    			</select>	
@@ -448,7 +444,7 @@ De gegevens zijn grijs als ze uit de bronnen-publikaties komen, zwart als ze zij
         <td>
                 <select name="new_occupation_id">
                 <option></option>
-                <option tal:repeat="occupation python:view.repository.get_occupations()" 
+                <option tal:repeat="occupation python:view.repository().get_occupations()" 
                     tal:content="occupation/name"
                     tal:attributes="value occupation/id;"></option>
             </select>   
@@ -492,7 +488,11 @@ De gegevens zijn grijs als ze uit de bronnen-publikaties komen, zwart als ze zij
 <table >
     <tr tal:condition="python:bio.get_source().id == 'bioport'">
         <th>status</th>
-	    <td tal:content="python:view.person.status and context.repository().get_status_values(view.person.status)" ></td>
+	    <td tal:content="python:view.person.status and view.repository().get_status_values(view.person.status)" ></td>
+    </tr>
+    <tr>
+        <th>id</th>
+	    <td tal:content="python:bio.get_value('local_id')" ></td>
     </tr>
 	<tr>
 		<th>namen</th>
@@ -562,6 +562,14 @@ De gegevens zijn grijs als ze uit de bronnen-publikaties komen, zwart als ze zij
 		</tal:block>
 
 	</tal:block>
+	<tr tal:condition="python:bio.get_illustrations()">
+        <th>illustraties</th>	
+        <td>
+            <div tal:repeat="ill bio/get_illustrations">
+                <a tal:content="ill" />
+            </div>
+        </td>
+	</tr>
 	<tr tal:condition="python:bio.get_value('tekst')">
 		<th>tekst</th>
 		<td>

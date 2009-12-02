@@ -1,8 +1,8 @@
 <html metal:use-macro="context/@@admin_template/macros/master">
 <div metal:fill-slot="content"
     tal:define="
-	    bio python:context.repository().get_biography(id='%s/%s' % (request.get('source_id'), request.get('bio_id')));
-        similar_persons python:context.repository().get_similar_persons(bio)"
+	    bio python:view.get_biography(id='%s/%s' % (request.get('source_id'), request.get('bio_id')));
+        similar_persons python:view.get_similar_persons(bio)"
 >
 <h1>Identificeer biografie van <span tal:replace="bio/title" /></h1>
 <p tal:condition="bio/get_identifier">Deze biografie is al ge&iuml;dentficeerd met Bioport Id 

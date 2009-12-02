@@ -11,8 +11,8 @@
     tal:define="
         last_batch python:batch.batches[-1];
         first_batch python:batch.batches[0]; 
-        "
-    xtal:on-error="string:navigation is broken..." > 
+        ">
+        
     <span
      tal:replace="python:'%s-%s van %s' % ( context.format_number(batch.start + 1),  context.format_number(batch.end + 1),  context.format_number(batch.grand_total))" />  
     <tal:block condition="python:first_batch and first_batch.next">|

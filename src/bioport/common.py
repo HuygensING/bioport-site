@@ -1,18 +1,3 @@
-class RepositoryInterface:
-    def repository(self):
-        return self['admin'].get_repository()
-    def get_biographies(self, **args):
-        return self.repository().get_biographies(**args)
-
-    def get_person(self, **args):
-        return self.repository().get_person(**args)
-
-
-
-    
-    def get_auteurs(self, **args):
-        return self.repository().get_authors() 
-
         
 maanden = [ 
     'januari', 

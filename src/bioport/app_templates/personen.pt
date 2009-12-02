@@ -7,7 +7,7 @@
     ><a tal:attributes="href string:${view/url}?beginletter=${letter}" ><span tal:replace="letter/upper" /></a></span>
 <p>
 <form tal:attributes="action view/url">
-	<span tal:repeat="source python:context.repository().get_sources()"
+	<span tal:repeat="source python:view.repository().get_sources()"
 		tal:condition="nothing"
 	    tal:attributes="class python:source.id == request.get('source_id') and 'alfabet selected' or 'alfabet'"
 	>
@@ -18,7 +18,7 @@
 	<input type="submit" value=" zoek " />
 </form>
 <ul>
-<li tal:condition="request/auteur_id | nothing">U zocht naar biografie&euml;n met <em tal:content="structure python:context.repository().get_author(request.form['auteur_id']).name"></em> als auteur.</li>
+<li tal:condition="request/auteur_id | nothing">U zocht naar biografie&euml;n met <em tal:content="structure python:view.repository().get_author(request.form['auteur_id']).name"></em> als auteur.</li>
 <li tal:condition="request/beroep_id | nothing">U zocht naar biografie&euml;n met <em tal:content="structure python:here.get_beroep(request.beroep_id).naam"></em> als beroep.</li>
 </ul>
 <div tal:omit-tag="" tal:define="results persons">

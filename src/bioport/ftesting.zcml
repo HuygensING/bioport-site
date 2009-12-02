@@ -19,7 +19,15 @@
       permission="zope.View"
       principal="zope.anybody"
       />
+  <grant
+      permission="bioport.Edit"
+      principal="zope.anybody"
+      />
 
+  <grant
+      permission="bioport.Manage"
+      principal="zope.anybody"
+      />
   <principal
       id="zope.mgr"
       title="Manager"

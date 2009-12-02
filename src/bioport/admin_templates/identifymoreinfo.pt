@@ -4,6 +4,7 @@
 <tal:block define="bioport_ids view/bioport_ids;
     redirect_to python:view.request.get('HTTP_REFERER', '')">
 <ul metal:use-macro="context/@@mostsimilar/macros/identify_actions" />
+<a tal:attributes="href python:view.url('mostsimilar')">ga naar de lijst met meest gelijkende personen</a>
 </tal:block>
 <table metal:define-macro="compare_persons">
 
@@ -11,7 +12,7 @@
 	<th></th>
 	<td tal:repeat="p view/persons" style="width:40%">
 		 <a tal:attributes="href python:view.url(view.__parent__.__parent__,  '/persoon', data={'bioport_id':p.get_bioport_id()})"
-		 tal:content="python:p.naam() and p.naam().get_volledige_naam()" />
+		 tal:content="structure python:p.naam() and p.naam().get_volledige_naam()" />
 	</td>
 </tr>	
 <tr>
@@ -51,8 +52,11 @@
 <tr>
 	<th>Tekst</th>
 	<td tal:repeat="p view/persons">
-		<div tal:repeat="bio python:p.get_biographies()" 
-			tal:content="python:bio.get_value('tekst')" />
+		<div tal:repeat="bio python:p.get_biographies()">
+		     <h1 tal:content="python:bio.get_source().id"
+		      tal:condition="python:bio.get_value('tekst')"></h1>
+			<span tal:replace="structure python:bio.get_value('tekst')" />
+		</div> 
 	</td>
 </table>
 </div>

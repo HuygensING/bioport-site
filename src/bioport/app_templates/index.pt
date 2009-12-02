@@ -5,14 +5,14 @@
 Dit is de website van het Biografisch Portaal van Nederland. 
 <p>
 Dit prototype bevat beschrijvingen van en verwijzingen naar
-<span tal:replace="python:context.repository().count_biographies()" /> biografie&euml;n
+<span tal:replace="python:view.repository().count_biographies()" /> biografie&euml;n
 van
-<span tal:replace="python:context.repository().count_persons()" /> personen 
-uit <span tal:replace="python:len(context.repository().get_sources())" /> verschillende bronnen.
+<span tal:replace="python:view.repository().count_persons()" /> personen 
+uit <span tal:replace="python:len(view.repository().get_sources())" /> verschillende bronnen.
 
 <ul>
 <span tal:omit-tag=""
-	tal:repeat="source python:context.repository().get_sources()"
+	tal:repeat="source python:view.repository().get_sources()"
 	>
 <li
 	tal:condition="python:source.id != 'bioport'"
