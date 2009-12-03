@@ -48,7 +48,8 @@ class SimpleSampleFunctionalTest(SampleFunctionalTest):
             #XXX we need to properly handle that error
             pass
         #download the biographies for this source
-        browser.open('http://localhost:8080/app/admin/sources', 'action=update_source&source_id=knaw_test')
+        repository = app.repository(user=None)
+        repository.download_biographies(source=repository.get_source('knaw_test'))
         
     def tearDown(self):
         self.app.repository(user=None).db.metadata.drop_all()
