@@ -566,7 +566,8 @@ De gegevens zijn grijs als ze uit de bronnen-publikaties komen, zwart als ze zij
         <th>illustraties</th>	
         <td>
             <div tal:repeat="ill bio/get_illustrations">
-                <a tal:content="ill" />
+                local : <a tal:attributes="href ill/cached_url" tal:content="ill/cached_url" /><br>
+                original: <a tal:attributes="href ill/_url" tal:content="ill/_url" />
             </div>
         </td>
 	</tr>

@@ -8,7 +8,6 @@
     <img
         tal:attributes="src ill/cached_url" 
         alt="illustratie bij deze biografie" />
-        <tt tal:content="ill/cached_url" />
     </div>
     <div class="illustratie" tal:condition="not:illustraties">
         <img tal:attributes="src static/geen_plaatje.png" />

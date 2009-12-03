@@ -151,24 +151,52 @@ class Persons(app.Personen,RepositoryView):
 class Source(grok.EditForm,RepositoryView):
     grok.require('bioport.Edit')
 
-    def update(self, source_id=None, description=None, url=None, quality=None):
-        if source_id:
-            repository = self.repository()
-            source = repository.get_source(source_id) 
-            if url is not None:
-                source.set_value(url=url)
-            if description is not None:
-                source.set_value(description=description) 
-            if quality is not None:
-                source.set_quality(int(quality))
+    def update(self, source_id=None):
+        print 'call update'
+        repository = self.repository()
+        self.source =repository.get_source(source_id) 
+    @grok.action('Save settings', name='save_settings')    
+    def save_settings(self,**args):
+        source = self.source
+        print 'call save settings'
+        print args
+        print source.repository
+        url = self.request.get('url')
+        description = self.request.get('description')
+        quality = self.request.get('quality')
+        source.set_value(url=url)
+        if description is not None:
+            source.set_value(description=description) 
+        if quality is not None:
+            source.set_quality(int(quality))
     
-            repository.save_source(source)
+        self.repository().save_source(source)
             
-            msg = 'Changed source %s' % source.id
-            print msg
+        msg = 'Changed source %s' % source.id
+        print msg
             
+    @grok.action('Update', name='update_source')    
+    def update_source(self, **data):
+        source = self.source
+        self.repository().update_source(source, limit=int(self.context.LIMIT))
+    
+    @grok.action('Download Illustrations', name='download_illustrations')    
+    def download_illustrations(self, **data): 
+        source = self.source
+        self.repository().download_illustrations(source, limit=int(self.context.LIMIT))
         
-               
+    @grok.action('Download biographies', name='download_data')    
+    def download_data(self, **data):
+        source = self.source
+        self.repository().download_biographies(source=source)
+        self.redirect(self.url())
+         
+         
+    @grok.action('Delete biographies', name='delete_biographies')    
+    def delete_biographies(self, **data):
+        source = self.source
+        self.repository().delete_biographies(source)              
+        
 class Sources(grok.View,RepositoryView):
     
     grok.require('bioport.Manage')
@@ -183,23 +211,6 @@ class Sources(grok.View,RepositoryView):
             self.add_source(source_id, url, description)   
         elif action=='download_illustrations':
             self.download_illustrations(source_id) 
-    def update_source(self, source_id):
-        repo = self.repository()
-        source =repo.get_source(source_id)
-        repo.update_source(source, limit=int(self.context.LIMIT))
-    
-    def download_illustrations(self, source_id): 
-        repo = self.repository()
-        source =repo.get_source(source_id)
-        repo.download_illustrations(source, limit=int(self.context.LIMIT))
-        
-    def download_data(self, source_id):
-        repository = self.repository()
-        source = repository.get_source(id=source_id)
-        repository.download_biographies(source=source)
-        self.redirect(self.url())
-    def add_source(self, source_id, url, description=None):
-        source = self.repository().add_source(BioPortRepository.source.Source(source_id, url, description))
  
     def source_delete(self, source_id):
         repo = self.repository() 
@@ -211,6 +222,8 @@ class Sources(grok.View,RepositoryView):
         print msg
         return msg
     
+    def add_source(self, source_id, url, description=None):
+        source = self.repository().add_source(BioPortRepository.source.Source(source_id, url, description))
 class MostSimilar(grok.Form,RepositoryView):
     grok.require('bioport.Edit')
 

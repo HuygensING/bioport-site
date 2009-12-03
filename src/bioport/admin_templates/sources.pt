@@ -24,10 +24,13 @@
            </td>
             <td>
     <ul>
-<li>    <a tal:attributes="href string:${view/url}?action=update_source&source_id=${source/id}">download biographies</a>
-<li>    <a tal:attributes="href string:${view/url}?action=download_illustrations&source_id=${source/id}">download illustrations [to the local cache]</a>
-<li>    <a tal:attributes="href string:source?source_id=${source/id}">edit</a>
-<li>    <a tal:attributes="href string:${view/url}?action=source_delete&source_id=${source/id}">delete</a>
+<li tal:condition="nothing">    <a tal:attributes="href string:${view/url}?action=update_source&source_id=${source/id}">download biographies</a>
+</li>
+<li tal:condition="nothing">    <a tal:attributes="href string:${view/url}?action=download_illustrations&source_id=${source/id}">download illustrations [to the local cache]</a>
+</li>
+<li>    <a tal:attributes="href string:source?source_id=${source/id}">manage</a>
+<li tal:condition="nothing">    <a tal:attributes="href string:${view/url}?action=source_delete&source_id=${source/id}">delete</a>
+</li>
             </ul>
             </td>
         </tr>

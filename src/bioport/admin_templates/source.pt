@@ -6,6 +6,8 @@
         >
 
 <h1>Bewerk bron <em tal:content="source/id" /></h1>
+
+(<a tal:attributes="href python:view.url(context, 'persons', {'source_id':source.id})"><span tal:replace="python:view.repository().count_biographies(source=source)" /> biografie&euml;n</a>)
 <form tal:attributes="action view/url" method="get">
 <input type="hidden" name="source_id" tal:attributes="value source/id" />
 <table>
@@ -39,9 +41,15 @@
     </tr>
      <tr>
         <td />
-        <td><input type="submit" value="bewaar veranderingen" /></td>
+        <td>
+       <span tal:replace="structure python:view.actions.byname['form.actions.save_settings'].render()" />
+       </td>
     </tr>
 </table>
+       <span tal:replace="structure python:view.actions.byname['form.actions.download_data'].render()" />
+       <span tal:replace="structure python:view.actions.byname['form.actions.download_illustrations'].render()" />
+       <span tal:replace="structure python:view.actions.byname['form.actions.delete_biographies'].render()" />
+
 </form>
 </div>
 </html>
