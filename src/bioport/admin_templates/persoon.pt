@@ -65,9 +65,9 @@ De gegevens zijn grijs als ze uit de bronnen-publikaties komen, zwart als ze zij
     </tr>
     <tr metal:use-macro="template/macros/separator" ></tr> 
     <tr>
-       <th>status</th>
+       <th><span class="accesskey">s</span>tatus</th>
        <td>
-           <select name="status">
+           <select name="status" id="status" accesskey="s">
                <option></option> 
                <option tal:repeat="option python:view.repository().get_status_values()"
                    tal:attributes="value python:option[0];
@@ -82,7 +82,7 @@ De gegevens zijn grijs als ze uit de bronnen-publikaties komen, zwart als ze zij
     <tr metal:define-macro="separator" class="separator" ><td colspan="3"><hr></td></tr>
     <tr tal:define="namen view/get_bioport_namen"
     	tal:repeat="idx python:range(len(namen))">
-    	<th><span tal:condition="python:idx == 0" >namen</span></th>
+    	<th><span tal:condition="python:idx == 0" ><span class="accesskey">n</span>amen</span></th>
     	<td tal:define="naam python:namen[idx]"
 		    tal:attributes="class python:view.get_bioport_namen() and 'bioport' or 'merged'">
     		<span tal:content="naam/volledige_naam" />
@@ -107,7 +107,7 @@ De gegevens zijn grijs als ze uit de bronnen-publikaties komen, zwart als ze zij
 	    tal:define="namen view/get_non_bioport_namen"
     	tal:repeat="idx python:range(len(namen))">
 
-    	<th><span tal:condition="python:idx == 0" >namen</span></th>
+    	<th><span tal:condition="python:idx == 0" ><span class="accesskey">n</span>amen</span></th>
     	<td tal:define="naam python:namen[idx]"
 		    tal:attributes="class python:view.get_bioport_namen() and 'bioport' or 'merged'">
     		<span tal:replace="naam/volledige_naam" />
@@ -126,16 +126,16 @@ De gegevens zijn grijs als ze uit de bronnen-publikaties komen, zwart als ze zij
    	<tr>
    		<th></th>
    		<td colspan="2">
-   	        <input name="name_new" type="text" id="name_new"  />
+   	        <input name="name_new" type="text" id="name_new"  access_key="n" />
 	        <span tal:replace="structure python:view.actions.byname['form.actions.add_name'].render()" ></span>
 		</td>    
 	</tr>
    	<tr metal:use-macro="template/macros/separator" /> 	
 	<tr>
-		<th>geslacht</th>
+		<th><span class="accesskey">g</span>eslacht</th>
 		<td tal:define="sex python:view.merged_biography.get_value('geslacht')"
 			tal:attributes="class python:not view.bioport_biography.get_value('geslacht') and 'merged'">
-			<select name="sex">
+			<select name="sex" id="sex" accesskey="g">
 				<option></option>	
 				<option tal:repeat="option view/sex_options"
 					tal:attributes="value python:option[0];
@@ -166,11 +166,16 @@ De gegevens zijn grijs als ze uit de bronnen-publikaties komen, zwart als ze zij
    
     <tr  tal:attributes="id event_type; 
 	    "> 
-        <th tal:content="title">geboorte</th>
+        <th>
+        <span tal:content="python:title[0]" class="accesskey"></span><span tal:content="python:title[1:]"></span>
+        </th>
          <td><a href="" 
+         
             tal:condition="not:has_data" 
-            tal:attributes="onClick string: jQuery('.form_${event_type}').show();; jQuery(this).hide();;  return false;;;
-            class string:button_show_${event_type};"
+            tal:attributes="
+                accesskey python:title[0];
+                onClick string: jQuery('.form_${event_type}').show();; jQuery(this).hide();;  return false;;;
+	            class string:button_show_${event_type};"
             >[toon]</a></td>
         <td  tal:attributes="class python:not has_data and 'form_%s' % event_type;">
 	        <span tal:replace="structure python:view.actions.byname['form.actions.save_event_%s' % event_type].render()" />
@@ -179,14 +184,18 @@ De gegevens zijn grijs als ze uit de bronnen-publikaties komen, zwart als ze zij
      <tr tal:attributes="
      	id string:${event_type}_exact;
         class python:not has_data and 'form_%s' % event_type;
-		style python:not show_exact and 'display:none'">
+		style python:not show_exact and 'display:none';"
+		tal:define="accesskey python:title[0]">
      	<th class="sublabel">datum
      	</th>
         <td colspan="2"  tal:attributes="class python:view.status_value(event_type, 'when')"
         	tal:define="ymd event/when_ymd | nothing">
  	
  		<span metal:define-macro="date_widget" tal:omit-tag="">
-        	<select tal:attributes="name string:${prefix}_d">
+        	<select tal:attributes="
+ 		         accesskey accesskey | nothing;
+	        	name string:${prefix}_d;
+        	   id string:${prefix}_d;">
         		<option />
         		<option 
 	        		tal:repeat="option python:range(1, 32)" 
@@ -358,13 +367,11 @@ De gegevens zijn grijs als ze uit de bronnen-publikaties komen, zwart als ze zij
   	     state_id string:floruit;
 	  	 state python:view.get_state(state_id);
 	  	 has_data python:state and (state.frm or state.to or state.text)">
-  	<script>
-//    
-  	</script>
 	<tr tal:attributes="class string:separator" ><td colspan="3"><hr></td></tr>
    	<tr>
-        <th>actief</th>	
+        <th><span class="accesskey">a</span>ctief</th>	
         <td><a 
+            accesskey="a"
             tal:condition="not:has_data"
             href="" onClick="
 			$('.form_floruit').show();	
@@ -408,7 +415,7 @@ De gegevens zijn grijs als ze uit de bronnen-publikaties komen, zwart als ze zij
    	<!--  beroep -->
    	<tal:block repeat="state view/occupations_with_id">
    	<tr tal:condition="state/idno" >
-   		<th><span tal:condition="repeat/state/start">beroepen</span></th>
+   		<th><span tal:condition="repeat/state/start"><span class="accesskey">b</span>eroepen</span></th>
    		<td>
    			<select tal:attributes="name string:occupation_id">
    				<option></option>
@@ -425,9 +432,9 @@ De gegevens zijn grijs als ze uit de bronnen-publikaties komen, zwart als ze zij
    	</tr>	
    	</tal:block>
    	<tr>
-        <th><span tal:condition="not:view/occupations_with_id">beroepen</span></th>	
+        <th><span tal:condition="not:view/occupations_with_id"><span class="accesskey">b</span>eroepen</span></th>	
         <td>
-    			<select name="new_occupation_id">
+    			<select name="new_occupation_id" id="new_occupation_id" accesskey="b">
    				<option></option>
    				<option tal:repeat="occupation python:view.repository().get_occupations()" 
    					tal:content="occupation/name"
@@ -455,9 +462,10 @@ De gegevens zijn grijs als ze uit de bronnen-publikaties komen, zwart als ze zij
     <!--  /beroep --> 
 	   	<tr metal:use-macro="template/macros/separator" ></tr> 
    	<tr>
-        <th>opmerkingen (voor en door bewerkers)</th>	
+        <th><span class="accesskey">o</span>pmerkingen (voor en door bewerkers)</th>	
         <td>
-            <textarea name="remarks" style="width:200px" tal:content="view/person/remarks"></textarea>
+            <textarea accesskey="o"
+            name="remarks" id="remarks" style="width:200px" tal:content="view/person/remarks"></textarea>
         <td>
 	        <span tal:replace="structure python:view.actions.byname['form.actions.save_remarks'].render()" ></span>
     	</td>
@@ -466,7 +474,10 @@ De gegevens zijn grijs als ze uit de bronnen-publikaties komen, zwart als ze zij
     <tr>
    	<th />
    	<td>
-        <span tal:replace="structure python:view.actions.byname['form.actions.save_everything'].render()" class="default"  />
+   	<button accesskey="w" class="button" value="bewaar alle veranderingen" name="form.actions.save_everything" id="form.actions.save_everything">
+   	    be<span class="accesskey">w</span>aar alle veranderingen</button>
+   	
+        <span xtal:replace="structure python:view.actions.byname['form.actions.save_everything'].render()" class="default"  />
 	        <input type="reset" value="reset" />
 	</td> 
     </tr>
@@ -492,7 +503,8 @@ De gegevens zijn grijs als ze uit de bronnen-publikaties komen, zwart als ze zij
     </tr>
     <tr>
         <th>id</th>
-	    <td tal:content="python:bio.get_value('local_id')" ></td>
+	    <td><span tal:content="python:bio.get_value('local_id')" ></span>
+	       <a tal:condition="bio/record/source_url" tal:attributes="href bio/record/source_url" tal:content="bio/record/source_url" /></td>
     </tr>
 	<tr>
 		<th>namen</th>
@@ -500,7 +512,7 @@ De gegevens zijn grijs als ze uit de bronnen-publikaties komen, zwart als ze zij
 			<div tal:repeat="naam python:bio.get_namen()" tal:content="naam/volledige_naam"></div>	
 		</td>
 	</tr>
-	<tr tal:Condition="python:bio.get_value('geslacht')">
+	<tr tal:condition="python:bio.get_value('geslacht')">
 		<th>geslacht</th>
 		<td>
 			<span tal:replace="python:dict(view.sex_options()).get(bio.get_value('geslacht'))" />

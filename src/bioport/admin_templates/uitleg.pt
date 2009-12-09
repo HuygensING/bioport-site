@@ -1,5 +1,8 @@
 <html metal:use-macro="context/@@admin_template/macros/master">
 <div metal:fill-slot="content">
+<h1>Requirements</h1>
+De invoerapplicatie is gemaakt voor gebruik in een recente versie van firefox (3.5.5 nu ik dit schrijf). 
+(Het publieke gedeelte van de website moet natuurlijk in alle browsers werken)
 
 <h1>Uitleg bij de bewerk schermen</h1>
 
@@ -41,8 +44,32 @@ Gebeurtenissen hebben de volgende eigenschappen:
 	<li>Als het "datum" veld is ingevuld, wordt dat getoond (de andere datumvelden worden genegeerd)
 	<li>Als het "datum" veld niet is ingevuld, word het "tekst" veld op de site getoond. 
 	<li>De "voor" en "na" velden worden niet getoond, maar worden gebruikt bij het zoeken (en voor de tijdbalk, enzovoort)
-	<li>
+	</li>
+</ul>
+
+<h1>Access Keys</h1>	
+<a name="access_keys"></a>
+De velden in de formulieren zijn met "access keys" te bedienen; dit is aangegeven 
+door de eerste letter van de link of het label van een veld te onderstrepen.
+De links in het mene (Homepagina, Admin homepagina, etc) hebben access keys 1, 2, 3, ...
+
+
+<p> Standaard in Firefox betekent dit dat als je "ALT-SHIFT-letter" intypt,
+je naar het bewuste veld gaat. Dat is een wat ongelukkige combinatie van toetsen, maar je kunt dat veranderen op de volgende manier:
+
+<ol>
+<li>Ga naar de URL <tt>about:config</tt></li>
+<li>zoek het veld "<tt>ui.key.generalAccessKey</tt>"
 </li>
-	
-</div>
+<li>Dubbelklik op de tekst. Als je daar "18" intypt, werkt het met de ALT-toets. Als je "17" intypes, is het CTRL. Meer informatie 
+<a href="http://kb.mozillazine.org/Ui.key.generalAccessKey">op de mozilla site</a>.</li>
+</ol>
+Standaard in Firefox komt het kiezen van een AccessKey voor een link neer op het klikken van een link, en voor een knopje is het hetzelfde
+als klikken op dat knopje. Ik zelf vind het handiger
+als de access key alleen maar de focus op de link zet (als je dan op ENTER klikt, open je de link). Dit kun je instellen door <tt>accessibility.accesskeycausesactivation</tt>
+ op <tt>False</tt> te zetten.</div>
+ <p>
+ Overigens kun je met ALT-pijtlje links terug in de browser history. En met TAB en SHIFT-TAB kun je langs links en form elementen navigeren.
+ 
+ </p>
 </html>

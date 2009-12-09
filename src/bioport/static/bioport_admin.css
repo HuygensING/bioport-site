@@ -134,3 +134,12 @@ div.cell, div.merged, div.bioport {
 .grey, grey a {
     color : grey;
 }
+
+span.accesskey {
+    text-decoration : underline;
+    font-style: normal;
+}
+
+.batch_navigation {
+    float : right;
+}

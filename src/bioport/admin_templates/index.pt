@@ -11,6 +11,7 @@ U kunt de volgende dingen doen:
 	<li><a href="persoonidentify">Personen identificeren</a> door in de database naar personen te zoeken
 	<li>Personen identifieren met behulp vaan de lijst met (volgens de computer) de <a href="mostsimilar">meest op elkaar lijkende personen</a></li>
 	<li>De lijst met <a href="deferred">moeilijke gevallen</a> bekijken</li>
+	<li>De lijst met <a href="identified">geidentificeerde personen</a> bekijken</li>
 </ul>
 <h2>Personen bewerken</h2>
 <ul>

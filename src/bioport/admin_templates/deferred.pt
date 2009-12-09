@@ -1,5 +1,6 @@
 <html metal:use-macro="context/@@admin_template/macros/master">
-<div metal:fill-slot="content" >
+<div metal:fill-slot="content" 
+    tal:define="batch view/get_deferred">
 <h1>Moeilijke gevallen</h1>
 <p>Hieronder ziet u een lijst van wat, volgens de invoerders, moeilijke gevallen waren. 
 
@@ -7,8 +8,11 @@
 <a tal:attributes="href python:view.url('identified')">geidentificeerde</a> personen, 
 <a tal:attributes="href python:view.url('antiidentified')">niet identieke</a> personen, 
 <a tal:attributes="href python:view.url('deferred')">de lijst met moeilijke gevallen</a>. 
+
+<div metal:use-macro="context/@@sitemacros/macros/aantal_resultaten" />
+<div metal:use-macro="context/@@sitemacros/macros/batch_navigation" />
 <table>
-	<div tal:repeat="x python:view.repository().get_deferred()" 
+	<div tal:repeat="x batch"
 		tal:omit-tag="">
 	<tr
 		tal:define="

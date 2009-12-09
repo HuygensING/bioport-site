@@ -10,7 +10,7 @@ from common import format_date, format_dates, format_number
 from zope.interface import Interface
 from zope import schema
 import app
-from app import RepositoryView
+from app import RepositoryView, Batcher
 from permissions import *
 from z3c.batching.batch import  Batch
 
@@ -42,20 +42,20 @@ class Admin(grok.Container  ):
             return self._repo
         except:
             self._repo = Repository(
-	            svn_repository=self.SVN_REPOSITORY, 
-	            svn_repository_local_copy=self.SVN_REPOSITORY_LOCAL_COPY,
-	            db_connection=self.DB_CONNECTION,
+                svn_repository=self.SVN_REPOSITORY, 
+                svn_repository_local_copy=self.SVN_REPOSITORY_LOCAL_COPY,
+                db_connection=self.DB_CONNECTION,
                 images_cache_local=self.IMAGES_CACHE_LOCAL,
                 images_cache_url=self.IMAGES_CACHE_URL,
                 user=user,
-	            ZOPE_SESSIONS=False, #use z3c.saconfig package
-	        ) 
-	    return self._repo
+                ZOPE_SESSIONS=False, #use z3c.saconfig package
+            ) 
+        return self._repo
 
     def __getstate__(self):
         #we cannot (And dont want to) pickle the repository -- like this we exclude it
         try:
-	        del self.__dict__['_repo']
+            del self.__dict__['_repo']
         except KeyError:
             pass
         return self.__dict__
@@ -189,7 +189,6 @@ class Source(grok.EditForm,RepositoryView):
     def download_data(self, **data):
         source = self.source
         self.repository().download_biographies(source=source)
-        self.redirect(self.url())
          
          
     @grok.action('Delete biographies', name='delete_biographies')    
@@ -202,15 +201,10 @@ class Sources(grok.View,RepositoryView):
     grok.require('bioport.Manage')
 
     def update(self, action=None, source_id=None, url=None, description=None):
-        if action == 'update_source':
-            self.update_source(source_id)
-            self.redirect(self.url())
-        elif action == 'source_delete':
+        if action == 'source_delete':
             self.source_delete(source_id)
         elif action=='add_source':
             self.add_source(source_id, url, description)   
-        elif action=='download_illustrations':
-            self.download_illustrations(source_id) 
  
     def source_delete(self, source_id):
         repo = self.repository() 
@@ -233,6 +227,7 @@ class MostSimilar(grok.Form,RepositoryView):
         self.similar_to = self.request.get('similar_to', None)
         self.redirect_to = None
         self.most_similar_persons = self.repository().get_most_similar_persons(start=self.start, size=self.size, similar_to = self.similar_to)
+        
     def goback(self,  data = None):
         redirect_url = self.url(data=data)
         if self.redirect_to:
@@ -331,7 +326,13 @@ class Persoon(app.Persoon, grok.EditForm, RepositoryView):
             #XXX make a userfrienlider error
             assert 0, 'need bioport_id in the request'
         repository= self.repository() 
-        self.person  = repository.get_person(bioport_id=self.bioport_id)  
+        self.person  = self.get_person(bioport_id=self.bioport_id)  
+        if not self.person:
+            id = repository.redirects_to(self.bioport_id)
+            if id != self.bioport_id:
+                self.bioport_id = id
+                self.person  = self.get_person(bioport_id=self.bioport_id)  
+                
         assert self.person, 'NO PERSON FOUND WITH THIS ID %s' % self.bioport_id
         self.bioport_biography =  repository.get_bioport_biography(self.person) 
         self.merged_biography  = self.person.get_merged_biography()
@@ -344,7 +345,7 @@ class Persoon(app.Persoon, grok.EditForm, RepositoryView):
         http_referer = http_referer.split('?')[0]
         http_referer = http_referer.split('/')
         if 'persoon' in http_referer or 'changename' in http_referer: 
-	        self.history_counter = self.session_get('history_counter', 1) + 1
+            self.history_counter = self.session_get('history_counter', 1) + 1
         self.session_set('history_counter', self.history_counter)
         
         
@@ -679,22 +680,53 @@ class ChangeName(Persoon, grok.EditForm,RepositoryView):
         repository.save_biography(bio)
         self.msg = 'changed a name'
         
-    
-
-    
-    
-class AntiIdentified(grok.View):
+ 
+class AntiIdentified(grok.View, RepositoryView, Batcher):
     grok.require('bioport.Edit')
-    pass
 
-class Identified(grok.View):
+    def update(self):
+        Batcher.update(self)
+    def get_antiidentified(self):
+        ls = self.repository().get_antiidentified()
+        batch = Batch(ls, start=self.batch_start, size=self.batch_size)
+        batch.grand_total = len(ls)
+        return batch 
+class Identified(grok.View, RepositoryView, Batcher):
     grok.require('bioport.Edit')
-    pass
+    def update(self):
+        Batcher.update(self)
+    
+    def get_identified(self):
+        qry = {}
+        #request.form has unicode keys - make strings
+        for k in [
+            'batch_start',
+            'batch_size',
+            'order_by', 
+            'search_term',
+            'source_id',
+            'bioport_id', 
+             ]:
+            if k in self.request.keys():
+                qry[k] = self.request[k]
+        
+        ls = self.repository().get_identified(**qry)
+        #**qry)
+        self.qry = qry
+        batch = Batch(ls, start=self.batch_start, size=self.batch_size)
+        batch.grand_total = len(ls)
+        return batch  
 
-class Deferred(grok.View):
+class Deferred(grok.View,RepositoryView, Batcher):  
     grok.require('bioport.Edit')
     def update(self, **args):
         self.redirect_to = None
+        Batcher.update(self)
+    def get_deferred(self):
+        ls =  self.repository().get_deferred()
+        batch = Batch(ls, start=self.batch_start, size=self.batch_size)
+        batch.grand_total = len(ls)
+        return batch  
     
 class Uitleg(grok.View): 
     pass

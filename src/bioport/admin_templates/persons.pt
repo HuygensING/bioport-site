@@ -14,10 +14,11 @@ tal:define="batch view/get_persons">
 	    <a tal:attributes="href string:${view/url}?source_id=${source/id}" ><span tal:replace="source/id" /></a></span>
 	    <span class="alfabet" tal:condition="nothing">
 	    <a tal:attributes="href string:${view/url}?beginletter=%" >alle namen</a></span>
-naam: <input type="text" name="search_term" tal:attributes="value request/search_term | nothing" />
+			<label accesskey="n" for="search_term"><span class="accesskey">n</span>aam:</label>
+			<input type="text" name="search_term" id="search_term" tal:attributes="value request/search_term | nothing" />
 
-bron:
-<select name="source_id">
+<label accesskey="r" for="source_id">b<span class="accesskey">r</span>on:</label>
+<select name="source_id" id="source_id">
 	<option>
 	<option tal:repeat="source python:[s for s in view.get_sources() if s.id != 'bioport']" 
 		tal:attributes="value source/id;
@@ -25,8 +26,8 @@ bron:
 		tal:content="python:source.id" />
 </select>
 <br>	
-status : 
-<select name="status">
+<label accesskey="s" for="status"><span class="accesskey">s</span>tatus:</label>
+<select name="status" id="status">
 	<option></option>
 	<option tal:repeat="status view/get_status_values" 
 	   tal:attributes="value python:status[0];
@@ -38,7 +39,8 @@ status :
 levensjaren niet ingevuld <input type="checkbox" />
 <br>	
 </span>
-	<input type="submit" value=" zoek " />
+<label accesskey="z" for="submit"></label>
+	<button value=" zoek " id="submit"><span class="accesskey">z</span>oek</button>
 	<br>
 </form>
 <ul>
@@ -77,18 +79,11 @@ levensjaren niet ingevuld <input type="checkbox" />
 	   </span>
 	</td>
 	<td tal:condition="person/get_bioport_id">
-	    <a tal:attributes="href python:view.url(context,'persoon', data={'bioport_id':person.get_bioport_id()})">
-	    	bewerk gegevens
+	    <a tal:attributes="href python:view.url(context,'persoon', data={'bioport_id':person.get_bioport_id()})"
+	       accesskey="b">
+	    	<span class="accesskey">b</span>ewerk gegevens
 	     </a>
 	</td>
-	<td tal:condition="nothing">
-	TODO
-	<span tal:replace="person/last_commit" />
-		door <em class="todo">jelle</em>
-		</td>
-	<td tal:condition="nothing" class="todo">jelle</td>
-	<td tal:condition="nothing">XXX</td>
-	<td tal:condition="nothing">XXX (nog te doen, af, nog checken, ...)</td>
 </tr>
 <ul>
 </div>

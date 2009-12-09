@@ -15,22 +15,34 @@
         
     <span
      tal:replace="python:'%s-%s van %s' % ( context.format_number(batch.start + 1),  context.format_number(batch.end + 1),  context.format_number(batch.grand_total))" />  
-    <tal:block condition="python:first_batch and first_batch.next">|
+    <div tal:omit-tag=""
+        tal:condition="python:first_batch" x=" and first_batch != batch and first_batch.next">|
         <a tal:attributes="href python:view.batch_url(start=first_batch.start)"
-            tal:content="string:eerste ${first_batch/__len__}">vorige X</a>
-    </tal:block>  
-     <tal:block condition="python:batch.previous and batch.previous != first_batch">|
+            tal:content="string:eerste ${first_batch/__len__}">eerste X</a>
+    </div>
+    <div tal:omit-tag=""
+        tal:condition="python:batch.previous" x=" and batch.previous != first_batch">|
         <a tal:attributes="href python:view.batch_url(start=batch.previous.start)"
             tal:content="string:vorige ${batch/previous/__len__}">vorige X</a>
-    </tal:block>  
-    <tal:block condition="python:batch.next and batch.next != last_batch">|
+    </div>
+    <div tal:omit-tag=""
+     	tal:condition="python:batch.next" X=" and batch.next != last_batch">|
         <a tal:attributes="href python:view.batch_url(start=batch.next.start);"
             tal:content="string:volgende ${batch/next/__len__}">vorige X</a>
-    </tal:block>
-     <tal:block condition="python:last_batch != batch">
+    </div>
+    <div tal:omit-tag=""
+     tal:condition="python:last_batch" x="last_batch != batch">
         | 
         <a tal:attributes="href python:view.batch_url(start=last_batch.start);"
-            tal:content="string:laatste ${last_batch/__len__}">laatste X</a>
-    </tal:block>
+            tal:content="string:laatste ${last_batch/__len__}" />
+    </div>
 </div>
 </div>
+
+
+<span metal:define-macro="link_to_person">
+        <a 
+    tal:content="structure person/title" 
+    tal:attributes="href python:view.url('persoon', data={'bioport_id':person.get_bioport_id()})" />
+    <span tal:replace="python:context.format_dates(person.get_merged_biography().geboortedatum(), person.get_merged_biography().sterfdatum())" />
+</span>

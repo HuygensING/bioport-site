@@ -31,14 +31,14 @@
 	<div id="nav_left_box">
 	<div metal:define-slot="nav_left_box">
 	<ul metal:define-macro="admin_navigation">
-		<li><a tal:attributes="href python:view.application_url()">Homepagina</a></li>
-		<li><a tal:attributes="href python:view.url(view.__parent__)">Admin Homepagina</a></li>
-		<li><a tal:attributes="href python:view.url('persoonidentify')">Identificeer personen</a></li>
-		<li><a tal:attributes="href python:view.url('mostsimilar')">Meest gelijkende personen</a></li>
-		<li><a tal:attributes="href python:view.url('persons')">Bewerk personen</a></li>
-		<li><a tal:attributes="href python:view.url('sources')">Bronnen</a></li>
-		<li><a tal:attributes="href python:view.url('edit')">Geavanceerd</a></li>
-		<li><a tal:attributes="href python:view.url('uitleg')">Uitleg</a></li>
+		<li><a tal:attributes="href python:view.application_url()" accesskey="1">Homepagina</a></li>
+		<li><a tal:attributes="href python:view.url(view.__parent__)" accesskey="2">Admin Homepagina</a></li>
+		<li><a tal:attributes="href python:view.url('persoonidentify')" accesskey="3">Identificeer personen</a></li>
+		<li><a tal:attributes="href python:view.url('mostsimilar')" accesskey="4">Meest gelijkende personen</a></li>
+		<li><a tal:attributes="href python:view.url('persons')" accesskey="5">Bewerk personen</a></li>
+		<li><a tal:attributes="href python:view.url('sources')" accesskey="6">Bronnen</a></li>
+		<li><a tal:attributes="href python:view.url('edit')" accesskey="7">Geavanceerd</a></li>
+		<li><a tal:attributes="href python:view.url('uitleg')" accesskey="8">Uitleg</a></li>
 	</ul>
     </div>     
     </div>     

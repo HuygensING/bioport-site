@@ -68,11 +68,11 @@ class SimpleSampleFunctionalTest(SampleFunctionalTest):
             ('admin/persoon', 'bioport_id=%s' % some_bioport_id),
             'admin/locations',
             ]:
-            print 'opening', url
             if type(url) == type(('', '')):
                 url, data = url
             else:
                 data = ''
+            print 'opening','%s/%s?%s' % (self.base_url,  url, data)
             try:
 	            browser.open(self.base_url + '/' + url, data.encode('utf8'))
             except:
@@ -80,10 +80,8 @@ class SimpleSampleFunctionalTest(SampleFunctionalTest):
                 assert 0, 'error opening %s?%s' % (self.base_url + '/' + url, data.encode('utf8'))
             print '... ok'
     def test_personidentify_workflow(self):
-        browser = Browser('http://localhost/app/admin')
         
-        link = browser.getLink('Identificeer personen')
-        link.click()
+        browser = Browser('http://localhost/app/admin/persoonidentify')
         
         #search for the first person
         form = browser.getForm(index=0)
@@ -127,9 +125,10 @@ class SimpleSampleFunctionalTest(SampleFunctionalTest):
         
         
         #identify the two
-        browser.getLink('identiek').click()
+        browser.getLink(id='identify').click()
         
         #now the two items names are identifed (but how to check?)
+        
     def test_most_similar_workflow(self): 
         pass
     def test_edit_workflow(self):

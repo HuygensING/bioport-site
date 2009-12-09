@@ -69,11 +69,7 @@ of <a metal:define-macro="button_begin_opnieuw" tal:attributes="href python:view
         <span tal:replace="person/bioport_id" />
     </td>
     <td >
-        <a 
-    tal:content="structure person/title" 
-    tal:attributes="href python:view.url(context.__parent__, 'persoon', data={'bioport_id':person.get_bioport_id()})" />
-    
-    <span tal:replace="python:context.format_dates(person.get_merged_biography().geboortedatum(), person.get_merged_biography().sterfdatum())" />
+    <span metal:use-macro="context/@@sitemacros/macros/link_to_person" />
     </td>
     <td>
        <span tal:repeat="source python:person.get_sources()">

@@ -1,6 +1,28 @@
 <html metal:use-macro="context/@@admin_template/macros/master">
-<div metal:fill-slot="content" >
+<div metal:fill-slot="content" 
+    tal:define="batch view/get_identified"
+    >
 <h1>Ge&iuml;dentificeerde personen</h1>
-<p>Deze pagina heb ik nog niet gemaakt -- jelle</p>
+
+<div metal:use-macro="context/@@sitemacros/macros/aantal_resultaten" />
+<div metal:use-macro="context/@@sitemacros/macros/batch_navigation" />
+<table>
+<tr>
+    <th>naam</th>
+    <th>status</th>
+    <th>bronnen</th>
+</tr>
+<div tal:omit-tag="" tal:repeat="item batch">
+<tr tal:define="person python:view.get_person(bioport_id=item.bioport_id)" >
+<td>
+    <span metal:use-macro="context/@@sitemacros/macros/link_to_person" />
+    </td>
+    <td>
+     <span tal:replace="python:person.status and view.get_status_values(person.status)"  />
+    </td>
+<td tal:content="python:', '.join([src.id for src in person.get_sources()])" />
+</tr>
+</div>
+</table>
 </div>
 </html>

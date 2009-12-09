@@ -14,12 +14,21 @@ class RepositoryView:
     def get_sources(self):
         return self.repository().get_sources()
     
-    def get_person(self, **args):
-        return self.repository().get_person(**args)
+    def get_person(self,bioport_id):
+        return self.repository().get_person(bioport_id)
     
     def get_status_values(self, k=None):
         return self.repository().get_status_values(k)
     
+    
+class Batcher: 
+    def update(self, **kw):
+        self.batch_start = int(self.request.get('batch_start', 0))
+        self.batch_size = int(self.request.get('batch_size', 30))
+    def batch_url(self, start=0):
+        data = self.request.form
+        data['batch_start'] = start 
+        return self.url(data= data)       
 class Bioport(grok.Application, grok.Container):
               
     SVN_REPOSITORY = None
@@ -74,13 +83,10 @@ class Admin_Template(grok.View):
 class SiteMacros(grok.View):
     grok.context(zope.interface.Interface)   
     
-class Personen(BioPortTraverser,grok.View,RepositoryView):
+class Personen(BioPortTraverser,grok.View,RepositoryView, Batcher):
     
-    def update(self, **kw):
-        
-        self.batch_start = int(self.request.get('batch_start', 0))
-        self.batch_size = int(self.request.get('batch_size', 30))
-        
+    def update(self):
+        Batcher.update(self)
     def get_persons(self):
         qry = {}
         #request.form has unicode keys - make strings
@@ -106,21 +112,18 @@ class Personen(BioPortTraverser,grok.View,RepositoryView):
         batch.grand_total = len(ls)
         return batch
 
-    def batch_url(self, start=0):
-        data = self.request.form
-        data['batch_start'] = start 
-        return self.url(data= data)
+
     
 class Persoon(BioPortTraverser, grok.View,RepositoryView): #, BioPortTraverser):
     def update(self, **args):
         self.bioport_id = self.traverse_subpath_helper(0) or self.request.get('bioport_id')
+        redirects_to = self.repository().redirects_to(self.bioport_id)
+        if redirects_to:
+            self.bioport_id = redirects_to
         if not self.bioport_id:
             self.bioport_id = random.choice(self.repository().get_bioport_ids())
             self.redirect(self.url(self) + '/'+ self.bioport_id)
         self.person  = self.repository().get_person(bioport_id=self.bioport_id) 
-        redirects_to = self.person.redirects_to()
-        if redirects_to:
-            self.redirect(self.url(self, redirects_to))
         self.biography  = self.merged_biography = self.person.get_merged_biography()
 
     def get_event(self, type, biography=None):
@@ -177,10 +180,9 @@ class Zoek(grok.View):
     pass
 
 
-class Auteurs(grok.View,RepositoryView):
-    def update(self, **kw):
-        self.batch_start = int(self.request.get('batch_start', 0))
-        self.batch_size = int(self.request.get('batch_size', 50))
+class Auteurs(grok.View,RepositoryView, Batcher):
+    def update(self):
+        Batcher.update(self)
     def get_auteurs(self, **args):
 
         d = {}
@@ -194,10 +196,7 @@ class Auteurs(grok.View,RepositoryView):
         batch.grand_total = len(ls)
         return batch
 
-    def batch_url(self, start=0):
-        data = self.request.form
-        data['batch_start'] = start 
-        return self.url(data= data)
+
 
 class Bronnen(grok.View):
     pass
