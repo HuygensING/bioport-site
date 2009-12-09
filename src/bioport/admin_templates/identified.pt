@@ -13,7 +13,8 @@
     <th>bronnen</th>
 </tr>
 <div tal:omit-tag="" tal:repeat="item batch">
-<tr tal:define="person python:view.get_person(bioport_id=item.bioport_id)" >
+<tr tal:define="person python:view.get_person(bioport_id=item.bioport_id)" 
+    tal:condition="person" >
 <td>
     <span metal:use-macro="context/@@sitemacros/macros/link_to_person" />
     </td>
