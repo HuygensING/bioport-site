@@ -1,8 +1,7 @@
 <html metal:use-macro="context/@@admin_template/macros/master">
 <div metal:fill-slot="content">
 <h1>Identificeer personen</h1>
-<tal:block define="bioport_ids view/bioport_ids;
-    redirect_to python:view.request.get('HTTP_REFERER', '')">
+<tal:block define="bioport_ids view/bioport_ids;">
 <ul metal:use-macro="context/@@mostsimilar/macros/identify_actions" />
 <a tal:attributes="href python:view.url('mostsimilar')">ga naar de lijst met meest gelijkende personen</a>
 </tal:block>

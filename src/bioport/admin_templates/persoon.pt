@@ -409,9 +409,9 @@ De gegevens zijn grijs als ze uit de bronnen-publikaties komen, zwart als ze zij
     </tr>
   	</tal:block>
   	<!--  /floruit -->
-	   	
+	  	
   	<tr metal:use-macro="template/macros/separator" ></tr> 
-  	
+<div tal:condition="nothing">
    	<!--  beroep -->
    	<tal:block repeat="state view/occupations_with_id">
    	<tr tal:condition="state/idno" >
@@ -460,6 +460,59 @@ De gegevens zijn grijs als ze uit de bronnen-publikaties komen, zwart als ze zij
         </td>
     </tr>
     <!--  /beroep --> 
+</div> 	
+	
+   	<!--  category -->
+   	<tal:block repeat="state view/categories">
+   	<tr tal:condition="state/idno" >
+   		<th><span tal:condition="repeat/state/start"><span class="accesskey">r</span>ubriek</span></th>
+   		<td>
+   			<select tal:attributes="name string:category_id"  
+	    			 style="width:350px;">
+   				<option></option>
+   				<option tal:repeat="category python:view.repository().get_categories()" 
+   					tal:content="string:${category/id}. ${category/name}"
+   					tal:attributes="value category/id;
+   					    selected python:str(state.idno) == str(category.id)"></option>
+   			</select>	
+   		</td>
+        <td>
+	        <span 
+	           tal:condition="repeat/state/start" tal:replace="structure python:view.actions.byname['form.actions.save_category'].render()" />
+        </td> 
+   	</tr>	
+   	</tal:block>
+   	<tr>
+        <th><span tal:condition="not:view/categories"><span class="accesskey">r</span>ubrieken</span></th>	
+        <td>
+    			<select name="new_category_id" id="new_category_id" accesskey="r" 
+	    			 style="width:350px;">
+   				<option></option>
+   				<option tal:repeat="category python:view.repository().get_categories()" 
+   					tal:content="string:${category/id}. ${category/name}"
+                    tal:attributes="value category/id;"></option>
+   			</select>	
+        </td>
+        <td>
+	        <span 
+	           tal:condition="not:view/categories" tal:replace="structure python:view.actions.byname['form.actions.save_category'].render()" />
+        </td>
+   	</tr>
+   	    <tr tal:repeat="i python:range(len(view.categories), 2)">
+        <th></th>   
+        <td>
+                <select name="new_category_id"
+	    			 style="width:350px;">
+                <option></option>
+                <option tal:repeat="category python:view.repository().get_categories()" 
+                    tal:content="string:${category/id}. ${category/name}"
+                    al:attributes="value category/id;"></option>
+            </select>   
+        </td>
+        <td>
+        </td>
+    </tr>
+    <!--  /category --> 
 	   	<tr metal:use-macro="template/macros/separator" ></tr> 
    	<tr>
         <th><span class="accesskey">o</span>pmerkingen (voor en door bewerkers)</th>	
@@ -504,9 +557,18 @@ De gegevens zijn grijs als ze uit de bronnen-publikaties komen, zwart als ze zij
     <tr>
         <th>id</th>
 	    <td><span tal:content="python:bio.get_value('local_id')" ></span>
-	       <a tal:condition="bio/record/source_url" tal:attributes="href bio/record/source_url" tal:content="bio/record/source_url" /></td>
+	       <a  tal:condition="bio/source_url" 
+	           tal:attributes="href bio/source_url" 
+	           tal:content="bio/source_url" /></td>
     </tr>
-	<tr>
+    <tr 
+        tal:condition="python:bio.get_source().id in ['nnbw', 'vdaa']">
+        <th>dbnl id</th>
+        <td 
+             ><span tal:content="python:bio.get_idno('dbnl_id')" tal:on-error="string:no dbnl_id idno found"></span>
+        </td>
+    </tr>
+    	<tr>
 		<th>namen</th>
 		<td>
 			<div tal:repeat="naam python:bio.get_namen()" tal:content="naam/volledige_naam"></div>	
@@ -549,12 +611,11 @@ De gegevens zijn grijs als ze uit de bronnen-publikaties komen, zwart als ze zij
 		</span>
 
 	  </tal:block> 
-<tal:block repeat="state2 python:[('beroep', 'occupation'), ('actief', 'floruit')]">
-		<tal:block define="
-		  state python:view.get_state(state2[1], biography=bio);
-		  title python:state2[0];" 
-		  
-		  tal:condition="state">
+<tal:block repeat="state2 python:[('rubriek', 'category'), ('actief', 'floruit')]">
+		<tal:block 
+		  repeat="state python:view.get_states(state2[1], biography=bio)"
+		  define="title python:state2[0];" 
+		  >
 		  <tr tal:condition="state/idno">
 		      <th tal:content="string:${title} - idno"></th>
 		      <td tal:content="state/idno" />

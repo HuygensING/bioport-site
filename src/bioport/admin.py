@@ -15,7 +15,6 @@ from permissions import *
 from z3c.batching.batch import  Batch
 
 from zope.session.interfaces import ISession
-
     
 class IAdminSettings(Interface):           
     SVN_REPOSITORY = schema.TextLine(title=u'URL of svn repository', required=False)
@@ -80,49 +79,57 @@ class Edit(grok.EditForm,RepositoryView):
     grok.template('edit')
     grok.context(Admin)
     form_fields = grok.Fields(IAdminSettings)
+    
     @grok.action(u"Edit Admin settings", name="edit_settings")
     def edit_admin(self, **data):
         self.applyData(self.context, **data)
         self.repository().db.metadata.create_all()
         
-        self.redirect(self.url(self))
+#        self.redirect(self.url(self))
     
     @grok.action('Fill the similarity Cache', name='fill_similarity_cache') 
     def fill_similarity_cache(self, **data):
         self.repository().db.fill_similarity_cache()
-        self.redirect(self.url(self))
+#        self.redirect(self.url(self))
        
        
     @grok.action('Refresh the similar persons cache')
     def fill_most_similar_persons_cache(self, **data):
         self.repository().db.fill_most_similar_persons_cache(refresh=True)
-        self.redirect(self.url(self))
+#        self.redirect(self.url(self))
         
         
     @grok.action('Create non-existing tables')
     def reset_database(self, **data):
         self.repository().db.metadata.create_all()
-        self.redirect(self.url(self))
+#        self.redirect(self.url(self))
         
     @grok.action('Refresh the similarity cache [I.E. EMPTYING IT FIRST]')
     def refresh_similirity_cache(self, **data): 
         self.repository().db.fill_similarity_cache(refresh=True)
-        self.redirect(self.url(self))
+#        self.redirect(self.url(self))
         
     @grok.action('Fill geolocations table')
     def fill_geolocations_table(self, **data): 
         self.repository().db._update_geolocations_table()
-        self.redirect(self.url(self))
+#        self.redirect(self.url(self))
         
-    @grok.action('Fill occupations table')
-    def fill_occupations_table(self, **data): 
-        self.repository().db._update_occupations_table()
-        self.redirect(self.url(self))
+    @grok.action('Fill categories table')
+    def fill_categories_table(self, **data): 
+        self.repository().db._update_category_table()
+#        self.redirect(self.url(self))
         
     @grok.action('Set state of edited persons to bewerkte(JG: DELETE THIS BUTTON WHEN DONE)')
     def set_state_to_bewerkt(self, **data):
         from BioPortRepository.upgrade import upgrade_persons
         upgrade_persons(self.repository())
+    
+    @grok.action('refill table with identical dbnl ids')
+    def refill_identical_dbnl_ids(self, **data):
+        from BioPortRepository import nd_vdaa_matches
+        repository = self.repository()
+        nd_vdaa_matches.delete_list_of_doubles(repository)
+        nd_vdaa_matches.insert_list_of_doubles(repository, limit=100000) 
 class Display(grok.DisplayForm):
     grok.require('bioport.Edit')
     grok.context(Admin)
@@ -243,7 +250,6 @@ class MostSimilar(grok.Form,RepositoryView):
         repo.identify(persons[0], persons[1])
         
         self.bioport_ids = bioport_ids
-        self.persons = persons
         msg = 'Identified <a href="../persoon?bioport_id=%s">%s</a> and <a href="../persoon?bioport_id=%s">%s</a>' % (
                      bioport_ids[0],  bioport_ids[0], bioport_ids[1],  bioport_ids[1])
         
@@ -310,10 +316,22 @@ class MostSimilar(grok.Form,RepositoryView):
 #            ls += [p2 for score, p1, p2 in qry_result if p1.bioport_id == person.bioport_id]   
 #            ls += [p1 for score, p1, p2 in qry_result if p2.bioport_id == person.bioport_id]   
             
-            batch = Batch(ls, start=self.batch_start, size=self.batch_size)
+            batch = Batch(ls, start=self.start, size=self.size)
             self.persons = batch 
             self.persons.grand_total = len(ls)
 
+class DBNL_Ids(MostSimilar):
+    def update(self):
+        self.start = int(self.request.get('start', 0))
+        self.size = int(self.request.get('size', 20))
+        self.redirect_to = None
+    def persons_with_identical_dbnl_ids(self):
+        ls, grand_total = self.repository().get_persons_with_identical_dbnl_ids(start=self.start, size=self.size)
+        self.persons= ls
+        self.grand_total = grand_total
+        return ls
+
+    
 class Persoon(app.Persoon, grok.EditForm, RepositoryView):
     """This should really be an "Edit" view on a "Person" Model
     
@@ -337,9 +355,9 @@ class Persoon(app.Persoon, grok.EditForm, RepositoryView):
         self.bioport_biography =  repository.get_bioport_biography(self.person) 
         self.merged_biography  = self.person.get_merged_biography()
 
-        self.occupations = self.get_states(type='occupation')
-        self.occupations_with_id = [s for s in self.occupations if s.idno]
-        
+#        self.occupations = self.get_states(type='occupation')
+#        self.occupations_with_id = [s for s in self.occupations if s.idno]
+        self.categories = self.get_states(type='category')
         self.history_counter = 1
         http_referer = self.request.get('HTTP_REFERER', '')
         http_referer = http_referer.split('?')[0]
@@ -439,37 +457,82 @@ class Persoon(app.Persoon, grok.EditForm, RepositoryView):
         text = self.request.get('state_%s_text' % type)
         self.bioport_biography.add_or_update_state(type, frm=frm, to=to, text=text)
         
-    @grok.action('bewaar beroep', name="save_occupation")
-    def save_occupation(self):
-        self._set_occupation()
+    @grok.action('bewaar rubriek', name="save_category")
+    def save_category(self):
+        self._set_category()
         self.save_biography()
         self.msg = 'beroep bewaard' 
     
     
-    def _set_occupation(self):
-        occupation_ids = self.request.get('occupation_id', [])
+    def _set_category(self):
+        category_ids = self.request.get('category_id', [])
+        print 'saving categories', category_ids
         to_delete = []
-        if type(occupation_ids) != type([]):
-            occupation_ids = [occupation_ids]
-        for idx in range(len(occupation_ids)):
-            occupation_id = occupation_ids[idx] 
-            if occupation_id:
-                name = self.repository().get_occupation(occupation_id).name  
-                self.bioport_biography.add_or_update_state(type='occupation', idno=occupation_id, text=name, idx=idx)
+        if type(category_ids) != type([]):
+            category_ids = [category_ids]
+        for idx in range(len(category_ids)):
+            category_id = category_ids[idx] 
+            if category_id:
+                name = self.repository().get_category(category_id).name  
+                self.bioport_biography.add_or_update_state(type='category', idno=category_id, text=name, idx=idx)
             else:
                 to_delete.append(idx) 
                 
+        self.save_biography()
+        print 'states now: ', [s.idno for s in self.get_states(type='category')]
+                
         to_delete.reverse()
+        print 'deleting categories', to_delete
         for idx in to_delete:
-            self.bioport_biography.remove_state(type='occupation', idx=idx)
+            self.bioport_biography.remove_state(type='category', idx=idx)
             
-        new_occupation_ids = self.request.get('new_occupation_id')
-        if type(new_occupation_ids) != type([]):
-            new_occupation_ids = [new_occupation_ids]
-        new_occupation_ids = [s for s in new_occupation_ids if s ]
-        for new_occupation_id in new_occupation_ids:
-            name = self.repository().get_occupation(new_occupation_id).name 
-            self.bioport_biography.add_state(type='occupation', idno=new_occupation_id, text=name)
+        self.save_biography()
+        print 'states now: ', [s.idno for s in self.get_states(type='category')]
+            
+        new_category_ids = self.request.get('new_category_id')
+        if type(new_category_ids) != type([]):
+            new_category_ids = [new_category_ids]
+        print 'new categories', new_category_ids 
+        new_category_ids = [s for s in new_category_ids if s ]
+        for new_category_id in new_category_ids:
+            name = self.repository().get_category(new_category_id).name 
+            self.bioport_biography.add_state(type='category', idno=new_category_id, text=name)
+            
+        self.save_biography()
+        print 'states now: ', [s.idno for s in self.get_states(type='category')]
+        
+        self.categories = self.get_states(type='category')
+#    @grok.action('bewaar beroep', name="save_occupation")
+#    def save_occupation(self):
+#        self._set_occupation()
+#        self.save_biography()
+#        self.msg = 'beroep bewaard' 
+#    
+#    
+#    def _set_occupation(self):
+#        occupation_ids = self.request.get('occupation_id', [])
+#        to_delete = []
+#        if type(occupation_ids) != type([]):
+#            occupation_ids = [occupation_ids]
+#        for idx in range(len(occupation_ids)):
+#            occupation_id = occupation_ids[idx] 
+#            if occupation_id:
+#                name = self.repository().get_occupation(occupation_id).name  
+#                self.bioport_biography.add_or_update_state(type='occupation', idno=occupation_id, text=name, idx=idx)
+#            else:
+#                to_delete.append(idx) 
+#                
+#        to_delete.reverse()
+#        for idx in to_delete:
+#            self.bioport_biography.remove_state(type='occupation', idx=idx)
+#            
+#        new_occupation_ids = self.request.get('new_occupation_id')
+#        if type(new_occupation_ids) != type([]):
+#            new_occupation_ids = [new_occupation_ids]
+#        new_occupation_ids = [s for s in new_occupation_ids if s ]
+#        for new_occupation_id in new_occupation_ids:
+#            name = self.repository().get_occupation(new_occupation_id).name 
+#            self.bioport_biography.add_state(type='occupation', idno=new_occupation_id, text=name)
     
 
     def save_biography(self):
@@ -557,7 +620,8 @@ class Persoon(app.Persoon, grok.EditForm, RepositoryView):
         self._set_event('funeral')
         self._set_event('baptism')
         self._set_sex()
-        self._set_occupation()
+#        self._set_occupation()
+        self._set_category()
         self._save_state('floruit')
         self._set_status()
         self._save_remarks()
@@ -642,7 +706,7 @@ class ChangeName(Persoon, grok.EditForm,RepositoryView):
         if not self.bioport_id:
             #XXX make a userfrienlider error
             assert 0, 'need bioport_id in the request'
-        self.person  = self.context.get_person(bioport_id=self.bioport_id)  
+        self.person  = self.get_person(bioport_id=self.bioport_id)  
         self.bioport_biography  = self.repository().get_bioport_biography(self.person)
         
         if not self.bioport_biography.get_namen():
@@ -671,11 +735,12 @@ class ChangeName(Persoon, grok.EditForm,RepositoryView):
         if volledige_naam in ' '.join(parts):
             volledige_naam = ' '.join(parts)
         
-        name = Naam(
+        self.naam = name = Naam(
             volledige_naam = volledige_naam,
             **args
         )
         repository = self.repository()
+        
         bio._replace_name(name, self.idx)
         repository.save_biography(bio)
         self.msg = 'changed a name'
@@ -688,7 +753,7 @@ class AntiIdentified(grok.View, RepositoryView, Batcher):
         Batcher.update(self)
     def get_antiidentified(self):
         ls = self.repository().get_antiidentified()
-        batch = Batch(ls, start=self.batch_start, size=self.batch_size)
+        batch = Batch(ls, start=self.start, size=self.size)
         batch.grand_total = len(ls)
         return batch 
 class Identified(grok.View, RepositoryView, Batcher):
@@ -700,8 +765,8 @@ class Identified(grok.View, RepositoryView, Batcher):
         qry = {}
         #request.form has unicode keys - make strings
         for k in [
-            'batch_start',
-            'batch_size',
+            'start',
+            'size',
             'order_by', 
             'search_term',
             'source_id',
@@ -713,7 +778,7 @@ class Identified(grok.View, RepositoryView, Batcher):
         ls = self.repository().get_identified(**qry)
         #**qry)
         self.qry = qry
-        batch = Batch(ls, start=self.batch_start, size=self.batch_size)
+        batch = Batch(ls, start=self.start, size=self.size)
         batch.grand_total = len(ls)
         return batch  
 
@@ -724,7 +789,7 @@ class Deferred(grok.View,RepositoryView, Batcher):
         Batcher.update(self)
     def get_deferred(self):
         ls =  self.repository().get_deferred()
-        batch = Batch(ls, start=self.batch_start, size=self.batch_size)
+        batch = Batch(ls, start=self.start, size=self.size)
         batch.grand_total = len(ls)
         return batch  
     
@@ -737,15 +802,15 @@ class Uitleg_Zoek(grok.View):
 class Locations(grok.View,RepositoryView):     
     grok.require('bioport.Edit')
     def update(self, **kw):
-        self.batch_start = int(self.request.get('batch_start', 0))
-        self.batch_size = int(self.request.get('batch_size', 30))
+        self.start = int(self.request.get('start', 0))
+        self.size = int(self.request.get('size', 30))
         self.startswith = self.request.get('startswith', None)
         self.name = self.request.get('name', None)
         
     def get_locations(self):
         ls = self.repository().db.get_locations(startswith=self.startswith, name=self.name)
         
-        batch = Batch(ls, start=self.batch_start, size=self.batch_size)
+        batch = Batch(ls, start=self.start, size=self.size)
         batch.grand_total = len(ls)
         return batch
     

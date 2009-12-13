@@ -23,11 +23,11 @@ class RepositoryView:
     
 class Batcher: 
     def update(self, **kw):
-        self.batch_start = int(self.request.get('batch_start', 0))
-        self.batch_size = int(self.request.get('batch_size', 30))
+        self.start = int(self.request.get('start', 0))
+        self.size = int(self.request.get('size', 30))
     def batch_url(self, start=0):
         data = self.request.form
-        data['batch_start'] = start 
+        data['start'] = start 
         return self.url(data= data)       
 class Bioport(grok.Application, grok.Container):
               
@@ -91,8 +91,8 @@ class Personen(BioPortTraverser,grok.View,RepositoryView, Batcher):
         qry = {}
         #request.form has unicode keys - make strings
         for k in [
-            'batch_start',
-            'batch_size',
+            'start',
+            'size',
             'beginletter',
             'geslacht',
             'order_by', 
@@ -108,7 +108,7 @@ class Personen(BioPortTraverser,grok.View,RepositoryView, Batcher):
         
         ls = self.repository().get_persons(**qry)
         self.qry = qry
-        batch = Batch(ls, start=self.batch_start, size=self.batch_size)
+        batch = Batch(ls, start=self.start, size=self.size)
         batch.grand_total = len(ls)
         return batch
 
@@ -192,7 +192,7 @@ class Auteurs(grok.View,RepositoryView, Batcher):
         
         ls = self.repository().get_authors(**d) 
         
-        batch = Batch(ls, start=self.batch_start, size=self.batch_size)
+        batch = Batch(ls, start=self.start, size=self.size)
         batch.grand_total = len(ls)
         return batch
 

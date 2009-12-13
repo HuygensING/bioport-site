@@ -6,8 +6,9 @@
     	>
     <div class="illustratie" tal:repeat="ill python:illustraties[:1]">
     <img
-        tal:attributes="src ill/cached_url" 
-        alt="illustratie bij deze biografie" />
+        tal:attributes="src ill/cached_url; 
+            alt string:illustratie bij deze biografie (${ill/cached_url});
+      " /> 
     </div>
     <div class="illustratie" tal:condition="not:illustraties">
         <img tal:attributes="src static/geen_plaatje.png" />
@@ -93,10 +94,11 @@
     </ul>
     </div>
     <p>
-<div class="illustratie" tal:repeat="url python:illustraties[1:]">
+<div class="illustratie" tal:repeat="ill python:illustraties[1:]">
     <img
-        tal:attributes="src url" 
-        alt="illustratie bij deze biografie" />
+        tal:attributes="src ill/cached_url;
+            alt string:illustratie bij deze biografie (${ill/cached_url});
+            "  />
     </div>
     
     

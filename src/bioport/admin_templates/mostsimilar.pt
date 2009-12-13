@@ -10,6 +10,7 @@ Klik <a tal:attributes="href python:view.url('persoonidentify')">hier om zelf in
 <a tal:attributes="href python:view.url('antiidentified')">niet identieke</a> personen, 
 <a tal:attributes="href python:view.url('deferred')">de lijst met moeilijke gevallen</a>. 
 
+<div metal:use-macro="context/@@sitemacros/macros/sql_query_navigation" />
 <table>
 	<div tal:repeat="x view/most_similar_persons"
 		tal:omit-tag="">

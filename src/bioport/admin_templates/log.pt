@@ -3,7 +3,7 @@
 <h1>Log</h1>
 <span metal:define-macro="alfabet" tal:repeat="letter string:abcdefghijklmnopqrstuvwxyz"
     tal:attributes="class python:letter == request.get('beginletter') and 'alfabet selected' or 'alfabet'"
-    ><a tal:attributes="href string:${view/url}?startswith=${letter}&batch_size=99999" ><span tal:replace="letter/upper" /></a></span>
+    ><a tal:attributes="href string:${view/url}?startswith=${letter}&size=99999" ><span tal:replace="letter/upper" /></a></span>
 
 <table>
 	<tr tal:repeat="r python:view.get_log_messages()">

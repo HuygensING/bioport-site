@@ -36,6 +36,14 @@
         <a tal:attributes="href python:view.batch_url(start=last_batch.start);"
             tal:content="string:laatste ${last_batch/__len__}" />
     </div>
+    
+    <div tal:omit-tag="" metal:define-macro="size_select">
+    | toon
+    <select tal:attributes="onChange string:document.location.href='${view/url}?start=${view/start}&size=' +  this.value;;return false;;">
+        <option tal:repeat="i python:[1, 10, 20, 40, 60, 100]" tal:content="i" tal:attributes="value i; selected python:i == view.size" /> 
+    </select>
+    per pagina
+    </div>
 </div>
 </div>
 
@@ -46,3 +54,21 @@
     tal:attributes="href python:view.url('persoon', data={'bioport_id':person.get_bioport_id()})" />
     <span tal:replace="python:context.format_dates(person.get_merged_biography().geboortedatum(), person.get_merged_biography().sterfdatum())" />
 </span>
+
+
+<div class="batch_navigation" 
+    metal:define-macro="sql_query_navigation">
+    <div tal:condition="python:view.start > 0" tal:omit-tag="">
+        <a tal:attributes="href python:view.url(data={'start':0, 'size':view.size})">eerste</a> 
+    
+    </div>
+    <div tal:condition="python:view.start > view.size" tal:omit-tag="">
+    |
+        <a tal:attributes="href python:view.url(data={'start':max(view.start - view.size , 0), 'size':view.size})">vorige</a> 
+    </div> 
+    <div tal:condition="python:1" tal:omit-tag="">
+    |
+        <a tal:attributes="href python:view.url(data={'start':view.start + view.size, 'size':view.size})">volgende</a> 
+    </div> 
+    <div metal:use-macro="context/@@sitemacros/macros/size_select"></div>
+</div>   
