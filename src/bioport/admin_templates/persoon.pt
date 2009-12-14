@@ -38,6 +38,10 @@
 	$('.form_baptism').hide();
 	$('.form_funeral').hide();
 	$('.form_floruit').hide();
+	$('.button_show_birth').hide();
+	$('.button_show_death').hide();
+    
+	
 });
 </script>
 <h1>Bewerk gegevens van <em tal:content="view/title" /></h1>
@@ -126,7 +130,7 @@ De gegevens zijn grijs als ze uit de bronnen-publikaties komen, zwart als ze zij
    	<tr>
    		<th></th>
    		<td colspan="2">
-   	        <input name="name_new" type="text" id="name_new"  access_key="n" />
+   	        <input name="name_new" type="text" id="name_new"  accesskey="n" />
 	        <span tal:replace="structure python:view.actions.byname['form.actions.add_name'].render()" ></span>
 		</td>    
 	</tr>
@@ -170,7 +174,6 @@ De gegevens zijn grijs als ze uit de bronnen-publikaties komen, zwart als ze zij
         <span tal:content="python:title[0]" class="accesskey"></span><span tal:content="python:title[1:]"></span>
         </th>
          <td><a href="" 
-         
             tal:condition="not:has_data" 
             tal:attributes="
                 accesskey python:title[0];

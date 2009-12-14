@@ -126,10 +126,10 @@ class Edit(grok.EditForm,RepositoryView):
     
     @grok.action('refill table with identical dbnl ids')
     def refill_identical_dbnl_ids(self, **data):
-        from BioPortRepository import nd_vdaa_matches
+        from BioPortRepository import nnbw_and_vdaa_matches
         repository = self.repository()
-        nd_vdaa_matches.delete_list_of_doubles(repository)
-        nd_vdaa_matches.insert_list_of_doubles(repository, limit=100000) 
+        nnbw_and_vdaa_matches.delete_list_of_doubles(repository)
+        nnbw_and_vdaa_matches.insert_list_of_doubles(repository, limit=100000) 
 class Display(grok.DisplayForm):
     grok.require('bioport.Edit')
     grok.context(Admin)
