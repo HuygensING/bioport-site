@@ -1,6 +1,6 @@
 <html metal:use-macro="context/@@admin_template/macros/master">
 <div metal:fill-slot="content" 
-tal:define="persons view/persons_with_identical_dbnl_ids">
+tal:define="persons view/get_persons_with_identical_dbnl_ids">
 <h1>Identificeer DBNL Ids</h1>
 <p>Hieronder ziet u een lijst van wat
 opgenomen biografieen uit het NNBW en van der AA die dezelfde DBNL ids hebben (voorzover ze nog niet zijn <a tal:attributes="href python:view.url('identified')">geidentificeerd</a>, 
@@ -8,7 +8,14 @@ of op de lijst met
 <a tal:attributes="href python:view.url('antiidentified')">niet identieke</a> personen of <a tal:attributes="href python:view.url('deferred')">moeilijke gevallen</a> zijn gezet.
 
 Er zijn <span tal:replace="view/grand_total"></span> paren gevonden.
+
 <p>
+U kunt er ook voor kiezen om 
+<a tal:attributes="href python:view.url(data={'start':view.start, 'size':view.size, 'source':'vdaa'})">alleen de van der Aa-gegevens</a>
+of
+<a tal:attributes="href python:view.url(data={'start':view.start, 'size':view.size, 'source':'nnbw'})">alleen NNBW-gegevens</a>
+of
+<a tal:attributes="href python:view.url(data={'start':view.start, 'size':view.size })">alle gegevens</a> te tonen.
 
 </p>
 
@@ -33,7 +40,7 @@ Er zijn <span tal:replace="view/grand_total"></span> paren gevonden.
 			<br>
 		     <span tal:repeat="bio bios">
 			<hr width="250px">
-			<span tal:content="python:bio.get_source().id" /> ( <span tal:content="person/bioport_id" />)
+			<span tal:content="python:bio.get_value('local_id')" /> ( <span tal:content="person/bioport_id" />)
 		    <br> 
 		      <span   tal:replace="structure python:bio.get_value('tekst')" />
 		       </span>
@@ -49,20 +56,20 @@ Er zijn <span tal:replace="view/grand_total"></span> paren gevonden.
 			>
 			<li><a id="identify"
 			     tal:attributes="
-					 href python:view.url(data={'form.actions.identify': 'submit', 'bioport_ids':bioport_ids, 'start':request.get('start', 0), 'redirect_to':view.redirect_to});
+					 href python:view.url(data={'form.actions.identify': 'submit', 'bioport_ids':bioport_ids, 'start':view.start, 'size':view.size,'source':view.source, 'redirect_to':view.redirect_to});
 					 accesskey string:i;
 			" ><span class="accesskey">i</span>dentiek</a>
 			</li>
-			<li><a tal:attributes="href python:view.url(data={'form.actions.antiidentify':'', 'bioport_ids': bioport_ids, 'start':request.get('start', 0),  'redirect_to':view.redirect_to});
+			<li><a tal:attributes="href python:view.url(data={'form.actions.antiidentify':'', 'bioport_ids': bioport_ids, 'start':view.start, 'size':view.size,'source':view.source,  'redirect_to':view.redirect_to});
 				 accesskey string:n;
 			" ><span class="accesskey">n</span>iet identiek </a>
 			</li>
 			<li tal:condition="python:not view.url().endswith('deferred')">
-				<a tal:attributes="href python:view.url(data={'form.actions.deferidentification':'', 'bioport_ids':bioport_ids, 'start':request.get('start', 0),  'redirect_to':view.redirect_to})"
+				<a tal:attributes="href python:view.url(data={'form.actions.deferidentification':'', 'bioport_ids':bioport_ids, 'start':view.start, 'size':view.size,'source':view.source, 'redirect_to':view.redirect_to})"
 				    accesskey="g"> moeilijk <span class="accesskey">g</span>eval</a>
 			</li>
 			<li tal:condition="python:False and not view.url().endswith('identifymoreinfo')">
-				<a tal:attributes="href python:view.url('identifymoreinfo', data={'bioport_ids':bioport_ids, 'start':request.get('start', 0)})"
+				<a tal:attributes="href python:view.url('identifymoreinfo', data={'bioport_ids':bioport_ids, 'start':view.start,'source':view.source, 'size':view.size})"
 				    accesskey="m"><span class="accesskey">m</span>eer informatie </a>
 			</li>
 		</ul>

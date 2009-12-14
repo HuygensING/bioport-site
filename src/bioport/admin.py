@@ -225,7 +225,7 @@ class Sources(grok.View,RepositoryView):
     
     def add_source(self, source_id, url, description=None):
         source = self.repository().add_source(BioPortRepository.source.Source(source_id, url, description))
-class MostSimilar(grok.Form,RepositoryView):
+class MostSimilar(grok.Form,RepositoryView, Batcher):
     grok.require('bioport.Edit')
 
     def update(self):
@@ -236,6 +236,9 @@ class MostSimilar(grok.Form,RepositoryView):
         self.most_similar_persons = self.repository().get_most_similar_persons(start=self.start, size=self.size, similar_to = self.similar_to)
         
     def goback(self,  data = None):
+        for k in data.keys():
+            if k.startswith('form'):
+                del data[k]
         redirect_url = self.url(data=data)
         if self.redirect_to:
             redirect_url = '?'.join([self.redirect_to, redirect_url.split('?')[1]])
@@ -254,7 +257,9 @@ class MostSimilar(grok.Form,RepositoryView):
                      bioport_ids[0],  bioport_ids[0], bioport_ids[1],  bioport_ids[1])
         
         #redirect the user to where wer were
-        data={'msg':msg, 'start':self.request.get('start', 0)}
+        data = self.request.form
+        data['msg'] =  msg
+#        data={'msg':msg, 'start':self.request.get('start', 0)}
 #        request.form.set('msg', msg)
         self.goback(data = data)
         
@@ -320,18 +325,16 @@ class MostSimilar(grok.Form,RepositoryView):
             self.persons = batch 
             self.persons.grand_total = len(ls)
 
-class DBNL_Ids(MostSimilar):
+class DBNL_Ids(MostSimilar, Batcher):
     def update(self):
         self.start = int(self.request.get('start', 0))
         self.size = int(self.request.get('size', 20))
+        self.source = self.request.get('source')
         self.redirect_to = None
-    def persons_with_identical_dbnl_ids(self):
-        ls, grand_total = self.repository().get_persons_with_identical_dbnl_ids(start=self.start, size=self.size)
-        self.persons= ls
+        ls, grand_total = self.repository().get_persons_with_identical_dbnl_ids(start=self.start, size=self.size, source=self.source)
+        self.get_persons_with_identical_dbnl_ids= ls
         self.grand_total = grand_total
-        return ls
-
-    
+   
 class Persoon(app.Persoon, grok.EditForm, RepositoryView):
     """This should really be an "Edit" view on a "Person" Model
     
@@ -688,6 +691,7 @@ class IdentifyMoreInfo(MostSimilar, Persons, Persoon,RepositoryView):
         self.bioport_ids = bioport_ids
         self.persons = persons
         self.start = int(self.request.get('start', 0))
+        self.size = None
         self.redirect_to = None
     def goback(self,  data = None):
         most_similar_persons = self.repository().get_most_similar_persons(start=self.start, size=5)

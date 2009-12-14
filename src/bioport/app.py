@@ -25,10 +25,15 @@ class Batcher:
     def update(self, **kw):
         self.start = int(self.request.get('start', 0))
         self.size = int(self.request.get('size', 30))
-    def batch_url(self, start=0):
+        
+    def batch_url(self, start=None, size=None):
         data = self.request.form
-        data['start'] = start 
-        return self.url(data= data)       
+        if start != None:
+	        data['start'] = start
+        if size != None:
+	        data['size'] = size
+        return self.url(data= data)    
+ 
 class Bioport(grok.Application, grok.Container):
               
     SVN_REPOSITORY = None
