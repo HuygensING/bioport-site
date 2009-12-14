@@ -277,7 +277,8 @@ class MostSimilar(grok.Form,RepositoryView, Batcher):
                      bioport_ids[0], persons[0].get_bioport_id(), bioport_ids[1], persons[1].get_bioport_id())
         
         #redirect the user to where wer were
-        data={'msg':msg, 'start':self.request.get('start', 0)}
+        data = self.request.form
+        data['msg'] =  msg
 #        request.form.set('msg', msg)
         self.goback(data = data)
         
@@ -296,7 +297,8 @@ class MostSimilar(grok.Form,RepositoryView, Batcher):
                      bioport_ids[0], persons[0].get_bioport_id(), bioport_ids[1], persons[1].get_bioport_id())
         
         #redirect the user to where wer were
-        data={'msg':msg, 'start':self.request.get('start', 0)}
+        data = self.request.form
+        data['msg'] =  msg
         self.goback( data = data)
              
     @grok.action('zoek', name="search_persons")
