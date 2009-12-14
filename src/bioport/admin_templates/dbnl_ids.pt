@@ -29,9 +29,11 @@ of
 			person2 python:x[1];
 			">
 		<span tal:define="person person1" tal:omit-tag="">
-		<td tal:content="python:view.start + repeat['x'].number()" />
+		<td>
+		  <span tal:content="python:view.start + repeat['x'].number()" />
+		</td> 
 		<td metal:define-macro="person"
-		  tal:define="bios python:[b for b in person.get_biographies() if b.get_source().id != 'bioport']"
+		  tal:define="bios python:[b for b in person.get_biographies() if b.get_source().id in ['nnbw', 'vdaa']]"
 		      style="width:150px" width="150px">
 			<a tal:attributes="href python:view.url( 'persoon', data={'bioport_id':person.get_bioport_id()})" 
 				tal:content="structure python:person.naam() and person.naam().get_volledige_naam() or 'geen naam bekend'" />
@@ -40,10 +42,11 @@ of
 			<br>
 		     <span tal:repeat="bio bios">
 			<hr width="250px">
-			<span tal:content="python:bio.get_value('local_id')" /> ( <span tal:content="person/bioport_id" />)
-		    <br> 
-		      <span   tal:replace="structure python:bio.get_value('tekst')" />
-		       </span>
+		  <p>
+			<span tal:content="python:bio.get_value('local_id')" /> (dnl_id: <span tal:content="python:bio.get_idno('dbnl_id')" />; bioport id: <span tal:content="person/bioport_id" />)
+		  </p>	
+		      <p   tal:content="structure python:bio.get_value('tekst')" />
+		      </span>
 		</td>
 		</span>
 		<span tal:define="person person2" tal:omit-tag="">
