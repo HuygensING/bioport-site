@@ -185,7 +185,7 @@ class Source(grok.EditForm,RepositoryView):
     @grok.action('Update', name='update_source')    
     def update_source(self, **data):
         source = self.source
-        self.repository().update_source(source, limit=int(self.context.LIMIT))
+        self.repository().download_biographies(source, limit=int(self.context.LIMIT))
     
     @grok.action('Download Illustrations', name='download_illustrations')    
     def download_illustrations(self, **data): 

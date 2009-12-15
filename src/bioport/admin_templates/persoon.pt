@@ -509,7 +509,7 @@ De gegevens zijn grijs als ze uit de bronnen-publikaties komen, zwart als ze zij
                 <option></option>
                 <option tal:repeat="category python:view.repository().get_categories()" 
                     tal:content="string:${category/id}. ${category/name}"
-                    al:attributes="value category/id;"></option>
+                    tal:attributes="value category/id;"></option>
             </select>   
         </td>
         <td>
