@@ -1,0 +1,12 @@
+<html metal:use-macro="context/@@admin_template/macros/master">
+<div metal:fill-slot="content" >
+<h1>De gekozen persoon is weer uitgesplitst in individuele biographie&euml;n</h1>
+<p tal:condition="not:view/persons">Geen persoon gevonden met bioport id <tt tal:content="view/bioport_id" /></p>
+<ul>
+<li tal:repeat="person view/persons">
+    <a tal:content="python:person.naam() and person.naam().guess_normal_form() or 'XXX'" 
+        tal:attributes="href python:view.url('persoon', data={'bioport_id':person.bioport_id})" />
+</li>
+</ul>
+</div>
+</html>
