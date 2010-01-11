@@ -371,7 +371,6 @@ class Persoon(app.Persoon, grok.EditForm, RepositoryView):
             self.history_counter = self.session_get('history_counter', 1) + 1
         self.session_set('history_counter', self.history_counter)
         
-        
     def session_get(self, k, default=None): 
         return ISession(self.request)['bioport'].get(k, default)
     
@@ -484,7 +483,7 @@ class Persoon(app.Persoon, grok.EditForm, RepositoryView):
                 to_delete.append(idx) 
                 
         self.save_biography()
-        print 'states now: ', [s.idno for s in self.get_states(type='category')]
+#        print 'states now: ', [s.idno for s in self.get_states(type='category')]
                 
         to_delete.reverse()
         print 'deleting categories', to_delete
@@ -492,19 +491,19 @@ class Persoon(app.Persoon, grok.EditForm, RepositoryView):
             self.bioport_biography.remove_state(type='category', idx=idx)
             
         self.save_biography()
-        print 'states now: ', [s.idno for s in self.get_states(type='category')]
+#        print 'states now: ', [s.idno for s in self.get_states(type='category')]
             
         new_category_ids = self.request.get('new_category_id')
         if type(new_category_ids) != type([]):
             new_category_ids = [new_category_ids]
-        print 'new categories', new_category_ids 
+#        print 'new categories', new_category_ids 
         new_category_ids = [s for s in new_category_ids if s ]
         for new_category_id in new_category_ids:
             name = self.repository().get_category(new_category_id).name 
             self.bioport_biography.add_state(type='category', idno=new_category_id, text=name)
             
         self.save_biography()
-        print 'states now: ', [s.idno for s in self.get_states(type='category')]
+#        print 'states now: ', [s.idno for s in self.get_states(type='category')]
         
         self.categories = self.get_states(type='category')
 #    @grok.action('bewaar beroep', name="save_occupation")
@@ -655,6 +654,10 @@ class Persoon(app.Persoon, grok.EditForm, RepositoryView):
     
     @grok.action('verwijder', name='remove_name')
     def remove_name(self):
+        #add the namen van de "merged biographies" als we dat nog niet hebben gedaan
+        if not self.bioport_biography.get_namen():
+            for naam in self.merged_biography.get_names():
+                self.bioport_biography._add_a_name(naam)
         idx = self.request.get('naam_idx')
         idx = int(idx)
         if len(self.bioport_biography.get_namen()) == 1:
@@ -769,7 +772,6 @@ class Identified(grok.View, RepositoryView, Batcher):
     
     def get_identified(self):
         qry = {}
-        #request.form has unicode keys - make strings
         for k in [
             'start',
             'size',
@@ -777,6 +779,8 @@ class Identified(grok.View, RepositoryView, Batcher):
             'search_term',
             'source_id',
             'bioport_id', 
+            'beginletter',
+            'status',
              ]:
             if k in self.request.keys():
                 qry[k] = self.request[k]
@@ -830,10 +834,20 @@ class Identify(grok.View):
     grok.require('bioport.Edit')
     pass
 
-
+class UnIdentify(grok.View, RepositoryView):
+    grok.require('bioport.Edit')
+    def update(self):
+        bioport_id = self.bioport_id = self.request.get('bioport_id')
+        person = self.repository().get_person(bioport_id)
+        if person:
+	        self.persons = self.repository().unidentify(person)
+        else:
+            self.persons = []
+    
 class Log(grok.View,RepositoryView):
     grok.require('bioport.Edit')
     def get_log_messages(self):
         return self.repository().get_log_messages()
     
     pass
+

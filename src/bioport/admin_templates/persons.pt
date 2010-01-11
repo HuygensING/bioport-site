@@ -1,12 +1,17 @@
 <html metal:use-macro="context/@@admin_template/macros/master">
 <div metal:fill-slot="content" 
-tal:define="batch view/get_persons">
-		<h1>Persons</h1>
-<span tal:repeat="letter string:abcdefghijklmnopqrstuvwxyz"
-    tal:attributes="class python:letter == request.get('beginletter') and 'alfabet selected' or 'alfabet'"
-    ><a tal:attributes="href python:view.url(view, data={'beginletter':letter, 'source_id':request.get('source_id', ''), 'status':request.get('status', '')})" ><span tal:replace="letter/upper" /></a></span>
+tal:define="batch view/get_persons;
+    status_values view/get_status_values;">
+
+<h1>Persons</h1>
+<div metal:define-macro="alfabet">
+	<span tal:repeat="letter string:abcdefghijklmnopqrstuvwxyz"
+	    tal:attributes="class python:letter == request.get('beginletter') and 'alfabet selected' or 'alfabet'"
+	    ><a tal:attributes="href python:view.url(view, data={'beginletter':letter, 'source_id':request.get('source_id', ''), 'status':request.get('status', '')})" ><span tal:replace="letter/upper" /></a></span>
+</div>
 <p>
-<form tal:attributes="action view/url">
+<form metal:define-macro="search_form"
+    tal:attributes="action view/url">
 	<span tal:repeat="source python:view.repository().get_sources()"
 		tal:condition="nothing"
 	    tal:attributes="class python:source.id == request.get('source_id') and 'alfabet selected' or 'alfabet'"
@@ -18,7 +23,9 @@ tal:define="batch view/get_persons">
 			<input type="text" name="search_term" id="search_term" tal:attributes="value request/search_term | nothing" />
 
 <label accesskey="r" for="source_id">b<span class="accesskey">r</span>on:</label>
-<select name="source_id" id="source_id">
+<select 
+    name="source_id" id="source_id" 
+   >
 	<option>
 	<option tal:repeat="source python:[s for s in view.get_sources() if s.id != 'bioport']" 
 		tal:attributes="value source/id;
@@ -69,7 +76,39 @@ levensjaren niet ingevuld <input type="checkbox" />
     <span tal:replace="python:context.format_dates(person.get_merged_biography().geboortedatum(), person.get_merged_biography().sterfdatum())" />
 	</td>
 	<td>
-        <span tal:replace="python:person.status and view.get_status_values(person.status)"	 />
+        <a tal:content="python:person.status and view.get_status_values(person.status)"	
+            tal:attributes="onClick string:jQuery('#status_${person/bioport_id}').show();;jQuery('#status_${person/bioport_id}').focus();;jQuery(this).hide()" />
+        <select name="status" id="status"
+            style="display:None;" 
+         tal:attributes="
+            id string:status_${person/bioport_id};
+            onChange string:jQuery.ajax({
+		       type: 'POST',
+		       url: 'persoon',
+		       data: {
+		          'form.actions.save_status':'ok',
+		          'bioport_id':${person/bioport_id},
+		          'status':this.value,
+		          'no_render':true },
+		       timeout : 2000 ,
+		       success: function(msg){
+               /*  alert( 'changed status'  + msg);;*/
+		       },
+		       error: function(request,error){
+                  if (error=='timeout') {
+                      alert('de veranderingen konden (waarschijnlijk) niet worden bewaard doordat het te lang duurde.')
+                  } else {
+                     alert('er is een fout opgetreden: '+ error )
+                  }
+		       }
+	     });;
+	    " >
+		    <option></option>
+		    <option tal:repeat="status status_values" 
+		       tal:attributes="value python:status[0];
+		           selected python:status[0] == person.status;"
+		       tal:content="python:status[1]">..</option>
+		</select>
 	</td>
 	<td>
 	   <span tal:repeat="source python:person.get_sources()">

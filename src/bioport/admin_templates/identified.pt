@@ -4,6 +4,10 @@
     >
 <h1>Ge&iuml;dentificeerde personen</h1>
 
+<div metal:use-macro="context/@@persons/macros/alfabet" />
+<p>
+<div metal:use-macro="context/@@persons/macros/search_form" />
+
 <div metal:use-macro="context/@@sitemacros/macros/aantal_resultaten" />
 <div metal:use-macro="context/@@sitemacros/macros/batch_navigation" />
 <table>
@@ -22,6 +26,9 @@
      <span tal:replace="python:person.status and view.get_status_values(person.status)"  />
     </td>
 <td tal:content="python:', '.join([src.id for src in person.get_sources()])" />
+<td>
+    <a tal:attributes="href python:view.url('unidentify', data={'bioport_id':item.bioport_id})">[on-identificeer]</a> 
+</td>
 </tr>
 </div>
 </table>

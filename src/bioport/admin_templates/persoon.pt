@@ -1,4 +1,5 @@
-<html metal:use-macro="context/@@admin_template/macros/master">
+<div tal:omit-tag="" tal:condition="python: not request.get('no_render')">
+<html metal:use-macro="context/@@admin_template/macros/master" >
 <div metal:fill-slot="content"
 	class="person_edit"
     tal:define="
@@ -6,21 +7,6 @@
     	bioport_bio view/bioport_biography; 
     	" 
     >
-<!--  XXX: functions in following script should be replaced by corresponding jQuery calls -->
-<script>
-	
-	show = function(element_id) {
-		el = document.getElementById(element_id);
-		if (el) {el.style.display='';}
-	}
-	
-	hide = function(element_id) {
-		el = document.getElementById(element_id);
-		if (el) {el.style.display='none'};
-	}
-	
-
-</script>
  <script>
  $(document).ready(function(){
 	//on pressing return, make the form submit everything
@@ -44,6 +30,7 @@
 	
 });
 </script>
+
 <h1>Bewerk gegevens van <em tal:content="view/title" /></h1>
 
 <p>
@@ -84,7 +71,7 @@ De gegevens zijn grijs als ze uit de bronnen-publikaties komen, zwart als ze zij
        </td>
     </tr>
     <tr metal:define-macro="separator" class="separator" ><td colspan="3"><hr></td></tr>
-    <tr tal:define="namen view/get_bioport_namen"
+    <tr tal:define="namen python:view.get_bioport_namen() or view.get_non_bioport_namen()"
     	tal:repeat="idx python:range(len(namen))">
     	<th><span tal:condition="python:idx == 0" ><span class="accesskey">n</span>amen</span></th>
     	<td tal:define="naam python:namen[idx]"
@@ -107,7 +94,8 @@ De gegevens zijn grijs als ze uit de bronnen-publikaties komen, zwart als ze zij
    	</tr>
 
    		
-    <tr tal:condition="not:view/get_bioport_namen" 
+    <tr tal:condition="nothing"
+    xtal:condition="not:view/get_bioport_namen" 
 	    tal:define="namen view/get_non_bioport_namen"
     	tal:repeat="idx python:range(len(namen))">
 
@@ -165,19 +153,22 @@ De gegevens zijn grijs als ze uit de bronnen-publikaties komen, zwart als ze zij
 			show_approx python:event and (event.notAfter or event.notBefore or event.date_text) and True;
     		has_data python:show_approx or (event and event.when);
 			prefix event_type;
+			accesskey accesskey | python:title[0];
         	">
 	<tr tal:attributes="class string:separator" ><td colspan="3"><hr></td></tr>
    
     <tr  tal:attributes="id event_type; 
 	    "> 
         <th>
-        <span tal:content="python:title[0]" class="accesskey"></span><span tal:content="python:title[1:]"></span>
+        <span tal:content="accesskey" class="accesskey"></span><span tal:content="python:title[1:]"></span>
         </th>
          <td><a href="" 
             tal:condition="not:has_data" 
             tal:attributes="
-                accesskey python:title[0];
-                onClick string: jQuery('.form_${event_type}').show();; jQuery(this).hide();;  return false;;;
+                accesskey accesskey;
+                onClick string: jQuery('.form_${event_type}').show();; jQuery(this).hide();; 
+                    jQuery('input[name=${prefix}_d]').focus();; 
+                    return false;;;
 	            class string:button_show_${event_type};"
             >[toon]</a></td>
         <td  tal:attributes="class python:not has_data and 'form_%s' % event_type;">
@@ -188,26 +179,35 @@ De gegevens zijn grijs als ze uit de bronnen-publikaties komen, zwart als ze zij
      	id string:${event_type}_exact;
         class python:not has_data and 'form_%s' % event_type;
 		style python:not show_exact and 'display:none';"
-		tal:define="accesskey python:title[0]">
+		>
      	<th class="sublabel">datum
      	</th>
         <td colspan="2"  tal:attributes="class python:view.status_value(event_type, 'when')"
         	tal:define="ymd event/when_ymd | nothing">
  	
  		<span metal:define-macro="date_widget" tal:omit-tag="">
-        	<select tal:attributes="
- 		         accesskey accesskey | nothing;
+        	<select 
+        	   tal:condition="nothing"
+        	   tal:attributes="
+		        accesskey accesskey | nothing;
 	        	name string:${prefix}_d;
-        	   id string:${prefix}_d;">
-        		<option />
+        	    id string:${prefix}_d;">
+        		<option ></option>
         		<option 
 	        		tal:repeat="option python:range(1, 32)" 
 	        		tal:attributes="selected python:ymd and ymd[2] == option"
 	        		tal:content="option"
         		/>
         	</select>
+			<input type="text" 
+				style="width:2em;"
+	          	tal:attributes="
+			        accesskey accesskey | nothing;
+		        	name string:${prefix}_d;
+	        	    id string:${prefix}_d;
+	        	    value python:ymd and ymd[2];">
         	<select tal:attributes="name string:${prefix}_m">
-         		<option>
+         		<option></option>
         		<option 
 	        		tal:repeat="option python:range(1, 13)" 
 	        		tal:attributes="
@@ -340,6 +340,7 @@ De gegevens zijn grijs als ze uit de bronnen-publikaties komen, zwart als ze zij
    	<span tal:omit-tag=""
    		 tal:define="
    		 	title string:dood;
+   		 	accesskey string:d;
    		 	event_type string:death;">
    		 <tr metal:use-macro="template/macros/event_form" />
 	 </span>
@@ -369,16 +370,18 @@ De gegevens zijn grijs als ze uit de bronnen-publikaties komen, zwart als ze zij
   	<tal:block define="
   	     state_id string:floruit;
 	  	 state python:view.get_state(state_id);
+	  	 accesskey string:c;
 	  	 has_data python:state and (state.frm or state.to or state.text)">
 	<tr tal:attributes="class string:separator" ><td colspan="3"><hr></td></tr>
    	<tr>
-        <th><span class="accesskey">a</span>ctief</th>	
+        <th>a<span class="accesskey">c</span>tief</th>	
         <td><a 
-            accesskey="a"
             tal:condition="not:has_data"
+            tal:attributes="accesskey accesskey"
             href="" onClick="
 			$('.form_floruit').show();	
             $(this).hide(); 
+            jQuery('input[name=state_floruit_from_d]').focus();; 
             return false;">[toon]</a></td>
         <td tal:attributes="class python:not has_data and 'form_%s'  % state_id">
 	        <span tal:replace="structure python:view.actions.byname['form.actions.save_state_floruit'].render()" ></span>
@@ -471,6 +474,7 @@ De gegevens zijn grijs als ze uit de bronnen-publikaties komen, zwart als ze zij
    		<th><span tal:condition="repeat/state/start"><span class="accesskey">r</span>ubriek</span></th>
    		<td>
    			<select tal:attributes="name string:category_id"  
+   			      accesskey="r"
 	    			 style="width:350px;">
    				<option></option>
    				<option tal:repeat="category python:view.repository().get_categories()" 
@@ -650,7 +654,7 @@ De gegevens zijn grijs als ze uit de bronnen-publikaties komen, zwart als ze zij
 	<tr tal:condition="python:bio.get_value('tekst')">
 		<th>tekst</th>
 		<td>
-			<span tal:replace="python:bio.get_value('tekst')" />
+			<span tal:replace="structure python:bio.get_value('tekst')" />
 		</td>
 	
 	</tr>	
@@ -683,3 +687,4 @@ De gegevens zijn grijs als ze uit de bronnen-publikaties komen, zwart als ze zij
 </div>
 </div>
 </html>
+</div>
