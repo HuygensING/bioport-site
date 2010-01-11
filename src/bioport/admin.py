@@ -634,23 +634,27 @@ class Persoon(app.Persoon, grok.EditForm, RepositoryView):
         
     @grok.action('voeg toe', name='add_name') 
     def add_name(self):
-        name = Naam(
-#            repositie = self.request.get('prepositie'),
-#            voornaam = self.request.get('voornaam'),
-#            intrapositie = self.request.get('intrapositie'),
-#            geslachtsnaam = self.request.get('geslachtsnaam'),
-#            postpositie = self.request.get('postpositie'),
-            volledige_naam = self.request.get('name_new'),
-        )
+        name_new =  self.request.get('name_new')
+        if name_new:
+	        name = Naam(
+	#            repositie = self.request.get('prepositie'),
+	#            voornaam = self.request.get('voornaam'),
+	#            intrapositie = self.request.get('intrapositie'),
+	#            geslachtsnaam = self.request.get('geslachtsnaam'),
+	#            postpositie = self.request.get('postpositie'),
+	            volledige_naam = name_new,
+	        )
         
-        #add the namen van de "merged biographies" als we dat nog niet hebben gedaan
-        if not self.bioport_biography.get_namen():
-            for naam in self.merged_biography.get_names():
-                self.bioport_biography._add_a_name(naam)
-        
-        self.bioport_biography._add_a_name(name)
-        self.save_biography()
-        self.msg = 'added a name'
+	        #add the namen van de "merged biographies" als we dat nog niet hebben gedaan
+	        if not self.bioport_biography.get_namen():
+	            for naam in self.merged_biography.get_names():
+	                self.bioport_biography._add_a_name(naam)
+	        
+	        self.bioport_biography._add_a_name(name)
+	        self.save_biography()
+	        self.msg = 'added a name'
+        else:
+	        self.msg = 'geen naam ingevuld'
     
     @grok.action('verwijder', name='remove_name')
     def remove_name(self):

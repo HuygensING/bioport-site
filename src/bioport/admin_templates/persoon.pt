@@ -24,9 +24,18 @@
 	$('.form_baptism').hide();
 	$('.form_funeral').hide();
 	$('.form_floruit').hide();
-	$('.button_show_birth').hide();
-	$('.button_show_death').hide();
-    
+	$('#button_show_birth').hide();
+	$('#button_show_birth').attr('accesskey', '');
+	$('#button_show_death').hide();
+	$('#button_show_death').attr('accesskey', '');
+
+    /*click all submit buttons when using the ENTER key */
+	$('input[type=submit]').keydown(function(event){
+		  if (event.keyCode === 13)
+		  {
+			  $(this).click()
+		  }
+		});
 	
 });
 </script>
@@ -120,6 +129,7 @@ De gegevens zijn grijs als ze uit de bronnen-publikaties komen, zwart als ze zij
    		<td colspan="2">
    	        <input name="name_new" type="text" id="name_new"  accesskey="n" />
 	        <span tal:replace="structure python:view.actions.byname['form.actions.add_name'].render()" ></span>
+
 		</td>    
 	</tr>
    	<tr metal:use-macro="template/macros/separator" /> 	
@@ -144,7 +154,10 @@ De gegevens zijn grijs als ze uit de bronnen-publikaties komen, zwart als ze zij
     <!-- geboortedatum -->
     <span tal:omit-tag=""
     	 tal:define="title string:geboorte;
-    	 	event_type string:birth;"
+    	 	event_type string:birth;
+    	 	accesskey string:g;
+    	 	"
+    	 	
     	 >
     <div metal:define-macro="event_form"
 	    tal:define="
@@ -166,10 +179,10 @@ De gegevens zijn grijs als ze uit de bronnen-publikaties komen, zwart als ze zij
             tal:condition="not:has_data" 
             tal:attributes="
                 accesskey accesskey;
-                onClick string: jQuery('.form_${event_type}').show();; jQuery(this).hide();; 
+                onClick string: jQuery('.form_${event_type}').show();; jQuery(this).accesskey='';;jQuery(this).hide();; 
                     jQuery('input[name=${prefix}_d]').focus();; 
                     return false;;;
-	            class string:button_show_${event_type};"
+	            id string:button_show_${event_type};"
             >[toon]</a></td>
         <td  tal:attributes="class python:not has_data and 'form_%s' % event_type;">
 	        <span tal:replace="structure python:view.actions.byname['form.actions.save_event_%s' % event_type].render()" />
