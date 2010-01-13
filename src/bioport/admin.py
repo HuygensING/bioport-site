@@ -119,10 +119,10 @@ class Edit(grok.EditForm,RepositoryView):
         self.repository().db._update_category_table()
 #        self.redirect(self.url(self))
         
-    @grok.action('Set state of edited persons to bewerkte(JG: DELETE THIS BUTTON WHEN DONE)')
-    def set_state_to_bewerkt(self, **data):
-        from BioPortRepository.upgrade import upgrade_persons
-        upgrade_persons(self.repository())
+#    @grok.action('Set state of edited persons to bewerkte(JG: DELETE THIS BUTTON WHEN DONE)')
+#    def set_state_to_bewerkt(self, **data):
+#        from BioPortRepository.upgrade import upgrade_persons
+#        upgrade_persons(self.repository())
     
     @grok.action('refill table with identical dbnl ids')
     def refill_identical_dbnl_ids(self, **data):
