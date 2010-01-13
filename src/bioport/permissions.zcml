@@ -58,7 +58,15 @@
 
       <grant role="bioport.Editor" principal="bioport.mandy" />
 
-      
+    
+       <principal id="bioport.richard"
+                 title="Richard"
+                 login="richard"
+                 password_manager="Plain Text"
+                 password="richard123"
+                 />   
+      <grant role="bioport.Editor" principal="bioport.richard" />
+                 
    </configure>
 </configure>
 
