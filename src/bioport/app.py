@@ -207,3 +207,15 @@ class Bronnen(grok.View):
     pass
 class Colofon(grok.View):
     pass
+
+class Birthdays(grok.View):
+    pass
+class About(grok.View):
+    pass
+
+class Agenda(grok.View):
+    pass
+class Contact(grok.View):
+    pass
+class English(grok.View):
+    pass

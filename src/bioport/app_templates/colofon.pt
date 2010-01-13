@@ -1,5 +1,6 @@
 <html metal:use-macro="context/@@main_template/macros/master">
 <div metal:fill-slot="content">
+  
 <h1>Colofon</h1>
 <ul>
 <li> Projectleiding: Els Kloek
