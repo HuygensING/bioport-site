@@ -22,12 +22,11 @@
     <!--[if IE 6]>
     <![endif]-->
     
-    <div metal:define-slot="extra_header_content" />
+<div metal:define-slot="extra_header_content" />
 </head>
 
 <!-- @server: unique pagename -->
-<body class="[pagename]">
-    
+<body tal:attributes="class python:view.url().split('/')[-1]" >
     <div id="wrapper">
 
         <div id="layHead">
@@ -44,18 +43,16 @@
         <div id="layMenu">
             <h3 class="textOnly">Inhoud</h3>
             <ul>
-             <hr class="textOnly"/>
-            <li><a tal:attributes="href view/application_url">home</a></li>
-            <li><a tal:attributes="href python:view.url('zoek')">zoeken</a></li>
-            <li><a tal:attributes="href python:view.url('about')">over dit project</a></li>
-            <li><a tal:attributes="href python:view.url('agenda')">agenda</a></li>
-           <li> <a tal:attributes="href python:view.url('bronnen')">bronnen</a></li>
-           <li> <a tal:attributes="href python:view.url('colofon')">colofon</a></li>
-           <li> <a tal:attributes="href python:view.url('contact')">contact</a></li>
-           <li> <a tal:attributes="href python:view.url('english')">english</a></li>
-
-            </ul>
-            <hr class="textOnly"/>
+				<li><a tal:attributes="href view/application_url">home</a></li>
+				<li><a tal:attributes="href python:view.url('zoek')">zoeken</a></li>
+				<li><a tal:attributes="href python:view.url('about')">over dit project</a></li>
+				<li><a tal:attributes="href python:view.url('agenda')">agenda</a></li>
+				<li> <a tal:attributes="href python:view.url('bronnen')">bronnen</a></li>
+				<li> <a tal:attributes="href python:view.url('colofon')">colofon</a></li>
+				<li> <a tal:attributes="href python:view.url('contact')">contact</a></li>
+				<li> <a tal:attributes="href python:view.url('english')">english</a></li>
+	        </ul>
+        <hr class="textOnly"/>
         </div>
         
         <div id="layContent">

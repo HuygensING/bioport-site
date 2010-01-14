@@ -91,13 +91,13 @@ class Edit(grok.EditForm,RepositoryView):
     def fill_similarity_cache(self, **data):
         self.repository().db.fill_similarity_cache()
 #        self.redirect(self.url(self))
-       
-       
-    @grok.action('Refresh the similar persons cache')
-    def fill_most_similar_persons_cache(self, **data):
-        self.repository().db.fill_most_similar_persons_cache(refresh=True)
-#        self.redirect(self.url(self))
-        
+#       
+#       
+#    @grok.action('Refresh the similar persons cache')
+#    def fill_most_similar_persons_cache(self, **data):
+#        self.repository().db.fill_most_similar_persons_cache(refresh=True)
+##        self.redirect(self.url(self))
+#        
         
     @grok.action('Create non-existing tables')
     def reset_database(self, **data):
@@ -407,6 +407,8 @@ class Persoon(app.Persoon, grok.EditForm, RepositoryView):
         namen = [naam for naam in namen if naam.to_string() not in [n.to_string() for n in self.get_bioport_namen()]]
         return namen
     
+    def is_identified(self):
+        return len([b for b in self.person.get_biographies() if b.get_source().id != 'bioport']) > 1
     def get_namen(self):
         namen = self.merged_biography.get_names()
         return namen
@@ -430,13 +432,13 @@ class Persoon(app.Persoon, grok.EditForm, RepositoryView):
             return 'bioport'
         else:
             return 'merged'
-        
-        if self.bioport_biography.get_value(k):
-            return 'bioport'
-        elif self.merged_biography.get_value(k):
-            return 'merged'
-        else:
-            return ''    
+	        
+#        if self.bioport_biography.get_value(k):
+#            return 'bioport'
+#        elif self.merged_biography.get_value(k):
+#            return 'merged'
+#        else:
+#            return ''    
         
     def validate_event(self, action, data):
         pass
@@ -459,7 +461,8 @@ class Persoon(app.Persoon, grok.EditForm, RepositoryView):
         frm = self._get_date_from_request(prefix='state_%s_from' % type)
         to = self._get_date_from_request(prefix='state_%s_to' % type)
         text = self.request.get('state_%s_text' % type)
-        self.bioport_biography.add_or_update_state(type, frm=frm, to=to, text=text)
+        place = self.request.get('state_%s_place' % type)
+        self.bioport_biography.add_or_update_state(type, frm=frm, to=to, text=text,place=place)
         
     @grok.action('bewaar rubriek', name="save_category")
     def save_category(self):

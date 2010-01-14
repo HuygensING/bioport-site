@@ -1,5 +1,6 @@
 <div tal:omit-tag=""
-    tal:define="persons view/get_persons">
+    tal:define="persons view/get_persons;
+        batch persons;">
 <html metal:use-macro="context/@@main_template/macros/master">
 <div metal:fill-slot="content">
 <span metal:define-macro="alfabet" tal:repeat="letter string:abcdefghijklmnopqrstuvwxyz"

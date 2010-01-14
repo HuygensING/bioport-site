@@ -25,24 +25,32 @@ def format_date( s):
     """
     if s is None: 
         return ''
-    s = str(s)
+    ss = str(s)
         
-
-    ss = s.split('-')
+    if ss.startswith('-'):
+        #this is a year before christ
+        bce = True
+        ss = ss[1:]
+    else:
+        bce = False
+    ss = ss.split('-')
     if len(ss) == 1:
-        y = s
-        return '%s' % int(y)
+        y = ss[0]
+        result = '%s' % int(y)
     elif len(ss) == 2:
         y = ss[0]
         m = ss[1]
-        return '%s %s' % (maanden[int(m) - 1], int(y))
+        result = '%s %s' % (maanden[int(m) - 1], int(y))
     elif len(ss) == 3:
         y = ss[0]
         m = ss[1]
         d = ss[2]
-        return '%s %s %s' % (int(d), maanden[int(m) - 1], int(y))
+        result = '%s %s %s' % (int(d), maanden[int(m) - 1], int(y))
     else:
-        raise
+        assert 0, '%s is not a valid date in ISO format' % s
+    if bce:
+        result += ' v Chr.'
+    return result
 
 def format_dates( date1='', date2=''):    
     if date1 or date2:

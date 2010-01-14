@@ -29,9 +29,9 @@ class Batcher:
     def batch_url(self, start=None, size=None):
         data = self.request.form
         if start != None:
-	        data['start'] = start
+            data['start'] = start
         if size != None:
-	        data['size'] = size
+            data['size'] = size
         return self.url(data= data)    
  
 class Bioport(grok.Application, grok.Container):
@@ -107,7 +107,7 @@ class Personen(BioPortTraverser,grok.View,RepositoryView, Batcher):
             'status',
               ]:
             if k in self.request.keys():
-	            qry[k] = self.request[k]
+                qry[k] = self.request[k]
         if qry.get('search_term'):
             qry['search_term'] = qry['search_term']
         
@@ -161,22 +161,23 @@ class Persoon(BioPortTraverser, grok.View,RepositoryView): #, BioPortTraverser):
             biography = self.merged_biography
         result = []
         for el in  biography.get_states(type):
-	        if el is not None:
-	            class StateWrapper:
-	                def __init__(self, el):
-	                    self.frm = el.get('from')
-	                    self.frm_ymd  = to_ymd(self.frm)
-	                    self.to = el.get('to')
-	                    self.to_ymd = to_ymd(self.to)
-	                    self.type = type
-	                    self.text = el.text
-	                    self.idno = el.get('idno')
-	            result.append(StateWrapper(el))
+            if el is not None:
+                class StateWrapper:
+                    def __init__(self, el):
+                        self.frm = el.get('from')
+                        self.frm_ymd  = to_ymd(self.frm)
+                        self.to = el.get('to')
+                        self.to_ymd = to_ymd(self.to)
+                        self.type = type
+                        self.place = el.find('place') is not None and el.find('place').text
+                        self.text = el.text
+                        self.idno = el.get('idno')
+                result.append(StateWrapper(el))
         return result
     def get_state(self, type, biography=None):
         states = self.get_states(type, biography)
         if states:
-	        return states[0]
+            return states[0]
         
     def maanden(self):
         return maanden

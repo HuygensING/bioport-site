@@ -170,12 +170,14 @@ class SimpleSampleFunctionalTest(SampleFunctionalTest):
         form = browser.getForm()
         form.getControl(name='death_y').value='2222'
         form.getControl(name='death_m').value=['2']
-        form.getControl(name='death_d').value=['1']
+#        form.getControl(name='death_d').value=['1']
+        form.getControl(name='death_d').value='1'
         form.getControl(name='form.actions.save_event_death').click()
         form = browser.getForm()
         self.assertEqual(form.getControl(name='death_y').value,'2222')
         self.assertEqual(form.getControl(name='death_m').value,['2'])
-        self.assertEqual(form.getControl(name='death_d').value,['1'])
+#        self.assertEqual(form.getControl(name='death_d').value,['1'])
+        self.assertEqual(form.getControl(name='death_d').value,'1')
         browser.open(public_url)
         assert re.findall('Gestorven.*?<td class="datum">\s*?1 februari 2222\s*?</td>', browser.contents, re.DOTALL), browser.contents
         

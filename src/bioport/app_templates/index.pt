@@ -1,14 +1,10 @@
 <html metal:use-macro="context/@@main_template/macros/master">
-<div metal:fill-slot="extra_header_content">
-    <script type="text/javascript">
-    /* load sidebar on doc ready */
-    $(document).ready(function() {
-        refreshElem('pBirthdays','birthdays');
-    });
-
-
-    </script>
-</div>
+<script type="text/javascript" metal:fill-slot="extra_header_content">
+	/* load sidebar on doc ready */
+	$(document).ready(function() {
+	    refreshElem('pBirthdays','birthdays');
+	});
+</script>
 <div metal:fill-slot="content">
 
     <div id="colright">

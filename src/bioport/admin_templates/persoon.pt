@@ -50,7 +50,15 @@ De gegevens in het formulier zijn de gegevens zoals ze op het biografisch portaa
 De gegevens zijn grijs als ze uit de bronnen-publikaties komen, zwart als ze zijn ingevoerd door de medewerkers van het biografisch portaal.
 </p>
 <p>
-    <a tal:attributes="href python:view.url('persoonidentify', data={'bioport_ids':view.bioport_id})">identficeer deze persoon</a>
+    <a tal:attributes="href python:view.url('persoonidentify', data={'bioport_ids':view.bioport_id})"
+        accesskey="i"><span class="accesskey">i</span>dentificeer deze persoon</a>
+    <span tal:omit-tag=""
+        tal:condition="view/is_identified">
+	    |
+	    <a tal:attributes="href python:view.url('unidentify', data={'bioport_id':view.bioport_id})">
+	       on-identficeer deze persoon
+       </a>
+    </span>
     |
     <a tal:attributes="OnClick string:history.go(-${view/history_counter});;return false;;" href="">terug</a>
     </p>
@@ -418,6 +426,18 @@ De gegevens zijn grijs als ze uit de bronnen-publikaties komen, zwart als ze zij
 				<span metal:use-macro="template/macros/date_widget"></span>
 		</td>
     </tr>
+    
+   	<tr tal:attributes="class python:not has_data and 'form_%s' % state_id">
+        <th class="sublabel">plaats</th>
+         <td tal:attributes="class python:view.status_value('floruit', 'place')">
+        	<input type="tekst"  
+	        	tal:attributes="name string:state_${state_id}_place;
+		        	value state/place | nothing" />
+        </td>
+    </tr>
+ 
+    
+    
    	<tr tal:attributes="class python:not has_data and 'form_%s' % state_id">
         <th class="sublabel">tekst</th>
         <td tal:attributes="class python:view.status_value('floruit', 'text')">
