@@ -118,18 +118,26 @@ class Edit(grok.EditForm,RepositoryView):
     def fill_categories_table(self, **data): 
         self.repository().db._update_category_table()
 #        self.redirect(self.url(self))
+
+    
         
 #    @grok.action('Set state of edited persons to bewerkte(JG: DELETE THIS BUTTON WHEN DONE)')
 #    def set_state_to_bewerkt(self, **data):
 #        from BioPortRepository.upgrade import upgrade_persons
 #        upgrade_persons(self.repository())
     
-    @grok.action('refill table with identical dbnl ids')
-    def refill_identical_dbnl_ids(self, **data):
-        from BioPortRepository import nnbw_and_vdaa_matches
-        repository = self.repository()
-        nnbw_and_vdaa_matches.delete_list_of_doubles(repository)
-        nnbw_and_vdaa_matches.insert_list_of_doubles(repository, limit=100000) 
+#    @grok.action('refill table with identical dbnl ids')
+#    def refill_identical_dbnl_ids(self, **data):
+#        from BioPortRepository import nnbw_and_vdaa_matches
+#        repository = self.repository()
+#        nnbw_and_vdaa_matches.delete_list_of_doubles(repository)
+#        nnbw_and_vdaa_matches.insert_list_of_doubles(repository, limit=100000) 
+
+    @grok.action('identify vdaa and nnbw doubles')
+    def identify_vdaa_etc(self, **args):
+        from BioPortRepository.tmp.update_vdaa_and_nnbw_doubles import update_doubles
+        update_doubles(repo =self.repository())
+        
 class Display(grok.DisplayForm):
     grok.require('bioport.Edit')
     grok.context(Admin)
