@@ -46,7 +46,6 @@
                  password_manager="Plain Text"
                  password="jeltje123"
                  />
-
       <grant role="bioport.Editor" principal="bioport.jeltje" />
  
        <principal id="bioport.mandy"
@@ -58,14 +57,120 @@
 
       <grant role="bioport.Editor" principal="bioport.mandy" />
 
-    
-       <principal id="bioport.richard"
+      <principal id="bioport.richard"
                  title="Richard"
                  login="richard"
                  password_manager="Plain Text"
                  password="richard123"
                  />   
       <grant role="bioport.Editor" principal="bioport.richard" />
+      
+       <principal id="bioport.milo"
+                 title="Milo"
+                 login="milo"
+                 password_manager="Plain Text"
+                 password="milo123"
+                 />   
+      <grant role="bioport.Editor" principal="bioport.milo" />
+      
+<!-- Fernie Maas      -->
+       <principal id="bioport.fernie"
+                 title="Fernie Maas"
+                 login="fernie"
+                 password_manager="Plain Text"
+                 password="fernie123"
+                 />   
+      <grant role="bioport.Editor" principal="bioport.fernie" />
+<!--  Bram van Dam       -->
+       <principal id="bioport.bram"
+                 title="Bram"
+                 login="bram"
+                 password_manager="Plain Text"
+                 password="bram123"
+                 />   
+      <grant role="bioport.Editor" principal="bioport.bram" />
+ 
+<!-- Bianca Szytniewski       -->
+       <principal id="bioport.bianca"
+                 title="Bianca"
+                 login="bianca"
+                 password_manager="Plain Text"
+                 password="bianca123"
+                 />   
+      <grant role="bioport.Editor" principal="bioport.bianca" />
+ 
+<!-- Laurens Dokter       -->
+       <principal id="bioport.laurens"
+                 title="Laurens"
+                 login="laurens"
+                 password_manager="Plain Text"
+                 password="laurens123"
+                 />   
+      <grant role="bioport.Editor" principal="bioport.laurens" />
+ 
+<!-- Herman Nijhuis       -->
+       <principal id="bioport.herman"
+                 title="Herman"
+                 login="herman"
+                 password_manager="Plain Text"
+                 password="herman123"
+                 />   
+      <grant role="bioport.Editor" principal="bioport.herman" />
+ 
+<!-- Koen van Wijk       -->
+       <principal id="bioport.koen"
+                 title="Koen"
+                 login="koen"
+                 password_manager="Plain Text"
+                 password="koen123"
+                 />   
+      <grant role="bioport.Editor" principal="bioport.koen" />
+ 
+<!-- Sifra Koopmans       -->
+       <principal id="bioport.sifra"
+                 title="Sifra"
+                 login="sifra"
+                 password_manager="Plain Text"
+                 password="sifra123"
+                 />   
+      <grant role="bioport.Editor" principal="bioport.sifra" />
+ 
+<!-- Flora Gutierrez Rojas       -->
+       <principal id="bioport.flora"
+                 title="Flora"
+                 login="flora"
+                 password_manager="Plain Text"
+                 password="flora123"
+                 />   
+      <grant role="bioport.Editor" principal="bioport.flora" />
+ 
+<!-- Manuel Gutierrez Rojas   -->    
+       <principal id="bioport.manuel"
+                 title="Manuel"
+                 login="manuel"
+                 password_manager="Plain Text"
+                 password="manuel123"
+                 />   
+      <grant role="bioport.Editor" principal="bioport.manuel" />
+ 
+<!-- Renske Siemens       -->
+       <principal id="bioport.renske"
+                 title="Renske"
+                 login="renske"
+                 password_manager="Plain Text"
+                 password="renske123"
+                 />   
+      <grant role="bioport.Editor" principal="bioport.renske" />
+ 
+<!-- Ineke Huysman -->
+       <principal id="bioport.ineke"
+                 title="Ineke"
+                 login="ineke"
+                 password_manager="Plain Text"
+                 password="ineke123"
+                 />   
+      <grant role="bioport.Editor" principal="bioport.ineke" />
+ 
                  
    </configure>
 </configure>

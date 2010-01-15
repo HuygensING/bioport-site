@@ -137,6 +137,10 @@ class Edit(grok.EditForm,RepositoryView):
     def identify_vdaa_etc(self, **args):
         from BioPortRepository.tmp.update_vdaa_and_nnbw_doubles import update_doubles
         update_doubles(repo =self.repository())
+    
+    @grok.action('update persons')
+    def update_persons(self, **args):
+        self.repository().db.update_persons()
         
 class Display(grok.DisplayForm):
     grok.require('bioport.Edit')
