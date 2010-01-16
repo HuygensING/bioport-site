@@ -90,8 +90,10 @@ class Edit(grok.EditForm,RepositoryView):
     @grok.action('Fill the similarity Cache', name='fill_similarity_cache') 
     def fill_similarity_cache(self, **data):
         self.repository().db.fill_similarity_cache()
-#        self.redirect(self.url(self))
-#       
+        
+    @grok.action('Refresh the similarity cache [I.E. EMPTYING IT FIRST]')
+    def refresh_similirity_cache(self, **data): 
+        self.repository().db.fill_similarity_cache(refresh=True)       
 #       
 #    @grok.action('Refresh the similar persons cache')
 #    def fill_most_similar_persons_cache(self, **data):
@@ -102,12 +104,7 @@ class Edit(grok.EditForm,RepositoryView):
     @grok.action('Create non-existing tables')
     def reset_database(self, **data):
         self.repository().db.metadata.create_all()
-#        self.redirect(self.url(self))
         
-    @grok.action('Refresh the similarity cache [I.E. EMPTYING IT FIRST]')
-    def refresh_similirity_cache(self, **data): 
-        self.repository().db.fill_similarity_cache(refresh=True)
-#        self.redirect(self.url(self))
         
     @grok.action('Fill geolocations table')
     def fill_geolocations_table(self, **data): 
@@ -126,18 +123,17 @@ class Edit(grok.EditForm,RepositoryView):
 #        from BioPortRepository.upgrade import upgrade_persons
 #        upgrade_persons(self.repository())
     
-#    @grok.action('refill table with identical dbnl ids')
-#    def refill_identical_dbnl_ids(self, **data):
-#        from BioPortRepository import nnbw_and_vdaa_matches
-#        repository = self.repository()
-#        nnbw_and_vdaa_matches.delete_list_of_doubles(repository)
-#        nnbw_and_vdaa_matches.insert_list_of_doubles(repository, limit=100000) 
+    @grok.action('refill table with identical dbnl ids')
+    def refill_identical_dbnl_ids(self, **data):
+        from BioPortRepository.tmp import update_vdaa_and_nnbw_doubles
+        repository = self.repository()
+        update_vdaa_and_nnbw_doubles.update_table_dbnl_ids(repo=repository)
 
-    @grok.action('identify vdaa and nnbw doubles')
-    def identify_vdaa_etc(self, **args):
-        from BioPortRepository.tmp.update_vdaa_and_nnbw_doubles import update_doubles
-        update_doubles(repo =self.repository())
-    
+#    @grok.action('identify vdaa and nnbw doubles')
+#    def identify_vdaa_etc(self, **args):
+#        from BioPortRepository.tmp.update_vdaa_and_nnbw_doubles import update_doubles
+#        update_doubles(repo =self.repository())
+#    
     @grok.action('update persons')
     def update_persons(self, **args):
         self.repository().db.update_persons()
@@ -251,6 +247,9 @@ class MostSimilar(grok.Form,RepositoryView, Batcher):
         for k in data.keys():
             if k.startswith('form'):
                 del data[k]
+        for k,v in data.items():
+            if v in [None, 'None' ]:
+                del data[k]
         redirect_url = self.url(data=data)
         if self.redirect_to:
             redirect_url = '?'.join([self.redirect_to, redirect_url.split('?')[1]])
@@ -271,8 +270,9 @@ class MostSimilar(grok.Form,RepositoryView, Batcher):
         #redirect the user to where wer were
         data = self.request.form
         data['msg'] =  msg
-#        data={'msg':msg, 'start':self.request.get('start', 0)}
-#        request.form.set('msg', msg)
+        if data.has_key('bioport_ids'):
+            del data['bioport_ids']
+
         self.goback(data = data)
         
     @grok.action('anti-identificeer', name='antiidentify')
@@ -345,7 +345,7 @@ class DBNL_Ids(MostSimilar, Batcher):
         self.size = int(self.request.get('size', 20))
         self.source = self.request.get('source')
         self.redirect_to = None
-        ls, grand_total = self.repository().get_persons_with_identical_dbnl_ids(start=self.start, size=self.size, source=self.source)
+        ls, grand_total = self.repository().db.get_persons_with_identical_dbnl_ids(start=self.start, size=self.size, source=self.source)
         self.get_persons_with_identical_dbnl_ids= ls
         self.grand_total = grand_total
    
@@ -444,7 +444,7 @@ class Persoon(app.Persoon, grok.EditForm, RepositoryView):
             return 'bioport'
         else:
             return 'merged'
-	        
+            
 #        if self.bioport_biography.get_value(k):
 #            return 'bioport'
 #        elif self.merged_biography.get_value(k):
@@ -651,25 +651,25 @@ class Persoon(app.Persoon, grok.EditForm, RepositoryView):
     def add_name(self):
         name_new =  self.request.get('name_new')
         if name_new:
-	        name = Naam(
-	#            repositie = self.request.get('prepositie'),
-	#            voornaam = self.request.get('voornaam'),
-	#            intrapositie = self.request.get('intrapositie'),
-	#            geslachtsnaam = self.request.get('geslachtsnaam'),
-	#            postpositie = self.request.get('postpositie'),
-	            volledige_naam = name_new,
-	        )
+            name = Naam(
+    #            repositie = self.request.get('prepositie'),
+    #            voornaam = self.request.get('voornaam'),
+    #            intrapositie = self.request.get('intrapositie'),
+    #            geslachtsnaam = self.request.get('geslachtsnaam'),
+    #            postpositie = self.request.get('postpositie'),
+                volledige_naam = name_new,
+            )
         
-	        #add the namen van de "merged biographies" als we dat nog niet hebben gedaan
-	        if not self.bioport_biography.get_namen():
-	            for naam in self.merged_biography.get_names():
-	                self.bioport_biography._add_a_name(naam)
-	        
-	        self.bioport_biography._add_a_name(name)
-	        self.save_biography()
-	        self.msg = 'added a name'
+            #add the namen van de "merged biographies" als we dat nog niet hebben gedaan
+            if not self.bioport_biography.get_namen():
+                for naam in self.merged_biography.get_names():
+                    self.bioport_biography._add_a_name(naam)
+            
+            self.bioport_biography._add_a_name(name)
+            self.save_biography()
+            self.msg = 'added a name'
         else:
-	        self.msg = 'geen naam ingevuld'
+            self.msg = 'geen naam ingevuld'
     
     @grok.action('verwijder', name='remove_name')
     def remove_name(self):
@@ -859,7 +859,7 @@ class UnIdentify(grok.View, RepositoryView):
         bioport_id = self.bioport_id = self.request.get('bioport_id')
         person = self.repository().get_person(bioport_id)
         if person:
-	        self.persons = self.repository().unidentify(person)
+            self.persons = self.repository().unidentify(person)
         else:
             self.persons = []
     
@@ -869,4 +869,3 @@ class Log(grok.View,RepositoryView):
         return self.repository().get_log_messages()
     
     pass
-
