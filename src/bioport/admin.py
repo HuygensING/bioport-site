@@ -129,10 +129,10 @@ class Edit(grok.EditForm,RepositoryView):
         repository = self.repository()
         update_vdaa_and_nnbw_doubles.update_table_dbnl_ids(repo=repository)
 
-#    @grok.action('identify vdaa and nnbw doubles')
-#    def identify_vdaa_etc(self, **args):
-#        from BioPortRepository.tmp.update_vdaa_and_nnbw_doubles import update_doubles
-#        update_doubles(repo =self.repository())
+    @grok.action('identify vdaa and nnbw doubles')
+    def identify_vdaa_etc(self, **args):
+        from BioPortRepository.tmp.update_vdaa_and_nnbw_doubles import identify_doubles
+        identify_doubles(repo =self.repository())
 #    
     @grok.action('update persons')
     def update_persons(self, **args):
