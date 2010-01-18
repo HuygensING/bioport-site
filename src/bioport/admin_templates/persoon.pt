@@ -427,7 +427,8 @@ De gegevens zijn grijs als ze uit de bronnen-publikaties komen, zwart als ze zij
 		</td>
     </tr>
     
-   	<tr tal:attributes="class python:not has_data and 'form_%s' % state_id">
+   	<tr tal:condition="nothing"
+   	    tal:attributes="class python:not has_data and 'form_%s' % state_id">
         <th class="sublabel">plaats</th>
          <td tal:attributes="class python:view.status_value('floruit', 'place')">
         	<input type="tekst"  
