@@ -19,8 +19,8 @@ tal:define="batch view/get_persons;
 	    <a tal:attributes="href string:${view/url}?source_id=${source/id}" ><span tal:replace="source/id" /></a></span>
 	    <span class="alfabet" tal:condition="nothing">
 	    <a tal:attributes="href string:${view/url}?beginletter=%" >alle namen</a></span>
-			<label accesskey="n" for="search_term"><span class="accesskey">n</span>aam:</label>
-			<input type="text" name="search_term" id="search_term" tal:attributes="value request/search_term | nothing" />
+			<label accesskey="n" for="search_name"><span class="accesskey">n</span>aam:</label>
+			<input type="text" name="search_name" id="search_name" tal:attributes="value request/search_name | nothing" />
 
 <label accesskey="r" for="source_id">b<span class="accesskey">r</span>on:</label>
 <select 
@@ -73,7 +73,7 @@ levensjaren niet ingevuld <input type="checkbox" />
 	tal:content="structure python:person.naam() and person.naam().guess_normal_form() or 'XXXXX'" 
     tal:attributes="href python:view.url(context.__parent__, 'persoon', data={'bioport_id':person.get_bioport_id()})" />
     
-    <span tal:replace="python:context.format_dates(person.get_merged_biography().geboortedatum(), person.get_merged_biography().sterfdatum())" />
+    (<span tal:replace="python:context.format_dates(person.get_merged_biography().geboortedatum(), person.get_merged_biography().sterfdatum())" />)
 	</td>
 	<td>
         <a tal:content="python:person.status and view.get_status_values(person.status)"	

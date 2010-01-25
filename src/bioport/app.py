@@ -2,7 +2,8 @@ import grok
 import zope.interface
 from z3c.batching.batch import  Batch
 import random
-from common import  maanden, format_date, format_dates
+import datetime
+from common import  maanden, format_date, format_dates, format_number
 from NamenIndex.common import to_ymd, from_ymd
 
 class RepositoryView:
@@ -20,6 +21,33 @@ class RepositoryView:
     def get_status_values(self, k=None):
         return self.repository().get_status_values(k)
     
+    def count_persons(self):
+        try:
+            return self.context._count_persons
+        except AttributeError:
+	        i = self.repository().db.count_persons()
+	        self.context._count_persons = format_number(i)
+        return self.context._count_persons
+    
+    def count_biographies(self):
+        try:
+            return self.context._count_biographies
+        except AttributeError:
+	        i = self.repository().db.count_biographies()
+	        self.context._count_biographies = format_number(i)
+        return self.context._count_biographies
+       
+    def menu_items(self):
+        return [
+                (self.application_url(), 'home'),
+                (self.url('zoek'), 'zoeken'),
+                (self.url('about'), 'project'),
+                (self.url('agenda'), 'agenda'),
+                (self.url('colofon'), 'colofon'),
+                (self.url('contact'), 'contact'),
+                (self.url('faq'), 'faq'),
+                (self.url('english'), 'english'),
+        ]    
     
 class Batcher: 
     def update(self, **kw):
@@ -45,8 +73,9 @@ class Bioport(grok.Application, grok.Container):
         from admin import Admin
         self['admin'] = Admin()
         self['admin'].DB_CONNECTION = db_connection
-    def format_dates(self, s1, s2):
-        return  format_dates(s1, s2)
+    
+    def format_dates(self, s1, s2, show_year_only=False):
+        return  format_dates(s1, s2, show_year_only=show_year_only)
 
     def repository(self, user):
         return self['admin'].repository(user=user)
@@ -72,15 +101,20 @@ class BioPortTraverser(object):
             return default   
         
 class Index(grok.View, RepositoryView):
-    pass # see app_templates/index.pt
+    def today(self):
+        today = datetime.date.today()
+        month = maanden[today.month-1]
+        return '%s %s' % (today.day, month)
+        
 
 class Popup_Template(grok.View):
     #make the main template avaible for everything
     grok.context(zope.interface.Interface)
     
-class Main_Template(grok.View):
+class Main_Template(grok.View, RepositoryView):
     #make the main template avaible for everything
     grok.context(zope.interface.Interface)
+
 class Admin_Template(grok.View):
     #make the main template avaible for everything
     grok.context(zope.interface.Interface)   
@@ -96,20 +130,20 @@ class Personen(BioPortTraverser,grok.View,RepositoryView, Batcher):
         qry = {}
         #request.form has unicode keys - make strings
         for k in [
-            'start',
-            'size',
+            'bioport_id', 
             'beginletter',
+            'category',
             'geslacht',
             'order_by', 
             'search_term',
+            'search_name',
+            'size',
             'source_id',
-            'bioport_id', 
+            'start',
             'status',
               ]:
             if k in self.request.keys():
                 qry[k] = self.request[k]
-        if qry.get('search_term'):
-            qry['search_term'] = qry['search_term']
         
         ls = self.repository().get_persons(**qry)
         self.qry = qry
@@ -182,7 +216,7 @@ class Persoon(BioPortTraverser, grok.View,RepositoryView): #, BioPortTraverser):
     def maanden(self):
         return maanden
     
-class Zoek(grok.View):
+class Zoek(grok.View, RepositoryView):
     pass
 
 
@@ -204,19 +238,27 @@ class Auteurs(grok.View,RepositoryView, Batcher):
 
 
 
-class Bronnen(grok.View):
+class Bronnen(grok.View, RepositoryView):
     pass
-class Colofon(grok.View):
-    pass
-
-class Birthdays(grok.View):
-    pass
-class About(grok.View):
+class Colofon(grok.View, RepositoryView):
     pass
 
-class Agenda(grok.View):
+class Birthdays(grok.View, RepositoryView):
+    def get_persons(self):
+        #get the month and day of today
+        today = datetime.date.today().strftime('-%m-%d')
+        #query the database for persons born on this date
+        persons = self.repository().get_persons(where_clause='geboortedatum like "____%s"' % today, has_illustrations=True)
+        return persons
+    
+class About(grok.View, RepositoryView):
     pass
-class Contact(grok.View):
+
+class Agenda(grok.View, RepositoryView):
     pass
-class English(grok.View):
+class Contact(grok.View, RepositoryView):
+    pass
+class English(grok.View, RepositoryView):
+	pass
+class FAQ(grok.View, RepositoryView):
     pass

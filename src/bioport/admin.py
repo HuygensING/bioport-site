@@ -63,8 +63,8 @@ class Admin(grok.Container  ):
     def format_date(self, s):
         return format_date(s)
     
-    def format_dates(self, s1, s2):
-        return  format_dates(s1, s2)
+    def format_dates(self, s1, s2, **args):
+        return  format_dates(s1, s2, **args)
     
     def format_number(self, s):
         return format_number(s)
@@ -123,16 +123,16 @@ class Edit(grok.EditForm,RepositoryView):
 #        from BioPortRepository.upgrade import upgrade_persons
 #        upgrade_persons(self.repository())
     
-    @grok.action('refill table with identical dbnl ids')
-    def refill_identical_dbnl_ids(self, **data):
-        from BioPortRepository.tmp import update_vdaa_and_nnbw_doubles
-        repository = self.repository()
-        update_vdaa_and_nnbw_doubles.update_table_dbnl_ids(repo=repository)
+#    @grok.action('refill table with identical dbnl ids')
+#    def refill_identical_dbnl_ids(self, **data):
+#        from BioPortRepository.tmp import update_vdaa_and_nnbw_doubles
+#        repository = self.repository()
+#        update_vdaa_and_nnbw_doubles.update_table_dbnl_ids(repo=repository)
 
-    @grok.action('identify vdaa and nnbw doubles')
-    def identify_vdaa_etc(self, **args):
-        from BioPortRepository.tmp.update_vdaa_and_nnbw_doubles import identify_doubles
-        identify_doubles(repo =self.repository())
+#    @grok.action('identify vdaa and nnbw doubles')
+#    def identify_vdaa_etc(self, **args):
+#        from BioPortRepository.tmp.update_vdaa_and_nnbw_doubles import identify_doubles
+#        identify_doubles(repo =self.repository())
 #    
     @grok.action('update persons')
     def update_persons(self, **args):
@@ -485,26 +485,10 @@ class Persoon(app.Persoon, grok.EditForm, RepositoryView):
     
     def _set_category(self):
         category_ids = self.request.get('category_id', [])
+        category_ids = [id for id in category_ids if id]
         print 'saving categories', category_ids
-        to_delete = []
-        if type(category_ids) != type([]):
-            category_ids = [category_ids]
-        for idx in range(len(category_ids)):
-            category_id = category_ids[idx] 
-            if category_id:
-                name = self.repository().get_category(category_id).name  
-                self.bioport_biography.add_or_update_state(type='category', idno=category_id, text=name, idx=idx)
-            else:
-                to_delete.append(idx) 
-                
-        self.save_biography()
-#        print 'states now: ', [s.idno for s in self.get_states(type='category')]
-                
-        to_delete.reverse()
-        print 'deleting categories', to_delete
-        for idx in to_delete:
-            self.bioport_biography.remove_state(type='category', idx=idx)
-            
+        self.bioport_biography.set_category(category_ids)
+           
         self.save_biography()
 #        print 'states now: ', [s.idno for s in self.get_states(type='category')]
             
@@ -557,7 +541,7 @@ class Persoon(app.Persoon, grok.EditForm, RepositoryView):
     def save_biography(self):
         if not self.person.status:
             self.person.status = 2 #set status to bewerkt
-        self.repository().save_person(self.person)
+#        self.repository().save_person(self.person)
         self.repository().save_biography(self.bioport_biography)
         #we need to reload merged_biography because changes are not automatically picked up
         self.person.refresh()

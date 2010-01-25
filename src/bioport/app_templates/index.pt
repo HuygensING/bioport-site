@@ -11,7 +11,7 @@
     
         <h3>
             <span onclick="refreshElem('pBirthdays','birthdays');" class="refresh" ></span>
-            Vandaag geboren
+            op <span tal:replace="view/today">deze dag</span> geboren
         </h3>
     
         <div class="sidebar gallery">
@@ -19,7 +19,7 @@
             <div id="pBirthdays"></div>
     
             <span class="sep"></span>
-            <a class="more" href="./.">toon alle</a>
+            <a class="more" href="./.">toon meer</a>
             <hr class="textOnly"/>
             
         </div>

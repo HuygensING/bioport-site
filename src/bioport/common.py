@@ -15,7 +15,7 @@ maanden = [
     ]
         
 
-def format_date( s):
+def format_date(s, show_year_only=False):
     """return a nicely formatted date
         
     arguments:
@@ -34,7 +34,10 @@ def format_date( s):
     else:
         bce = False
     ss = ss.split('-')
-    if len(ss) == 1:
+    if show_year_only and 1 <= len(ss) <= 3:
+        y = ss[0]
+        result = '%s' % int(y)
+    elif len(ss) == 1:
         y = ss[0]
         result = '%s' % int(y)
     elif len(ss) == 2:
@@ -52,18 +55,20 @@ def format_date( s):
         result += ' v Chr.'
     return result
 
-def format_dates( date1='', date2=''):    
+def format_dates( date1='', date2='', show_year_only=False):    
     if date1 or date2:
         #try to format the dates prettily
         try:
-            date1 = format_date(date1)
+            date1 = format_date(date1, show_year_only=show_year_only)
         except:
             pass
         try:
-            date2 = format_date(date2)
+            date2 = format_date(date2, show_year_only=show_year_only)
         except:
             pass
+        return '%s-%s' % (date1 or '?', date2 or '?')
         return '(%s-%s)' % (date1 or '?', date2 or '?')
+
 def splitthousands(s, sep=','):  
     if len(s) <= 3: return s  
     return splitthousands(s[:-3], sep) + sep + s[-3:]

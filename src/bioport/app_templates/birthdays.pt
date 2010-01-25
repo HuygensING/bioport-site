@@ -1,20 +1,15 @@
-            <div class="image">
-                <a href="persoon/78741506">
-                    <img tal:attributes="src static/dvn_Bronovo.jpg" alt="Sara Katharina de Bronovo"/>
+            <span tal:omit-tag=""
+                 tal:repeat="person view/get_persons">
+                    
+            <a tal:attributes="href python:view.url('persoon') + '/' +  person.bioport_id">
+            <div class="image"
+                tal:define="illustrations python:person.get_merged_biography().get_illustrations();
+                    illustration python:illustrations and illustrations[0]"
+                tal:condition="illustration">
+                <img tal:attributes="src illustration/cached_url"  alt="person/naam" />
+            </div>
+	            <div class="subscript"><span tal:replace="person/name" ></span> 
+	               <span tal:replace="python:context.format_dates(person.get_value('geboortedatum'), person.get_value('sterfdatum'), show_year_only=True)"></span>
+               </div>
                 </a>
-            </div>
-            <div class="subscript">Sara Katharina de Bronovo</div>
-            <div class="image">
-
-                <a href="persoon/45081559">
-                    <img tal:attributes="src static/WillemIII.jpg" alt="Willem III"/>
-                </a>    
-            </div>
-            <div class="subscript">Koning Willem III</div>
-            <div class="image">
-                <a href="persoon/17747889">
-                    <img tal:attributes="src static/bwn_KAART.jpg" alt="Johan Kaart"/>
-                </a>    
-            </div>
-
-            <div class="subscript">Johan Kaart</div>
+            </span>

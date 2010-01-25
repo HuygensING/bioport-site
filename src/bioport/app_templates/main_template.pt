@@ -25,7 +25,6 @@
 <div metal:define-slot="extra_header_content" />
 </head>
 
-<!-- @server: unique pagename -->
 <body tal:attributes="class python:view.url().split('/')[-1]" >
     <div id="wrapper">
 
@@ -33,9 +32,9 @@
             <h2><span class="textOnly">Het Biografisch Portaal van Nederland</span></h2>
             <div id="stats">
                 <!-- @server -->
-                5.698.256 personen<br/>
+                <span tal:replace="view/count_persons" /> personen<br/>
                 van 1232 tot 1978<br/>
-                in 23.524.678 verwijzingen
+                in <span tal:replace="view/count_biographies" /> verwijzingen
             </div>
             <hr class="textOnly"/>
         </div>
@@ -43,15 +42,15 @@
         <div id="layMenu">
             <h3 class="textOnly">Inhoud</h3>
             <ul>
-				<li><a tal:attributes="href view/application_url">home</a></li>
-				<li><a tal:attributes="href python:view.url('zoek')">zoeken</a></li>
-				<li><a tal:attributes="href python:view.url('about')">over dit project</a></li>
-				<li><a tal:attributes="href python:view.url('agenda')">agenda</a></li>
-				<li> <a tal:attributes="href python:view.url('bronnen')">bronnen</a></li>
-				<li> <a tal:attributes="href python:view.url('colofon')">colofon</a></li>
-				<li> <a tal:attributes="href python:view.url('contact')">contact</a></li>
-				<li> <a tal:attributes="href python:view.url('english')">english</a></li>
+                <li tal:repeat="item view/menu_items">
+                    <a tal:attributes="href python:item[0]" tal:content="python:item[1]"></a>
+                </li>
+
 	        </ul>
+	        <span class="search_form" tal:condition="python:view.__name__ != 'index'" >
+	           <input type="text" size="20">
+	           <input type="submit" value="zoek">
+	        </span>
         <hr class="textOnly"/>
         </div>
         
@@ -68,6 +67,9 @@
         <div id="layFoot">
         
             <hr class="textOnly"/>
+            <span tal:omit-tag="" tal:repeat="item view/menu_items">
+                <a tal:attributes="href python:item[0]" tal:content="python:item[1]"></a> 
+            </span>
             <a tal:attributes="href view/application_url">home</a>
             |
             <a tal:attributes="href python:view.url('zoek')">zoeken</a>

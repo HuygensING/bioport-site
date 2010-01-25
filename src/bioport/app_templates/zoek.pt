@@ -5,9 +5,15 @@
 <form tal:attributes="action python:view.url('personen')">
 <table>
 <tr>
-    <th>zoek</th>
+    <th>zoek in de gehele tekst</th>
     <td>
         <input type="text" name="search_term" tal:attributes="value request/search_term | nothing" />
+    </td>
+</tr>
+<tr>
+    <th>zoek in de naam</th>
+    <td>
+        <input type="text" name="search_name" tal:attributes="value request/search_name | nothing" />
     </td>
 </tr>
 <tr>
@@ -26,7 +32,6 @@
     </td>
 </tr>
 <tr>
-
     <th>geslacht</th>
     <td>
         <select name="geslacht">
@@ -36,6 +41,18 @@
                 tal:content="python:sex[1]" />
         </select>
     </td>
+</tr>
+<tr>
+    <th>rubriek</th>
+    <td>
+        <select name="category">
+            <option />
+            <option tal:repeat="category python:view.repository().db.get_categories()"
+                tal:attributes="value category/id"
+                tal:content="python:category.name" />
+        </select>
+    </td>
+</tr>
 <tr>
     <th>bron</th>
     <td>
@@ -56,7 +73,6 @@
 </tr>
 </table>
 </form>
-<p>Er zijn ook lijsten met <a href="auteurslijst">auteurs</a> en met <a href="beroepenlijst">beroepen en functies</a> beschikbaar.
 <p>Het is belangrijk op te merken dat bij een groot gedeelte van de gegevens ontbreken, en dat daardoor de zoekresultaten onvolledig zullen zijn.
 <p>Zo is bijvoorbeeld het geslacht van personen in het NNBW niet aangegeven, en dus zal een zoekopdracht op vrouwen in dat naslagwerk geen enkel resultaat opleveren.
 
