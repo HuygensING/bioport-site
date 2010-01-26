@@ -138,6 +138,17 @@ class Edit(grok.EditForm,RepositoryView):
     def update_persons(self, **args):
         self.repository().db.update_persons()
         
+    @grok.action('Fix identification error')
+    def fix_identification_error(self, **data):
+        #reload nnbw/10908
+        ls = [('nnbw', 'nnbw/10908', 'http://www.inghist.nl/media/bioport/bronnen/nnbw/bio/10908.xml'),
+         ('vdaa', 'vdaa/a0060', 'http://www.inghist.nl/media/bioport/bronnen/vdaa/bio/a0060.xml'),
+        ]
+        repo = self.repository()
+        for source_id, bio_id, biourl in ls:
+            bio = BioPortRepository.biography.Biography(source_id=source_id, repository=repo)
+            bio.from_url(biourl)
+            repo.add_biography(bio)        
 class Display(grok.DisplayForm):
     grok.require('bioport.Edit')
     grok.context(Admin)
@@ -210,7 +221,8 @@ class Source(grok.EditForm,RepositoryView):
     def delete_biographies(self, **data):
         source = self.source
         self.repository().delete_biographies(source)              
-        
+    
+
 class Sources(grok.View,RepositoryView):
     
     grok.require('bioport.Manage')
@@ -369,6 +381,9 @@ class Persoon(app.Persoon, grok.EditForm, RepositoryView):
                 self.person  = self.get_person(bioport_id=self.bioport_id)  
                 
         assert self.person, 'NO PERSON FOUND WITH THIS ID %s' % self.bioport_id
+        
+        #XXX note that the following line creates a bioport biography if it did not exist yet (and saves it)
+        #XXX this might be too much ofa  side effect for only viewing the page...
         self.bioport_biography =  repository.get_bioport_biography(self.person) 
         self.merged_biography  = self.person.get_merged_biography()
 
@@ -391,7 +406,7 @@ class Persoon(app.Persoon, grok.EditForm, RepositoryView):
     def title(self):
         n = self.person.naam()
         if n:
-            return n.volledige_naam()
+            return unicode(n)
         else:
             return '' 
 
@@ -403,7 +418,6 @@ class Persoon(app.Persoon, grok.EditForm, RepositoryView):
             else:
                 url = '%s#%s' % (url, hash)
         return url
-    
         
     def sex_options(self):
         return [('1', 'man'), ('2', 'vrouw'), ('0', 'onbekend')]
@@ -421,6 +435,7 @@ class Persoon(app.Persoon, grok.EditForm, RepositoryView):
     
     def is_identified(self):
         return len([b for b in self.person.get_biographies() if b.get_source().id != 'bioport']) > 1
+    
     def get_namen(self):
         namen = self.merged_biography.get_names()
         return namen
@@ -629,7 +644,7 @@ class Persoon(app.Persoon, grok.EditForm, RepositoryView):
         self._set_status()
         self._save_remarks()
         self.save_biography()
-        self.msg = 'alle ingevulde waardes bewaard'
+        self.msg = 'alle ingevulde waarden bewaard'
         
     @grok.action('voeg toe', name='add_name') 
     def add_name(self):

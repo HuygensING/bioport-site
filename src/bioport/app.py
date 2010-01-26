@@ -67,7 +67,7 @@ class Bioport(grok.Application, grok.Container):
     SVN_REPOSITORY = None
     SVN_REPOSITORY_LOCAL_COPY = None
     DB_CONNECTION = None
-    debug=False
+    debug=True
     def __init__(self, db_connection=None):
         super(Bioport,self).__init__() #cargoculting from ingforms 
         from admin import Admin
@@ -243,13 +243,32 @@ class Bronnen(grok.View, RepositoryView):
 class Colofon(grok.View, RepositoryView):
     pass
 
-class Birthdays(grok.View, RepositoryView):
+class Birthdays_Box(grok.View, RepositoryView):
     def get_persons(self):
         #get the month and day of today
         today = datetime.date.today().strftime('-%m-%d')
         #query the database for persons born on this date
         persons = self.repository().get_persons(where_clause='geboortedatum like "____%s"' % today, has_illustrations=True)
         return persons
+
+class Birthdays(grok.View, RepositoryView):
+    def get_persons_born_today(self):
+        #get the month and day of today
+        today = datetime.date.today().strftime('-%m-%d')
+        #query the database for persons born on this date
+        persons = self.repository().get_persons(where_clause='geboortedatum like "____%s"' % today)
+        return persons
+
+    def get_persons_dead_today(self):
+        #get the month and day of today
+        today = datetime.date.today().strftime('-%m-%d')
+        #query the database for persons born on this date
+        persons = self.repository().get_persons(where_clause='sterfdatum like "____%s"' % today)
+        return persons
+    def today(self):
+        today = datetime.date.today()
+        month = maanden[today.month-1]
+        return '%s %s' % (today.day, month)
     
 class About(grok.View, RepositoryView):
     pass

@@ -1,0 +1,40 @@
+a .subscript  {
+    color : black;
+}
+.column_right {
+    width : 350px;	
+    float : right;
+	}
+.birthdays .image img {
+    height : 105px;
+    vertical-align:text-top;
+
+}
+.birthdays .image {
+    display : inline;
+}
+
+#layMenu .search_form {
+    float : right;
+    padding-right : 1em;
+    padding-top : 1px;
+}
+
+
+a.external_link {
+-moz-background-clip:border;
+-moz-background-inline-policy:continuous;
+-moz-background-origin:padding;
+background:transparent url(http://www.trilobiet.nl/clients/inghis/bpn/_resources/img_struct/internal.png) no-repeat scroll right center;
+padding:0 17px 0 0;
+}
+
+.illustratie img {
+    max-width : 200px;
+    max-height: 400px;
+}
+
+.persoon #bioinfo div .snippet {
+    margin-top : 0em;
+    margin-left : 2em;
+}

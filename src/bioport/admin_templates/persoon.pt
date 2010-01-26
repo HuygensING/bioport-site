@@ -688,7 +688,7 @@ De gegevens zijn grijs als ze uit de bronnen-publikaties komen, zwart als ze zij
 	<tr tal:condition="python:bio.get_value('tekst')">
 		<th>tekst</th>
 		<td>
-			<span tal:replace="structure python:bio.get_value('tekst')" />
+			<span tal:replace="structure  bio/get_text_without_markup" />
 		</td>
 	
 	</tr>	
@@ -707,7 +707,7 @@ De gegevens zijn grijs als ze uit de bronnen-publikaties komen, zwart als ze zij
 <div id="right_column">
 	<tal:block repeat="bio view/person/get_biographies" >
 		<div class="right_column_content"
-		    tal:define="tekst python:bio.get_value('tekst')"
+		    tal:define="tekst bio/get_text_without_markup"
 			tal:condition="python:bio.get_source().id != 'bioport'">
 			<h1 tal:content="python:bio.get_source().id"></h1>
 			<div tal:content="structure tekst"></div>

@@ -4,117 +4,113 @@
     <div metal:fill-slot="content"
     	tal:define="illustraties  python:view.biography.get_illustrations()"
     	>
-    <div class="illustratie" tal:repeat="ill python:illustraties[:1]">
+    <div class="column_right">
+    <div class="illustratie" tal:repeat="ill python:illustraties[:]">
     <img
         tal:attributes="src ill/cached_url; 
             alt string:illustratie bij deze biografie (${ill/cached_url});
       " /> 
     </div>
+    </div>
     <div class="illustratie" tal:condition="not:illustraties">
         <img tal:attributes="src static/geen_plaatje.png" />
     </div>
     <div id="bioinfo" >
-    <h1 tal:content="structure python:view.biography.naam() and view.biography.naam().volledige_naam()" />
+    <h1 tal:content="structure python:view.biography.naam() and view.biography.naam().volledige_naam()" ></h1>
     
     <table class="leefjaren">
        <tal:block define="
 	       event python:view.get_event('birth');
-   			title string:Geboren;">
+   			title string:geboren;">
        	<tr metal:define-macro="event"
        		tal:condition="python:event and (event.when or event.place or event.date_text)">
-            <th tal:content="title">Geboren</th>
+            <th tal:content="title">title</th>
             <td>
-             <span tal:replace="event/place" />
-             </td>
-             <td class="datum">
-                <span tal:replace="python:event.when_formatted or event.date_text" />
+             <span tal:replace="event/place" /><br>
+            <span tal:replace="python:event.when_formatted or event.date_text" />
              </td>
          </tr>
 		</tal:block>
       <tal:block define="
 	       event python:view.get_event('baptism');
-   			title string:Gedoopt;">
+   			title string:gedoopt;">
    			<tr metal:use-macro="template/macros/event" />
    		</tal:block>
        <tal:block define="
 	       event python:view.get_event('funeral');
-   			title string:Begraven;">
+   			title string:begraven;">
    			<tr metal:use-macro="template/macros/event" />
    		</tal:block>
        <tal:block define="
 	       event python:view.get_event('death');
-   			title string:Gestorven;">
+   			title string:gestorven;">
    			<tr metal:use-macro="template/macros/event" />
    		</tal:block>
-     </table>
-        <div tal:condition="python:len(view.biography.get_names()) > 1">
-            <h2>Naamsvarianten</h2>
-            <hr>
+        <tr tal:condition="python:len(view.biography.get_names()) > 1">
+            <th>naamsvarianten</th>
+            <td>
             <ul><li tal:repeat="naam python:view.biography.get_names()"
                 tal:content="structure python:naam.volledige_naam()"/>
             </ul>
-        </div>
-         <div 
-            tal:define="sexes python:['onbekend', 'man', 'vrouw'];
+            </td>
+        </tr>
+        <tr tal:define="sexes python:['onbekend', 'man', 'vrouw'];
                 sex python:view.biography.get_value('geslacht')"
-            tal:condition="sex">
-            <h2>Geslacht</h2>
-            <hr>
+            tal:condition="python:sex and sex in ['1','2']">
+            <th></th>
+            <td>
             <ul><li><span tal:replace="python:sexes[int(sex)]" /></ul>
-        </div>
-        <div tal:condition="python:view.biography.get_value('beroep')">
-            <h2>Beroepen en functies</h2>
-    <hr>
+            </td>
+        </tr>
+        <tr tal:condition="python:view.biography.get_value('beroep')">
+            <th>Beroepen en functies</th>
+            <td>
             <ul><li tal:repeat="beroep python:view.biography.get_value('beroep')" 
                 tal:content="structure beroep" /></ul>
-        </div>
-    </div>
+            </td>
+        </tr>
+     </table>
     <div class="levensbeschrijvingen">
-    <h2>Levensbeschrijvingen</h2>
+    <h2>Biografieën</h2>
     <hr />
-    <ul class="levensbeschrijvingen">
-    <li tal:repeat="biography view/person/get_biographies" >
-        <a tal:attributes="href python:biography.get_value('url_biografie')"
-            tal:content="python:biography.naam() and biography.naam().volledige_naam()"></a>
+    <div tal:repeat="biography view/person/get_biographies" tal:omit-tag="">
+    <div
+        class="biography_reference"
+        tal:condition="python:biography.source_id != 'bioport'">
+        Biografie
         <span tal:condition="python:biography.get_value('auteur')">
         	door
             <span tal:repeat="auteur python:biography.get_value('auteur')" 
-                tal:content="structure auteur" />,
+                tal:content="structure auteur" />
         </span>
         <span>
-			in  <a tal:attributes="href python:biography.get_value('url_publisher')"
-                    tal:replace="python:biography.get_value('naam_publisher')"></a>
+			in  <a 
+            tal:attributes="href python:biography.get_value('url_biografie')"
+			     class="external_link"
+                    tal:content="python:biography.get_value('naam_publisher')"></a>
     	</span>
-    	<div class="bio_tekst_fragment"
-    		tal:define="text python:biography.get_value('tekst')"
-            tal:condition="text">
-             <span tal:replace="structure python:text[:250] + text[250:].split(' ')[0] + ' ...'" />
+    	<div class="snippet"
+    		tal:define="snippet biography/snippet"
+            tal:condition="snippet">
+             <span tal:replace="structure snippet" />
+             <a  tal:attributes="href python:biography.get_value('url_biografie')"
+             target="_blank"
+                class="external_link">meer...</a>
            </div>
-        </li>
-    </ul>
+        </div>
     </div>
-    <p>
-<div class="illustratie" tal:repeat="ill python:illustraties[1:]">
-    <img
-        tal:attributes="src ill/cached_url;
-            alt string:illustratie bij deze biografie (${ill/cached_url});
-            "  />
     </div>
-    
-    
-    <hr />
-    <br><br>
-    <ul>
-    <li>
-    <a href="../list" Onclick="history.go(-1);return false;">terug</a>
-    <li>
-    <a tal:attributes="href python:view.url(context['admin'], 'persoon', data={'bioport_id':view.bioport_id})" >bewerk de gegevens van deze persoon</a>
-    </ul>
+   
     
     
     
     
     <tt tal:condition="context/debug">
+    <br>
+    <br>
+    <br>
+    <hr>
+    <a tal:attributes="href python:view.url(context['admin'], 'persoon', data={'bioport_id':view.bioport_id})" >bewerk de gegevens van deze persoon</a>
     <pre>Debug information</pre>
     <pre>
     redirects_to: <tt tal:content="python:view.person.redirects_to()" />
@@ -132,5 +128,6 @@
 <pre tal:repeat="bio view/person/get_biographies"  tal:content="bio/to_string"  /> 
     </tt> 
 
+</div>
 </div>
 </html>

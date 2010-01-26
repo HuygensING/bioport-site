@@ -2,7 +2,7 @@
 <script type="text/javascript" metal:fill-slot="extra_header_content">
 	/* load sidebar on doc ready */
 	$(document).ready(function() {
-	    refreshElem('pBirthdays','birthdays');
+	    refreshElem('pBirthdays','birthdays_box');
 	});
 </script>
 <div metal:fill-slot="content">
@@ -10,7 +10,7 @@
     <div id="colright">
     
         <h3>
-            <span onclick="refreshElem('pBirthdays','birthdays');" class="refresh" ></span>
+            <span onclick="refreshElem('pBirthdays','birthdays_box');" class="refresh" ></span>
             op <span tal:replace="view/today">deze dag</span> geboren
         </h3>
     
@@ -19,7 +19,7 @@
             <div id="pBirthdays"></div>
     
             <span class="sep"></span>
-            <a class="more" href="./.">toon meer</a>
+            <a class="more" tal:attributes="href python:view.url('birthdays')">toon meer</a>
             <hr class="textOnly"/>
             
         </div>
@@ -28,8 +28,28 @@
 
     <div id="colcenter">
 
-        <img id="photoframe" tal:attributes="src static/photoframe.jpg" alt=""/>
+
+        <div id="photoframe">
+            <div id="photoframe-1"></div>
+            <div id="photoframe-2"></div>
+            <div id="photoframe-3"></div>
+        </div>  
+
+        <script type="text/javascript">
         
+            $('#photoframe').photoframe({
+                speed : 10000, // time between cycles
+                fadeOutSpeed : 1000,  // 
+                fadeInSpeed : 2000,
+                stackSpeed : 1000, // delay after the crossfade to start with the next frame
+                url: 'images.xml'
+                });
+                
+            $('#photoframe-1').css('opacity',1);
+            $('#photoframe-2').css('opacity',0.6);
+            $('#photoframe-3').css('opacity',0.3);
+        
+        </script>
         <h1>Welkom</h1>
         
         <p class="intropar">
@@ -67,22 +87,22 @@
             <hr/>
             <h3 class="textOnly">Deelnemers</h3>
             Deelnemers aan het Biografisch Portaal van Nederland zijn: 
-            <a href="./.">Instituut voor Nederlandse Geschiedenis</a>, 
-            <a href="./.">Huygens Instituut</a>, 
-            <a href="./.">Internationaal Instituut voor Sociale Geschiedenis</a>, 
-            <a href="./.">Biografie Instituut</a>, 
-            <a href="./.">Centraal Bureau voor Genealogie</a>, 
-            <a href="./.">Digitale Bibliotheek voor de Nederlandse Letteren</a>, 
-            <a href="./.">Onderzoekscentrum voor Geschiedenis en Cultuur (UU)</a>, 
-            <a href="./.">Parlementair Documentatie Centrum</a>, 
-            <a href="./.">Rijksbureau voor Kunsthistorische Documentatie</a>, 
-            <a href="./.">Data Archiving and Networked Services</a>. 
+            <a target="_blank" href="http://www.inghist.nl">Instituut voor Nederlandse Geschiedenis</a>, 
+            <a target="_blank" href="http://www.huygensinstituut.knaw.nl">Huygens Instituut</a>, 
+            <a target="_blank" href="http://www.iisg.nl">Internationaal Instituut voor Sociale Geschiedenis</a>, 
+            <a target="_blank" href="http://biografieinstituut.ub.rug.nl/" >Biografie Instituut</a>, 
+            <a target="_blank" href="http://www.cbg.nl/" >Centraal Bureau voor Genealogie</a>, 
+            <a target="_blank" href="http://www.dbnl.org/" >Digitale Bibliotheek voor de Nederlandse Letteren</a>, 
+            <a target="_blank" href="./.">Onderzoekscentrum voor Geschiedenis en Cultuur (UU)</a>, 
+            <a target="_blank" href="http://www.parlementairdocumentatiecentrum.nl/" >Parlementair Documentatie Centrum</a>, 
+            <a target="_blank" href="http://website.rkd.nl/">Rijksbureau voor Kunsthistorische Documentatie</a>, 
+            <a target="_blank" href="http://dans.knaw.nl/nl/">Data Archiving and Networked Services</a>. 
             Het project werd mede mogelijk gemaakt door een startsubsidie van 
-            <a href="./.">NWO</a>
+            <a target="_blank" href="http://www.nwo.nl/">NWO</a>
             en subsidies van het 
-            <a href="./.">Prins Bernhard Cultuurfonds</a> 
+            <a target="_blank" href="http://www.cultuurfonds.nl/">Prins Bernhard Cultuurfonds</a> 
             en 
-            <a href="./.">SenterNovem</a> ('Digitaliseren met beleid' / OCW).
+            <a target="_blank" href="http://www.senternovem.nl/">SenterNovem</a> ('Digitaliseren met beleid' / OCW).
         </div>
         
     </div>  
