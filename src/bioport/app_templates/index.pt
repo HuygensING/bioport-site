@@ -37,7 +37,6 @@
 
         <script type="text/javascript" 
             tal:define="
-                source static/images.xml;
                 source python:view.url('images.xml');
                 "
             tal:content="string:
