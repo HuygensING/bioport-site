@@ -25,16 +25,20 @@ class RepositoryView:
         try:
             return self.context._count_persons
         except AttributeError:
-	        i = self.repository().db.count_persons()
-	        self.context._count_persons = format_number(i)
+            i = self.repository().db.count_persons()
+            #XXX turned of caching, need to find some "update once a day" solution
+            return i
+            self.context._count_persons = format_number(i)
         return self.context._count_persons
     
     def count_biographies(self):
         try:
             return self.context._count_biographies
         except AttributeError:
-	        i = self.repository().db.count_biographies()
-	        self.context._count_biographies = format_number(i)
+            i = self.repository().db.count_biographies()
+            #XXX turned of caching, need to find some "update once a day" solution
+            return i
+            self.context._count_biographies = format_number(i)
         return self.context._count_biographies
        
     def menu_items(self):
@@ -278,10 +282,21 @@ class Agenda(grok.View, RepositoryView):
 class Contact(grok.View, RepositoryView):
     pass
 class English(grok.View, RepositoryView):
-	pass
+    pass
 class FAQ(grok.View, RepositoryView):
     pass
 class Images_XML(grok.View, RepositoryView):
+    def render(self):
+        self.request.response.setHeader('Content-Type', 'text/xml')
+        
+        persons = self.repository().get_persons(has_illustrations=True, order_by='random', size=20)
+        
+        result = """<?xml version="1.0"?><root>"""
+        for person in persons:
+            illustration = person.get_merged_biography().get_illustrations()[0]
+            result += '<image src="%s" title="%s" url="%s/%s" />\n' % (illustration.cached_url(), person.name(), self.url('persoon'), person.bioport_id)
+        result += '</root>'
+        return result
     grok.name('images.xml')
     def update(self, **data):
-	    pass
+        pass

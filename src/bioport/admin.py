@@ -618,6 +618,7 @@ class Persoon(app.Persoon, grok.EditForm, RepositoryView):
         if status: 
             status = int(status)
         self.person.status = status 
+        self.repository().save_person(self.person)
     
 
         

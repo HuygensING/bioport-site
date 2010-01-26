@@ -57,7 +57,7 @@
         <tr tal:define="sexes python:['onbekend', 'man', 'vrouw'];
                 sex python:view.biography.get_value('geslacht')"
             tal:condition="python:sex and sex in ['1','2']">
-            <th></th>
+            <th>sexe</th>
             <td>
             <ul><li><span tal:replace="python:sexes[int(sex)]" /></ul>
             </td>
@@ -70,7 +70,7 @@
             </td>
         </tr>
      </table>
-    <div class="levensbeschrijvingen">
+    <span class="levensbeschrijvingen">
     <h2>Biografieën</h2>
     <hr />
     <div tal:repeat="biography view/person/get_biographies" tal:omit-tag="">
@@ -87,6 +87,7 @@
 			in  <a 
             tal:attributes="href python:biography.get_value('url_biografie')"
 			     class="external_link"
+			     target="_blank"
                     tal:content="python:biography.get_value('naam_publisher')"></a>
     	</span>
     	<div class="snippet"
@@ -99,7 +100,7 @@
            </div>
         </div>
     </div>
-    </div>
+    </span>
    
     
     
