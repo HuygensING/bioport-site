@@ -35,20 +35,24 @@
             <div id="photoframe-3"></div>
         </div>  
 
-        <script type="text/javascript">
-        
-            $('#photoframe').photoframe({
+        <script type="text/javascript" 
+            tal:define="
+                source static/images.xml;
+                source python:view.url('images.xml');
+                "
+            tal:content="string:
+            $$('#photoframe').photoframe({
                 speed : 10000, // time between cycles
                 fadeOutSpeed : 1000,  // 
                 fadeInSpeed : 2000,
                 stackSpeed : 1000, // delay after the crossfade to start with the next frame
-                url: 'images.xml'
+                url: '${source}'
                 });
                 
-            $('#photoframe-1').css('opacity',1);
-            $('#photoframe-2').css('opacity',0.6);
-            $('#photoframe-3').css('opacity',0.3);
-        
+            $$('#photoframe-1').css('opacity',1);
+            $$('#photoframe-2').css('opacity',0.6);
+            $$('#photoframe-3').css('opacity',0.3);
+            "> 
         </script>
         <h1>Welkom</h1>
         

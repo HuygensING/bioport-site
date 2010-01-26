@@ -281,3 +281,7 @@ class English(grok.View, RepositoryView):
 	pass
 class FAQ(grok.View, RepositoryView):
     pass
+class Images_XML(grok.View, RepositoryView):
+    grok.name('images.xml')
+    def update(self, **data):
+	    pass
