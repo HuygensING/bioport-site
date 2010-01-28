@@ -66,7 +66,6 @@ def format_dates( date1='', date2='', show_year_only=False):
             date2 = format_date(date2, show_year_only=show_year_only)
         except:
             pass
-        return '%s-%s' % (date1 or '?', date2 or '?')
         return '(%s-%s)' % (date1 or '?', date2 or '?')
 
 def splitthousands(s, sep=','):  

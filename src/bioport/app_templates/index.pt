@@ -56,17 +56,15 @@
         <h1>Welkom</h1>
         
         <p class="intropar">
-            Welkom op de site van het Biografisch Portaal van Nederland. Hier vindt u een gestaag groeiende verzameling kerngegevens en 
-            levensbeschrijvingen van kopstukken en andere opzienbarende figuren uit de Nederlandse geschiedenis, van het vroegste verleden tot nu.
-        </p>
-    
-        <p>      
-            Het Biografisch Portaal is een samenwerkingsproject van wetenschappelijke en culturele instellingen van Nederland. 
-            Zij staan garant voor de betrouwbaarheid van de informatie. Per 1 november 2008 is het project van start gegaan, 
-            en op 17 februari 2010 wordt de site gelanceerd. De site toont u 'work in progress': de verzameling van levensbeschrijvingen 
-            wordt voortdurend aangevuld met nieuwe informatie en beeldmateriaal. Ook aan de doorzoekbaarheid van de in de site verzamelde 
-            collecties en databanken wordt gewerkt. Onder 'Over dit project' kunt u meer lezen over de voortgang van het project.   
+       Dit is de site van het Biografisch Portaal van Nederland. Hier vindt u oude en nieuwe informatie over kopstukken en andere opzienbarende figuren uit de Nederlandse geschiedenis, van het vroegste verleden tot nu. 
         </p>    
+        <p>      
+   Het Biografisch Portaal is een samenwerkingsproject van weten-schappelijke en culturele instellingen van Nederland. 
+   De site toont 'work in progress': de verzameling van levensbeschrijvingen wordt steeds aangevuld met nieuwe informatie 
+   en beeldmateriaal. 
+   Ook aan de doorzoekbaarheid wordt nog gewerkt. 
+   Onder de knop 'project' kunt u meer lezen over de voortgang van het project.
+           </p>    
         
         <div class="searchcontainer freeform">
             <h3>Zoeken</h3>
@@ -96,7 +94,7 @@
             <a target="_blank" href="http://biografieinstituut.ub.rug.nl/" >Biografie Instituut</a>, 
             <a target="_blank" href="http://www.cbg.nl/" >Centraal Bureau voor Genealogie</a>, 
             <a target="_blank" href="http://www.dbnl.org/" >Digitale Bibliotheek voor de Nederlandse Letteren</a>, 
-            <a target="_blank" href="./.">Onderzoekscentrum voor Geschiedenis en Cultuur (UU)</a>, 
+            <a target="_blank" href="http://www.uu.nl/NL/faculteiten/geesteswetenschappen/Onderzoek/onderzoekinstituten/ogc/Pages/default.aspx">Onderzoekscentrum voor Geschiedenis en Cultuur (UU)</a>, 
             <a target="_blank" href="http://www.parlementairdocumentatiecentrum.nl/" >Parlementair Documentatie Centrum</a>, 
             <a target="_blank" href="http://website.rkd.nl/">Rijksbureau voor Kunsthistorische Documentatie</a>, 
             <a target="_blank" href="http://dans.knaw.nl/nl/">Data Archiving and Networked Services</a>. 

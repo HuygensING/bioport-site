@@ -155,8 +155,7 @@ class SimpleSampleFunctionalTest(SampleFunctionalTest):
         #go the the public view 
         browser.getLink('getoond').click()
         public_url = browser.url
-        #now we should have an empty birth date
-        assert re.findall('Geboren.*?<td class="datum">\s*?</td>', browser.contents, re.DOTALL), browser.contents
+
        
         browser.open(edit_url)
         form = browser.getForm()

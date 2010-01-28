@@ -26,7 +26,7 @@
        		tal:condition="python:event and (event.when or event.place or event.date_text)">
             <th tal:content="title">title</th>
             <td>
-             <span tal:replace="event/place" /><br>
+             <span tal:replace="event/place" /><br tal:condition="event/place">
             <span tal:replace="python:event.when_formatted or event.date_text" />
              </td>
          </tr>
@@ -88,7 +88,7 @@
             tal:attributes="href python:biography.get_value('url_biografie')"
 			     class="external_link"
 			     target="_blank"
-                    tal:content="python:biography.get_value('naam_publisher')"></a>
+                    tal:content="python:biography.get_source().description"></a>
     	</span>
     	<div class="snippet"
     		tal:define="snippet biography/snippet"

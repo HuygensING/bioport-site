@@ -155,7 +155,8 @@ class Personen(BioPortTraverser,grok.View,RepositoryView, Batcher):
         batch.grand_total = len(ls)
         return batch
 
-
+    def batch_navigation(self, batch):
+		return '<a href="%s">%s</a>' % (self.batch_url(start=batch.start), batch[0].naam().geslachtsnaam())
     
 class Persoon(BioPortTraverser, grok.View,RepositoryView): #, BioPortTraverser):
     def update(self, **args):
@@ -253,7 +254,7 @@ class Birthdays_Box(grok.View, RepositoryView):
         today = datetime.date.today().strftime('-%m-%d')
         #query the database for persons born on this date
         persons = self.repository().get_persons(where_clause='geboortedatum like "____%s"' % today, has_illustrations=True)
-        return persons
+        return persons[:3]
 
 class Birthdays(grok.View, RepositoryView):
     def get_persons_born_today(self):
@@ -298,5 +299,15 @@ class Images_XML(grok.View, RepositoryView):
         result += '</root>'
         return result
     grok.name('images.xml')
-    def update(self, **data):
-        pass
+    
+class Collecties(grok.View, RepositoryView):
+    pass
+
+class Instellingen(grok.View, RepositoryView):
+    pass
+
+class Stichting(grok.View, RepositoryView):
+    pass
+
+class RedactieRaad(grok.View, RepositoryView):
+    pass

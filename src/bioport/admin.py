@@ -267,6 +267,7 @@ class MostSimilar(grok.Form,RepositoryView, Batcher):
             redirect_url = '?'.join([self.redirect_to, redirect_url.split('?')[1]])
             
         self.redirect(redirect_url) 
+        
     @grok.action('identificeer', name='identify')
     def identify(self):
         bioport_ids = self.request.get('bioport_ids')
@@ -276,7 +277,7 @@ class MostSimilar(grok.Form,RepositoryView, Batcher):
         repo.identify(persons[0], persons[1])
         
         self.bioport_ids = bioport_ids
-        msg = 'Identified <a href="../persoon?bioport_id=%s">%s</a> and <a href="../persoon?bioport_id=%s">%s</a>' % (
+        msg = 'Identified <a href="./persoon?bioport_id=%s">%s</a> and <a href="./persoon?bioport_id=%s">%s</a>' % (
                      bioport_ids[0],  bioport_ids[0], bioport_ids[1],  bioport_ids[1])
         
         #redirect the user to where wer were
@@ -343,9 +344,6 @@ class MostSimilar(grok.Form,RepositoryView, Batcher):
                 else:
                     return p1
             ls = map(other_person, ls)
-#            ls = []
-#            ls += [p2 for score, p1, p2 in qry_result if p1.bioport_id == person.bioport_id]   
-#            ls += [p1 for score, p1, p2 in qry_result if p2.bioport_id == person.bioport_id]   
             
             batch = Batch(ls, start=self.start, size=self.size)
             self.persons = batch 
@@ -811,11 +809,13 @@ class Identified(grok.View, RepositoryView, Batcher):
         batch.grand_total = len(ls)
         return batch  
 
-class Deferred(grok.View,RepositoryView, Batcher):  
+class Deferred(MostSimilar ):  
     grok.require('bioport.Edit')
+    
     def update(self, **args):
         self.redirect_to = None
         Batcher.update(self)
+        
     def get_deferred(self):
         ls =  self.repository().get_deferred()
         batch = Batch(ls, start=self.start, size=self.size)

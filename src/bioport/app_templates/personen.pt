@@ -7,7 +7,7 @@
     tal:attributes="class python:letter == request.get('beginletter') and 'alfabet selected' or 'alfabet'"
     ><a tal:attributes="href string:${view/url}?beginletter=${letter}" ><span tal:replace="letter/upper" /></a></span>
 <p>
-<form tal:attributes="action view/url">
+<form tal:attributes="action view/url" tal:condition="nothing">
 	<span tal:repeat="source python:view.repository().get_sources()"
 		tal:condition="nothing"
 	    tal:attributes="class python:source.id == request.get('source_id') and 'alfabet selected' or 'alfabet'"
@@ -29,7 +29,7 @@
 		<p tal:condition="python:results.grand_total > 2">Er zijn <span tal:replace="results/grand_total" /> resultaten gevonden.</p>
 	</div>
 </div>
-<div class="batch_navigation" tal:define="results persons">	
+<div class="navigation_box" tal:define="results persons">	
 	<span tal:replace="python:'%s-%s van %s' % (results.start + 1, results.end + 1,  results.grand_total)" />  | 
 	<span tal:condition="results/previous">
 		<a tal:attributes="href python:view.batch_url(start=results.previous.start)"
@@ -40,15 +40,30 @@
 		<a tal:attributes="href python:view.batch_url(start=results.next.start);"
 			tal:content="string:volgende ${results/next/size}">vorige X</a>
 	</span>
+	
+	<span tal:condition="results/next" tal:content="structure python:view.batch_navigation(results.next)">
+	   
+	</span>
+	<span tal:condition="results/next">
+		<a tal:attributes="href python:view.batch_url(start=results.next.start);"
+			tal:content="python:unicode(results.next[0].naam().geslachtsnaam()) + '-' + unicode(list(results.next)[-1].naam().geslachtsnaam())">vorige X</a>
+	</span>
 </div>
+<div>
 <ul class="biografien">
 <li tal:repeat="person persons">
 <a 
 	tal:content="structure python:person.naam() and person.naam().guess_normal_form() or 'XXXXX'" 
     tal:attributes="href python:'%s/%s' % (view.url('persoon'), person.get_bioport_id())" />
     <span tal:replace="python:context.format_dates(person.get_value('geboortedatum'), person.get_value('sterfdatum'))" />
+    <!--  XXX dit is DUUR -->
+    <div tal:define="illustrations python:person.get_merged_biography().get_illustrations()" 
+        tal:condition="illustrations" >
+        <img tal:attributes="src python:illustrations[0].cached_url()" />
+        </div>
 </li>
-<ul>
+</ul>
+</div>
 </div>
 </html>
 </div>

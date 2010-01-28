@@ -25,7 +25,7 @@
 			<a tal:attributes="href python:view.url(view.__parent__.__parent__, 'persoon', data={'bioport_id':person.get_bioport_id()})" 
 				tal:content="python:person.naam() and person.naam().guess_normal_form() or 'geen naam bekend'" />
 			<br>
-			(<span tal:replace="python:context.format_dates(person.get_value('geboortedatum'), person.get_value('sterfdatum'))" />)
+			<span tal:replace="python:context.format_dates(person.get_value('geboortedatum'), person.get_value('sterfdatum'))" />
 			<br>
 			<span tal:repeat="bio python:person.get_biographies()" tal:content="python:bio.get_source().id" />
 		</td>
