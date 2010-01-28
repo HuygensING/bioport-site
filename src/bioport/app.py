@@ -71,7 +71,7 @@ class Bioport(grok.Application, grok.Container):
     SVN_REPOSITORY = None
     SVN_REPOSITORY_LOCAL_COPY = None
     DB_CONNECTION = None
-    debug=True
+    debug=False
     def __init__(self, db_connection=None):
         super(Bioport,self).__init__() #cargoculting from ingforms 
         from admin import Admin
