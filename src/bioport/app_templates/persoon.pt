@@ -45,6 +45,16 @@
    			title string:gestorven;">
    			<tr metal:use-macro="template/macros/event" />
    		</tal:block>
+        <tr tal:define="state python:view.get_state(type='floruit')"
+            tal:condition="state/has_content">
+            <th>actief</th>
+            <td>
+                <span tal:replace="python:view.context.format_dates(state.frm, state.to, parenthesis=False)" />
+                <tt tal:content="state/place"></tt>
+                <span tal:condition="state/place" tal:content="structure string:<br>${state/place}" />
+                <span tal:condition="state/text" tal:content="structure string:<br>${state/text}" />
+            </td>
+        </tr>
         <tr tal:condition="python:len(view.biography.get_names()) > 1">
             <th>naamsvarianten</th>
             <td>
@@ -68,7 +78,8 @@
                 tal:content="structure beroep" /></ul>
             </td>
         </tr>
-        <tr tal:define="states python:view.get_states(type='category')">
+        <tr tal:define="states python:view.get_states(type='category')"
+            tal:condition="states">
             <th>rubrieken</th>
             <td>
                 <li tal:repeat="state states" tal:content="state/text" />
@@ -76,7 +87,7 @@
         </tr>
      </table>
     <span class="levensbeschrijvingen">
-    <h2>biografieën</h2>
+    <h2>levensbeschrijvingen</h2>
     <hr />
     <div tal:repeat="biography view/person/get_biographies" tal:omit-tag="">
     <div

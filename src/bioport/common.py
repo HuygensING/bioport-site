@@ -55,7 +55,7 @@ def format_date(s, show_year_only=False):
         result += ' v Chr.'
     return result
 
-def format_dates( date1='', date2='', show_year_only=False):    
+def format_dates( date1='', date2='', show_year_only=False, parenthesis=True):    
     if date1 or date2:
         #try to format the dates prettily
         try:
@@ -66,7 +66,12 @@ def format_dates( date1='', date2='', show_year_only=False):
             date2 = format_date(date2, show_year_only=show_year_only)
         except:
             pass
-        return '(%s-%s)' % (date1 or '?', date2 or '?')
+        
+        result = '%s-%s' % (date1 or '?', date2 or '?')
+        if parenthesis:
+            result = '(%s)' % result
+        return result
+    
 
 def splitthousands(s, sep=','):  
     if len(s) <= 3: return s  

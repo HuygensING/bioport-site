@@ -71,15 +71,15 @@ class Bioport(grok.Application, grok.Container):
     SVN_REPOSITORY = None
     SVN_REPOSITORY_LOCAL_COPY = None
     DB_CONNECTION = None
-    debug=False
+    debug=True
     def __init__(self, db_connection=None):
         super(Bioport,self).__init__() #cargoculting from ingforms 
         from admin import Admin
         self['admin'] = Admin()
         self['admin'].DB_CONNECTION = db_connection
     
-    def format_dates(self, s1, s2, show_year_only=False):
-        return  format_dates(s1, s2, show_year_only=show_year_only)
+    def format_dates(self, s1, s2, **args):
+        return  format_dates(s1, s2, **args)
 
     def repository(self, user):
         return self['admin'].repository(user=user)
@@ -188,7 +188,7 @@ class Persoon(BioPortTraverser, grok.View,RepositoryView): #, BioPortTraverser):
                     self.notAfter_ymd = to_ymd(self.notAfter) 
                     self.notAfter_formatted = format_date(self.notAfter)
                     self.date_text = el.find('date') is not None and el.find('date').text or ''
-                    self.place = el.find('place') is not None and el.find('place').text or ''
+                    self.place =  el.find('place') is not None and el.find('place').text or ''
                     self.place_id = el.get('place_id')
                     self.type = el.get('type')
             return EventWrapper(event_el)
@@ -208,9 +208,15 @@ class Persoon(BioPortTraverser, grok.View,RepositoryView): #, BioPortTraverser):
                         self.to = el.get('to')
                         self.to_ymd = to_ymd(self.to)
                         self.type = type
-                        self.place = el.find('place') is not None and el.find('place').text
+                        self.place = el.find('place') is not None and el.find('place').text or ''
                         self.text = el.text
                         self.idno = el.get('idno')
+                        self.element = el
+                    def has_content(self):
+                        if self.frm or self.to or self.text or self.place or self.idno:
+                            return True
+                        else:
+                            return False
                 result.append(StateWrapper(el))
         return result
     def get_state(self, type, biography=None):

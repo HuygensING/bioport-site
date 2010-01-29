@@ -427,7 +427,7 @@ De gegevens zijn grijs als ze uit de bronnen-publikaties komen, zwart als ze zij
 		</td>
     </tr>
     
-   	<tr tal:condition="nothing"
+   	<tr
    	    tal:attributes="class python:not has_data and 'form_%s' % state_id">
         <th class="sublabel">plaats</th>
          <td tal:attributes="class python:view.status_value('floruit', 'place')">
@@ -699,6 +699,10 @@ De gegevens zijn grijs als ze uit de bronnen-publikaties komen, zwart als ze zij
 	<tr tal:condition="python:bio.record.timestamp">
 		<th>laatst veranderd</th>
 		<td tal:content="python:bio.record.timestamp" ></td>
+	</tr>
+	<tr>
+        <th></th>	
+        <td><pre tal:content="bio/to_string" /></td>
 	</tr>
 	</table>
 </div>

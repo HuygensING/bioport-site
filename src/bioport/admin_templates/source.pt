@@ -33,8 +33,8 @@
                     tal:repeat="option python:view.repository().get_sources(order_by='quality', desc=True)"
                     tal:define="source_quality python:source.get_value('quality') or 0;"
                     tal:attributes="
-                        value python:not option.quality and 0 or option.quality;
-                        selected python:option.quality  and option.quality == source.quality-1" 
+                        value python:not option.quality and 1 or option.quality +1 ;
+                        selected python:option.quality == source.quality - 1" 
                     tal:content="option/id" />
                 <option value="0" tal:attributes="selected python:not source.quality">slechtste kwaliteit van allemaal</option>
             </select>
