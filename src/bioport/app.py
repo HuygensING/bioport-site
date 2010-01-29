@@ -71,7 +71,7 @@ class Bioport(grok.Application, grok.Container):
     SVN_REPOSITORY = None
     SVN_REPOSITORY_LOCAL_COPY = None
     DB_CONNECTION = None
-    debug=True
+    debug=False
     def __init__(self, db_connection=None):
         super(Bioport,self).__init__() #cargoculting from ingforms 
         from admin import Admin
@@ -301,7 +301,13 @@ class Images_XML(grok.View, RepositoryView):
         
         result = """<?xml version="1.0"?><root>"""
         for person in persons:
-            illustration = person.get_merged_biography().get_illustrations()[0]
+            illustrations = person.get_merged_biography().get_illustrations()
+            if not illustrations:
+                #if the database is up to date, it should not happen that we find persons without an illustration
+                #as a result of a call to get_persons(has_illustrations=True)
+                #but it can happen ...
+                continue
+            illustration = illustrations[0]
             result += '<image src="%s" title="%s" url="%s/%s" />\n' % (
                            illustration.cached_url(), 
 #                           urllib.quote(unicode( person.name()).encode('utf8')), 
