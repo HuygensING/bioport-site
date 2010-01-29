@@ -33,10 +33,11 @@ padding:0 17px 0 0;
     max-width : 200px;
     max-height: 400px;
 }
-
-.persoon #bioinfo div .snippet {
-    margin-top : 0em;
+/* snippets are on the "personen" page and the "persoon" page */
+.snippet {
     margin-left : 2em;
+    color : #999;
+    font-size : .8em;
 }
 
 .colofon ul, .redactieraad ul, collecties ul, .instellingen ul, .collecties ul, .stichting ul, .about ul {
@@ -44,16 +45,39 @@ padding:0 17px 0 0;
 	margin: 1em 0em 1em 2em;
 }
 
+.content_box {
+    float : left;
+    width : 650px;	
+	}
+	
 .navigation_box {
     float: right;
     width : 200px;
     border:1px solid #DFBD48;
     height: 100%;
-    padding-right : 1em;
+    padding : 1em;
     margin: 1em;
 }
 
 .navigation_box ul {
     list-style-type : none;	
 	}
-	list-style-type:disc;
+	
+.personen .persoon {
+    padding : .5em 1em .5em 1em;
+	}
+
+.personen .persoon img {
+    max-height : 100px; 
+    vertical-align:text-top;
+    position : relative;
+ } 	
+ .personen .persoon .illustration {
+    float : right;
+ }
+ 
+ .personen .selected  a {
+    font-size : 4em !important; 
+    position : relative;
+    top : .2em;
+ }

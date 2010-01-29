@@ -3,30 +3,17 @@
         batch persons;">
 <html metal:use-macro="context/@@main_template/macros/master">
 <div metal:fill-slot="content">
+
 <span metal:define-macro="alfabet" tal:repeat="letter string:abcdefghijklmnopqrstuvwxyz"
     tal:attributes="class python:letter == request.get('beginletter') and 'alfabet selected' or 'alfabet'"
     ><a tal:attributes="href string:${view/url}?beginletter=${letter}" ><span tal:replace="letter/upper" /></a></span>
-<p>
-<form tal:attributes="action view/url" tal:condition="nothing">
-	<span tal:repeat="source python:view.repository().get_sources()"
-		tal:condition="nothing"
-	    tal:attributes="class python:source.id == request.get('source_id') and 'alfabet selected' or 'alfabet'"
-	>
-	    <a tal:attributes="href string:${view/url}?source_id=${source/id}" ><span tal:replace="source/id" /></a></span>
-	    <span class="alfabet" tal:condition="nothing">
-	    <a tal:attributes="href string:${view/url}?beginletter=%" >alle namen</a></span>
-	<input type="text" name="search_term" tal:attributes="value request/search_term | nothing" />
-	<input type="submit" value=" zoek " />
-</form>
-<ul>
-<li tal:condition="request/auteur_id | nothing">U zocht naar biografie&euml;n met <em tal:content="structure python:view.repository().get_author(request.form['auteur_id']).name"></em> als auteur.</li>
-<li tal:condition="request/beroep_id | nothing">U zocht naar biografie&euml;n met <em tal:content="structure python:here.get_beroep(request.beroep_id).naam"></em> als beroep.</li>
-</ul>
+   
+   
 <div tal:omit-tag="" tal:define="results persons">
 	<div tal:omit-tag="" metal:define-macro="aantal_resultaten">
-		<p tal:condition="python:results.grand_total == 0">Er zijn geen resultaten gevonden.</p>
-		<p tal:condition="python:results.grand_total == 1">Er is 1 resultaat gevonden.</p>
-		<p tal:condition="python:results.grand_total > 2">Er zijn <span tal:replace="results/grand_total" /> resultaten gevonden.</p>
+		<p tal:condition="python:results.grand_total == 0">Er zijn geen personen gevonden.</p>
+		<p tal:condition="python:results.grand_total == 1">Er is &eacute;&eacute;n persoon gevonden.</p>
+		<p tal:condition="python:results.grand_total > 2">Er zijn <span tal:replace="results/grand_total" /> personen gevonden.</p>
 	</div>
 </div>
 <div class="navigation_box" tal:define="results persons">	
@@ -49,20 +36,22 @@
 			tal:content="python:unicode(results.next[0].naam().geslachtsnaam()) + '-' + unicode(list(results.next)[-1].naam().geslachtsnaam())">vorige X</a>
 	</span>
 </div>
-<div>
-<ul class="biografien">
-<li tal:repeat="person persons">
-<a 
-	tal:content="structure python:person.naam() and person.naam().guess_normal_form() or 'XXXXX'" 
-    tal:attributes="href python:'%s/%s' % (view.url('persoon'), person.get_bioport_id())" />
-    <span tal:replace="python:context.format_dates(person.get_value('geboortedatum'), person.get_value('sterfdatum'))" />
-    <!--  XXX dit is DUUR -->
-    <div tal:define="illustrations python:person.get_merged_biography().get_illustrations()" 
-        tal:condition="illustrations" >
-        <img tal:attributes="src python:illustrations[0].cached_url()" />
-        </div>
-</li>
-</ul>
+<div class="content_box">
+	<div tal:repeat="person persons" class="persoon">
+	    <!--  XXX dit is DUUR -->
+	    <span tal:define="illustrations python:person.get_merged_biography().get_illustrations()" 
+	       class="illustration"
+	        tal:condition="illustrations" >
+	        <img tal:attributes="src python:illustrations[0].cached_url()" />
+        </span>
+		<a 
+		tal:content="structure python:person.naam() and person.naam().guess_normal_form() or 'XXXXX'" 
+	    tal:attributes="href python:'%s/%s' % (view.url('persoon'), person.get_bioport_id())" />
+	    <span tal:replace="python:context.format_dates(person.get_value('geboortedatum'), person.get_value('sterfdatum'))" />
+	    <br>
+	    <span class="snippet" tal:content="person/snippet" />
+	    <div style="clear:both" ></div>
+	</div>
 </div>
 </div>
 </html>

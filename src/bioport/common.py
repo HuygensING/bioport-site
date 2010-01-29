@@ -1,4 +1,4 @@
-        
+from htmlentitydefs import name2codepoint        
 maanden = [ 
     'januari', 
     'februari', 
@@ -75,3 +75,9 @@ def splitthousands(s, sep=','):
 def format_number(s):
     s = str(s)
     return splitthousands(s, sep='.')
+
+def html2unicode(s):
+    #replace html characters with unicode codepoints
+    for k in name2codepoint.keys():
+        s = s.replace('&%s;' % k,unichr( name2codepoint[k]))
+    return s

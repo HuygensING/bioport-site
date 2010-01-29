@@ -3,9 +3,9 @@ import zope.interface
 from z3c.batching.batch import  Batch
 import random
 import datetime
-from common import  maanden, format_date, format_dates, format_number
+from common import  maanden, format_date, format_dates, format_number, html2unicode
 from NamenIndex.common import to_ymd, from_ymd
-
+import urllib
 class RepositoryView:
     def repository(self):
         principal = self.request.principal
@@ -287,6 +287,7 @@ class English(grok.View, RepositoryView):
 class FAQ(grok.View, RepositoryView):
     pass
 class Images_XML(grok.View, RepositoryView):
+    grok.name('images.xml')
     def render(self):
         self.request.response.setHeader('Content-Type', 'text/xml')
         
@@ -295,10 +296,15 @@ class Images_XML(grok.View, RepositoryView):
         result = """<?xml version="1.0"?><root>"""
         for person in persons:
             illustration = person.get_merged_biography().get_illustrations()[0]
-            result += '<image src="%s" title="%s" url="%s/%s" />\n' % (illustration.cached_url(), person.name(), self.url('persoon'), person.bioport_id)
+            result += '<image src="%s" title="%s" url="%s/%s" />\n' % (
+                           illustration.cached_url(), 
+#                           urllib.quote(unicode( person.name()).encode('utf8')), 
+                           html2unicode(unicode(person.name())),
+                           self.url('persoon'),
+                           person.bioport_id,
+                           )
         result += '</root>'
         return result
-    grok.name('images.xml')
     
 class Collecties(grok.View, RepositoryView):
     pass

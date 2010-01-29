@@ -17,7 +17,6 @@
     </div>
     <div id="bioinfo" >
     <h1 tal:content="structure python:view.biography.naam() and view.biography.naam().volledige_naam()" ></h1>
-    
     <table class="leefjaren">
        <tal:block define="
 	       event python:view.get_event('birth');
@@ -57,21 +56,27 @@
         <tr tal:define="sexes python:['onbekend', 'man', 'vrouw'];
                 sex python:view.biography.get_value('geslacht')"
             tal:condition="python:sex and sex in ['1','2']">
-            <th>sexe</th>
+            <th>sekse</th>
             <td>
             <ul><li><span tal:replace="python:sexes[int(sex)]" /></ul>
             </td>
         </tr>
-        <tr tal:condition="python:view.biography.get_value('beroep')">
+        <tr tal:condition="python:False and view.biography.get_value('beroep')">
             <th>Beroepen en functies</th>
             <td>
             <ul><li tal:repeat="beroep python:view.biography.get_value('beroep')" 
                 tal:content="structure beroep" /></ul>
             </td>
         </tr>
+        <tr tal:define="states python:view.get_states(type='category')">
+            <th>rubrieken</th>
+            <td>
+                <li tal:repeat="state states" tal:content="state/text" />
+	        </td>
+        </tr>
      </table>
     <span class="levensbeschrijvingen">
-    <h2>Biografieën</h2>
+    <h2>biografieën</h2>
     <hr />
     <div tal:repeat="biography view/person/get_biographies" tal:omit-tag="">
     <div
