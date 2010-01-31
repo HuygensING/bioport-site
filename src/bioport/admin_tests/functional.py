@@ -162,7 +162,7 @@ class SimpleSampleFunctionalTest(SampleFunctionalTest):
         form.getControl(name='birth_y').value='1111'
         form.getControl(name='form.actions.save_event_birth').click()
         browser.open(public_url)
-        assert re.findall('Geboren.*?<td class="datum">\s*?1111\s*?</td>', browser.contents, re.DOTALL)
+        assert re.findall('1111', browser.contents, re.DOTALL)
         
         
         browser.open(edit_url)
@@ -178,21 +178,21 @@ class SimpleSampleFunctionalTest(SampleFunctionalTest):
 #        self.assertEqual(form.getControl(name='death_d').value,['1'])
         self.assertEqual(form.getControl(name='death_d').value,'1')
         browser.open(public_url)
-        assert re.findall('Gestorven.*?<td class="datum">\s*?1 februari 2222\s*?</td>', browser.contents, re.DOTALL), browser.contents
+        assert re.findall('1 februari 2222', browser.contents, re.DOTALL), browser.contents
         
         browser.open(edit_url)
         form = browser.getForm()
         form.getControl(name='funeral_y').value='3333'
         form.getControl(name='form.actions.save_event_funeral').click()
         browser.open(public_url)
-        assert re.findall('<td class="datum">\s*?3333\s*?</td>', browser.contents, re.DOTALL)
+        assert re.findall('3333', browser.contents, re.DOTALL)
         
         browser.open(edit_url)
         form = browser.getForm()
         form.getControl(name='baptism_y').value='4444'
         form.getControl(name='form.actions.save_event_baptism').click()
         browser.open(public_url)
-        assert re.findall('<td class="datum">\s*?4444\s*?</td>', browser.contents, re.DOTALL)
+        assert re.findall('4444', browser.contents, re.DOTALL)
         
         #geslacht
         browser.open(edit_url)
@@ -227,7 +227,7 @@ class SimpleSampleFunctionalTest(SampleFunctionalTest):
             
         browser.open(public_url)
         assert re.findall('man', browser.contents, re.DOTALL), browser.contents
-        assert re.findall('<td class="datum">\s*?%s\s*?</td>' % dict(vals)['baptism_y'], browser.contents, re.DOTALL)
+        assert re.findall('%s' % dict(vals)['baptism_y'], browser.contents, re.DOTALL)
         assert re.findall(dict(vals)['birth_text'], browser.contents, re.DOTALL), browser.contents
         
         #changes in, e.g., birth events, should turn up in the master list

@@ -761,16 +761,19 @@ class ChangeName(Persoon, grok.EditForm,RepositoryView):
         if volledige_naam in ' '.join(parts):
             volledige_naam = ' '.join(parts)
         
-        self.naam = name = Naam(
-            volledige_naam = volledige_naam,
-            **args
-        )
-        repository = self.repository()
-        
-        bio._replace_name(name, self.idx)
-        repository.save_biography(bio)
-        self.msg = 'changed a name'
-        
+        try:
+	        self.naam = name = Naam(
+	            volledige_naam = volledige_naam,
+	            **args
+	        )
+	        repository = self.repository()
+	        bio._replace_name(name, self.idx)
+	        repository.save_biography(bio)
+	        self.msg = 'De veranderingen zijn bewaard'
+        except Exception, error:
+            self.msg = unicode(error)
+            self.msg += ' Uw veranderingen zijn niet bewaard'
+       
  
 class AntiIdentified(grok.View, RepositoryView, Batcher):
     grok.require('bioport.Edit')
@@ -780,7 +783,7 @@ class AntiIdentified(grok.View, RepositoryView, Batcher):
     def get_antiidentified(self):
         ls = self.repository().get_antiidentified()
         batch = Batch(ls, start=self.start, size=self.size)
-        batch.grand_total = len(ls)
+        batch.grand_total = len(batch.sequence) 
         return batch 
 class Identified(grok.View, RepositoryView, Batcher):
     grok.require('bioport.Edit')

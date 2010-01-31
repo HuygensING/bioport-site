@@ -323,7 +323,7 @@ De gegevens zijn grijs als ze uit de bronnen-publikaties komen, zwart als ze zij
  	
     <!--  plaats -->
    <tr tal:condition="nothing">
-    	<th class="sublabel">xxx</th>
+    	<th class="sublabel">plaats</th>
         <td colspan="2"
         	tal:attributes="class python:view.status_value(event_type, 'place')">
         	<input type="hidden"  

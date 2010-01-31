@@ -46,7 +46,7 @@
    			<tr metal:use-macro="template/macros/event" />
    		</tal:block>
         <tr tal:define="state python:view.get_state(type='floruit')"
-            tal:condition="state/has_content">
+            tal:condition="python:state and state.has_content()">
             <th>actief</th>
             <td>
                 <span tal:replace="python:view.context.format_dates(state.frm, state.to, parenthesis=False)" />
@@ -118,7 +118,9 @@
     </div>
     </span>
    
-    
+    <div>
+        <!-- XXX nog te maken -->
+        <a class="backbutton" onClick="alert('terug naar de zoekresultaten (indien van toepassing). Moet nog geimplementeerd.')">terug naar de zoekresultaten</a></div>    
     
     
     
@@ -132,14 +134,6 @@
     <pre>
     redirects_to: <tt tal:content="python:view.person.redirects_to()" />
     </pre>
-<div tal:repeat="bio view/person/get_biographies">
-<div
-	tal:define="d python:bio.to_dict()" 
-	tal:repeat="k d">
-<tt	 tal:content="python:'%s : %s' % (k, d[k])" /> 
-<br>
-</div>
-</div>
 <br>
 <br>
 <pre tal:repeat="bio view/person/get_biographies"  tal:content="bio/to_string"  /> 

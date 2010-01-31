@@ -6,6 +6,11 @@ import datetime
 from common import  maanden, format_date, format_dates, format_number, html2unicode
 from NamenIndex.common import to_ymd, from_ymd
 import urllib
+#from plone.memoize import ram
+
+def _cache_key_one_hour(**args):
+    return time() // (60*60)
+
 class RepositoryView:
     def repository(self):
         principal = self.request.principal
@@ -21,15 +26,13 @@ class RepositoryView:
     def get_status_values(self, k=None):
         return self.repository().get_status_values(k)
     
+
+    
+#    @ram.cache(_cache_key_one_hour)
     def count_persons(self):
-        try:
-            return self.context._count_persons
-        except AttributeError:
-            i = self.repository().db.count_persons()
-            #XXX turned of caching, need to find some "update once a day" solution
-            return i
-            self.context._count_persons = format_number(i)
-        return self.context._count_persons
+        #XXX cache this
+        i = self.repository().db.count_persons()
+        return i
     
     def count_biographies(self):
         try:
@@ -83,6 +86,8 @@ class Bioport(grok.Application, grok.Container):
 
     def repository(self, user):
         return self['admin'].repository(user=user)
+    def format_number(self, s):
+        return format_number(s)
 
 #    
 class BioPortTraverser(object):
@@ -153,10 +158,35 @@ class Personen(BioPortTraverser,grok.View,RepositoryView, Batcher):
         self.qry = qry
         batch = Batch(ls, start=self.start, size=self.size)
         batch.grand_total = len(ls)
+        self.batch = batch
         return batch
 
+    def search_description(self):
+        """return a description for the user of the search parameters in the request"""
+        result= ''
+        request = self.request
+        if request.get('search_term'):
+            result += 'met het woord <em>%s</em> in de tekst' % request.get('search_term')
+        if request.get('search_name'):
+            result += 'met het woord <em>%s</em> in de naam van de persoon' % request.get('search_name')
+        if result:
+            result = 'U zocht naar personen ' + result
+        return result
     def batch_navigation(self, batch):
 		return '<a href="%s">%s</a>' % (self.batch_url(start=batch.start), batch[0].naam().geslachtsnaam())
+    
+    def navigation_box_data(self):
+        """  """ 
+        #XXX cache this!
+        ls = []
+        for batch in self.batch.batches:
+            url = self.batch_url(start=batch.start)
+            n1 = batch[0].naam()
+            n1 = n1 and n1.geslachtsnaam()
+            n2 = batch[-1].naam()
+            n2 = n2 and n2.geslachtsnaam()
+            ls.append((url, n1, n2))
+        return ls
     
 class Persoon(BioPortTraverser, grok.View,RepositoryView): #, BioPortTraverser):
     def update(self, **args):
@@ -260,6 +290,10 @@ class Birthdays_Box(grok.View, RepositoryView):
         today = datetime.date.today().strftime('-%m-%d')
         #query the database for persons born on this date
         persons = self.repository().get_persons(where_clause='geboortedatum like "____%s"' % today, has_illustrations=True)
+        if len(persons) < 3:
+            #if we have less then 3 people, we cheat a bit and take someone who died today
+	        persons += self.repository().get_persons(where_clause='sterfdatum like "____%s"' % today, has_illustrations=True)
+             
         return persons[:3]
 
 class Birthdays(grok.View, RepositoryView):

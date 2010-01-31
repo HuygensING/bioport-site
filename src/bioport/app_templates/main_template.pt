@@ -39,7 +39,8 @@
             <div id="stats">
                 <!-- @server -->
                 <span tal:replace="view/count_persons" /> personen<br/>
-                van 1232 tot 1978<br/>
+                van 634 tot 2005
+                <br/>
                 in <span tal:replace="view/count_biographies" /> biografieën
             </div>
             <hr class="textOnly"/>

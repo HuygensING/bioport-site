@@ -70,7 +70,7 @@
             <h3>Zoeken</h3>
             <form id="searchform" action="personen" method="post">
                 <fieldset>
-                    <input type="text" name="search_term"/>
+                    <input type="text" name="search_name"/>
                     <button type="submit" value="zoek">zoek</button>
                     <a href="zoek">geavanceerde zoekopties</a>
                 </fieldset>

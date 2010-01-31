@@ -19,24 +19,15 @@
 			person1 python:view.repository().get_person(x.bioport_id1);
 			person2 python:view.repository().get_person(x.bioport_id2);
 			"
-		tal:condition="python:person1 and person2">
-		<span tal:define="person person1"
-		  tal:condition="person">
+			tal:condition="python:person1 and person2">
+		<span tal:define="person person1">
 		<td tal:content="repeat/x/number" />
-		<td metal:define-macro="person">
-			<a tal:attributes="href python:view.url(view.__parent__.__parent__, 'persoon', data={'bioport_id':person.get_bioport_id()})" 
-				tal:content="python:person.naam() and person.naam().guess_normal_form() or 'geen naam bekend'" />
-			<br>
-			<span tal:content="python:context.format_dates(person.get_value('geboortedatum'), person.get_value('sterfdatum'))" />
-			<br>
-			<span tal:repeat="bio python:person.get_biographies()" tal:content="python:bio.get_source().id" />
-		</td>
+		<td metal:use-macro="context/@@mostsimilar/macros/person"></td>
 		</span>
-		<span tal:define="person person2"
-		  tal:condition="person">
-		<td metal:use-macro="template/macros/person" />
+		<span tal:define="person person2">
+		<td metal:use-macro="context/@@mostsimilar/macros/person"></td>
 		</span>
-		<td tal:condition="python:person1 and person2">
+		<td>
 		<tal:block  
 		      define="bioport_ids python: [person1.get_bioport_id(), person2.get_bioport_id()]">
 			<ul metal:use-macro="context/@@mostsimilar/macros/identify_actions" />

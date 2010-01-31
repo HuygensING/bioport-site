@@ -63,6 +63,7 @@ padding:0 17px 0 0;
     list-style-type : none;	
 	}
 	
+
 .personen .persoon {
     padding : .5em 1em .5em 1em;
 	}
@@ -81,3 +82,7 @@ padding:0 17px 0 0;
     position : relative;
     top : .2em;
  }
+ 
+ .personen .navigation_box .selected a {
+    font-size : 2em !important;    
+    }

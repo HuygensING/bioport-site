@@ -1,7 +1,55 @@
 <html metal:use-macro="context/@@main_template/macros/master">
 <div metal:fill-slot="content">
-<h1>Agenda</h1>
+<h1>FAQ</h1>
 
+Wie staan er in het Biografisch Portaal van Nederland?
+Alleen de personen die een lemma (= korte levensbeschrijving) hebben in de naslagwerken die in het Portaal zijn opgenomen. Voor een overzicht van die naslagwerken, zie [link naar tekstje over collecties]. Deze collectie zal geleidelijk worden uitgebreid. 
+NB. Naslagwerken met biografieën van nog levende personen worden niet in het portaal opgenomen.
+
+Ik heb een correctie/aanvullende informatie over een bepaalde persoon. Waar kan ik die melden?
+Fouten en aanvullingen over een bepaalde persoon kunt u melden via de reactieknop onderaan de pagina met ‘kerngegevens’ over die persoon. Ook kunt u gebruik maken van de algemene contactpagina (‘contact’: kerngegevens). 
+NB. wij brengen alleen correcties/aanvullingen aan in onze eigen pagina met ‘kerngegevens’.  Vóór verwerking worden uw correcties of aanvullingen geverifieerd. Wij nemen correcties en aanvullingen alleen in behandeling als er een bronvermelding bij wordt genoemd.
+ 
+Kan ik suggesties doen voor het opnemen van personen die nu nog niet in het Biografisch Portaal staan?
+Nee, dat kan niet. Het Biografisch Portaal neemt namelijk alleen bestaande (collecties van) levensbeschrijvingen op. U kunt dus alleen suggesties doen voor het opnemen van bestaande naslagwerken, bestanden of databanken met biografische informatie over Nederlanders. Gebruik daarvoor de algemene reactieknop ‘contact’. In de toekomst willen we de leemtes in onze biografische informatie inventariseren en opvullen, maar dat is een apart onderdeel.
+
+
+Waarom kan ik een persoon niet vinden?
+Er zijn diverse redenen waarom een persoon onvindbaar is:
+Hij/zij staat niet in een van de opgenomen naslagwerken 
+Hij of zij is nog in leven. Het Biografisch Portaal bevat alleen naslagwerken met informatie over personen die gestorven zijn.
+U spelt de naam anders dan wij (probeer wildcards [linkje naar uitleg en naar onze regels voor spelling]
+De persoon is bekend onder een andere naam (bv. Belle van Zuylen heet Tuyll van Serooskerken). Het redactieteam van het Biografisch Portaal werkt aan het invoeren van naamsvarianten. 
+
+Ik vind meer dan één levensbeschrijving over dezelfde persoon, maar de teksten spreken elkaar tegen. Welke moet ik nu geloven?
+Vaak is de meest recente levensbeschrijving ook het meest betrouwbaar. Het Biografisch Portaal hanteert een globale betrouwbaarheidsvolgorde.Voor meer informatie, klik op ‘collecties’ [link].
+ 
+Waarom staat er bij de ‘kerngegevens’ van personen geen informatie over hun beroep/godsdienst/netwerk?
+Het project bevindt zich nog in de beginfase. De bestanden zijn op deze punten nog niet doorzoekbaar omdat deze gegevens vaak nog ingevoerd moeten worden. Bovendien: mensen hebben vaak meerdere beroepen en functies, sommigen veranderen in hun leven ook van godsdienstige overtuiging, en ze hebben een heel netwerk van relaties. Hier zullen we keuzes in moeten maken. We zoeken naar haalbare oplossingen om de doorzoekbaarheid van het bestand te vergroten. 
+
+
+Overigens worden bestaande levensbeschrijvingen in het portaal nooit verbeterd. De redactie van het Biografisch Portaal is alleen verantwoordelijk voor de biografische ‘kerngegevens’. U mag ervan uitgaan dat deze de meest actuele stand van informatie weergeven, al zijn ze natuurlijk heel summier.
+
+
+Wáárin zoek ik precies met de zoekfunctie ‘vrij zoeken in tekst’?
+Met ‘vrij zoeken in tekst’ doorzoekt u de lopende tekst van alle bestanden die in het Biografisch Portaal zijn opgenomen. Ook kunt u zelf eerst een selectie van personen uit het Portaal samenstellen en alleen daarin ‘vrij zoeken in tekst’. Zo kunt u bijvoorbeeld proberen alle apothekers voor een bepaalde periode (gebruik geboorte- en sterfjaren) uit een bepaalde stad (gebruik daarvoor geboorte- en sterfplaats) te selecteren en dan vrij te zoeken op ‘apoth*’.
+NB. Aangezien de teksten soms door automatische tekstherkenning leesbaar gemaakt zijn voor de computer, zijn ze niet altijd volledig correct. Dat maakt het zoeken ook iets minder betrouwbaar.
+
+
+Het Biografisch Portaal bevat levensbeschrijvingen van ‘Nederlanders’. Maar wat zijn ‘Nederlanders’?
+In principe wordt het begrip ‘Nederlander’ breed opgevat: mensen die zijn geboren in dat gebied dat tegenwoordig ‘Nederland’ heet en de gebieden die ooit als koloniaal bezit bij Nederland hoorden, en mensen die elders zijn geboren maar op Nederlands grondgebied actief zijn geweest. 
+
+Staan de inwoners van de zuidelijke Nederlanden ook in het Biografisch Portaal?
+Inwoners van de zuidelijke Nederlanden staan alleen maar in het Biografisch Portaal voorzover ze in een van de naslagwerken (Van der Aa, NNBW) zijn opgenomen. In de toekomst zullen Belgische naslagwerken misschien in het portaal worden opgenomen.
+
+Ik wil het Biografisch Portaal citeren. Hoe doe ik dat?
+Onze url is: www.biografischportaal.nl. Als u uw bron zo precies mogelijk wilt aanhalen, kunt u het beste het desbetreffende naslagwerk zelf citeren. Wij stellen het uiteraard op prijs als u daarbij vermeldt dat u dat via het Biografisch Portaal heeft gevonden. [wacht even! Dat lijkt me maar half de bedoeling. Mensen moeten juist naar de persistent identifier verwijzen toch, daar is ook de meest actuele informatie beschikbaar…. Het lijkt me goed als we hierover overleggen]
+
+Wie zijn de makers van het Biografisch Portaal?
+Het Biografisch Portaal is een initiatief van diverse samenwerkende instellingen[link] en wordt uitgevoerd op het Instituut voor Nederlandse Geschiedenis (ING). Meer informatie is beschikbaar bij project [link], en colofon [link]. 
+
+Wat zijn de toekomstplannen van het Biografisch Portaal?
+In de nabije toekomst zullen we meer bestaande naslagwerken opnemen en aan elkaar koppelen, zodat de bandbreedte van het portaal steeds groter wordt. Het is de bedoeling dat op den duur alle biografische naslagwerken die aan de criteria van betrouwbaarheid voldoen deel uitmaken van het Biografisch Portaal. Er zal steeds gewerkt worden aan de verbeterde doorzoekbaarheid van de bestanden. Ook zullen portretten worden gekoppeld aan de pagina’s met kerngegevens. Intussen is er overleg gaande met partners in Europa om tot een biografisch portaal van Europa te komen. In de sectie project [link] kunt u het actuele  nieuws vinden.
 
 </div>
 </html>
