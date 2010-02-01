@@ -1,5 +1,9 @@
 <html metal:use-macro="context/@@main_template/macros/master">
 <div metal:fill-slot="content">
+<div id="colright">
+</div>
+<div id="colcenter">
+</div>
 <h1>FAQ</h1>
 
 Wie staan er in het Biografisch Portaal van Nederland?

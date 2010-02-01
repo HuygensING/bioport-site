@@ -1,6 +1,9 @@
 <html metal:use-macro="context/@@main_template/macros/master">
 <div metal:fill-slot="content">
-<div metal:use-macro="context/@@about/macros/navigation_box"></div>
+<div id="colright">
+	<div metal:use-macro="context/@@about/macros/navigation_box"></div>
+</div>
+<div id="colcenter">
 <h1>
 Collecties
 </h1>
@@ -63,8 +66,7 @@ F.G. Waller, Biographisch woordenboek van Noord Nederlandsche graveurs ('s-Grave
 RKD-artists.
 </ul>
 
-
-
+</div>
 </div>
 </html>
 

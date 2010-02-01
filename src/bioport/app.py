@@ -6,7 +6,7 @@ import datetime
 from common import  maanden, format_date, format_dates, format_number, html2unicode
 from NamenIndex.common import to_ymd, from_ymd
 import urllib
-from plone.memoize import ram
+#from plone.memoize import ram
 
 def _cache_key_one_hour(**args):
     return time() // (60*60)
@@ -48,13 +48,19 @@ class RepositoryView:
         return [
                 (self.application_url(), 'home'),
                 (self.url('zoek'), 'zoeken'),
+                (self.url('personen', data={'beginletter':'a'}), 'bladeren'),
                 (self.url('about'), 'project'),
                 (self.url('agenda'), 'agenda'),
-                (self.url('colofon'), 'colofon'),
+#                (self.url('colofon'), 'colofon'),
                 (self.url('contact'), 'contact'),
                 (self.url('faq'), 'faq'),
-                (self.url('english'), 'english'),
+                (self.url('links'), 'links'),
+#                (self.url('english'), 'english'),
         ]    
+    def today(self):
+        today = datetime.date.today()
+        month = maanden[today.month-1]
+        return '%s %s' % (today.day, month)    
     
 class Batcher: 
     def update(self, **kw):
@@ -110,11 +116,7 @@ class BioPortTraverser(object):
             return default   
         
 class Index(grok.View, RepositoryView):
-    def today(self):
-        today = datetime.date.today()
-        month = maanden[today.month-1]
-        return '%s %s' % (today.day, month)
-        
+    pass
 
 class Popup_Template(grok.View):
     #make the main template avaible for everything
@@ -318,10 +320,8 @@ class Birthdays(grok.View, RepositoryView):
         #query the database for persons born on this date
         persons = self.repository().get_persons(where_clause='sterfdatum like "____%s"' % today)
         return persons
-    def today(self):
-        today = datetime.date.today()
-        month = maanden[today.month-1]
-        return '%s %s' % (today.day, month)
+    
+
     
 class About(grok.View, RepositoryView):
     pass
@@ -370,4 +370,7 @@ class Stichting(grok.View, RepositoryView):
     pass
 
 class RedactieRaad(grok.View, RepositoryView):
+    pass
+
+class Links(grok.View,RepositoryView):
     pass

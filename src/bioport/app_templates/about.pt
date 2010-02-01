@@ -1,30 +1,31 @@
 <html metal:use-macro="context/@@main_template/macros/master">
 <div metal:fill-slot="content">
+<div id="colright">
 <div class="navigation_box"
     metal:define-macro="navigation_box">
 <ul>
-<li>
-<a tal:attributes="href python:view.url('about')">over het project</a>
-</li>
-<li>
-<a tal:attributes="href python:view.url('collecties')">collecties</a>
-</li>
-<li>
-<a tal:attributes="href python:view.url('redactieraad')">redactieraad</a>
-</li>
-<li>
-<a tal:attributes="href python:view.url('instellingen')">samenwerkende instellingen</a>
-</li>
-<li>
-<a tal:attributes="href python:view.url('stichting')">stichting</a>
-</li>
-<li>
-<a tal:attributes="href python:view.url('colofon')">colofon</a>
-</li>
-
-</ul>
-
+	<li>
+	<a tal:attributes="href python:view.url('about')">over het project</a>
+	</li>
+	<li>
+	<a tal:attributes="href python:view.url('collecties')">collecties</a>
+	</li>
+	<li>
+	<a tal:attributes="href python:view.url('redactieraad')">redactieraad</a>
+	</li>
+	<li>
+	<a tal:attributes="href python:view.url('instellingen')">samenwerkende instellingen</a>
+	</li>
+	<li>
+	<a tal:attributes="href python:view.url('stichting')">stichting</a>
+	</li>
+	<li>
+	<a tal:attributes="href python:view.url('colofon')">colofon</a>
+	</li>
+	</ul>
 </div>
+</div>
+<div id="colcenter">
 <h1>Over het project </h1>
 <p>
 Het Biografisch Portaal van Nederland is een digitale
@@ -56,6 +57,7 @@ de partners een <a tal:attributes="href python:view.url('stichting')">stichting<
 Voor de wetenschappelijke begeleiding is een 
 <a tal:attributes="href python:view.url('redactieraad')">redactieraad</a> ingesteld
 </p>
+</div>
 </div>
 </html>
 

@@ -7,7 +7,7 @@
 </script>
 <div metal:fill-slot="content">
 
-    <div id="colright">
+    <div id="colright" metal:define-macro="birthdays_box">
     
         <h3>
             <span onclick="refreshElem('pBirthdays','birthdays_box');" class="refresh" ></span>
@@ -54,7 +54,7 @@
             "> 
         </script>
         <h1>Welkom</h1>
-        
+
         <p class="intropar">
        Dit is de site van het Biografisch Portaal van Nederland. Hier vindt u oude en nieuwe informatie over kopstukken en andere opzienbarende figuren uit de Nederlandse geschiedenis, van het vroegste verleden tot nu. 
         </p>    

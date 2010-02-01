@@ -1,7 +1,9 @@
 <html metal:use-macro="context/@@main_template/macros/master">
 <div metal:fill-slot="content">
-
-<div metal:use-macro="context/@@about/macros/navigation_box"></div>
+<div id="colright">
+	<div metal:use-macro="context/@@about/macros/navigation_box"></div>
+</div>
+<div id="colcenter">
 <h1>Redactieraad</h1>
 <p>
 De wetenschappelijke redactieraad van het Biografisch Portaal bestaat uit:
@@ -35,5 +37,5 @@ Dr. René van Stipriaan (DBNL)
 Prof.dr. Ernestine van der Wall (UL)
 </ul>
 </div>
+</div>
 </html>
-

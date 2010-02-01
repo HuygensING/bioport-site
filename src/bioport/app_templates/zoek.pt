@@ -1,6 +1,15 @@
 <html metal:use-macro="context/@@main_template/macros/master">
+<script type="text/javascript" metal:fill-slot="extra_header_content">
+    /* load sidebar on doc ready */
+    $(document).ready(function() {
+        refreshElem('pBirthdays','birthdays_box');
+    });
+</script>
     <title metal:fill-slot="head_title">Zoek</title> 
     <div metal:fill-slot="content">
+<div id="colright" metal:use-macro="context/@@index/macros/birthdays_box">
+</div>
+<div id="colcenter">
 <h1>Zoek naar personen</h1>
 <form tal:attributes="action python:view.url('personen')">
 <table>
@@ -76,5 +85,6 @@
 <p>Het is belangrijk op te merken dat bij een groot gedeelte van de gegevens ontbreken, en dat daardoor de zoekresultaten onvolledig zullen zijn.
 <p>Zo is bijvoorbeeld het geslacht van personen in het NNBW niet aangegeven, en dus zal een zoekopdracht op vrouwen in dat naslagwerk geen enkel resultaat opleveren.
 
+</div>
 </div>
 </html>

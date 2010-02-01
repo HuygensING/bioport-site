@@ -1,48 +1,23 @@
     <html metal:use-macro="context/@@main_template/macros/master">
 <div metal:fill-slot="content">
-<table width="100%">
-<tr>
-<td>
-		<h1>Vandaag jarig</h1>
-           <div  tal:repeat="person view/get_persons_born_today" class="person">
-                    
-            <a tal:attributes="href python:view.url('persoon') + '/' +  person.bioport_id">
-
- 
-                <span tal:replace="person/name" ></span> 
-                   <span tal:replace="python:context.format_dates(person.get_value('geboortedatum'), person.get_value('sterfdatum'), show_year_only=True)"></span>
-                                   <div class="image"
-                tal:define="illustrations python:person.get_merged_biography().get_illustrations();
-                    illustration python:illustrations and illustrations[0]"
-                tal:condition="illustration">
-                <img tal:attributes="src illustration/cached_url"  alt="person/naam" />
-                </div>
-                
-           </a>
-           <hr>
-            </div>
-    </td>
-    <td>
+<div class="colleft">
+   <h1>Op <span tal:replace="view/today">deze dag</span> geboren</h1>
+   <div class="list_of_persons">
+       <div  tal:repeat="person view/get_persons_born_today" tal:omit-tag="">
+       <div metal:use-macro="context/@@personen/macros/render_person" />
+       </div>
+	</div>
+</div>
+<div class="colright">
            <h1>Op <span tal:replace="view/today">deze dag</span> gestorven</h1>
 
+   <div class="list_of_persons">
             <span tal:omit-tag=""
                  tal:repeat="person view/get_persons_dead_today">
-                    
-            <a tal:attributes="href python:view.url('persoon') + '/' +  person.bioport_id">
-            <div class="image"
-                tal:define="illustrations python:person.get_merged_biography().get_illustrations();
-                    illustration python:illustrations and illustrations[0]"
-                tal:condition="illustration">
-                <img tal:attributes="src illustration/cached_url"  alt="person/naam" />
-            </div>
-                <div class="subscript"><span tal:replace="person/name" ></span> 
-                   <span tal:replace="python:context.format_dates(person.get_value('geboortedatum'), person.get_value('sterfdatum'), show_year_only=True)"></span>
-               </div>
-                </a>
-            </span>
-        </td>
-    </tr>
-</table>
+       <div metal:use-macro="context/@@personen/macros/render_person" />
+                   </span> 
+	</div>
+</div>
 </div>
 </html>
 

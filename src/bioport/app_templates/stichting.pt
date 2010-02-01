@@ -1,6 +1,9 @@
 <html metal:use-macro="context/@@main_template/macros/master">
 <div metal:fill-slot="content">
+<div id="colright">
 <div metal:use-macro="context/@@about/macros/navigation_box"></div>
+</div>
+<div id="colcenter">
 <h1>Stichting</h1>
 <p>De initiatiefnemers hebben de stichting Biografisch Portaal van Nederland opgericht. Doelstelling van de Stichting: het opbouwen,
 ontwikkelen en onderhouden van een zo volledig mogelijke website met
@@ -18,6 +21,7 @@ em. hoogl. Prof.dr. P. Sigmond (secr./penn.)
 dir. ING Dr. H. Wals, dir.
 Huygens Instituut
 </ul>
+</div>
 </div>
 </html>
 

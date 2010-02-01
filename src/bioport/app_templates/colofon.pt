@@ -1,6 +1,9 @@
 <html metal:use-macro="context/@@main_template/macros/master">
 <div metal:fill-slot="content">
+<div id="colright">
 <div metal:use-macro="context/@@about/macros/navigation_box"></div>
+</div>
+<div id="colcenter">
 <h1>Colofon</h1>
 Team van het Biografisch Portaal:
 <ul>
@@ -36,6 +39,7 @@ en het <a href="http://www.inghist.nl">Instituut voor Nederlandse Geschiedenis</
 Met speciale dank aan Sonja Duykers van het KNAW, Marien van der Heijden van het IISG, en Diebert van Rhijn en Rik Hoekstra van het ING.
 
 
+</div>
 </div>
 </html>
 

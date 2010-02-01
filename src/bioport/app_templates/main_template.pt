@@ -31,9 +31,11 @@
 <div metal:define-slot="extra_header_content" />
 </head>
 
-<body tal:attributes="class python:view.url().split('/')[-1]" >
+<body tal:attributes="id python:view.url().split('/')[-1].capitalize()" >
     <div id="wrapper">
         <div id="layHead">
+                <span class="warning" style="font-size:1.6em;font-weight:bold;color:red">NIET SCHRIKKEN! Richard gaat de layout weer fixen,
+        en als hij klaar is, dan haalt hij dit berichtje ook weer weg :-)</span>
             <h2><span class="textOnly">Het Biografisch Portaal van Nederland</span></h2>
             <div id="stats">
                 <!-- @server -->
@@ -53,10 +55,11 @@
                 </li>
 
 	        </ul>
-	        <span class="search_form" tal:condition="python:view.__name__ != 'index'" >
-	           <input type="text" name="search_term" size="20">
+	        <form class="search_form" tal:condition="python:view.__name__ != 'index'" 
+	           tal:attributes="action python:view.url('personen')">
+	           <input type="text" name="search_name" size="20">
 	           <input type="submit" value="zoek">
-	        </span>
+	        </form>
         <hr class="textOnly"/>
         </div>
         

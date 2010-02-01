@@ -1,5 +1,9 @@
 <html metal:use-macro="context/@@main_template/macros/master">
 <div metal:fill-slot="content">
+<div id="colright">
+</div>
+<div id="colcenter">
+</div>
 <h1>Op te nemen Bronnen</h1>
 <p>Welke collecties (databestanden en naslagwerken) komen in aanmerking voor integratie in het Biografisch Portaal?
 

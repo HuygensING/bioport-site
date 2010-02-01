@@ -1,5 +1,8 @@
 <html metal:use-macro="context/@@main_template/macros/master">
 <div metal:fill-slot="content">
+<div id="colright">
+</div>
+<div id="colcenter">
 <h1>Contact</h1>
 <p>
 Wij ontvangen graag opmerkingen en reacties. Ook staan wij open voor correcties op de data. Daaraan zitten wel beperkingen, want – de naam zegt het al – we zijn een portaal: we kunnen alleen correcties aanbrengen in de ‘biografische kerngegevens’. Correcties worden alleen doorgevoerd als ze zijn onderbouwd met verwijzingen naar betrouwbare bronnen.
@@ -31,6 +34,7 @@ Verstuur
 <p>
 En dan zo’n letterding om spam tegen te gaan
 
+</div>
 </div>
 </html>
 
