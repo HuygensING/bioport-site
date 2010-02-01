@@ -33,13 +33,13 @@
 
 	<input   tal:replace="structure python:view.actions['form.actions.edit_settings'].render()" />
   <!-- render all the action submit buttons -->
-  <br>
-  <Br>
+  <br />
+  <br />
   <span class="actionButtons" tal:condition="view/availableActions">
     <span tal:repeat="action view/actions">
         <input    tal:replace="structure action/render" 
     	tal:condition="python:action.__name__ != 'form.actions.edit_settings'">
-           <br>
+           <br />
      </span>
   </span>
 </form>

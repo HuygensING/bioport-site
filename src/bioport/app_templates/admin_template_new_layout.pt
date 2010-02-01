@@ -35,7 +35,7 @@
             <div id="stats">
                 <!-- @server -->
                 5.698.256 personen<br/>
-                in 23.524.678 verwijzingen<br>
+                in 23.524.678 verwijzingen<br />
                 ingelogd als <em tal:content="request/principal/title" />
             </div>
             <hr class="textOnly"/>

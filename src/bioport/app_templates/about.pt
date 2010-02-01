@@ -18,6 +18,10 @@
 <li>
 <a tal:attributes="href python:view.url('stichting')">stichting</a>
 </li>
+<li>
+<a tal:attributes="href python:view.url('colofon')">colofon</a>
+</li>
+
 </ul>
 
 </div>

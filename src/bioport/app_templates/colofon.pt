@@ -1,6 +1,6 @@
 <html metal:use-macro="context/@@main_template/macros/master">
 <div metal:fill-slot="content">
-  
+<div metal:use-macro="context/@@about/macros/navigation_box"></div>
 <h1>Colofon</h1>
 Team van het Biografisch Portaal:
 <ul>

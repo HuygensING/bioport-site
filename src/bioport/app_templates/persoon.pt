@@ -51,8 +51,8 @@
             <td>
                 <span tal:replace="python:view.context.format_dates(state.frm, state.to, parenthesis=False)" />
                 <tt tal:content="state/place"></tt>
-                <span tal:condition="state/place" tal:content="structure string:<br>${state/place}" />
-                <span tal:condition="state/text" tal:content="structure string:<br>${state/text}" />
+                <span tal:condition="state/place" tal:content="structure string:<br />${state/place}" />
+                <span tal:condition="state/text" tal:content="structure string:<br />${state/text}" />
             </td>
         </tr>
         <tr tal:condition="python:len(view.biography.get_names()) > 1">
@@ -125,17 +125,17 @@
     
     
     <tt tal:condition="context/debug">
-    <br>
-    <br>
-    <br>
+    <br />
+    <br />
+    <br />
     <hr>
     <a tal:attributes="href python:view.url(context['admin'], 'persoon', data={'bioport_id':view.bioport_id})" >bewerk de gegevens van deze persoon</a>
     <pre>Debug information</pre>
     <pre>
     redirects_to: <tt tal:content="python:view.person.redirects_to()" />
     </pre>
-<br>
-<br>
+<br />
+<br />
 <pre tal:repeat="bio view/person/get_biographies"  tal:content="bio/to_string"  /> 
     </tt> 
 

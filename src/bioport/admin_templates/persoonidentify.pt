@@ -95,7 +95,7 @@ of <a metal:define-macro="button_begin_opnieuw" tal:attributes="href python:view
         'new_bioport_id':person.get_bioport_id(),
         'search_term':request.get('search_term', ''),
         })">kies</a>]
-        <br>
+        <br />
         </span>
         [<a tal:attributes="href python:view.url(context,'persoon', data={'bioport_id':person.get_bioport_id()})">bewerk</a>]
     </Td>

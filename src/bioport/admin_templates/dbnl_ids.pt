@@ -37,9 +37,9 @@ of
 		      style="width:150px" width="150px">
 			<a tal:attributes="href python:view.url( 'persoon', data={'bioport_id':person.get_bioport_id()})" 
 				tal:content="structure python:person.naam() and person.naam().get_volledige_naam() or 'geen naam bekend'" />
-			<br>
+			<br />
 			<span tal:replace="python:context.format_dates(person.get_value('geboortedatum'), person.get_value('sterfdatum'))" />
-			<br>
+			<br />
 		     <span tal:repeat="bio bios">
 			<hr width="250px">
 		  <p>

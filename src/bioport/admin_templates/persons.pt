@@ -32,7 +32,7 @@ tal:define="batch view/get_persons;
 			selected python:source.id == request.get('source_id')"
 		tal:content="python:source.id" />
 </select>
-<br>	
+<br />	
 <label accesskey="s" for="status"><span class="accesskey">s</span>tatus:</label>
 <select name="status" id="status">
 	<option></option>
@@ -42,13 +42,13 @@ tal:define="batch view/get_persons;
 	   tal:content="python:status[1]">..</option>
 </select>
 <span tal:condition="nothing">
-<br>	
+<br />	
 levensjaren niet ingevuld <input type="checkbox" />
-<br>	
+<br />	
 </span>
 <label accesskey="z" for="submit"></label>
 	<button value=" zoek " id="submit"><span class="accesskey">z</span>oek</button>
-	<br>
+	<br />
 </form>
 <ul>
 <li tal:condition="request/auteur_id | nothing">U zocht naar biografie&euml;n met <em tal:content="structure python:view.repository().get_author(request.form['auteur_id']).name"></em> als auteur.</li>

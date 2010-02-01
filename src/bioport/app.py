@@ -6,7 +6,7 @@ import datetime
 from common import  maanden, format_date, format_dates, format_number, html2unicode
 from NamenIndex.common import to_ymd, from_ymd
 import urllib
-#from plone.memoize import ram
+from plone.memoize import ram
 
 def _cache_key_one_hour(**args):
     return time() // (60*60)
@@ -142,7 +142,11 @@ class Personen(BioPortTraverser,grok.View,RepositoryView, Batcher):
             'bioport_id', 
             'beginletter',
             'category',
+            'geboortejaar_min',
+            'geboortejaar_max',
             'geslacht',
+#        has_illustrations=None, #boolean: does this person have illustrations?
+#        is_identified=None,
             'order_by', 
             'search_term',
             'search_name',
@@ -150,7 +154,11 @@ class Personen(BioPortTraverser,grok.View,RepositoryView, Batcher):
             'source_id',
             'start',
             'status',
-              ]:
+	        'sterfjaar_min', 
+	        'sterfjaar_max',
+#        start=None,
+#        size=None,
+             ]:
             if k in self.request.keys():
                 qry[k] = self.request[k]
         
