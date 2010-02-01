@@ -39,7 +39,7 @@
 		<span tal:omit-tag="" tal:condition="python:results.grand_total == 1">Er is &eacute;&eacute;n persoon gevonden.</span>
 		<span tal:omit-tag="" tal:condition="python:results.grand_total > 2">Er zijn <span tal:replace="python:context.format_number(results.grand_total)" /> personen gevonden.</span>
 	</div>
-Heeft u niet gevonden wie U zocht? Probeer het met het <a tal:attributes="href python:view.url('search')">zoekscherm</a>.
+Heeft u niet gevonden wie U zocht? Probeer het met het <a tal:attributes="href python:view.url('zoek')">zoekscherm</a>.
 </div>
 
 

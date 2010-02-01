@@ -55,7 +55,7 @@
 
 	        </ul>
 	        <span class="search_form" tal:condition="python:view.__name__ != 'index'" >
-	           <input type="text" size="20">
+	           <input type="text" name="search_term" size="20">
 	           <input type="submit" value="zoek">
 	        </span>
         <hr class="textOnly"/>
