@@ -23,6 +23,8 @@ setup(name='bioport',
                         'grokui.admin',
                         'z3c.testsetup',
                         'grokcore.startup',
+                        'plone.memoize==1.0.4',
+                        'zope.app.cache==3.4.0',
                         # Add extra requirements here
                         ],
       entry_points = """

@@ -6,10 +6,7 @@ import datetime
 from common import  maanden, format_date, format_dates, format_number, html2unicode
 from NamenIndex.common import to_ymd, from_ymd
 import urllib
-#from plone.memoize import ram
-
-def _cache_key_one_hour(**args):
-    return time() // (60*60)
+from plone.memoize import ram
 
 class RepositoryView:
     def repository(self):
@@ -133,6 +130,9 @@ class Admin_Template(grok.View):
 class SiteMacros(grok.View):
     grok.context(zope.interface.Interface)   
     
+def _navigation_box_cachekey(method, self):
+    return 'beginletter=' + self.request.form['beginletter']
+    
 class Personen(BioPortTraverser,grok.View,RepositoryView, Batcher):
     
     def update(self):
@@ -184,7 +184,7 @@ class Personen(BioPortTraverser,grok.View,RepositoryView, Batcher):
         return result
     def batch_navigation(self, batch):
 		return '<a href="%s">%s</a>' % (self.batch_url(start=batch.start), batch[0].naam().geslachtsnaam())
-    
+    @ram.cache(_navigation_box_cachekey)
     def navigation_box_data(self):
         """  """ 
         #XXX cache this!
