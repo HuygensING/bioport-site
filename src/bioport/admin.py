@@ -38,9 +38,9 @@ class Admin(grok.Container  ):
     IMAGES_CACHE_URL = None
     def repository(self, user):
         try:
-            return self._repo
-        except:
-            self._repo = Repository(
+            return self._v_repo
+        except AttributeError:
+            self._v_repo = Repository(
                 svn_repository=self.SVN_REPOSITORY, 
                 svn_repository_local_copy=self.SVN_REPOSITORY_LOCAL_COPY,
                 db_connection=self.DB_CONNECTION,
@@ -49,7 +49,7 @@ class Admin(grok.Container  ):
                 user=user,
                 ZOPE_SESSIONS=False, #use z3c.saconfig package
             ) 
-        return self._repo
+        return self._v_repo
 
     def __getstate__(self):
         #we cannot (And dont want to) pickle the repository -- like this we exclude it
