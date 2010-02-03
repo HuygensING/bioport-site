@@ -4,17 +4,7 @@
 <html metal:use-macro="context/@@main_template/macros/master">
 <div metal:fill-slot="content">
 <div class="colright">
-<div class="navigation_box"  tal:define="results persons">
-
-    <div tal:repeat="item view/navigation_box_data"
-       tal:attributes="class python:repeat['item'].number() == batch.number and 'selected' or ''">
-        <span class="number" tal:content="repeat/item/number" />
-        <a tal:attributes="href python:item[0]">
-        <span tal:on-error="string:??"
-            tal:replace="python:item[1] + '-' + item[2]">Jan -- Piet</span>
-        </a>
-    </div>
-</div>
+    <tal:block tal:replace="structure view/get_navigation_box" />
 </div>
 <div class="colcenter">
 <span metal:define-macro="alfabet" tal:repeat="letter string:abcdefghijklmnopqrstuvwxyz"

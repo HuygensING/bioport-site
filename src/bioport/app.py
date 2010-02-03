@@ -1,12 +1,14 @@
-import grok
-import zope.interface
-from z3c.batching.batch import  Batch
-import random
 import datetime
-from common import  maanden, format_date, format_dates, format_number, html2unicode
-from NamenIndex.common import to_ymd, from_ymd
-import urllib
+import grok
+import os
+import random
+import zope.interface
+from chameleon.zpt.template import PageTemplateFile
+from common import format_date, format_dates, format_number, html2unicode, maanden
+from NamenIndex.common import to_ymd
 from plone.memoize import ram
+from plone.memoize.instance import memoize
+from z3c.batching.batch import Batch
 
 class RepositoryView:
     def repository(self):
@@ -131,13 +133,15 @@ class SiteMacros(grok.View):
     grok.context(zope.interface.Interface)   
     
 def _navigation_box_cachekey(method, self):
-    return 'beginletter=' + self.request.form['beginletter']
+    return 'beginletter=' + self.request.form.get('beginletter', '')
     
 class Personen(BioPortTraverser,grok.View,RepositoryView, Batcher):
     
     def update(self):
         Batcher.update(self)
+    @memoize
     def get_persons(self):
+        # XXX get_ method with side effects braks least astonishment principle
         qry = {}
         #request.form has unicode keys - make strings
         for k in [
@@ -184,10 +188,13 @@ class Personen(BioPortTraverser,grok.View,RepositoryView, Batcher):
         return result
     def batch_navigation(self, batch):
 		return '<a href="%s">%s</a>' % (self.batch_url(start=batch.start), batch[0].naam().geslachtsnaam())
+
     @ram.cache(_navigation_box_cachekey)
     def navigation_box_data(self):
-        """  """ 
-        #XXX cache this!
+        """  This function returns a list of 3-tuples representing pages
+             of paged results. They have the form
+             (url of a page, first name on that page, last name on that page)
+        """ 
         ls = []
         for batch in self.batch.batches:
             url = self.batch_url(start=batch.start)
@@ -197,6 +204,16 @@ class Personen(BioPortTraverser,grok.View,RepositoryView, Batcher):
             n2 = n2 and n2.geslachtsnaam()
             ls.append((url, n1, n2))
         return ls
+
+    def get_navigation_box(self):
+        "This function returns the html for the navigation box"
+        template_filename = os.path.join(
+                      os.path.dirname(__file__),
+                      'app_templates',
+                      'navigation_block.cpt')
+        template = PageTemplateFile(template_filename)
+        return template(view=self, request=self.request)
+        return "Navigation box"
     
 class Persoon(BioPortTraverser, grok.View,RepositoryView): #, BioPortTraverser):
     def update(self, **args):

@@ -1,0 +1,11 @@
+<div class="navigation_box" tal:define="batch python:view.get_persons()">
+    <div tal:repeat="item python:view.navigation_box_data()"
+       tal:attributes="class python:repeat['item'].number() == batch.number and 'selected' or ''">
+        <span class="number" tal:content="path:repeat/item/number" />
+        <a tal:attributes="href python:item[0]">
+            <span tal:define="item1 python: item[1] and item[1] or '??';
+                              item2 python: item[2] and item[2] or '??'"
+            tal:replace="python:item1 + '-' + item2">Jan -- Piet</span>
+        </a>
+    </div>
+</div>
