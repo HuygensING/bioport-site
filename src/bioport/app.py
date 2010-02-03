@@ -163,11 +163,11 @@ class Personen(BioPortTraverser,grok.View,RepositoryView, Batcher):
              ]:
             if k in self.request.keys():
                 qry[k] = self.request[k]
-        
-        ls = self.repository().get_persons(**qry)
+        repository = self.repository()
+        persons = repository.get_persons_sequence(**qry)
+        batch = Batch(persons,  start=self.start, size=self.size)
         self.qry = qry
-        batch = Batch(ls, start=self.start, size=self.size)
-        batch.grand_total = len(ls)
+        batch.grand_total = len(persons)
         self.batch = batch
         return batch
 
