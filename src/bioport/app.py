@@ -133,7 +133,7 @@ class SiteMacros(grok.View):
     grok.context(zope.interface.Interface)   
     
 def _navigation_box_cachekey(method, self):
-    return 'beginletter=' + self.request.form.get('beginletter', '')
+    return self.request.form
     
 class Personen(BioPortTraverser,grok.View,RepositoryView, Batcher):
     
