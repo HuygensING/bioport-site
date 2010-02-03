@@ -25,6 +25,7 @@ setup(name='bioport',
                         'grokcore.startup',
                         'plone.memoize==1.0.4',
                         'zope.app.cache==3.4.0',
+                        'megrok.chameleon',
                         # Add extra requirements here
                         ],
       entry_points = """
