@@ -15,6 +15,7 @@ from zope.app.form.interfaces import MissingInputError
 import captchaimage
 import Image
 import cStringIO
+from urllib import urlencode
 
 
 
@@ -52,7 +53,7 @@ class CaptchaWidget(TextWidget):
         solution = get_random_sequence()
         enc_value = encrypt(ENCRYPTION_KEY, solution)
         base_url = url( self.request,self.context.context)
-        image_url = base_url + '/captcha_image?key=' + enc_value
+        image_url = base_url + '/captcha_image?' + urlencode({'key':enc_value})
         my_widget = original_widget + ' <img src="%s">' % image_url
         my_widget += ' <input type="hidden" name="captcha_text" value="%s">' % enc_value        
         return my_widget
