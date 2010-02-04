@@ -8,8 +8,12 @@ from common import format_date, format_dates, format_number, html2unicode, maand
 from NamenIndex.common import to_ymd
 from plone.memoize import ram
 from plone.memoize.instance import memoize
+from time import time
 from z3c.batching.batch import Batch
 
+def _request_data_cachekey(method, self):
+    return self.request.form
+    
 class RepositoryView:
     def repository(self):
         principal = self.request.principal
@@ -27,12 +31,13 @@ class RepositoryView:
     
 
     
-#    @ram.cache(_cache_key_one_hour)
+    @ram.cache(lambda *args: time() // (60 * 60))
     def count_persons(self):
         #XXX cache this
         i = self.repository().db.count_persons()
         return i
     
+    @ram.cache(lambda *args: time() // (60 * 60))
     def count_biographies(self):
         try:
             return self.context._count_biographies
@@ -132,9 +137,6 @@ class Admin_Template(grok.View):
 class SiteMacros(grok.View):
     grok.context(zope.interface.Interface)   
     
-def _navigation_box_cachekey(method, self):
-    return self.request.form
-    
 class Personen(BioPortTraverser,grok.View,RepositoryView, Batcher):
     
     def update(self):
@@ -189,7 +191,7 @@ class Personen(BioPortTraverser,grok.View,RepositoryView, Batcher):
     def batch_navigation(self, batch):
 		return '<a href="%s">%s</a>' % (self.batch_url(start=batch.start), batch[0].naam().geslachtsnaam())
 
-    @ram.cache(_navigation_box_cachekey)
+    @ram.cache(_request_data_cachekey)
     def navigation_box_data(self):
         """  This function returns a list of 3-tuples representing pages
              of paged results. They have the form

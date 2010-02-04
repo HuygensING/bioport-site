@@ -39,10 +39,10 @@
             <h2><span class="textOnly">Het Biografisch Portaal van Nederland</span></h2>
             <div id="stats">
                 <!-- @server -->
-                <span tal:replace="view/count_persons" /> personen<br/>
+                <span tal:replace="python:view.count_persons()" /> personen<br/>
                 van 634 tot 2005
                 <br/>
-                in <span tal:replace="view/count_biographies" /> biografieën
+                in <span tal:replace="python: view.count_biographies()" /> biografieën
             </div>
             <hr class="textOnly"/>
         </div>
@@ -50,7 +50,7 @@
         <div id="layMenu">
             <h3 class="textOnly">Inhoud</h3>
             <ul>
-                <li tal:repeat="item view/menu_items">
+                <li tal:repeat="item python:view.menu_items()">
                     <a tal:attributes="href python:item[0]" tal:content="python:item[1]"></a>
                 </li>
 
@@ -76,9 +76,9 @@
         <div id="layFoot">
         
             <hr class="textOnly"/>
-            <span tal:omit-tag="" tal:repeat="item view/menu_items">
+            <span tal:omit-tag="" tal:repeat="item python:view.menu_items()">
             
-                <span tal:omit-tag="" tal:condition="not:repeat/item/start">|</span>
+                <span tal:omit-tag="" tal:condition="python:not repeat['item'].start">|</span>
                 <a tal:attributes="href python:item[0]" tal:content="python:item[1]"></a> 
             </span>
 
