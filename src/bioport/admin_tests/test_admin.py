@@ -3,9 +3,9 @@ Do a Python test on the app.
 
 :Test-Layer: python
 """
+#!/home/jelle/projects_active/bioport/virtualenv_python2.4/bin/python
 
 import unittest
-#!/home/jelle/projects_active/bioport/virtualenv_python2.4/bin/python
 import sys
 sys.path.append('..')
 sys.path.append('../..')

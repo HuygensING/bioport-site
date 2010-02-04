@@ -39,4 +39,7 @@
   <grantAll role="zope.Manager" />
   <grant role="zope.Manager" principal="zope.mgr" />
 
+  <utility name="bioport.mailer" factory="bioport.tests.FakeMailDelivery" />
+
+
 </configure>

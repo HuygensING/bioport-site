@@ -4,27 +4,27 @@ Do a functional test on the app.
 :Test-Layer: python
 """
 from bioport.app import Bioport
-from bioport.tests import FunctionalLayer
-from zope.app.testing.functional import FunctionalTestCase
 from zope.testbrowser.testing import Browser
 import os
 import re
 from settings import DB_CONNECTION
-class SampleFunctionalTest(FunctionalTestCase):
+from bioport.tests import FunctionalTestCase
+from zope.app.testing.functional import FunctionalTestCase as baseFunctionalTestCase
+from bioport.tests import FunctionalLayer
+
+class AdminPanelFunctionalTest(baseFunctionalTestCase):
     layer = FunctionalLayer
-class SimpleSampleFunctionalTest(SampleFunctionalTest):
-    """ This the app in ZODB. """
-    def setUp(self):
-        SampleFunctionalTest.setUp(self)
+    def test_admin_panel(self):
+        super(AdminPanelFunctionalTest, self).setUp()
         #set up
         root = self.getRootFolder()
         self.app = app = root['app'] = Bioport()
         
         #define the db connection
         self.base_url = 'http://localhost/app'
-        self.browser = browser = Browser('http://localhost/app/admin')
+        browser = Browser()
         browser.handleErrors = False #show some information when an arror occurs
-        print self.base_url + '/admin/edit'
+        browser.open('http://localhost/app/admin')
 #        link = browser.getLink(url=self.base_url + '/admin/edit')
 #        link.click()
         browser.open(self.base_url + '/admin/edit')
@@ -51,8 +51,9 @@ class SimpleSampleFunctionalTest(SampleFunctionalTest):
         repository = app.repository(user=None)
         repository.download_biographies(source=repository.get_source('knaw_test'))
         
-    def tearDown(self):
-        self.app.repository(user=None).db.metadata.drop_all()
+
+class SimpleSampleFunctionalTest(FunctionalTestCase):
+    """ This the app in ZODB. """
     def test_if_pages_work(self):
         
         browser = self.browser
@@ -72,13 +73,11 @@ class SimpleSampleFunctionalTest(SampleFunctionalTest):
                 url, data = url
             else:
                 data = ''
-            print 'opening','%s/%s?%s' % (self.base_url,  url, data)
             try:
 	            browser.open(self.base_url + '/' + url, data.encode('utf8'))
             except:
                 raise
                 assert 0, 'error opening %s?%s' % (self.base_url + '/' + url, data.encode('utf8'))
-            print '... ok'
     def test_personidentify_workflow(self):
         
         browser = Browser('http://localhost/app/admin/persoonidentify')
