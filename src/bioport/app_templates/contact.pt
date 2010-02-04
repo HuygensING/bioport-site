@@ -4,6 +4,10 @@
 </div>
 <div id="colcenter">
 <h1>Contact</h1>
+
+<tal:block tal:replace="structure path:context/@@contactform" />
+
+
 <p>
 Wij ontvangen graag opmerkingen en reacties. Ook staan wij open voor correcties op de data. Daaraan zitten wel beperkingen, want – de naam zegt het al – we zijn een portaal: we kunnen alleen correcties aanbrengen in de ‘biografische kerngegevens’. Correcties worden alleen doorgevoerd als ze zijn onderbouwd met verwijzingen naar betrouwbare bronnen.
 
