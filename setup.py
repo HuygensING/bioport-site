@@ -26,6 +26,10 @@ setup(name='bioport',
                         'plone.memoize==1.0.4',
                         'zope.app.cache==3.4.0',
                         'megrok.chameleon',
+                        'z3c.batching',
+                        'MySQL-python',
+                        'sqlalchemy',
+                        'python-Levenshtein',
                         # Add extra requirements here
                         ],
       entry_points = """
