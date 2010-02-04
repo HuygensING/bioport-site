@@ -8,7 +8,7 @@
         />
 
     <mail:queuedDelivery
-        name="biodes.mailer"
+        name="bioport.mailer"
         permission="zope.Public"
         mailer="bioport.smtp"
         queuePath="mailqueue"
