@@ -79,8 +79,6 @@ class Edit(grok.EditForm,RepositoryView):
     def edit_admin(self, **data):
         self.applyData(self.context, **data)
         repository = self.repository()
-        return 'adsfa'
-        from pdb import set_trace;set_trace() ############################## Breakpoint ##############################
         repository.db.metadata.create_all()
         
 #        self.redirect(self.url(self))
