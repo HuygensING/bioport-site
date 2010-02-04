@@ -9,12 +9,11 @@ import unittest
 import sys
 sys.path.append('..')
 sys.path.append('../..')
-from bioport.admin import Admin, Biographies, Sources, Source, Edit
+from bioport.admin import Sources, Source, Edit
 from bioport.app import Bioport
 from zope.publisher.browser import TestRequest
 import BioPortRepository
 import os
-from settings import DB_CONNECTION
 
 class SimpleSampleTest(unittest.TestCase):
     "Test the Sample application"
@@ -41,10 +40,9 @@ class SimpleSampleTest(unittest.TestCase):
     def test_sources(self):
         request = TestRequest()
         sources = Sources(self.admin, request)
-        
-        source = Source(Admin(), request)
+        source = Source(self.admin, request)
         knaw_source = self.repo.get_source('knaw')
-        source.update(source_id='knaw', url=knaw_source.url)
+        source.update(source_id='knaw')
         sources.update(action='update_source', source_id='knaw')
     
     def test_persoon(self):
