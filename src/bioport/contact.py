@@ -12,11 +12,20 @@ from bioport.crypt import encrypt
 from bioport.crypt import decrypt
 from grokcore.view.util import url
 from zope.app.form.interfaces import MissingInputError
+import captchaimage
+import Image
+import cStringIO
+
+
+
+
 grok.context(Bioport)
 
 ENCRYPTION_KEY = 'A verySecretkey!'
 CAPTCHA_LENGTH = 5
 CAPTCHA_ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVXYWZ123456789'
+FONT_FILE = '/usr/share/fonts/truetype/freefont/FreeSerif.ttf'
+
 
 def get_random_sequence():
     result = ''
@@ -45,8 +54,23 @@ class CaptchaWidget(TextWidget):
         base_url = url( self.request,self.context.context)
         image_url = base_url + '/captcha_image?key=' + enc_value
         my_widget = original_widget + ' <img src="%s">' % image_url
-        my_widget = original_widget + ' <input type="hidden" name="captcha_text" value="%s">' % enc_value        
+        my_widget += ' <input type="hidden" name="captcha_text" value="%s">' % enc_value        
         return my_widget
+
+class Captcha_Image(grok.View):
+    def render(self):
+        text = decrypt(ENCRYPTION_KEY, self.request.get('key'))
+        return get_captcha_image(text)
+
+def get_captcha_image(code):
+    size_y = 32
+    image_data = captchaimage.create_image(
+        "/usr/share/fonts/truetype/freefont/FreeSerif.ttf", 28, size_y, code)
+    file = cStringIO.StringIO()
+    Image.fromstring(
+        "L", (len(image_data) / size_y, size_y), image_data).save(
+        file, "JPEG", quality = 30)
+    return file.getvalue()
 
 class ContactForm(grok.AddForm, RepositoryView):
     form_fields = grok.AutoFields(IContact)
