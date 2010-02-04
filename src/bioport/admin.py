@@ -1,19 +1,16 @@
-
-import grok
-import sys
-from BioPortRepository.repository import Repository
-import BioPortRepository
-from BioPortRepository.common import  BioPortException
-from NamenIndex.common import to_ymd, from_ymd
-from NamenIndex.naam import Naam
-from common import format_date, format_dates, format_number
-from zope.interface import Interface
-from zope import schema
 import app
-from app import RepositoryView, Batcher
+import BioPortRepository
+import grok
+from app import Batcher, RepositoryView
+from BioPortRepository.repository import Repository
+from common import format_date, format_dates, format_number
+from NamenIndex.common import from_ymd, to_ymd
+from NamenIndex.naam import Naam
 from permissions import *
-from z3c.batching.batch import  Batch
-
+from plone.memoize import forever
+from z3c.batching.batch import Batch
+from zope import schema
+from zope.interface import Interface
 from zope.session.interfaces import ISession
     
 class IAdminSettings(Interface):           
@@ -36,20 +33,18 @@ class Admin(grok.Container  ):
     LIMIT = None
     IMAGES_CACHE_LOCAL = None
     IMAGES_CACHE_URL = None
+
+    @forever.memoize
     def repository(self, user):
-        try:
-            return self._v_repo
-        except AttributeError:
-            self._v_repo = Repository(
-                svn_repository=self.SVN_REPOSITORY, 
-                svn_repository_local_copy=self.SVN_REPOSITORY_LOCAL_COPY,
-                db_connection=self.DB_CONNECTION,
-                images_cache_local=self.IMAGES_CACHE_LOCAL,
-                images_cache_url=self.IMAGES_CACHE_URL,
-                user=user,
-                ZOPE_SESSIONS=False, #use z3c.saconfig package
-            ) 
-        return self._v_repo
+        return Repository(
+            svn_repository=self.SVN_REPOSITORY, 
+            svn_repository_local_copy=self.SVN_REPOSITORY_LOCAL_COPY,
+            db_connection=self.DB_CONNECTION,
+            images_cache_local=self.IMAGES_CACHE_LOCAL,
+            images_cache_url=self.IMAGES_CACHE_URL,
+            user=user,
+            ZOPE_SESSIONS=False, #use z3c.saconfig package
+        ) 
 
     def __getstate__(self):
         #we cannot (And dont want to) pickle the repository -- like this we exclude it
@@ -83,7 +78,10 @@ class Edit(grok.EditForm,RepositoryView):
     @grok.action(u"Edit Admin settings", name="edit_settings")
     def edit_admin(self, **data):
         self.applyData(self.context, **data)
-        self.repository().db.metadata.create_all()
+        repository = self.repository()
+        return 'adsfa'
+        from pdb import set_trace;set_trace() ############################## Breakpoint ##############################
+        repository.db.metadata.create_all()
         
 #        self.redirect(self.url(self))
     
