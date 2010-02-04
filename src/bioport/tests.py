@@ -32,12 +32,15 @@ class FunctionalTestCase(baseFunctionalTestCase):
         browser.handleErrors = False #show some information when an arror occurs
         app['admin'].DB_CONNECTION = DB_CONNECTION
         app['admin'].LIMIT = 20
-        self.app.repository(user=None)
+        self.app.repository(user=None).db.metadata.create_all()
+
+messages = []
 
 class FakeMailDelivery(object):
     implements(IMailDelivery)
     def send(self, source, dest, body):
-        print "*** Sending email from %s to %s:" % (source, dest)
-        print body
-        return 'fake-message-id@example.com'
+        messages.append(dict(
+            source=source, dest=dest, body=body
+        ))
+        return 'fake-message-id-%i@example.com' % len(messages)
  

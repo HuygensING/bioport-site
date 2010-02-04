@@ -22,6 +22,7 @@ class IAdminSettings(Interface):
 
     IMAGES_CACHE_LOCAL = schema.TextLine(title=u'Local path to the place where images are kept', required=False) 
     IMAGES_CACHE_URL = schema.TextLine(title=u'URL to the place where images are kept', required=False) 
+    EMAIL_FROM_ADDRESS = schema.TextLine(title=u'''Emails sent by the site will have this email address as source''', required=False)
 
 class Admin(grok.Container  ):
     grok.require('bioport.Edit')
@@ -33,6 +34,7 @@ class Admin(grok.Container  ):
     LIMIT = None
     IMAGES_CACHE_LOCAL = None
     IMAGES_CACHE_URL = None
+    EMAIL_FROM_ADDRESS = 'test@example.com'
 
     @forever.memoize
     def repository(self, user):

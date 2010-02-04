@@ -21,7 +21,8 @@ class ContactForm(grok.AddForm, RepositoryView):
     def submit(self, **kwargs):
         "Process input and send email"
         subject = kwargs['name'] + ' has submitted some feedback'
-        send_email('silviot@gmail.com', kwargs['sender'], subject, kwargs['text']) 
+        email_from = self.context['admin'].EMAIL_FROM_ADDRESS
+        send_email(email_from, kwargs['sender'], subject, kwargs['text']) 
         self.redirect(self.application_url() + '/contactok')
 
 class Contact(grok.View, RepositoryView):
