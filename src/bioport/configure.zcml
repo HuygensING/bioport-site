@@ -5,6 +5,7 @@
   <includeDependencies package="." />
   <grok:grok package="." />
   <include file="permissions.zcml" />
+  <include file="mail.zcml" />
 
 
 </configure>

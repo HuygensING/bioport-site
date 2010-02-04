@@ -1,0 +1,18 @@
+<configure xmlns="http://namespaces.zope.org/zope"
+    xmlns:mail="http://namespaces.zope.org/mail">
+
+    <mail:smtpMailer
+        name="bioport.smtp"
+        hostname="localhost"
+        port="25"
+        />
+
+    <mail:queuedDelivery
+        name="biodes.mailer"
+        permission="zope.Public"
+        mailer="bioport.smtp"
+        queuePath="mailqueue"
+        />
+
+</configure>
+
