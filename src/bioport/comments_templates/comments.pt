@@ -1,0 +1,9 @@
+<div>
+    <tal:block replace="structure python: viewlet.form()" />
+    <tal:bio_comments repeat="comment python: viewlet.comments">
+        <b tal:content="python: comment.submitter" />
+        <br />
+        <pre tal:content="python: comment.text" />
+    </tal:bio_comments>
+</div>
+

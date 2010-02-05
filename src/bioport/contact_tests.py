@@ -5,7 +5,7 @@ Do a functional test on the app.
 """
 from bioport.tests import FunctionalTestCase
 from bioport.tests import messages
-from bioport.contact import ENCRYPTION_KEY
+from bioport.captcha import ENCRYPTION_KEY
 from bioport.crypt import decrypt
 import re
 

@@ -377,6 +377,10 @@ class Images_XML(grok.View, RepositoryView):
                            )
         result += '</root>'
         return result
+
+class BelowBios(grok.ViewletManager):
+    grok.name('belowbios')
+    grok.context(Bioport)
     
 class Collecties(grok.View, RepositoryView):
     pass

@@ -117,7 +117,7 @@
         </div>
     </div>
     </div>
-   
+    <div class="belowbios" tal:content="structure provider:belowbios" />
     <div>
         <!-- XXX nog te maken -->
         <a class="backbutton" onClick="alert('terug naar de zoekresultaten (indien van toepassing). Moet nog geimplementeerd.')">terug naar de zoekresultaten</a></div>    
