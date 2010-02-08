@@ -31,6 +31,7 @@ setup(name='bioport',
                         'sqlalchemy',
                         'python-Levenshtein',
                         'zope.sendmail==3.5',
+                        'captchaimage', # This probably requires libfreetype-dev
                         # Add extra requirements here
                         ],
       entry_points = """
