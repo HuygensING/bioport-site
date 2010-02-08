@@ -18,14 +18,15 @@ CAPTCHA_ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVXYWZ123456789'
 FONT_FILE = '/usr/share/fonts/truetype/freefont/FreeSerif.ttf'
 
 class CaptchaError(MissingInputError):
-    "Please check again the verification letters"
+    "Error raised when captcha is not correct"
 
 class CaptchaWidget(TextWidget):
     def getInputValue(self):
         value = super(CaptchaWidget, self).getInputValue()
         solution = decrypt(ENCRYPTION_KEY, self.request.form['captcha_text'])
         if value.upper().replace('0','O') != solution:
-            raise CaptchaError(self, None)
+            raise CaptchaError(self.context.__name__, self.context.title, 
+                              u"Please check again the verification letters")
         return solution
         
     def __call__(self):
@@ -57,7 +58,7 @@ class Captcha_Image(grok.View):
 def get_captcha_image(code):
     size_y = 32
     image_data = captchaimage.create_image(
-        "/usr/share/fonts/truetype/freefont/FreeSerif.ttf", 28, size_y, code)
+        FONT_FILE, 28, size_y, code)
     file = cStringIO.StringIO()
     Image.fromstring(
         "L", (len(image_data) / size_y, size_y), image_data).save(
