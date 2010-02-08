@@ -63,6 +63,12 @@
     </td>
 </tr>
 <tr>
+    <th>plaats</th>
+    <td>
+        <input type="text" name="place" tal:attributes="value request/place | nothing" />
+    </td>
+</tr>
+<tr>
     <th>bron</th>
     <td>
     <select name="source_id">
@@ -77,6 +83,7 @@
     <td></td>
 <td>
 <input type="submit" value=" zoek " />
+<input type="reset" value=" wis " />
 
 </td>
 </tr>
