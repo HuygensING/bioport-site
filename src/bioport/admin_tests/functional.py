@@ -81,6 +81,7 @@ class SimpleSampleFunctionalTest(FunctionalTestCase):
     def test_personidentify_workflow(self):
         
         browser = Browser('http://localhost/app/admin/persoonidentify')
+        browser.handleErrors = False
         
         #search for the first person
         form = browser.getForm(index=0)
