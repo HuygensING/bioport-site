@@ -13,6 +13,7 @@ class ContactFormTest(FunctionalTestCase):
     def setUp(self):
         super(ContactFormTest, self).setUp()
         self.app['admin'].EMAIL_FROM_ADDRESS = 'admin@example.com'
+        self.app['admin'].CONTACT_DESTINATION_ADDRESS = 'admin-destination@example.com'
     def solve_captcha(self):
         # Solve the captcha!
         captcha_crypt = re.findall(r'captcha_text[^>]+value="([^"]+)', self.browser.contents)[0]
@@ -35,8 +36,10 @@ class ContactFormTest(FunctionalTestCase):
         self.fill_form()
         self.solve_captcha()
         self.browser.getControl('Submit').click()
-        self.failUnless('me@example.com' in messages[-1]['dest'])
-        self.failUnlessEqual(messages[-1]['source'], 'admin@example.com')
+        self.failUnless('admin-destination@example.com' in messages[-1]['dest'])
+        self.failUnlessEqual(messages[-1]['source'], 'me@example.com')
+        self.failUnlessEqual(messages[-1]['dest'],
+                             ['admin-destination@example.com'])
     def test_contact_form_bad_email(self):
         messages_before = len(messages)
         self.browser.open(self.base_url + '/contact')

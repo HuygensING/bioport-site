@@ -17,12 +17,15 @@ CAPTCHA_LENGTH = 5
 CAPTCHA_ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVXYWZ123456789'
 FONT_FILE = '/usr/share/fonts/truetype/freefont/FreeSerif.ttf'
 
+class CaptchaError(MissingInputError):
+    "Please check again the verification letters"
+
 class CaptchaWidget(TextWidget):
     def getInputValue(self):
         value = super(CaptchaWidget, self).getInputValue()
         solution = decrypt(ENCRYPTION_KEY, self.request.form['captcha_text'])
         if value.upper().replace('0','O') != solution:
-            raise MissingInputError(self, None)
+            raise CaptchaError(self, None)
         return solution
         
     def __call__(self):
