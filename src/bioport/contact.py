@@ -2,17 +2,18 @@ import email.Header
 import grok
 from app import Bioport
 from app import RepositoryView
+from bioport.captcha import CaptchaWidget
+from bioport.mail_validation import check_email
 from zope import schema
 from zope.component import getUtility
 from zope.interface import Interface
 from zope.sendmail.interfaces import IMailDelivery
-from bioport.captcha import CaptchaWidget
 
 grok.context(Bioport)
 
 class IContact(Interface):
     name = schema.TextLine(title=u"Naam")
-    sender = schema.TextLine(title=u"Mailadres")
+    sender = schema.TextLine(title=u"Mailadres", constraint=check_email)
     text = schema.Text(title=u"Tekst")
     verification = schema.Text(title=u"verification")
 
