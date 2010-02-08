@@ -3,7 +3,7 @@
 
     <mail:smtpMailer
         name="bioport.smtp"
-        hostname="localhost"
+        hostname="postmanpat.inghist.nl"
         port="25"
         />
 
