@@ -28,8 +28,11 @@ class ContactFormTest(FunctionalTestCase):
         self.browser.open(self.base_url + '/contact')
         self.fill_form()
         self.browser.getControl('verification').value = 'wrongvalue'
+        captcha_crypt = re.findall(r'captcha_text[^>]+value="([^"]+)', self.browser.contents)[0]
         self.browser.getControl('Submit').click()
         self.failUnlessEqual(len(messages), messages_before)
+        new_captcha_crypt = re.findall(r'captcha_text[^>]+value="([^"]+)', self.browser.contents)[0]
+        self.assertEqual(new_captcha_crypt, captcha_crypt)
     def test_contact_form_good(self):
         messages_before = len(messages)
         self.browser.open(self.base_url + '/contact')

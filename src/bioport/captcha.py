@@ -31,8 +31,12 @@ class CaptchaWidget(TextWidget):
         
     def __call__(self):
         original_widget = super(CaptchaWidget, self).__call__()
-        solution = get_random_sequence()
-        enc_value = encrypt(ENCRYPTION_KEY, solution)
+        old_captcha = self.request.form.get('captcha_text', None)
+        if old_captcha:
+            enc_value = old_captcha
+        else:
+            solution = get_random_sequence()
+            enc_value = encrypt(ENCRYPTION_KEY, solution)
         base_url = self.application_url()
         image_url = base_url + '/captcha_image?' + urlencode({'key':enc_value})
         my_widget = original_widget + ' <img src="%s">' % image_url
