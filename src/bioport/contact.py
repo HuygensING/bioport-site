@@ -8,12 +8,21 @@ from zope import schema
 from zope.component import getUtility
 from zope.interface import Interface
 from zope.sendmail.interfaces import IMailDelivery
+from zope.schema import ValidationError
 
 grok.context(Bioport)
 
+class InvalidEmailError(ValidationError):
+    "Error in email address"
+
+def email_validator(value):
+    if not check_email(value):
+        raise InvalidEmailError(value)
+    return True
+
 class IContact(Interface):
     name = schema.TextLine(title=u"Naam")
-    sender = schema.TextLine(title=u"Mailadres", constraint=check_email)
+    sender = schema.TextLine(title=u"Mailadres", constraint=email_validator)
     text = schema.Text(title=u"Tekst")
     verification = schema.Text(title=u"verification")
 
