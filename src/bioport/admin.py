@@ -12,8 +12,7 @@ from z3c.batching.batch import Batch
 from zope import schema
 from zope.interface import Interface
 from zope.session.interfaces import ISession
-from plone.memoize import volatile
-
+    
 class IAdminSettings(Interface):           
     SVN_REPOSITORY = schema.TextLine(title=u'URL of svn repository', required=False)
     SVN_REPOSITORY_LOCAL_COPY = schema.TextLine(title=u'path to local copy of svn repository', required=False)
@@ -25,9 +24,6 @@ class IAdminSettings(Interface):
     IMAGES_CACHE_URL = schema.TextLine(title=u'URL to the place where images are kept', required=False) 
     EMAIL_FROM_ADDRESS = schema.TextLine(title=u'''Emails sent by the site will have this email address as source''', required=False)
     CONTACT_DESTINATION_ADDRESS = schema.TextLine(title=u'''Emails sent by the site will be sent to this email address''', required=False)
-
-def get_repository_key(func, obj, user):
-    return ('repository', ), frozenset((('user',user),))
 
 class Admin(grok.Container  ):
     grok.require('bioport.Edit')
@@ -42,7 +38,7 @@ class Admin(grok.Container  ):
     EMAIL_FROM_ADDRESS = 'test@example.com'
     CONTACT_DESTINATION_ADDRESS = 'destination@example.com'
 
-    @volatile.cache(get_repository_key)
+    @forever.memoize
     def repository(self, user):
         return Repository(
             svn_repository=self.SVN_REPOSITORY, 
