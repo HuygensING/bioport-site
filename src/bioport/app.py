@@ -35,6 +35,7 @@ class RepositoryView:
     def count_persons(self):
         #XXX cache this
         i = self.repository().db.count_persons()
+        i = format_number(i)
         return i
     
     @ram.cache(lambda *args: time() // (60 * 60))
@@ -44,6 +45,7 @@ class RepositoryView:
         except AttributeError:
             i = self.repository().db.count_biographies()
             #XXX turned of caching, need to find some "update once a day" solution
+            i = format_number(i)
             return i
             self.context._count_biographies = format_number(i)
         return self.context._count_biographies
@@ -162,8 +164,8 @@ class Personen(BioPortTraverser,grok.View,RepositoryView, Batcher):
             'source_id',
             'start',
             'status',
-	        'sterfjaar_min', 
-	        'sterfjaar_max',
+            'sterfjaar_min', 
+            'sterfjaar_max',
 #        start=None,
 #        size=None,
              ]:
@@ -189,7 +191,7 @@ class Personen(BioPortTraverser,grok.View,RepositoryView, Batcher):
             result = 'U zocht naar personen ' + result
         return result
     def batch_navigation(self, batch):
-		return '<a href="%s">%s</a>' % (self.batch_url(start=batch.start), batch[0].naam().geslachtsnaam())
+        return '<a href="%s">%s</a>' % (self.batch_url(start=batch.start), batch[0].naam().geslachtsnaam())
 
     @ram.cache(_request_data_cachekey)
     def navigation_box_data(self):
@@ -321,7 +323,7 @@ class Birthdays_Box(grok.View, RepositoryView):
         persons = self.repository().get_persons(where_clause='geboortedatum like "____%s"' % today, has_illustrations=True)
         if len(persons) < 3:
             #if we have less then 3 people, we cheat a bit and take someone who died today
-	        persons += self.repository().get_persons(where_clause='sterfdatum like "____%s"' % today, has_illustrations=True)
+            persons += self.repository().get_persons(where_clause='sterfdatum like "____%s"' % today, has_illustrations=True)
              
         return persons[:3]
 
