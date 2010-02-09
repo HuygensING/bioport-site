@@ -4,25 +4,54 @@
     $(document).ready(function() {
         refreshElem('pBirthdays','birthdays_box');
     });
+
 </script>
     <title metal:fill-slot="head_title">Zoek</title> 
     <div metal:fill-slot="content">
 <div id="colright" metal:use-macro="context/@@index/macros/birthdays_box">
 </div>
 <div id="colcenter">
-<h1>Zoek naar personen</h1>
+<h1>Zoeken</h1>
 <form tal:attributes="action python:view.url('personen')">
 <table>
 <tr>
-    <th>zoek in de gehele tekst</th>
+    <th>vrij zoeken in tekst</th>
     <td>
         <input type="text" name="search_term" tal:attributes="value request/search_term | nothing" />
-    </td>
+        <a class="tooltip_button">[?]</a> 
+        <div class="tooltip">
+        <p>
+U kunt vrij zoeken op woord(en) in het gehele portaal. Bedenk wel dat u waarschijnlijk heel 
+veel treffers gaat krijgen. U kunt deze zoekacties specificeren met AND, OR of NOT.
+        </p>
+<p>
+AND:
+u vindt alleen de bladzijden waar beide woorden voorkomen
+        </p>
+        <p>
+OR:
+u vindt de bladzijden waar óf het ene, óf het andere woord voorkomt
+        </p>
+        <p>
+NOT:
+u vindt de bladzijden waar wél het ene, níet het andere woord voorkomt.
+        </p>
+        </div>
 </tr>
 <tr>
     <th>zoek in de naam</th>
     <td>
-        <input type="text" name="search_name" tal:attributes="value request/search_name | nothing" />
+        <input type="text" name="search_name" 
+            tal:attributes="value request/search_name | nothing" />
+        <a class="tooltip_button">[?]</a> 
+        <div class="tooltip">Typ de naam of een gedeelte van de naam. Gebruik wildcards (? voor één teken, * voor één of 
+meer tekens) om spellingsvarianten te vinden. 'Ba?ker' levert 'Bakker' en 'Backer' op. 
+'Sevenhu*sen' levert 'Sevenhuijsen' en 'Sevenhuysen' op. Spellingsvarianten die veel 
+voorkomen zijn ae-aa, i-ie-y-ij, e-ee-ei-ey, c-k, s-sch, ch-g, s-z, etc.
+Tussenvoegsels (van, van der, de, ter) kunnen voor onduidelijkheid zorgen: voor Jan Denijs, 
+kijk ook op Jan de Nijs, voor Gesina ter Borch, kijk ook op Gesina Terborch, etc. 
+Ook voornamen komen in verschillende varianten voor: Catharina of Trijntje, Gerrit-Gerard, 
+Johannes-Jan, Adrianus-Adriaan, Charles-Karel.</div>
     </td>
 </tr>
 <tr>
@@ -41,7 +70,7 @@
     </td>
 </tr>
 <tr>
-    <th>geslacht</th>
+    <th>sekse</th>
     <td>
         <select name="geslacht">
             <option />
@@ -71,11 +100,16 @@
 <tr>
     <th>bron</th>
     <td>
-    <select name="source_id">
-    <option tal:repeat="source_id python:['','nnbw', 'bwsa', 'dvn', 'bwn', 'knaw']"
-        tal:attributes="value source_id"
-        tal:content="source_id"
+    <select name="source_id" style="width:20em">
+    <option></option>
+    <span tal:omit-tag=""
+         tal:repeat="source view/get_sources">
+     <option
+        tal:condition="python:source.id != 'bioport'"
+        tal:attributes="value source/id"
+        tal:content="source/description"
             />
+         </span>
     </select>
     </td>
 </tr>
@@ -89,8 +123,12 @@
 </tr>
 </table>
 </form>
-<p>Het is belangrijk op te merken dat bij een groot gedeelte van de gegevens ontbreken, en dat daardoor de zoekresultaten onvolledig zullen zijn.
-<p>Zo is bijvoorbeeld het geslacht van personen in het NNBW niet aangegeven, en dus zal een zoekopdracht op vrouwen in dat naslagwerk geen enkel resultaat opleveren.
+<h2>
+Disclaimer:
+</h2>
+<p>
+NB. Alle personen die in het Biografisch Portaal staan, zijn vindbaar op naam. Voor de overige zoekmogelijkheden geldt de waarschuwing dat dit ‘work in progress’ is: de resultaten zijn onvolledig omdat structurele gegevens (‘metadata’) nog niet volledig zijn ingevuld. Er wordt hard aan gewerkt om de leemtes op te vullen.
+</p>
 
 </div>
 </div>

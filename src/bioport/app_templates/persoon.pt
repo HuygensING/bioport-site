@@ -16,7 +16,7 @@
         <div class="geenplaatje"></div>
     </div>
     <div id="bioinfo" >
-    <h1 tal:content="structure python:view.biography.naam() and view.biography.naam().volledige_naam()" ></h1>
+    <h1 tal:content="structure python:view.biography.naam() and view.biography.naam().guess_normal_form2()" ></h1>
     <table class="leefjaren">
        <tal:block define="
 	       event python:view.get_event('birth');
@@ -49,10 +49,11 @@
             tal:condition="python:state and state.has_content()">
             <th>actief</th>
             <td>
-                <span tal:replace="python:view.context.format_dates(state.frm, state.to, parenthesis=False)" />
-                <tt tal:content="state/place"></tt>
+                <span 
+                    tal:condition="not:state/text"
+                    tal:replace="python:view.context.format_dates(state.frm, state.to, parenthesis=False)" />
+                <span tal:condition="state/text" tal:content="structure string:${state/text}" />
                 <span tal:condition="state/place" tal:content="structure string:<br />${state/place}" />
-                <span tal:condition="state/text" tal:content="structure string:<br />${state/text}" />
             </td>
         </tr>
         <tr tal:condition="python:len(view.biography.get_names()) > 1">
@@ -80,14 +81,14 @@
         </tr>
         <tr tal:define="states python:view.get_states(type='category')"
             tal:condition="states">
-            <th>rubrieken</th>
+            <th>rubriek(en)</th>
             <td>
                 <li tal:repeat="state states" tal:content="state/text" />
 	        </td>
         </tr>
      </table>
     <div class="levensbeschrijvingen">
-    <h2>levensbeschrijvingen</h2>
+    <h2>levensbeschrijving(en)</h2>
     <hr />
     <div tal:repeat="biography view/person/get_biographies" tal:omit-tag="">
     <div
