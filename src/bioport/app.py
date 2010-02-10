@@ -56,11 +56,12 @@ class RepositoryView:
                 (self.url('zoek'), 'zoeken'),
                 (self.url('personen', data={'beginletter':'a'}), 'bladeren'),
                 (self.url('about'), 'project'),
+                (self.url('blog'), 'blog'),
                 (self.url('agenda'), 'agenda'),
 #                (self.url('colofon'), 'colofon'),
-                (self.url('contact'), 'contact'),
-                (self.url('faq'), 'faq'),
                 (self.url('links'), 'links'),
+                (self.url('faq'), 'faq'),
+                (self.url('contact'), 'contact'),
 #                (self.url('english'), 'english'),
         ]    
     def today(self):
@@ -398,4 +399,6 @@ class RedactieRaad(grok.View, RepositoryView):
     pass
 
 class Links(grok.View,RepositoryView):
+    pass
+class Blog(grok.View,RepositoryView):
     pass

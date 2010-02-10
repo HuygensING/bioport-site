@@ -10,7 +10,8 @@
     <div id="colright" metal:define-macro="birthdays_box">
     
         <h3>
-            <span onclick="refreshElem('pBirthdays','birthdays_box');" class="refresh" ></span>
+            <span onclick="refreshElem('pBirthdays','birthdays_box');" class="refresh"
+                tal:condition="nothing" >XXX: This element would show a new set of jarigen, if activated.</span>
             op <span tal:replace="view/today">deze dag</span> geboren
         </h3>
     

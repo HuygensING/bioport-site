@@ -25,7 +25,9 @@
 		</div>
 	
 	</div>
-    <div class="prev_next_navigation"	 tal:define="results persons">   
+    <div class="prev_next_navigation"	
+        metal:define-macro="prev_next_navigation"
+             tal:define="results persons">   
     <span tal:replace="python:'%s-%s van %s' % (results.start + 1, results.end + 1,  results.grand_total)" />  
     <span tal:condition="results/previous">
         <a tal:attributes="href python:view.batch_url(start=results.previous.start)"
@@ -57,6 +59,7 @@
 	    <div style="clear:both" ></div>
 	</div>
 	</div>
+    <div metal:use-macro="template/macros/prev_next_navigation"></div>
     </div>
 </div>
 </div>

@@ -19,7 +19,7 @@
     <td>
         <input type="text" name="search_term" tal:attributes="value request/search_term | nothing" />
         <a class="tooltip_button"
-            Onclick="jQuery('#tip_search_term').show(200)">[?]</a> 
+            Onclick="jQuery('#tip_search_term').toggle(200)">[?]</a> 
         <div class="tooltip" id="tip_search_term">
         <p>
 U kunt vrij zoeken op woord(en) in het gehele portaal. Bedenk wel dat u waarschijnlijk heel 
@@ -47,7 +47,7 @@ u vindt de bladzijden waar wél het ene, níet het andere woord voorkomt.
         <input type="text" name="search_name" 
             tal:attributes="value request/search_name | nothing" />
         <a class="tooltip_button"
-            Onclick="jQuery('#tip_search_name').show(200)">[?]</a> 
+            Onclick="jQuery('#tip_search_name').toggle(200)">[?]</a> 
         <div class="tooltip" id="tip_search_name">Typ de naam of een gedeelte van de naam. Gebruik wildcards (? voor één teken, * voor één of 
 meer tekens) om spellingsvarianten te vinden. 'Ba?ker' levert 'Bakker' en 'Backer' op. 
 'Sevenhu*sen' levert 'Sevenhuijsen' en 'Sevenhuysen' op. Spellingsvarianten die veel 

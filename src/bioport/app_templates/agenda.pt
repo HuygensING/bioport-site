@@ -1,7 +1,15 @@
 <html metal:use-macro="context/@@main_template/macros/master">
+<script type="text/javascript" metal:fill-slot="extra_header_content">
+    /* load sidebar on doc ready */
+    $(document).ready(function() {
+        refreshElem('pBirthdays','birthdays_box');
+    });
+</script>
+
 <div metal:fill-slot="content">
-<div id="colright">
+<div id="colright" metal:use-macro="context/@@index/macros/birthdays_box">
 </div>
+
 <div id="colcenter">
 </div>
 <h1>Agenda</h1>
