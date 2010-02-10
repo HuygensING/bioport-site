@@ -14,6 +14,7 @@
         tal:attributes="src ill/cached_url; 
             alt string:illustratie bij deze biografie (${ill/cached_url});
       " /> 
+      <span class="caption" tal:content="ill/caption"></span>
     </div>
     </div>
     <div class="illustratie" tal:condition="not:illustraties">
