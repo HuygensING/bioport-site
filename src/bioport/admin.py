@@ -154,6 +154,10 @@ class Edit(grok.EditForm,RepositoryView):
     @grok.action('tmp_fixup_category_doublures ')
     def tmp_fixup_category_doublures(self, **data):
         self.repository().db.tmp_fixup_category_doublures()
+        
+    @grok.action('tmp_identify_misdaad_recht')
+    def tmp_identify_misdaad_recht(self, **data):
+        self.repository().db.tmp_identify_misdaad_recht()
 class Display(grok.DisplayForm):
     grok.require('bioport.Edit')
     grok.context(Admin)
