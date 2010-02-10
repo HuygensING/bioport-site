@@ -138,17 +138,22 @@ class Edit(grok.EditForm,RepositoryView):
     def update_persons(self, **args):
         self.repository().db.update_persons()
         
-    @grok.action('Fix identification error')
-    def fix_identification_error(self, **data):
-        #reload nnbw/10908
-        ls = [('nnbw', 'nnbw/10908', 'http://www.inghist.nl/media/bioport/bronnen/nnbw/bio/10908.xml'),
-         ('vdaa', 'vdaa/a0060', 'http://www.inghist.nl/media/bioport/bronnen/vdaa/bio/a0060.xml'),
-        ]
-        repo = self.repository()
-        for source_id, bio_id, biourl in ls:
-            bio = BioPortRepository.biography.Biography(source_id=source_id, repository=repo)
-            bio.from_url(biourl)
-            repo.add_biography(bio)        
+#    @grok.action('Fix identification error')
+#    def fix_identification_error(self, **data):
+#        #reload nnbw/10908
+#        ls = [('nnbw', 'nnbw/10908', 'http://www.inghist.nl/media/bioport/bronnen/nnbw/bio/10908.xml'),
+#         ('vdaa', 'vdaa/a0060', 'http://www.inghist.nl/media/bioport/bronnen/vdaa/bio/a0060.xml'),
+#        ]
+#        repo = self.repository()
+#        for source_id, bio_id, biourl in ls:
+#            bio = BioPortRepository.biography.Biography(source_id=source_id, repository=repo)
+#            bio.from_url(biourl)
+#            repo.add_biography(bio)        
+            
+
+    @grok.action('tmp_fixup_category_doublures ')
+    def tmp_fixup_category_doublures(self, **data):
+        self.repository().db.tmp_fixup_category_doublures()
 class Display(grok.DisplayForm):
     grok.require('bioport.Edit')
     grok.context(Admin)

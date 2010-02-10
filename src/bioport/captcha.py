@@ -26,7 +26,7 @@ class CaptchaWidget(TextWidget):
         solution = decrypt(ENCRYPTION_KEY, self.request.form['captcha_text'])
         if value.upper().replace('0','O') != solution:
             raise CaptchaError(self.context.__name__, self.context.title, 
-                              u"Please check again the verification letters")
+                              u"Controleer of u de letters goed heeft overgetypt")
         return solution
         
     def __call__(self):
@@ -39,9 +39,12 @@ class CaptchaWidget(TextWidget):
             enc_value = encrypt(ENCRYPTION_KEY, solution)
         base_url = self.application_url()
         image_url = base_url + '/captcha_image?' + urlencode({'key':enc_value})
-        my_widget = original_widget + ' <img src="%s">' % image_url
+        my_widget = original_widget 
+#        my_widget += '<br>'
+        my_widget += ' <img src="%s">' % image_url
         my_widget += ' <input type="hidden" name="captcha_text" value="%s">' % enc_value        
         return my_widget
+    
     def application_url(self, name=None):
         """Return the URL of the nearest enclosing `grok.Application`."""
         obj = self.context.context

@@ -18,8 +18,9 @@
     <th>vrij zoeken in tekst</th>
     <td>
         <input type="text" name="search_term" tal:attributes="value request/search_term | nothing" />
-        <a class="tooltip_button">[?]</a> 
-        <div class="tooltip">
+        <a class="tooltip_button"
+            Onclick="jQuery('#tip_search_term').show(200)">[?]</a> 
+        <div class="tooltip" id="tip_search_term">
         <p>
 U kunt vrij zoeken op woord(en) in het gehele portaal. Bedenk wel dat u waarschijnlijk heel 
 veel treffers gaat krijgen. U kunt deze zoekacties specificeren met AND, OR of NOT.
@@ -35,6 +36,8 @@ u vindt de bladzijden waar óf het ene, óf het andere woord voorkomt
         <p>
 NOT:
 u vindt de bladzijden waar wél het ene, níet het andere woord voorkomt.
+        <a class="tooltip_button_hide"
+        OnClick="jQuery('#tip_search_term').hide(200)">[verberg deze tekst]</a>
         </p>
         </div>
 </tr>
@@ -43,15 +46,19 @@ u vindt de bladzijden waar wél het ene, níet het andere woord voorkomt.
     <td>
         <input type="text" name="search_name" 
             tal:attributes="value request/search_name | nothing" />
-        <a class="tooltip_button">[?]</a> 
-        <div class="tooltip">Typ de naam of een gedeelte van de naam. Gebruik wildcards (? voor één teken, * voor één of 
+        <a class="tooltip_button"
+            Onclick="jQuery('#tip_search_name').show(200)">[?]</a> 
+        <div class="tooltip" id="tip_search_name">Typ de naam of een gedeelte van de naam. Gebruik wildcards (? voor één teken, * voor één of 
 meer tekens) om spellingsvarianten te vinden. 'Ba?ker' levert 'Bakker' en 'Backer' op. 
 'Sevenhu*sen' levert 'Sevenhuijsen' en 'Sevenhuysen' op. Spellingsvarianten die veel 
 voorkomen zijn ae-aa, i-ie-y-ij, e-ee-ei-ey, c-k, s-sch, ch-g, s-z, etc.
 Tussenvoegsels (van, van der, de, ter) kunnen voor onduidelijkheid zorgen: voor Jan Denijs, 
 kijk ook op Jan de Nijs, voor Gesina ter Borch, kijk ook op Gesina Terborch, etc. 
 Ook voornamen komen in verschillende varianten voor: Catharina of Trijntje, Gerrit-Gerard, 
-Johannes-Jan, Adrianus-Adriaan, Charles-Karel.</div>
+Johannes-Jan, Adrianus-Adriaan, Charles-Karel.
+        <a class="tooltip_button_hide"
+        OnClick="jQuery('#tip_search_name').hide(200)">[verberg deze tekst]</a>
+</div>
     </td>
 </tr>
 <tr>

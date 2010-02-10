@@ -1,42 +1,17 @@
 <html metal:use-macro="context/@@main_template/macros/master">
 <div metal:fill-slot="content">
-<div id="colright">
-</div>
+<div id="colright"></div>
 <div id="colcenter">
 <h1>Contact</h1>
 
+
+<p>Wij ontvangen graag opmerkingen en reacties. Ook staan wij open
+voor correcties op de data. Daaraan zitten wel beperkingen, want – de
+naam zegt het al – we zijn een portaal: we kunnen alleen correcties
+aanbrengen in de ‘biografische kerngegevens’. Correcties worden alleen
+doorgevoerd als ze zijn onderbouwd met verwijzingen naar betrouwbare
+bronnen.</p>
 <tal:block tal:replace="structure path:context/@@contactform" />
-
-
-<p>
-Wij ontvangen graag opmerkingen en reacties. Ook staan wij open voor correcties op de data. Daaraan zitten wel beperkingen, want – de naam zegt het al – we zijn een portaal: we kunnen alleen correcties aanbrengen in de ‘biografische kerngegevens’. Correcties worden alleen doorgevoerd als ze zijn onderbouwd met verwijzingen naar betrouwbare bronnen.
-
-</p>
-<p>
-Iets om je aan te melden?
-</p>
-
-
-<p>
-Opmerkingen/vragen/suggesties:
-
-<p>
-Vakje met naam en mailadres etc van de reactieschrijver
-
-<p>
-Optie 1: Mijn opmerking is van algemene aard:[en dan hier een vak met maximum aantal tekens.]
-<p>
-Optie 2: Mijn opmerking betreft de kerngegevens van
-<p>
-[vak om naam in te vullen]
-<p>
-[vak om correcties door te geven, met verplicht bronvermeldingsvakje. [kan dat?]]
-
-<p>
-Verstuur
-
-<p>
-En dan zo’n letterding om spam tegen te gaan
 
 </div>
 </div>

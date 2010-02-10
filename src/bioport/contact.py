@@ -13,7 +13,7 @@ from zope.schema import ValidationError
 grok.context(Bioport)
 
 class InvalidEmailError(ValidationError):
-    "Error in email address"
+    "Dit is geen geldig email adres"
 
 def email_validator(value):
     if not check_email(value):
@@ -22,9 +22,9 @@ def email_validator(value):
 
 class IContact(Interface):
     name = schema.TextLine(title=u"Naam")
-    sender = schema.TextLine(title=u"Mailadres", constraint=email_validator)
+    sender = schema.TextLine(title=u"Emailadres", constraint=email_validator)
     text = schema.Text(title=u"Tekst")
-    verification = schema.Text(title=u"verification")
+    verification = schema.Text(title=u"Vul de letters in in het vakje")
 
 class ContactForm(grok.AddForm, RepositoryView):
     form_fields = grok.AutoFields(IContact)
