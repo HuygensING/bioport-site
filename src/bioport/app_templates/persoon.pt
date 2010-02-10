@@ -14,7 +14,7 @@
         tal:attributes="src ill/cached_url; 
             alt string:illustratie bij deze biografie (${ill/cached_url});
       " /> 
-      <span class="caption" tal:content="ill/caption"></span>
+      <div class="caption" tal:content="ill/caption"></div>
     </div>
     </div>
     <div class="illustratie" tal:condition="not:illustraties">
@@ -125,8 +125,10 @@
     </div>
     <div class="belowbios" tal:condition="nothing"
          tal:content="structure provider:belowbios" />
-    <div>
-        <a class="backbutton" onClick="alert('terug naar de zoekresultaten (indien van toepassing). Moet nog geimplementeerd.')">terug naar de zoekresultaten</a></div>    
+    <div tal:condition="nothing">
+    <!--  XXX TODO -->
+        <a class="backbutton" onClick="alert('terug naar de zoekresultaten (indien van toepassing). Moet nog geimplementeerd.')">terug naar de zoekresultaten</a>
+    </div>    
     
     <tt tal:condition="context/debug">
     <br />

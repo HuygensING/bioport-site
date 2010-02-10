@@ -158,6 +158,11 @@ class Edit(grok.EditForm,RepositoryView):
     @grok.action('tmp_identify_misdaad_recht')
     def tmp_identify_misdaad_recht(self, **data):
         self.repository().db.tmp_identify_misdaad_recht()
+        
+    @grok.action('tmp_fix_weird_categeries')
+    def tmp_fix_weird_categeries(self, **data):
+        self.repository().db.tmp_fix_weird_categeries()
+        
 class Display(grok.DisplayForm):
     grok.require('bioport.Edit')
     grok.context(Admin)
