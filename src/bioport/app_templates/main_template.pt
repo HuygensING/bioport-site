@@ -8,8 +8,8 @@
 <head>
     <title metal:define-slot="head_title" tal:content="string:Het Biografisch Portaal van Nederland" />
     <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
-    <meta name="Description" content="Het Biografisch Portaal van Nederland" />
-    <meta name="Keywords" content="biografie portaal biografieën Nederland" />
+    <meta metal:define-slot="description" name="Description" content="Het Biografisch Portaal van Nederland" />
+    <meta metal:define-slot="keywords" name="Keywords" content="biografie portaal biografieën Nederland" />
     
     <link tal:attributes="href static/tmp_style.css" rel="stylesheet" type="text/css" />
 

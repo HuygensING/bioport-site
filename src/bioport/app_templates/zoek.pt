@@ -12,7 +12,7 @@
 </div>
 <div id="colcenter">
 <h1>Zoeken</h1>
-<form tal:attributes="action python:view.url('personen')">
+<form tal:attributes="action python:view.url('personen')" method="post">
 <table>
 <tr>
     <th>vrij zoeken in tekst</th>

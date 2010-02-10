@@ -1,4 +1,8 @@
 <html metal:use-macro="context/@@main_template/macros/master">
+    <meta metal:fill-slot="description" name="Description" 
+        tal:attributes="content string:Biografieen van ${view/biography/title}" />
+    <meta metal:fill-slot="keywords" name="Keywords" 
+        tal:attributes="content string:biografie ${view/biography/title}" />
     <title metal:fill-slot="head_title"
         tal:content="structure python:view.biography.title()" ></title> 
     <div metal:fill-slot="content"

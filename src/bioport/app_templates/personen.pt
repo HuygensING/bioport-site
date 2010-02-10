@@ -46,7 +46,7 @@
 	        <img 
  	       tal:define="illustrations python:person.get_merged_biography().get_illustrations()" 
  	       tal:condition="illustrations"
-	        tal:attributes="src python:illustrations[0].cached_url()" />
+	        tal:attributes="src python:illustrations[0].thumbnail_url()" />
         </span>
 		<a 
 		tal:content="structure python:person.naam() and person.naam().guess_normal_form() or 'XXXXX'" 

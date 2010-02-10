@@ -356,7 +356,7 @@ class FAQ(grok.View, RepositoryView):
     pass
 class Images_XML(grok.View, RepositoryView):
     grok.name('images.xml')
-    @ram.cache(lambda *args: time() // (60 * 60 * 24))
+#    @ram.cache(lambda *args: time() // (60 * 60 * 24))
     def render(self):
         self.request.response.setHeader('Content-Type', 'text/xml')
         
