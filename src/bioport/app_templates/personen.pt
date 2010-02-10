@@ -41,7 +41,8 @@
     </div>
    <div class="list_of_persons">
 	<div tal:repeat="person persons" tal:omit-tag="">
-	<div class="persoon" metal:define-macro="render_person">
+	<div class="persoon" metal:define-macro="render_person"
+	   tal:attributes="OnClick string:window.location.href='persoon/${person/bioport_id}'">
 	    <span 
 	       class="illustration"
 	        tal:condition="person/has_illustrations" >
