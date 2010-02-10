@@ -182,12 +182,18 @@ class Personen(BioPortTraverser,grok.View,RepositoryView, Batcher):
 
     def search_description(self):
         """return a description for the user of the search parameters in the request"""
+        
         result= ''
         request = self.request
         if request.get('search_term'):
             result += 'met het woord <em>%s</em> in de tekst' % request.get('search_term')
         if request.get('search_name'):
             result += 'met het woord <em>%s</em> in de naam van de persoon' % request.get('search_name')
+        
+        
+        if request.get('category'):
+            result += 'uit de rubriek <em>%s</em>' % self.repository().db.get_category(request.get('category')).name
+        
         if result:
             result = 'U zocht naar personen ' + result
         return result

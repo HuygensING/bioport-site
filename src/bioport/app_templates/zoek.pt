@@ -62,19 +62,34 @@ u vindt de bladzijden waar wél het ene, níet het andere woord voorkomt.
         </div>
 </tr>
 <tr>
-    <th>geboortejaar</th>
+    <th>geboren</th>
     <td>
         tussen <input type="text" size="4" name="geboortejaar_min" />
-        en <input type="text" size="4" name="geboortejaar_max" />
-    </td>
+        en 
+        <input type="text" size="4" name="geboortejaar_max" />
+        in 
+        <input type="text" size="20" name="birth_place" />
+        <a class="tooltip_button"
+            Onclick="jQuery('#tip_birth').toggle(200)">[?]</a> 
+        <div id="tip_birth" class="tooltip">
+            U kunt aangeven tussen welke jaren de persoon geboren is, en in welke plaats. 
+        </div> 
+     </td>
 </tr>
 
 <tr>
-    <th>sterfjaar</th>
+    <th>gestorven</th>
     <td>
         tussen <input type="text" size="4" name="sterfjaar_min" />
         en <input type="text" size="4" name="sterfjaar_max" />
-    </td>
+        in 
+        <input type="text" size="20" name="death_place" />
+        <a class="tooltip_button"
+            Onclick="jQuery('#tip_death').toggle(200)">[?]</a> 
+        <div id="tip_death" class="tooltip">
+            U kunt aangeven tussen welke jaren de persoon gestorven is, en in welke plaats. 
+        </div> 
+     </td>
 </tr>
 <tr>
     <th>sekse</th>
@@ -96,12 +111,6 @@ u vindt de bladzijden waar wél het ene, níet het andere woord voorkomt.
                 tal:attributes="value category/id"
                 tal:content="python:category.name" />
         </select>
-    </td>
-</tr>
-<tr>
-    <th>plaats</th>
-    <td>
-        <input type="text" name="place" tal:attributes="value request/place | nothing" />
     </td>
 </tr>
 <tr>
