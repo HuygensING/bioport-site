@@ -12,7 +12,8 @@
 </div>
 <div id="colcenter">
 <h1>Zoeken</h1>
-<form tal:attributes="action python:view.url('personen')" method="post">
+<form tal:attributes="action python:view.url('personen')" method="post"
+    metal:define-macro="search_form">
 <table>
 <tr>
     <th>zoek op naam</th>
@@ -64,11 +65,14 @@ u vindt de bladzijden waar wél het ene, níet het andere woord voorkomt.
 <tr>
     <th>geboren</th>
     <td>
-        tussen <input type="text" size="4" name="geboortejaar_min" />
+        tussen <input type="text" size="4" name="geboortejaar_min" 
+            tal:attributes="value python:request.get('geboortejaar_min')" />
         en 
-        <input type="text" size="4" name="geboortejaar_max" />
+        <input type="text" size="4" name="geboortejaar_max" 
+            tal:attributes="value python:request.get('geboortejaar_max')" />
         in 
-        <input type="text" size="20" name="birth_place" />
+        <input type="text" size="20" name="geboorteplaats"
+            tal:attributes="value python:request.get('geboorteplaats')" />
         <a class="tooltip_button"
             Onclick="jQuery('#tip_birth').toggle(200)">[?]</a> 
         <div id="tip_birth" class="tooltip">
@@ -80,10 +84,13 @@ u vindt de bladzijden waar wél het ene, níet het andere woord voorkomt.
 <tr>
     <th>gestorven</th>
     <td>
-        tussen <input type="text" size="4" name="sterfjaar_min" />
-        en <input type="text" size="4" name="sterfjaar_max" />
+        tussen <input type="text" size="4" name="sterfjaar_min"
+            tal:attributes="value python:request.get('sterfjaar_min')" />
+        en <input type="text" size="4" name="sterfjaar_max" 
+            tal:attributes="value python:request.get('sterfjaar_max')" />
         in 
-        <input type="text" size="20" name="death_place" />
+        <input type="text" size="20" name="sterfplaats" 
+            tal:attributes="value python:request.get('sterfplaats')" />
         <a class="tooltip_button"
             Onclick="jQuery('#tip_death').toggle(200)">[?]</a> 
         <div id="tip_death" class="tooltip">
@@ -96,8 +103,9 @@ u vindt de bladzijden waar wél het ene, níet het andere woord voorkomt.
     <td>
         <select name="geslacht">
             <option />
-            <option tal:repeat="sex python:[(1, 'man'), (2, 'vrouw')]"
-                tal:attributes="value python:sex[0]"
+            <option tal:repeat="sex python:[('1', 'man'), ('2', 'vrouw')]"
+                tal:attributes="value python:sex[0];
+                    selected python:sex[0] == request.get('geslacht')"
                 tal:content="python:sex[1]" />
         </select>
     </td>
@@ -108,7 +116,9 @@ u vindt de bladzijden waar wél het ene, níet het andere woord voorkomt.
         <select name="category">
             <option />
             <option tal:repeat="category python:view.repository().db.get_categories()"
-                tal:attributes="value category/id"
+                tal:attributes="value category/id;
+                    selected python:str(category.id) == request.get('category');
+                "
                 tal:content="python:category.name" />
         </select>
     </td>
@@ -122,7 +132,9 @@ u vindt de bladzijden waar wél het ene, níet het andere woord voorkomt.
          tal:repeat="source view/get_sources">
      <option
         tal:condition="python:source.id != 'bioport'"
-        tal:attributes="value source/id"
+        tal:attributes="value source/id;
+            selected python:source.id == request.get('source_id');
+            "
         tal:content="source/description"
             />
          </span>
@@ -133,7 +145,7 @@ u vindt de bladzijden waar wél het ene, níet het andere woord voorkomt.
     <td></td>
 <td>
 <input type="submit" value=" zoek " />
-<input type="reset" value=" wis " />
+<input type="submit" value=" wis " OnClick="jQuery('form').clearForm();return false;" />
 
 </td>
 </tr>

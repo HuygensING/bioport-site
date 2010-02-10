@@ -8,7 +8,6 @@
         <a tal:attributes="href python:item[0]"
             tal:define="item1 python: item[1] and item[1] or '??';
                               item2 python: item[2] and item[2] or '??'">
-            <em>van</em>                
             <span tal:replace="item1"></span>
             <em>tot</em>
             <span tal:replace="item2"></span>

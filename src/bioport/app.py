@@ -182,20 +182,83 @@ class Personen(BioPortTraverser,grok.View,RepositoryView, Batcher):
 
     def search_description(self):
         """return a description for the user of the search parameters in the request"""
-        
+#        beginletter=None,
+#        category=None,
+#        geboortejaar_min=None,
+#        geboortejaar_max=None,
+#        geboorteplaats = None,
+#        geslacht=None,
+#        has_illustrations=None, #boolean: does this person have illustrations?
+#        is_identified=None,
+#        match_term=None, #use for myqsl 'matching' (With stopwords and stuff)
+#        order_by='sort_key', 
+#        place=None,
+#        search_term=None,  #
+#        search_name=None, #use for mysql REGEXP matching
+#        source_id=None,
+#        sterfjaar_min=None,
+#        sterfjaar_max=None,
+#        sterfplaats = None,
+#        start=None,
+#        size=None,
+#        status=None,
+#        where_clause=None,
         result= ''
         request = self.request
-        if request.get('search_term'):
-            result += 'met het woord <em>%s</em> in de tekst' % request.get('search_term')
-        if request.get('search_name'):
-            result += 'met het woord <em>%s</em> in de naam van de persoon' % request.get('search_name')
         
+        geboortejaar_min = request.get('geboortejaar_min')
+        geboortejaar_max = request.get('geboortejaar_max')
+        geboorteplaats = request.get('geboorteplaats')
+        if geboortejaar_min or geboortejaar_max or geboorteplaats:
+            result += ' geboren'
+            if geboortejaar_min and geboortejaar_max:
+                result += ' tussen %s en %s' % (geboortejaar_min, geboortejaar_max)
+            elif geboortejaar_min:
+                result += ' na %s' % geboortejaar_min
+            elif geboortejaar_max:
+                result += ' voor %s' % geboortejaar_min
+            if geboorteplaats:
+                result += ' in  %s' % geboorteplaats
+                
+        sterfjaar_min = request.get('sterfjaar_min')
+        sterfjaar_max = request.get('sterfjaar_max')
+        sterfplaats = request.get('sterfplaats')
+        if sterfjaar_min or sterfjaar_max or sterfplaats:
+            result += ' gestorven '
+            if sterfjaar_min and sterfjaar_max:
+                result += ' tussen %s en %s' % (sterfjaar_min, sterfjaar_max)
+            elif sterfjaar_min:
+                result += ' na %s' % geboortejaar_min
+            elif sterfjaar_max:
+                result += ' voor %s' % geboortejaar_min
+            if sterfplaats:
+                result += ' in  %s' % sterfplaats
+                
+        if request.get('source_id'):
+            result += ' uit <em>%s</em>' % self.repository().get_source(request.get('source_id')).description
+            
+        if request.get('search_name'):
+            result += ' met het woord <em>%s</em> in de naam van de persoon' % request.get('search_name')
+            
+        if request.get('search_term'):
+            result += ' met het woord <em>%s</em> in de tekst' % request.get('search_term')
         
         if request.get('category'):
-            result += 'uit de rubriek <em>%s</em>' % self.repository().db.get_category(request.get('category')).name
+            result += ' uit de rubriek <em>%s</em>' % self.repository().db.get_category(request.get('category')).name
         
+        
+        if request.get('beginletter'):
+            result += ' met een achternaam beginnend met een <em>%s</em>' % request.get('beginletter')
+        geslacht = request.get('geslacht')
+        if geslacht == '1':
+            geslacht = '<em>mannen</em>'
+        elif geslacht == '2':
+            geslacht = '<em>vrouwen</em>'
+        else:
+            geslacht = 'personen'
+            
         if result:
-            result = 'U zocht naar personen ' + result
+            result = 'U zocht naar %s %s.' % (geslacht, result)
         return result
     def batch_navigation(self, batch):
         return '<a href="%s">%s</a>' % (self.batch_url(start=batch.start), batch[0].naam().geslachtsnaam())

@@ -1,6 +1,7 @@
 <div tal:omit-tag=""
     tal:define="persons view/get_persons;
-        batch persons;">
+        batch persons;
+        search_description view/search_description">
 <html metal:use-macro="context/@@main_template/macros/master">
 <div metal:fill-slot="content">
 <div class="colright">
@@ -8,25 +9,34 @@
 </div>
 <div class="colcenter">
 <span metal:define-macro="alfabet" tal:repeat="letter string:abcdefghijklmnopqrstuvwxyz"
-    tal:condition="not:view/search_description"
+    tal:condition="not:search_description"
     tal:attributes="class python:letter == request.get('beginletter') and 'alfabet selected' or 'alfabet'"
     ><a tal:attributes="href string:${view/url}?beginletter=${letter}" ><span tal:replace="letter/upper" /></a></span>
     
     
 	<div class="search_description">
-		<span tal:replace="structure view/search_description"></span>  
+		<span tal:replace="structure search_description"></span>  
 		<div tal:omit-tag="" tal:define="results persons">
 			<div tal:omit-tag="" metal:define-macro="aantal_resultaten">
 				<span tal:omit-tag="" tal:condition="python:results.grand_total == 0">Er zijn geen personen gevonden.</span>
 				<span tal:omit-tag="" tal:condition="python:results.grand_total == 1">Er is &eacute;&eacute;n persoon gevonden.</span>
 				<span tal:omit-tag="" tal:condition="python:results.grand_total > 2">Er zijn <span tal:replace="python:context.format_number(results.grand_total)" /> personen gevonden.</span>
 			</div>
-		Kunt u niet vinden wie U zocht? Probeer het met het <a tal:attributes="href python:view.url('zoek')">zoekscherm</a>.
+		<span tal:condition="search_description">
+		U kunt uw zoekopdracht
+			<a onClick="jQuery('#search_form').toggle(200)">aanpassen of beperken.</a>
+		</span>
+		<span tal:condition="not:search_description">
+			Kunt u niet vinden wie U zocht? Probeer het met het <a tal:attributes="href python:view.url('zoek')">zoekscherm</a>.
+		</span>
 		</div>
-	
+		<div id="search_form" style="display:None">
+		<form metal:use-macro="context/@@zoek/macros/search_form"></form>
+		</div>
 	</div>
     <div class="prev_next_navigation"	
         metal:define-macro="prev_next_navigation"
+        tal:condition="persons"
              tal:define="results persons">   
     <span tal:replace="python:'%s-%s van %s' % (results.start + 1, results.end + 1,  results.grand_total)" />  
     <span tal:condition="results/previous">
