@@ -1,21 +1,22 @@
-import grok
-from random import randint
-from zope.app.form.browser.textwidgets import TextWidget
-from bioport.crypt import encrypt
-from bioport.crypt import decrypt
-from grokcore.view.util import url
-from zope.app.form.interfaces import MissingInputError
 import captchaimage
-import Image
 import cStringIO
-from urllib import urlencode
+import grok
+import Image
+import os
 from bioport.app import Bioport
+from bioport.crypt import decrypt
+from bioport.crypt import encrypt
+from grokcore.view.util import url
+from random import randint
+from urllib import urlencode
+from zope.app.form.browser.textwidgets import TextWidget
+from zope.app.form.interfaces import MissingInputError
 
 
 ENCRYPTION_KEY = 'A verySecretkey!'
 CAPTCHA_LENGTH = 5
 CAPTCHA_ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVXYWZ123456789'
-FONT_FILE = '/usr/share/fonts/truetype/freefont/FreeSerif.ttf'
+FONT_FILE = os.path.join(os.path.dirname(__file__), 'FreeSerif.ttf')
 
 class CaptchaError(MissingInputError):
     "Error raised when captcha is not correct"
