@@ -1,18 +1,160 @@
 <html metal:use-macro="context/@@main_template/macros/master">
-<script type="text/javascript" metal:fill-slot="extra_header_content">
-    /* load sidebar on doc ready */
-    $(document).ready(function() {
-        refreshElem('pBirthdays','birthdays_box');
-    });
-</script>
-
 <div metal:fill-slot="content">
-<div id="colright" metal:use-macro="context/@@index/macros/birthdays_box">
+<div id="colright">
 </div>
-
 <div id="colcenter">
 <h1>Links</h1>
 </div>
+<h3>Nederlands(talige) sites met biografische informatie:</h3>
+<ul>
+<li><a href="http://www.inghist.nl/Onderzoek/Projecten/BWN">Biografisch Woordenboek van Nederland</a></li>
+
+
+<li><a href="http://www.inghist.nl/Onderzoek/Projecten/DVN">Digitaal Vrouwenlexicon van Nederland</a></li>
+
+
+<li><a href="http://www.dbnl.org/tekst/anro001bioe01_01/index.htm">Bio- en bibliografisch lexicon van de Neerlandistiek</a></li>
+
+
+<li><a href="http://www.bwnw.nl/">bwnw - Biografisch Woordenboek van Nederlandse Wiskundigen</a></li>
+
+
+<li><a href="http://www.iisg.nl/bwsa/">bwsa - Biografisch Woordenboek van het Socialisme en de
+Arbeidersbeweging in Nederland</a></li>
+
+
+<li><a href="http://www.parlement.com/">Biografisch Archief van het Parlementair Documentatie Centrum</a></li>
+
+
+<li><a href="http://www.knaw.nl/cfdata/leden/historisch_leden_1808.cfm">Leden Koninklijk Instituut van Wetenschappen, Letteren en Schoone
+Kunsten (1808-1851)</a></li>
+
+
+<li><a href="http://www.maatschappijdernederlandseletterkunde.nl/mnl/
+levens/">Levensberichten van leden der Maatschappij der Nederlandse
+Letterkunde te Leiden</a></li>
+
+
+<li><a href="http://www.iisg.nl/ondernemers/">Biografieën van Nederlandse ondernemers</a></li>
+
+
+<li><a href="http://www.rkd.nl/rkddb/">RKD: Kunstenaars</a></li>
+
+
+<li><a href="http://62.221.199.220/noordbrabant/next/biografieen.asp">Brabantse biografieën</a></li>
+
+
+<li><a href="http://www.jodeninnederland.nl/">Joods Biografisch Woordenboek</a></li>
+
+
+<li><a href="http://www.iiav.nl/biografieen/">Internationaal Informatiecentrum en Archief voor de
+Vrouwenbeweging</a></li>
+
+
+<li>BN-ers: <a href="http://www.anp.nl/bl_anp_bus_biografie.html">ANP Biografie</a> en <a href="http://www.beeldengeluidwiki.nl/index.php/Categorie:Personen">Beeld en Geluidpersonen</a></li>
+
+<li><a href="http://www.iisg.nl/ondernemers/">IISG: Biografieën van Nederlandse ondernemers </a></li>
+ 
+
+<li><a href="http://www.parlement.com/">Biografisch Archief van het Parlementair Documentatie Centrum </a></li>
+
+<li>Wetenschappers:<br> <a href="http://www.humbio.nl/biografieen_nederlands/">Humanisten</a><br>
+<a href="http://www.dwc.knaw.nl/index.php?option=com_content&view=article&id=78&Itemid=69&lang=nl">Geleerden</a><br>
+<a href="http://www.bwnw.nl/">Wiskundigen: Biografisch Woordenboek van Nederlandse Wiskundigen   </a></li>
+
+<li>Zuid-Nederlanders: <a href="http://www.kvab.be/VIGES/nbw.aspx">Nationaal Biografisch Woordenboek (10 delen)</a></li>
+</ul>
+<h3>Andere handige sites:</h3>
+<ul>
+<li>Familienamen:<br> <a href="http://www.meertens.knaw.nl/nfb/">Nederlandse familienamenbank</a></li>
+
+<li>Genealogie:<br>
+<a href="http://www.cbg.nl/page/459/digitale%C2%A0%3Bstudiezaal">Centraal Bureau voor Genalogie: digitale studiezaal</a><br>
+<a href="http://wiewaswie.wordpress.com/">Wiewaswie</a><br>
+<a href="http://www.digitalestamboom.nl/search.aspx">Digitale stamboom</a><br>
+<a href="http://www.genlias.nl/nl/search.jsp">Genlias</a></li> 
+
+<li>Literatuur óver personen:<br> <a href="http://www.dbng.nl/">Digitale Bibliotheek van Nederlandse Geschiedenis (DBNG)</a></li>
+
+<li>Portretten:<br>
+<a href="">Rijksbureau voor Kunsthistorische Documentatie: RKD-portraits</a> <br>
+<a href="http://www.geheugenvannederland.nl/">Het Geheugen van Nederland (doorzoekbaar op personen)</a><br>
+
+<a href="http://www.rug.nl/let/onderzoek/onderzoekcentra/biografieinstituut/index">Biografie Instituut RU groningen</a></li>
+
+</ul>
+<h3>Zusterprojecten in andere landen:</h3>
+<ul>
+<li><a href="http://adbonline.anu.edu.au/adbonline.htm">Australian Dictionary of Biography</a></li>
+
+
+<li><a href="">Biographie Nationale (BN) en Nouvelle Biographie Nationale (NBN)</a></li> 
+
+
+<li><a href="http://www.biographi.ca/index-e.html">Dictionary of Canadian Biography / Dictionnaire Biographique du Canada (DCB/DBC)</a></li> 
+
+
+<li><a href="http://runeberg.org/dbl/">Dansk Biografisk Leksikon (DBL)</a></li> 
+
+
+<li><a href="http://www.deutsche-biographie.de/">Allgemeine Deutsche Biographie</a></li>
+
+
+<li><a href="http://www.ndb.badw-muenchen.de/">Neue Deutsche Biographie (NDB)</a></li>
+
+
+
+<li><a href="http://www.biographie-portal.eu/">Biographie-Portal</a></li>
+
+
+
+<li><a href="http://www.oxforddnb.com/public/index.html?url=%2Findex.jsp">Oxford Dictionary of National Biography (Oxford DNB)</a></li>
+
+
+<li><a href="http://www.blf.fi/">Biografiskt lexikon för Finland</a></li>
+
+
+
+<li><a href="http://www.kansallisbiografia.fi/english/">Kansallisbiografia (National Biography of Finland)</a></li>
+
+
+<li><a href="http://mek.niif.hu/00300/00355/html/index.html">Magyar Életrajzi Lexikon (MEL)</a></li>
+
+
+<li><a href="http://www.ria.ie/projects/dib/index.html">Dictionary of Irish Biography (DIB)</a></li>
+
+
+<li><a href="http://www.treccani.it/Portale/ricerche/searchBiografie.html">Dizionario biografico degli Italiana</a></li>
+
+
+<li><a href="http://www.dnzb.govt.nz/dnzb/">Dictionary of New Zealand Biography (DNZB)</a></li>
+
+
+<li><a href="http://hw.oeaw.ac.at/oebl">Österreichisches Biographisches Lexikon (ÖBL)</a></li>
+
+
+<li><a href="http://www.rah.es/cdeb.htm">Diccionario Biográfico Español</a></li>
+
+
+<li><a href="http://www.anb.org/">American National Biography (ANB)</a></li>
+
+
+<li><a href="http://hls-dhs-dss.ch/">Historisches Lexikon der Schweiz (HLS)</a></li>
+
+
+<li><a href="http://www.georgianbiography.com/about.html">Dictionary of Geogian National Biography</a></li>
+
+
+<li><a href="http://www.psb.pan.krakow.pl/">Polski  Slownik  Biograficzny</a></li>
+</ul>
+
+
+
+
+</div>
+</html>
+
+
 
 
 </div>
