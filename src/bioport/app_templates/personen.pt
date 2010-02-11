@@ -38,7 +38,7 @@
         metal:define-macro="prev_next_navigation"
         tal:condition="persons"
              tal:define="results persons">   
-    <span tal:replace="python:'%s-%s van %s' % (results.start + 1, results.end + 1,  results.grand_total)" />  
+    <span tal:replace="python:'%s-%s van %s' % (results.start + 1, results.end + 1,  context.format_number(results.grand_total))" />  
     <span tal:condition="results/previous">
         <a tal:attributes="href python:view.batch_url(start=results.previous.start)"
             tal:content="string:vorige">vorige X</a>

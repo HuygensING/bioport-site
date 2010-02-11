@@ -246,9 +246,10 @@ class Personen(BioPortTraverser,grok.View,RepositoryView, Batcher):
         if request.get('category'):
             result += ' uit de rubriek <em>%s</em>' % self.repository().db.get_category(request.get('category')).name
         
-        
-        if request.get('beginletter'):
-            result += ' met een achternaam beginnend met een <em>%s</em>' % request.get('beginletter')
+        #NB: in the template, we show the alphabet only if the search description is emtpy
+        #uncommenting the following lines messes up this logic    
+#        if request.get('beginletter'):
+#            result += ' met een achternaam beginnend met een <em>%s</em>' % request.get('beginletter')
         geslacht = request.get('geslacht')
         if geslacht == '1':
             geslacht = '<em>mannen</em>'
