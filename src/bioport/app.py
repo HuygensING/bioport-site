@@ -274,9 +274,9 @@ class Personen(BioPortTraverser,grok.View,RepositoryView, Batcher):
         for batch in self.batch.batches:
             url = self.batch_url(start=batch.start)
             n1 = batch[0].naam()
-            n1 = n1 #and n1.geslachtsnaam()
+#            n1 = n1 and n1.geslachtsnaam()
             n2 = batch[-1].naam()
-            n2 = n2 #and n2.geslachtsnaam()
+#            n2 = n2 and n2.geslachtsnaam()
             ls.append((url, n1, n2))
         return ls
 
