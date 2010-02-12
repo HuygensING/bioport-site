@@ -66,7 +66,7 @@
 	    tal:attributes="href python:'%s/%s' % (view.url('persoon'), person.get_bioport_id())" />
 	    <span class="date" tal:content="python:context.format_dates(person.get_value('geboortedatum'), person.get_value('sterfdatum'))" />
 	    <br />
-	    <span class="snippet" tal:content="person/snippet" />
+	    <span class="snippet" tal:content="structure person/snippet" />
 	    <div style="clear:both" ></div>
 	</div>
 	</div>

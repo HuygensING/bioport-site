@@ -35,7 +35,7 @@ of <a metal:define-macro="button_begin_opnieuw" tal:attributes="href python:view
     type="hidden" name="bioport_ids" tal:attributes="value bioport_id" >
 <table>
 <tr metal:define-macro="search_field_naam">
-    <th>zoek op naam</th>
+    <th>zoeken op naam</th>
     <td><input type="text" name="search_term"
         tal:attributes="value request/search_term | nothing">
         
