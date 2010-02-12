@@ -387,6 +387,7 @@ class Colofon(grok.View, RepositoryView):
     pass
 
 class Birthdays_Box(grok.View, RepositoryView):
+    @ram.cache(lambda *args: time() // (60 * 60 * 24))
     def get_persons(self):
         #get the month and day of today
         today = datetime.date.today().strftime('-%m-%d')
@@ -427,7 +428,6 @@ class FAQ(grok.View, RepositoryView):
     pass
 class Images_XML(grok.View, RepositoryView):
     grok.name('images.xml')
-#    @ram.cache(lambda *args: time() // (60 * 60 * 24))
     def render(self):
         self.request.response.setHeader('Content-Type', 'text/xml')
         
