@@ -47,10 +47,10 @@ class ContactOk(grok.View, RepositoryView):
 
 
 def send_email(sender, recipient, subject, body):
-    msg = email.MIMEText.MIMEText(body.encode('UTF-8'), 'plain', 'UTF-8')
+    msg = email.MIMEText.MIMEText(body.encode('latin-1'), 'plain', 'latin-1')
     msg["From"] = sender
     msg["To"] = recipient
-    msg["Subject"] = email.Header.Header(subject, 'UTF-8')
+    msg["Subject"] = email.Header.Header(subject, 'latin-1')
     mailer = getUtility(IMailDelivery, 'bioport.mailer')
     mailer.send(sender, [recipient], msg.as_string())
 
