@@ -136,6 +136,7 @@ class SimpleSampleFunctionalTest(FunctionalTestCase):
 
         
         browser = Browser('http://localhost/app/admin')
+        browser.handleErrors = False
         link = browser.getLink('Bewerk personen')
         link.click()
         

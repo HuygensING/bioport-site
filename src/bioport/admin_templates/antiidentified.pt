@@ -23,7 +23,7 @@
 		<td tal:content="repeat/x/number"  />
 		<td metal:define-macro="person" tal:condition="person">
 			<a tal:attributes="href python:view.url(view.__parent__.__parent__, 'persoon', data={'bioport_id':person.get_bioport_id()})" 
-				tal:content="python:person.naam() and person.naam().guess_normal_form() or 'geen naam bekend'" />
+				tal:content="python:person.naam() and person.naam() or 'geen naam bekend'" />
 			<br />
 			<span tal:replace="python:context.format_dates(person.get_value('geboortedatum'), person.get_value('sterfdatum'))" />
 			<br />

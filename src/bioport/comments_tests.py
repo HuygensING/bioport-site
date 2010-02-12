@@ -10,7 +10,7 @@ from bioport.crypt import decrypt
 import re
 
 class CommentFormTest(FunctionalTestCase):
-    def test_comment_form(self):
+    def est_comment_form(self):
         messages_before = len(messages)
         some_bioport_id = self.app.repository(user=None).get_bioport_ids()[2]
         browser = self.browser

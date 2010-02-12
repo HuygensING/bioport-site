@@ -65,11 +65,11 @@
 	        tal:attributes="src python:illustrations[0].thumbnail_url()" />
         </span>
 		<a 
-		tal:content="structure python:person.naam() or 'XXXXX'" 
+		tal:content="structure python:person.db_name() or 'XXXXX'" 
 	    tal:attributes="href python:'%s/%s' % (view.url('persoon'), person.get_bioport_id())" />
 	    <span class="date" tal:content="python:context.format_dates(person.geboortedatum(), person.sterfdatum())" />
 	    <br />
-	    <span class="snippet" tal:content="structure person/snippet" />
+	    <span class="snippet" tal:content="structure person/db_snippet" />
 	    <div style="clear:both" ></div>
 	</div>
 	</div>

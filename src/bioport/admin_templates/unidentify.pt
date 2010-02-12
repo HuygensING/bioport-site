@@ -4,7 +4,7 @@
 <p tal:condition="not:view/persons">Geen persoon gevonden met bioport id <tt tal:content="view/bioport_id" /></p>
 <ul>
 <li tal:repeat="person view/persons">
-    <a tal:content="python:person.naam() and person.naam().guess_normal_form() or 'Geen naam gevonden (?)'" 
+    <a tal:content="python:person.naam() and person.naam() or 'Geen naam gevonden (?)'" 
         tal:attributes="href python:view.url('persoon', data={'bioport_id':person.bioport_id})" />
 </li>
 </ul>
