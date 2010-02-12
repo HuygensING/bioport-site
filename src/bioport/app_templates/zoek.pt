@@ -16,7 +16,7 @@
     metal:define-macro="search_form">
 <table>
 <tr>
-    <th>zoek op naam</th>
+    <th>zoeken op naam</th>
     <td>
         <input type="text" name="search_name" 
             tal:attributes="value request/search_name | nothing" />
