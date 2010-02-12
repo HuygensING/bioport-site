@@ -18,16 +18,16 @@ class ContactFormTest(FunctionalTestCase):
         # Solve the captcha!
         captcha_crypt = re.findall(r'captcha_text[^>]+value="([^"]+)', self.browser.contents)[0]
         captcha_solution = decrypt(ENCRYPTION_KEY,captcha_crypt)
-        self.browser.getControl('verification').value = captcha_solution
+        self.browser.getControl('Vul de letters').value = captcha_solution
     def fill_form(self):
         self.browser.getControl('Naam').value = 'Me'
-        self.browser.getControl('Mailadres').value = 'me@example.com'
+        self.browser.getControl('Emailadres').value = 'me@example.com'
         self.browser.getControl('Tekst').value = 'Hey'
     def test_contact_form_wrong_captcha(self):
         messages_before = len(messages)
         self.browser.open(self.base_url + '/contact')
         self.fill_form()
-        self.browser.getControl('verification').value = 'wrongvalue'
+        self.browser.getControl('Vul de letters').value = 'wrongvalue'
         captcha_crypt = re.findall(r'captcha_text[^>]+value="([^"]+)', self.browser.contents)[0]
         self.browser.getControl('Submit').click()
         self.failUnlessEqual(len(messages), messages_before)
@@ -47,7 +47,7 @@ class ContactFormTest(FunctionalTestCase):
         messages_before = len(messages)
         self.browser.open(self.base_url + '/contact')
         self.fill_form()
-        self.browser.getControl('Mailadres').value = 'bademail.example.com'
+        self.browser.getControl('Emailadres').value = 'bademail.example.com'
         self.solve_captcha()
         self.browser.getControl('Submit').click()
         self.assertEqual(len(messages), messages_before)
