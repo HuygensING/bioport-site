@@ -428,9 +428,12 @@ class FAQ(grok.View, RepositoryView):
     pass
 class Images_XML(grok.View, RepositoryView):
     grok.name('images.xml')
-    @ram.cache(lambda *args: time() // (60 * 60) + random.randint(1,5))
     def render(self):
         self.request.response.setHeader('Content-Type', 'text/xml')
+        return self.render_response()
+
+    @ram.cache(lambda *args: time() // (60 * 60) + random.randint(1,5))
+    def render_response(self):
         
         persons = self.repository().get_persons(has_illustrations=True, order_by='random', size=20)
         
