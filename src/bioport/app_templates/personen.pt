@@ -8,6 +8,8 @@
     <tal:block tal:replace="structure view/get_navigation_box" />
 </div>
 <div class="colcenter">
+<h1 tal:condition="search_description">Zoekresultaten</h1>
+<h1 tal:condition="not:search_description">Bladeren</h1>
 <span metal:define-macro="alfabet" tal:repeat="letter string:abcdefghijklmnopqrstuvwxyz"
     tal:condition="not:search_description"
     tal:attributes="class python:letter == request.get('beginletter') and 'alfabet selected' or 'alfabet'"
@@ -24,15 +26,15 @@
 			</div>
 		<span tal:condition="search_description">
 		U kunt uw zoekopdracht
-			<a onClick="jQuery('#search_form').toggle(200)">aanpassen of beperken.</a>
+			<a onClick="jQuery('#search_form').toggle(200)" class="toggle">aanpassen of beperken.</a>
 		</span>
 		<span tal:condition="not:search_description">
 			Kunt u niet vinden wie U zocht? Probeer het met het <a tal:attributes="href python:view.url('zoek')">zoekscherm</a>.
 		</span>
 		</div>
-		<div id="search_form" style="display:None">
+	</div>
+	<div id="search_form" style="display:None">
 		<form metal:use-macro="context/@@zoek/macros/search_form"></form>
-		</div>
 	</div>
     <div class="prev_next_navigation"	
         metal:define-macro="prev_next_navigation"
