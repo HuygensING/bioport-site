@@ -697,7 +697,14 @@ class Persoon(app.Persoon, grok.EditForm, RepositoryView):
             self.bioport_biography.remove_name(idx)
             self.save_biography()
             self.msg = 'naam verwijderd'
-            
+    @grok.action('download_illustration')
+    def download_illustration(self, **data): 
+        self.msg = ''
+        for illustration in self.merged_biography.get_illustrations():
+            illustration.download()
+            self.msg += 'downloaded %s\n' % illustration
+        
+        
 class PersoonIdentify(MostSimilar, Persons, Persoon):
     
     grok.require('bioport.Edit')

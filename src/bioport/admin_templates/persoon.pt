@@ -683,6 +683,10 @@ De gegevens zijn grijs als ze uit de bronnen-publikaties komen, zwart als ze zij
                 local : <a tal:attributes="href ill/cached_url" tal:content="ill/cached_url" /><br />
                 original: <a tal:attributes="href ill/_url" tal:content="ill/_url" />
             </div>
+            <form>
+            <input type="hidden" name="bioport_id" tal:attributes="value view/bioport_id">
+            <span tal:replace="structure python:view.actions.byname['form.actions.download_illustration'].render()" ></span>
+            </form>
         </td>
 	</tr>
 	<tr tal:condition="python:bio.get_value('tekst')">
