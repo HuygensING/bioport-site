@@ -12,7 +12,7 @@
 </div>
 <div id="colcenter">
 <h1>Zoeken</h1>
-<form tal:attributes="action python:view.url('personen')" method="post"
+<form tal:attributes="action python:view.url('personen')" 
     metal:define-macro="search_form">
 <table>
 <tr>
@@ -20,6 +20,7 @@
     <td>
         <input type="text" name="search_name" 
             tal:attributes="value request/search_name | nothing" />
+        
         <a class="tooltip_button"
             Onclick="jQuery('#tip_search_name').toggle(200)" class="toggle">[?]</a> 
         <div class="tooltip" id="tip_search_name">Typ de naam of een gedeelte van de naam. Gebruik wildcards (? voor één teken, * voor één of 

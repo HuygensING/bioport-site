@@ -69,7 +69,7 @@
         
         <div class="searchcontainer freeform">
             <h3>Zoeken</h3>
-            <form id="searchform" action="personen" method="post">
+            <form id="searchform" action="personen">
                 <fieldset>
                     <input type="text" name="search_name"/>
                     <button type="submit" value="zoek">zoek</button>

@@ -148,7 +148,7 @@ class Personen(BioPortTraverser,grok.View,RepositoryView, Batcher):
         Batcher.update(self)
     @memoize
     def get_persons(self):
-        # XXX get_ method with side effects braks least astonishment principle
+        """get Persons - with restrictions given by request"""
         qry = {}
         #request.form has unicode keys - make strings
         for k in [
@@ -163,6 +163,7 @@ class Personen(BioPortTraverser,grok.View,RepositoryView, Batcher):
             'order_by', 
             'search_term',
             'search_name',
+            'search_soundex',
             'size',
             'source_id',
             'start',
@@ -174,11 +175,17 @@ class Personen(BioPortTraverser,grok.View,RepositoryView, Batcher):
              ]:
             if k in self.request.keys():
                 qry[k] = self.request[k]
+#            if qry.get('search_name'):
+#               qry['search_soundex']= qry['search_name'] 
+#               del qry['search_name'] 
         repository = self.repository()
         persons = repository.get_persons_sequence(**qry)
-        batch = Batch(persons,  start=self.start, size=self.size)
-        self.qry = qry
+        try:
+	        batch = Batch(persons,  start=self.start, size=self.size)
+        except IndexError:
+            batch = Batch(persons,size= self.size)
         batch.grand_total = len(persons)
+        self.qry = qry
         self.batch = batch
         return batch
 
@@ -197,6 +204,7 @@ class Personen(BioPortTraverser,grok.View,RepositoryView, Batcher):
 #        place=None,
 #        search_term=None,  #
 #        search_name=None, #use for mysql REGEXP matching
+#        search_soundex=None,
 #        source_id=None,
 #        sterfjaar_min=None,
 #        sterfjaar_max=None,
@@ -207,7 +215,6 @@ class Personen(BioPortTraverser,grok.View,RepositoryView, Batcher):
 #        where_clause=None,
         result= ''
         request = self.request
-        
         geboortejaar_min = request.get('geboortejaar_min')
         geboortejaar_max = request.get('geboortejaar_max')
         geboorteplaats = request.get('geboorteplaats')
@@ -240,10 +247,12 @@ class Personen(BioPortTraverser,grok.View,RepositoryView, Batcher):
             result += ' uit <em>%s</em>' % self.repository().get_source(request.get('source_id')).description
             
         if request.get('search_name'):
-            result += ' met het woord <em>%s</em> in de naam van de persoon' % request.get('search_name')
+            result += u' wiens naam lijkt op <em>%s</em>' % request.get('search_name')
             
         if request.get('search_term'):
-            result += ' met het woord <em>%s</em> in de tekst' % request.get('search_term')
+            result += u' met het woord <em>%s</em> in de tekst' % request.get('search_term')
+#        if request.get('search_soundex'):
+#            result += u' wiens naam lijkt op <em>%s</em>' % request.get('search_soundex')
         
         if request.get('category'):
             result += ' uit de rubriek <em>%s</em>' % self.repository().db.get_category(request.get('category')).name
@@ -262,6 +271,7 @@ class Personen(BioPortTraverser,grok.View,RepositoryView, Batcher):
             
         if result:
             result = 'U zocht naar %s %s.' % (geslacht, result)
+        result = unicode(result)
         return result
     def batch_navigation(self, batch):
         return '<a href="%s">%s</a>' % (self.batch_url(start=batch.start), batch[0].naam().geslachtsnaam())
@@ -391,6 +401,7 @@ class Colofon(grok.View, RepositoryView):
 class Birthdays_Box(grok.View, RepositoryView):
     @ram.cache(lambda *args: time() // (60 * 60 * 24))
     def get_persons(self):
+        """get 3 persons whose birthdate is today"""
         #get the month and day of today
         today = datetime.date.today().strftime('-%m-%d')
         #query the database for persons born on this date
@@ -434,7 +445,7 @@ class Images_XML(grok.View, RepositoryView):
         self.request.response.setHeader('Content-Type', 'text/xml')
         return self.render_response()
 
-    @ram.cache(lambda *args: time() // (60 * 60) + random.randint(1,5))
+    @ram.cache(lambda *args: time() // (60 * 60) + random.randint(1,10))
     def render_response(self):
         
         persons = self.repository().get_persons(has_illustrations=True, order_by='random', size=20)

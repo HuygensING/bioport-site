@@ -53,7 +53,7 @@
 	        </ul>
 	        <form class="search_form" tal:condition="python:view.__name__ != 'index'" 
 	           tal:attributes="action python:view.url('personen')">
-	           <input type="text" name="search_name" size="20">
+	           <input type="text" name="search_name" size="20" tal:attributes="value request/search_name | nothing">
 	           <input type="submit" value="zoek">
 	        </form>
         <hr class="textOnly"/>

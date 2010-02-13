@@ -163,6 +163,9 @@ class Edit(grok.EditForm,RepositoryView):
     @grok.action('tmp_fix_weird_categeries')
     def tmp_fix_weird_categeries(self, **data):
         self.repository().db.tmp_fix_weird_categeries()
+    @grok.action('tmp_update_soundexes')
+    def tmp_update_soundexes(self, **data):
+        self.repository().db.tmp_update_soundexes()
         
     @grok.action('add_biodes')
     def add_biodes(self, **data):

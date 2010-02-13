@@ -33,7 +33,7 @@
 		</span>
 		</div>
 	</div>
-	<div id="search_form" style="display:None">
+	<div id="search_form" style="display:None" tal:condition="nothing">
 		<form metal:use-macro="context/@@zoek/macros/search_form"></form>
 	</div>
     <div class="prev_next_navigation"	
@@ -65,7 +65,7 @@
 	        tal:attributes="src python:illustrations[0].thumbnail_url()" />
         </span>
 		<a 
-		tal:content="structure python:person.db_name() or 'XXXXX'" 
+		tal:content="structure python:person.db_name()" 
 	    tal:attributes="href python:'%s/%s' % (view.url('persoon'), person.get_bioport_id())" />
 	    <span class="date" tal:content="python:context.format_dates(person.geboortedatum(), person.sterfdatum())" />
 	    <br />
