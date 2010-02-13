@@ -11,20 +11,19 @@
     <meta metal:define-slot="description" name="Description" content="Het Biografisch Portaal van Nederland" />
     <meta metal:define-slot="keywords" name="Keywords" content="biografie portaal biografieën Nederland" />
     
-    <link tal:attributes="href static/tmp_style.css" rel="stylesheet" type="text/css" />
 
-    <link href="http://www.trilobiet.nl/clients/inghis/bpn/_resources/styles/reset.css" rel="stylesheet" type="text/css" />
-    <link href="http://www.trilobiet.nl/clients/inghis/bpn/_resources/styles/layout.css" rel="stylesheet" media="screen" type="text/css" />
-    <link href="http://www.trilobiet.nl/clients/inghis/bpn/_resources/styles/contents.css" rel="stylesheet" type="text/css" />
-    <link href="http://www.trilobiet.nl/clients/inghis/bpn/_resources/styles/print.css" rel="stylesheet" media="print" type="text/css" />
-    <link href="http://www.trilobiet.nl/clients/inghis/bpn/_resources/styles/photoframe.css" rel="stylesheet" media="screen" type="text/css" />
+    <link tal:attributes="href static/css/reset.css" rel="stylesheet" type="text/css" />
+    <link tal:attributes="href static/css/layout.css" rel="stylesheet" media="screen" type="text/css" />
+    <link tal:attributes="href static/css/contents.css" rel="stylesheet" type="text/css" />
+    <link tal:attributes="href static/css/print.css" rel="stylesheet" media="print" type="text/css" />
+    <link tal:attributes="href static/css/photoframe.css" rel="stylesheet" media="screen" type="text/css" />
 
-    <script src="http://www.trilobiet.nl/clients/inghis/bpn/_resources/js/jquery-1.4.1.min.js" type="text/javascript"></script>
-    <script src="http://www.trilobiet.nl/clients/inghis/bpn/_resources/js/utils.js" type="text/javascript"></script>
-    <script src="http://www.trilobiet.nl/clients/inghis/bpn/_resources/js/photoframe.js" type="text/javascript"></script>
+    <script tal:attributes="src static/js/jquery-1.4.1.min.js" type="text/javascript"></script>
+    <script tal:attributes="src static/js/utils.js" type="text/javascript"></script>
+    <script tal:attributes="src static/js/photoframe.js" type="text/javascript"></script>
 
-    <script tal:attributes="src static/scripts.js" type="text/javascript"></script>
-<link href="http://www.trilobiet.nl/clients/inghis/bpn/_resources/img_struct/favicon.ico" rel="shortcut icon"> 
+    <script tal:attributes="src static/js/scripts.js" type="text/javascript"></script>
+<link tal:attributes="href static/images/favicon.ico" rel="shortcut icon"> 
 
     <!--[if IE 6]>
     <![endif]-->
@@ -37,7 +36,6 @@
         <div id="layHead">
             <h2><span class="textOnly">Het Biografisch Portaal van Nederland</span></h2>
             <div id="stats">
-                <!-- @server -->
                 <span tal:replace="python:view.count_persons()" /> personen<br/>
                 van 634 tot 2005
                 <br/>
@@ -52,7 +50,6 @@
                 <li tal:repeat="item python:view.menu_items()">
                     <a tal:attributes="href python:item[0]" tal:content="python:item[1]"></a>
                 </li>
-
 	        </ul>
 	        <form class="search_form" tal:condition="python:view.__name__ != 'index'" 
 	           tal:attributes="action python:view.url('personen')">

@@ -8,16 +8,15 @@
 <head>
     <title metal:define-slot="head_title" tal:content="string:Het Biografisch Portaal van Nederland" />
     <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
-    <meta name="Description" content="[field:description]" />
-    <meta name="Keywords" content="[field:keywords]" />
-    
-    <link href="http://www.trilobiet.nl/clients/inghis/bpn/_resources/styles/reset.css" rel="stylesheet" type="text/css" />
-    <link href="http://www.trilobiet.nl/clients/inghis/bpn/_resources/styles/layout.css" rel="stylesheet" media="screen" type="text/css" />
-    <link href="http://www.trilobiet.nl/clients/inghis/bpn/_resources/styles/contents.css" rel="stylesheet" type="text/css" />
-    <link href="http://www.trilobiet.nl/clients/inghis/bpn/_resources/styles/print.css" rel="stylesheet" media="print" type="text/css" />
+    <meta name="Description" content="Het Biografisch Portaal van Nederland" />
+    <meta name="Keywords" content="biografie biografieen biografisch woordenboek portaal lexicon" />
+    <link tal:attributes="href static/css/reset.css"></link>
+    <link tal:attributes="href static/css/layout.css"></link>
+    <link tal:attributes="href static/css/contents.css"></link>
+    <link tal:attributes="href static/css/print.css"></link>
 
-    <script src="http://www.trilobiet.nl/clients/inghis/bpn/_resources/js/jquery-1.2.1.min.js" type="text/javascript"></script>
-    <script src="http://www.trilobiet.nl/clients/inghis/bpn/_resources/js/utils.js" type="text/javascript"></script>
+    <script tal:attributes="src static/js/jquery-1.4.1.min.js" type="text/javascript"></script>
+    <script tal:attributes="src static/js/utils.js" type="text/javascript"></script>
 
     <!--[if IE 6]>
     <![endif]-->

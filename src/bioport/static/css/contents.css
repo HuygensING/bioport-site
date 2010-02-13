@@ -1,0 +1,709 @@
+
+/* ============================================================
+	Biografisch Portaal Nederland
+	acdhirr@trilobiet.nl 2010
+	Content styles
+============================================================ */
+
+/* html redefs  */
+
+	a img {
+		border: none;
+	}
+	
+	hr {
+		border-style: solid;
+		border-width: 1px 0 0 0;
+		height: 1px;
+	}
+		
+	td {
+		vertical-align: top;
+	}
+
+	input, select, textarea {
+		font-size: 1em;
+	
+	}
+
+	#layContent {
+		font-size: 1.1em;
+		line-height: 1.4em;
+	} 	
+		
+	#layContent a {
+		color: #950;
+		text-decoration: none;
+	}
+
+		#layContent a:hover {
+			color: #AC8426;
+			text-decoration: underline;
+		}
+		
+		#layContent a.more {
+			background: url(../images/internal.png) no-repeat center right;
+			padding: 0 17px 0 0;
+		}
+
+		#layContent a.external_link {
+			background: url(../images/internal.png) no-repeat center right;
+			padding:0 17px 0 0;
+		}
+
+		#layContent a.backbutton {
+			background: url(../images/internal-left.png) no-repeat center left;
+			padding:0 0 0 17px;
+		}
+
+	
+	#layContent p {
+		margin: 1em 0;
+	}	
+
+
+	#layContent h1 { font-size: 1.7em; color: #4F8FB7; font-weight: normal;line-height:1.4em; margin:0 0 .5em 0; }
+	#layContent h2 { font-size: 1.1em; color: #666; font-weight: bold; line-height:1.4em; margin:.5em 0; }
+	#layContent h3 { font-size: 1em; font-weight: bold; line-height:1.4em; margin:.5em 0; }
+	#layContent h4 {  }
+	#layContent h5 {  }
+	#layContent h6 {  }
+
+
+	
+/* generic classes */
+
+	.warning {
+		display: none;
+	}
+
+	.breadcrumb {
+		float: right;
+
+	}
+	
+		.breadcrumb a {
+			color: #666;
+			text-decoration:none;
+		}	
+	
+			.breadcrumb a:hover {
+				text-decoration: underline;
+			}	
+	.intropar {
+		font-weight: bold;
+		font-size: 1em;
+	}
+
+	.date {
+		font-size: .9em;
+		color: #666;
+	}
+
+	.snippet {
+		color: #999999;
+		display: block;
+		font-size: 0.9em;
+		width: auto;
+		margin: .3em 0 0 0;
+	}
+
+	
+	.persoon {
+		padding: 1em 1em .5em 0;
+	}
+
+	.persoon:hover {
+		background: #f6f6f6;
+	}
+
+
+	.snippet:hover {
+		color: #666;
+	}
+
+
+	.navigation_box {
+		/*border: solid 1px #DFBD48;*/
+		background: #EEE;
+		padding: 10px;
+	}
+
+		.navigation_box ul a {
+			font-weight: bold; /* pseudo-menu */
+		}
+
+		.navigation_box ul li {
+			margin: 0 0 .5em 0;
+		}
+
+
+	/* help tool tip */	
+	.tooltip {
+		display: none;
+		background: #FFFFFF;
+		border: 1px solid #666666;
+		font-size: 90%;
+		margin-top: 1em;
+		padding: 1em;	
+	}
+
+	.tooltip_button {
+		cursor: pointer;
+	}
+
+	.tooltip_button_hide {
+		cursor: pointer;
+		display: block;
+		text-align: right;
+	}
+
+
+/* right column */
+
+	#colright, .colright {
+		float: right;
+		width: 205px;
+		margin: 0 0 0 25px;
+		overflow: hidden;
+		padding: 0 0 10px 0;
+		font-size: 12px;
+		line-height:normal;
+	}
+	
+		#colright h3, .colright h3 {
+			background: #DFBD48;
+			color: white;
+			font-size: 12px;
+			font-weight: bold;
+			padding: 7px 10px;
+			line-height: 1em;
+			margin: 0 !important;
+		}
+		
+		#colright .refresh, .colright .refresh {
+			float: right;	
+			width: 17px;
+			height: 13px;
+			cursor: pointer;
+			background:url(../images/refresh.png) no-repeat;
+		}			
+		
+		#colright span.sep, .colright span.sep {
+			border-top: solid 1px #DFBD48;
+			display: block;
+			height: 1px;
+			line-height: 1px;
+			font-size: 0;
+			margin: 5px -10px;
+		}		
+		
+		#colright .sidebar, .colright .sidebar {
+			margin-top: 2px;
+			padding: 10px;
+			background: #EEE;
+			/*border: solid 1px #DFBD48;*/
+		}
+	
+		#colright .gallery, .colright .gallery {
+			text-align: center;
+		}	
+
+			#colright .gallery .image, .colright .gallery .image {
+				padding:6px;
+				margin-top:2px;
+				/*background: #D5D9DF;*/
+				background: #CCC;
+			}	
+			
+			#colright .gallery img, .colright .gallery img {
+				height: 100px;
+				max-width: 100px;	
+			}	
+			
+		#colright .subscript, .colright .subscript {
+			text-align: center;
+			padding: 2px 0;	
+		}	
+
+
+/* center column */
+		
+	#colcenter, .colcenter {
+		width:690px;
+		float: left;
+	}
+
+
+
+/* forms */
+
+	#layContent form {
+		background: #eee;
+		padding: 10px;
+	}
+
+		#layContent form table { 
+			width: 100%;
+		}
+
+			#layContent form table td { 
+				padding: 5px;
+			}
+
+			#layContent form table th, #layContent form table td.label { 
+				padding: 5px 10px 5px 0;
+				text-align: right;
+				width: 200px;
+				vertical-align: top;
+				font-weight: bold;
+			}
+
+		#layContent form input[type=text] {
+			width: 20em;
+		}
+
+		#layContent form textarea {
+			max-width: 420px;
+		}
+
+		#layContent form input[size] {
+			/* size attribute prevails */
+			width: auto;
+		}
+
+		#layContent form select {
+			width: 150px;
+		}
+	
+		#layContent form input[type=submit] {
+			width: 100px;			
+		}
+
+
+		#layContent form #actionsView {
+			padding: 1em 1em 1em 215px;
+		}
+
+	
+	
+	
+/* homepage */
+
+
+	#Index #photoframe {
+		margin: 0 25px 25px 0;	
+		float:left;	
+	}
+	
+	#Index p {
+		text-align: justify;
+	}
+	
+	#Index .searchcontainer {
+		padding: 14px 45px;
+		clear: left;
+		margin: 0 0 4px 0;
+		width: 600px;
+	}
+	
+		#Index .searchcontainer h3 {
+			font-weight: bold;
+			font-size: 17px;
+			width: 95px;
+			float: left;	
+			margin: 0 !important;
+		}
+		
+		#Index .searchcontainer.freeform {
+			background: #E3DEC4;
+		}
+		
+			#Index .searchcontainer.freeform form {
+				display: inline;
+				margin: 0;
+				padding: 0;
+			}
+
+			#Index .searchcontainer.freeform input[type=text] {
+				display: block;
+				float: left;
+				margin: 0 10px 0 0;
+				border: solid 1px black;
+				height: 16px;
+				width: 195px;
+			}
+			
+			#Index .searchcontainer.freeform button {
+				display: block;
+				float:left;
+				border: none;
+				background:url(../images/btnsearch.png) no-repeat;
+				width: 50px;
+				height: 20px;
+				font-size: 0;
+				line-height:0;
+				margin: 0 20px 0 0;	
+			}
+
+
+		#Index .searchcontainer.browse {
+			background: #d6d9db;
+		}
+		
+			#Index .searchcontainer.browse a {
+				font-size: 17px;
+				color: #4F8FB7 !important;
+				letter-spacing: 5px;	
+			}	
+		
+	#Index .credits {
+		padding: 8px 0 0 0;
+		font-size: 11px;
+		color: #777;
+		text-align: justify;
+	}	
+
+		#Index .credits hr {
+			border-color: #bbb;	
+		}
+		
+		#Index .credits a {
+			color: #777 !important;
+			text-decoration: none;
+		}
+	
+
+/* zoek */
+
+
+		#Zoek p {
+			
+		}
+
+
+
+/* verjaardagen  */
+
+	#Birthdays .colleft {
+		width: 440px;
+		float: left;
+		margin: 0 40px 0 0;
+		line-height: 1.4em;
+	}
+
+	#Birthdays .colright {
+		width: 440px;		
+		float: none;
+		font-size: 1em;
+		margin: 0;
+		line-height: 1.4em;
+	}
+
+	#Birthdays .persoon {
+		padding: 1em 0 .5em 0;
+	}
+
+		#Birthdays .persoon .illustration {
+			float: right;
+			width: 120px;
+			background: #666;
+			text-align: center;
+			padding: 5px;
+			margin: 0 0 0 1em;
+		}
+
+		#Birthdays .persoon img {
+			max-height: 100px; 
+			max-width: 120px;
+			vertical-align: text-top;
+			position: relative;
+			border:1px solid white;
+		} 	
+
+
+		#Birthdays .persoon a {
+			font-size: 1.1em;
+		}
+
+		#Birthdays .persoon date {
+			font-size: 0.9em;
+		}
+
+
+
+/* personen (results list) */
+
+	#Personen .alfabet a {
+		line-height: 2em;	
+		font-size: 17px;
+		letter-spacing:5px;
+		text-transform: lowercase;
+	}
+
+	#Personen .alfabet.selected a {
+		color: #4F8FB7 !important;
+		font-size: 2em;
+		line-height: 1em;
+	}
+
+	#Personen .alfabet a:hover {
+		background: #eee;
+	}
+
+	#Personen #search_form {
+		margin: 0 0 1em 0;
+	}	
+
+	#Personen .search_description {
+		margin: 1em 0 1em 0;
+		clear: both;
+	}
+
+		#Personen .search_description em {
+			color: #666;
+			font-size: 1.1em;
+		}
+
+		#Personen .search_description a {
+			cursor: pointer;
+		}
+
+	#Personen .prev_next_navigation {
+		border-color: #ccc;
+		border-style: solid;
+		border-width: 1px 0;
+		padding: 3px 0;
+		text-align: right;
+		margin: 0;
+		font-size: .9em;
+	}
+
+		#Personen .prev_next_navigation:last-child {
+			margin-top: 1em;
+		}
+
+		#Personen .prev_next_navigation span {
+			display: block;
+			float: left;
+			padding: 0 1em 0 2px;
+		}
+
+	#Personen .list_of_persons {
+		padding: 0 0 2em 0;
+	}
+
+
+	#Personen .persoon {
+	}
+
+		#Personen .persoon .illustration {
+			float: right;
+			width: 120px;
+			background: #666;
+			text-align: center;
+			padding: 5px;
+			margin: 0 0 0 1em;
+		}
+
+		#Personen .persoon img {
+			max-height: 100px; 
+			max-width: 120px;
+			min-height: 50px; 
+			min-width: 50px;
+			vertical-align: text-top;
+			position: relative;
+			border:1px solid white;
+		} 	
+		
+
+	#Personen .navigation_box .number {
+		display: block;
+		float: left;
+		width: 1.5em;
+		padding-right: 1em;
+		text-align: right;	
+	}
+
+	#Personen .navigation_box a {
+		display: block;
+		/*padding-left: 2.5em;*/
+		margin-left: 2em;
+		display: list-item;
+	}
+
+		#Personen .navigation_box a em {
+			color: #888;
+		}
+
+
+	#Personen .navigation_box .selected {
+		background: #bbb;		
+	}
+
+	#Personen .navigation_box div:hover {
+		background: #fff;
+		color: black;	
+	}
+
+		#Personen .navigation_box div:hover a,
+		#Personen .navigation_box div:hover .number {
+			color: black !important;
+		}
+
+
+		#Personen .navigation_box .selected .number {
+			color: white;
+		}
+ 
+		#Personen .navigation_box .selected a {
+			color: white;
+			font-size: 1em;    
+		}
+
+	#Personen .persoon a {
+		font-size: 1.1em;
+	}
+
+	#Personen .persoon date {
+		font-size: 0.9em;
+	}
+
+	#Personen .snippet {
+		width: 470px;
+	}
+	
+	#Birthdays .snippet {
+		width: auto;
+	}
+
+
+/* persoon (detail view) */
+
+	#Persoon hr {
+		display: none;
+	}	
+
+	#Persoon .column_right {
+		width: 320px;
+		float: right;
+	}
+
+	#Persoon .illustratie {
+		float: right;
+		margin: 0 0 1em 2em;
+		padding: 0 0 10px 10px;
+		background: white;
+		width: 300px;
+		padding: 10px;
+		background: #CCC;
+		text-align: center;
+	}
+
+		#Persoon .illustratie img {
+			border: solid 1px white;
+			max-height:400px;
+			max-width:200px;
+		}
+
+		#Persoon .illustratie .caption {
+			font-size: .9em;
+		}
+
+		#Persoon .illustratie .geenplaatje {
+			height: 40px;
+			width: 140px;
+			border: solid 1px white;
+			margin: auto;
+			padding: 70px 20px;
+			background: #bbb;
+			color: white;
+		}
+
+			#Persoon .illustratie .geenplaatje:before {
+				padding-top: 3em;
+				content: "afbeelding niet beschikbaar"; 
+			}
+
+
+	#Persoon #bioinfo {
+		width: 550px;
+		float: left;
+	}
+
+		#Persoon #bioinfo h1 {
+			/*margin: -10px -10px 10px -10px;*/		
+			padding: 0 0 .5em 0;
+			background: white;
+		}
+
+		#Persoon #bioinfo h2 {
+			border-bottom: solid 1px #999;
+			padding: 0 0 .5em 0;
+		}
+
+		#Persoon #bioinfo ul, #Persoon #bioinfo li {
+			margin-left: 0;
+			list-style-type: none;
+		}
+
+		#Persoon #bioinfo th {
+			font-weight: bold;
+			text-align: left;
+			padding: .2em 2em .2em 0;
+			font-size: 1.1em;
+		}
+
+		#Persoon #bioinfo td {
+			font-weight: normal;
+			text-align: left;
+			padding: .2em 1em;
+		}
+
+		#Persoon #bioinfo td.datum {
+			text-align: right;
+		}
+
+		#Persoon #bioinfo .biography_reference {
+			display: list-item;
+			list-style-image: url(../images/square2.png);
+			margin: 1.5em 0 1.5em 1em;
+		}
+
+			#Persoon #bioinfo .biography_reference:hover {
+				background: #f6f6f6;
+			}
+
+
+	#Persoon .levensbeschrijvingen {
+		clear: both;
+		padding: 2em 0 0 0;
+	}
+
+		#Persoon .levensbeschrijvingen h2 {
+			color: #000;
+			padding: 0 0 .5em 0;
+			border-bottom: solid 1px #4F8FB7;
+		}
+
+
+	#Persoon .snippet {
+		width: auto;
+	}
+
+
+
+/* colofon etc. */
+	
+	#colcenter ul, .colcenter ul, #colleft ul, .colleft ul {
+		list-style-image: url(../images/square2.png);
+		margin: 1em 0em 1em 2em;
+	}
+
+
+/* contact */
+
+#Contact .widget img {
+	vertical-align: middle;
+	margin-left: 10px;
+}

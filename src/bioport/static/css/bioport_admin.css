@@ -1,0 +1,145 @@
+.message {
+    font-weight: bold;
+    color : red;
+}
+
+#content_box {
+    font-family: arial, sans-serif;
+    }
+#container_box {
+		background:#7894aa;
+		margin : 0;
+        padding : 0;
+	}
+
+
+table{
+	   border-collapse:collapse; 
+	   width:100%;
+    border-top : 1px solid #999;
+    margin-top : 1em;
+	   }
+
+th {
+    text-align : left;
+}  
+tr {
+    border-bottom : 1px solid #999;
+}
+th, td {
+    padding: .5em .5em .5em .5em;
+    vertical-align : top;
+}
+
+td ul {
+    padding-left : 1em;
+    margin-top : 0;
+    margin-bottom : 0;
+}
+form table {
+    margin-top : .5em;
+    margin-bottom : .5em;	
+	}
+form tr, form table {
+    border :0;
+	}
+
+form td, form th {
+    padding : 0em 0.3em 0.3em 0.3em;
+    vertical-align : top;
+}
+form th {
+    text-align :right;
+}
+
+form th.sublabel {
+	font-weight : normal;	
+}
+#content_box .separator hr {
+
+	background-color : #AAA;	
+	}
+a:hover {
+	text-decoration : underline;
+}
+.guess {
+    }
+    
+.sure {
+    color : black;
+} 
+.person_edit .info, .person .info h1, .person .info th, .person .info td {
+	font-size : 0.8em;
+        color : grey;
+}
+.person_edit .merged {
+        color : grey;
+}
+
+.person_edit .merged input, .person_edit .merged select {
+        color : grey;
+        
+}
+.person_edit .bioport {
+		color : black;
+
+}
+
+.person_edit form {
+	margin-top : 2em;
+	margin-bottom : 2em;
+}
+
+.person_edit table {
+	width : 100%;
+}
+.person_edit table th {
+	width : 130px;
+}
+
+li {
+	margin-bottom : .2em;
+	margin-top : .3em;
+}
+#content_box div#right_column {
+	position: absolute;
+    left:819px;
+    top:200px;
+}
+#content_box div#right_column .right_column_content {
+	display: inline;
+    float : left;
+    width:358px;
+	background-color : white;
+	border : 1px solid black;
+    padding : .6em;
+    margin-right: 1em;
+    margin-bottom: 1em;
+}
+div.row {
+	display : block;
+	}
+div.column_header {
+    display: inline;
+    font-weight : bold;
+    width : 20em;
+}
+div.table {
+    display : block;	
+	}
+div.cell, div.merged, div.bioport {
+    display: inline;
+}
+
+.grey, grey a {
+    color : grey;
+}
+
+span.accesskey {
+    text-decoration : underline;
+    font-style: normal;
+}
+
+.batch_navigation {
+    float : right;
+}

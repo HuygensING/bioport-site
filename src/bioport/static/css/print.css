@@ -1,0 +1,115 @@
+
+/* ============================================================
+	Biografisch Portaal Nederland
+	acdhirr@trilobiet.nl 2010
+	Print styles
+============================================================ */
+
+/* General */
+
+	body {
+		font-size: 9pt;
+		font-family: "Trebuchet MS", Verdana, Geneva, Arial, Helvetica, sans-serif;
+	}	
+
+	a.backbutton {
+		display: none;
+	}
+	
+	a, a.external_link, a.internal_link, a.back, a.more {
+		background: none;
+		padding: 0;
+	}
+
+	.textOnly {
+		display: inline !important;
+	}
+
+
+/* Layout */
+
+	#layHead {
+		background: url(../images/logobpn.png) no-repeat 0 0;
+		height: 78px;
+		width: 100%;	
+		margin-bottom: 1em;
+		padding-bottom: 1em;
+		border-bottom: solid 2px #DFBD48;
+	}
+
+		#layHead h2 {
+			display: none;	
+		}
+
+		#layHead #stats {
+			background: url(../images/book.jpg) no-repeat right center;
+			float: right;
+			font-size: 11px;
+			height: 70px;
+			line-height: 1.7em;
+			padding: 8px 92px 0 0;
+			text-align: right;
+			width: 300px;
+		}
+
+	#layMenu, #layFoot, .searchcontainer, form {
+		display: none;
+	}	
+
+	.colright, #colright {
+		display: none;
+	}
+
+	.colcenter, #colcenter {
+		width: auto;
+	}
+
+
+/* Index */
+
+	#photoframe img {
+		width: 3cm !important;
+		height: auto !important;
+		/* opacity: 1; no use setting opacity since it's overridden by script */
+	}
+
+
+/* Birthdays */
+
+	#Birthdays .colleft, #Birthdays .colright {
+		width: 100%;
+		float: none;
+		margin: 0 0 1em 0;
+		display: block !important; /* set to 'none' before */
+		clear: both;
+	}
+
+	#Birthdays .persoon {
+		clear: both;
+	}
+
+
+/* Persoon */
+
+	#Persoon .column_right {
+		clear: both;
+		float: none !important;
+		margin: auto;
+		width: 100% !important;
+		background: #eee;
+		text-align: center;
+	}
+
+	#Persoon .illustratie {
+		background: #eee;
+		float: none;
+		margin: .5cm 0;
+		text-align: center;
+		width: 100%;
+	}
+
+		#Persoon .illustratie img {
+			border: 1px solid white;
+			max-height: 8cm;
+			max-width: none;
+		}

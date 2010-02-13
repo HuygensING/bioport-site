@@ -53,15 +53,15 @@ class RepositoryView:
     def menu_items(self):
         return [
                 (self.application_url(), 'home'),
-                (self.url('zoek'), 'zoeken'),
-                (self.url('personen', data={'beginletter':'a'}), 'bladeren'),
-                (self.url('about'), 'project'),
-                (self.url('blog'), 'blog'),
-                (self.url('agenda'), 'agenda'),
+                (self.application_url('zoek'), 'zoeken'),
+                (self.application_url('personen') + '?beginletter=a', 'bladeren'),
+                (self.application_url('about'), 'project'),
+                (self.application_url('blog'), 'blog'),
+                (self.application_url('agenda'), 'agenda'),
 #                (self.url('colofon'), 'colofon'),
-                (self.url('links'), 'links'),
-                (self.url('faq'), 'faq'),
-                (self.url('contact'), 'contact'),
+                (self.application_url('links'), 'links'),
+                (self.application_url('faq'), 'faq'),
+                (self.application_url('contact'), 'contact'),
 #                (self.url('english'), 'english'),
         ]    
     def today(self):
@@ -93,6 +93,8 @@ class Bioport(grok.Application, grok.Container):
         from admin import Admin
         self['admin'] = Admin()
         self['admin'].DB_CONNECTION = db_connection
+        from biodes import BioDes
+        self['biodes'] = BioDes()
     
     def format_dates(self, s1, s2, **args):
         return  format_dates(s1, s2, **args)

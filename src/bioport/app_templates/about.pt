@@ -22,6 +22,7 @@
 	<li>
 	<a tal:attributes="href python:view.url('colofon')">colofon</a>
 	</li>
+	<li><a tal:attributes="href python:view.url('biodes')">BioDes</a></li>
 	</ul>
 </div>
 </div>

@@ -15,7 +15,7 @@
 	<meta name="author" content="">
 	<link rel="stylesheet" type="text/css"  tal:attributes="href static/bioport.css" />
 	<link rel="stylesheet" type="text/css"  tal:attributes="href static/bioport_admin.css" />
-	 <script type="text/javascript" tal:attributes="src static/jquery-1.3.2.js"></script>  
+	 <script type="text/javascript" tal:attributes="src static/js/jquery-1.4.1.min.js"></script>  
 
     <div metal:define-slot="extra_header_content" />
 </head>

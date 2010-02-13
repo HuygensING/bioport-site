@@ -29,6 +29,7 @@ class Admin(grok.Container  ):
     grok.require('bioport.Edit')
     grok.implements(IAdminSettings)
     grok.template('admin_index')
+    
     SVN_REPOSITORY = None
     SVN_REPOSITORY_LOCAL_COPY = None
     DB_CONNECTION = None
@@ -162,6 +163,11 @@ class Edit(grok.EditForm,RepositoryView):
     @grok.action('tmp_fix_weird_categeries')
     def tmp_fix_weird_categeries(self, **data):
         self.repository().db.tmp_fix_weird_categeries()
+        
+    @grok.action('add_biodes')
+    def add_biodes(self, **data):
+        from biodes import BioDes
+        self.__parent__.__parent__['biodes'] = BioDes()
         
 class Display(grok.DisplayForm):
     grok.require('bioport.Edit')

@@ -1,0 +1,159 @@
+
+/* ============================================================
+	Biografisch Portaal Nederland
+	acdhirr@trilobiet.nl 2010
+	Layout styles
+============================================================ */
+
+/* general ------------------------------------------------- */
+
+	.textOnly {
+		display: none;
+	}
+	
+	body {
+		margin: auto;
+		padding: 0;
+		font-size: 12px;
+		font-family: "Trebuchet MS", Verdana, Geneva, Arial, Helvetica, sans-serif;
+	}
+	
+		body.home {
+		}
+	
+/* header -------------------------------------------------- */
+
+	#layHead {
+		width: 920px;
+		height: 78px;
+		margin: 14px auto 0px auto;
+		background-repeat: no-repeat;
+	}
+	
+		#layHead h2 {
+			width: 242px;
+			height: 78px;
+			background: url(../images/logobpn.png) no-repeat;
+		}
+		
+		#layHead div#stats {
+			float: right;
+			height: 70px;
+			padding: 8px 92px 0 0;
+			font-size: 11px;
+			line-height: 1.7em;
+			margin: -78px 0 0 0;
+			text-align: right;
+			background: url(../images/book.jpg) no-repeat right;
+		}
+
+
+/* menu area ----------------------------------------------- */
+
+	#layMenu {
+		margin: 8px auto 0 auto;
+		width: 920px;
+		height: 26px;
+		background: url(../images/bgmenu.png) repeat-x #DEC34A;
+		color: black;
+		font-family: "trebuchet ms";
+		font-size: 11px;
+		text-transform:lowercase;
+	}
+
+		#layMenu ul {
+			list-style-type: none;
+			margin: 0;
+			padding: 0;
+		}
+	
+			#layMenu ul li {
+				overflow: hidden;
+				height: 26px;
+				padding: 7px 14px 0 14px;
+				border-style: solid;
+				border-color: white;
+				border-width: 0 1px 0 0;
+				float: left;
+			}
+	
+		#layMenu a {
+			color: #000;
+			font-size: 11px;
+			font-weight: bold;
+			text-decoration:none;
+		}	
+	
+			#layMenu a:hover {
+				color: #431;
+				text-decoration:underline;
+			}
+
+		#layMenu .search_form {
+			padding: 5px 12px 0 0;
+			margin: 0;
+			float: right;
+		}
+
+		#layMenu input {
+		}
+
+			#layMenu input[type='text'] {
+				border: solid 1px black;
+			}
+
+			#layMenu input[type='submit'] {
+				border: solid 1px black;
+				background: transparent;
+				color: black;  			
+			}
+
+			#layMenu input[type='submit']:hover {
+				background: #E3CD62;
+			}
+
+			
+
+
+/* content area -------------------------------------------- */	
+	
+	#layContent {
+		margin: 25px auto 0 auto;
+		width: 920px;
+	}
+
+		#layContent .main {
+			width: 525px;
+			float: left;
+		}
+		
+/* page foot ----------------------------------------------- */	
+	
+	#layFoot {
+		clear: both;
+		margin: 25px auto 0 auto;
+		padding: 20px 0;
+		width: 920px;
+		font-size: 1em;
+		text-align: center;
+		color: #777;
+	}
+
+		#layFoot hr.textOnly {
+			display: block; /* not so text-only after all... */
+			border-style: solid;
+			border-width: 1px 0 0 0;
+			height: 1px;
+			margin: 1em 0;
+		}
+	
+		#layFoot a {
+			color: #777;
+			text-decoration: none; 
+			margin-right:1em;
+		}
+
+			#layFoot a:hover {
+				color: #AC8426;
+			}
+

@@ -88,7 +88,8 @@
             tal:condition="states">
             <th>rubriek(en)</th>
             <td>
-                <li tal:repeat="state states" tal:content="state/text" />
+                <li tal:repeat="state states" 
+                    tal:content="python:view.repository().get_category(state.idno).name" />
 	        </td>
         </tr>
      </table>
