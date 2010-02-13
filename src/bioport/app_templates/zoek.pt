@@ -23,15 +23,24 @@
         
         <a class="tooltip_button"
             Onclick="jQuery('#tip_search_name').toggle(200)" class="toggle">[?]</a> 
-        <div class="tooltip" id="tip_search_name">Typ de naam of een gedeelte van de naam. Gebruik wildcards (? voor één teken, * voor één of 
-meer tekens) om spellingsvarianten te vinden. 'Ba?ker' levert 'Bakker' en 'Backer' op. 
-'Sevenhu*sen' levert 'Sevenhuijsen' en 'Sevenhuysen' op. Spellingsvarianten die veel 
-voorkomen zijn ae-aa, i-ie-y-ij, e-ee-ei-ey, c-k, s-sch, ch-g, s-z, etc.
-Tussenvoegsels (van, van der, de, ter) kunnen voor onduidelijkheid zorgen: voor Jan Denijs, 
-kijk ook op Jan de Nijs, voor Gesina ter Borch, kijk ook op Gesina Terborch, etc. 
-Ook voornamen komen in verschillende varianten voor: Catharina of Trijntje, Gerrit-Gerard, 
-Johannes-Jan, Adrianus-Adriaan, Charles-Karel.
+        <div class="tooltip" id="tip_search_name">
+        Typ de naam of een gedeelte van de naam.  
+       <br /> 
+        De zoekfunctie houdt rekening met spellingsvarianten (zoeken op 
+        <a href='./personen?search_name=uil'>uil</a> 
+        en 
+        <a href='./personen?search_name=uyl'>uyl</a> 
+        geeft hetzelfde resultaat).
+        Vindt u dat vervelend, gebruik dan dubbele aanhalingstekens om letterlijk 
+        <a href='./personen?search_name="uijl"'>"uijl"</a> 
+        te vinden.
+       <br /> 
+        Gebruik wildcards (? voor één teken, * voor één of 
+meer tekens) om spellingsvarianten te vinden: met 
+        <a href='./personen?search_name=seven*'>seven*</a> 
+ vindt u alle namen die met 'seven' beginnen. 
         <a class="tooltip_button_hide"
+        tal:condition="nothing"
         OnClick="jQuery('#tip_search_name').hide(200)">[verberg deze tekst]</a>
 </div>
     </td>
@@ -43,24 +52,14 @@ Johannes-Jan, Adrianus-Adriaan, Charles-Karel.
         <a class="tooltip_button"
             Onclick="jQuery('#tip_search_term').toggle(200)" class="toggle">[?]</a> 
         <div class="tooltip" id="tip_search_term">
-        <p>
-U kunt vrij zoeken op woord(en) in het gehele portaal. Bedenk wel dat u waarschijnlijk heel 
-veel treffers gaat krijgen. U kunt deze zoekacties specificeren met AND, OR of NOT.
-        </p>
-<p>
-AND:
-u vindt alleen de bladzijden waar beide woorden voorkomen
-        </p>
-        <p>
-OR:
-u vindt de bladzijden waar óf het ene, óf het andere woord voorkomt
-        </p>
-        <p>
-NOT:
-u vindt de bladzijden waar wél het ene, níet het andere woord voorkomt.
+U kunt vrij zoeken op woord(en) in de tekst van de biografieën. 
+<br/>
+De tekst waarin u zoekt komt uit de opgenomen bronnen. De kwaliteit daarvan is niet altijd even goed - in sommige gevallen 
+betreft het OCR tekst, en soms is niet de tekst van de gehele biografie in onze index opgenomen.
+
         <a class="tooltip_button_hide"
+        tal:condition="nothing"
         OnClick="jQuery('#tip_search_term').hide(200)">[verberg deze tekst]</a>
-        </p>
         </div>
 </tr>
 <tr>
@@ -155,8 +154,10 @@ u vindt de bladzijden waar wél het ene, níet het andere woord voorkomt.
 <h2>
 Disclaimer:
 </h2>
-<p>
-NB. Alle personen die in het Biografisch Portaal staan, zijn vindbaar op naam. Voor de overige zoekmogelijkheden geldt de waarschuwing dat dit ‘work in progress’ is: de resultaten zijn onvolledig omdat structurele gegevens (‘metadata’) nog niet volledig zijn ingevuld. Er wordt hard aan gewerkt om de leemtes op te vullen.
+<p metal:define-macro="disclaimer_tekst">
+NB. Alle personen die in het Biografisch Portaal staan, zijn vindbaar op naam. 
+Voor de overige zoekmogelijkheden geldt de waarschuwing dat dit ‘work in progress’ is: de resultaten zijn onvolledig omdat structurele gegevens (‘metadata’) nog niet volledig zijn ingevuld. 
+Er wordt hard aan gewerkt om de leemtes op te vullen.
 </p>
 
 </div>
