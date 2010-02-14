@@ -201,7 +201,6 @@ class Source(grok.EditForm,RepositoryView):
     grok.require('bioport.Edit')
 
     def update(self, source_id=None):
-        print 'call update'
         repository = self.repository()
         self.source =repository.get_source(source_id) 
     @grok.action('Save settings', name='save_settings')    

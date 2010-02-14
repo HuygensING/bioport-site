@@ -98,6 +98,8 @@
     <hr />
     <div tal:repeat="biography view/person/get_biographies" tal:omit-tag="">
     <div
+        tal:define="url python:biography.get_value('url_biografie')"
+	   tal:attributes="OnClick string:window.open('${url}')"
         class="biography_reference"
         tal:condition="python:biography.source_id != 'bioport'">
         Biografie
@@ -108,7 +110,7 @@
         </span>
         <span>
 			in  <a 
-            tal:attributes="href python:biography.get_value('url_biografie')"
+            tal:attributes="href url"
 			     class="external_link"
 			     target="_blank"
                     tal:content="python:biography.get_source().description"></a>
@@ -117,7 +119,7 @@
     		tal:define="snippet biography/snippet"
             tal:condition="snippet">
              <span tal:replace="structure snippet" />
-             <a  tal:attributes="href python:biography.get_value('url_biografie')"
+             <a  tal:attributes="href url"
              target="_blank"
                 class="external_link">meer...</a>
            </div>

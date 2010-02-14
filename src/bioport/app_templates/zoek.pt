@@ -155,8 +155,8 @@ betreft het OCR tekst, en soms is niet de tekst van de gehele biografie in onze 
 Disclaimer
 </h2>
 <p metal:define-macro="disclaimer_tekst">
-NB. Alle personen die in het Biografisch Portaal staan, zijn vindbaar op naam. 
-Voor de overige zoekmogelijkheden geldt de waarschuwing dat dit ‘work in progress’ is: de resultaten zijn onvolledig
+NB. Alle personen die in het Biografisch Portaal staan, zijn vindbaar op naam en bron. 
+Voor de overige zoekmogelijkheden geldt de waarschuwing dat de de resultaten onvolledig zijn,
  omdat persoonsgegevens (nog) niet bij alle personen zijn ingevuld. 
 Er wordt hard aan gewerkt om de leemtes op te vullen.
 </p>
