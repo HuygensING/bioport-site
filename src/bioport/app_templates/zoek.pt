@@ -19,7 +19,7 @@
     <th>zoeken op naam</th>
     <td>
         <input type="text" name="search_name" 
-            tal:attributes="value request/search_name | nothing" />
+            tal:attributes="value python:unicode(request.get('search_name', '')" />
         
         <a class="tooltip_button"
             Onclick="jQuery('#tip_search_name').toggle(200)" class="toggle">[?]</a> 
@@ -48,7 +48,8 @@ meer tekens) om spellingsvarianten te vinden: met
 <tr>
     <th>vrij zoeken in tekst</th>
     <td>
-        <input type="text" name="search_term" tal:attributes="value request/search_term | nothing" />
+        <input type="text" name="search_term" 
+            tal:attributes="value python:unicode(request.get('search_term', '')" />
         <a class="tooltip_button"
             Onclick="jQuery('#tip_search_term').toggle(200)" class="toggle">[?]</a> 
         <div class="tooltip" id="tip_search_term">

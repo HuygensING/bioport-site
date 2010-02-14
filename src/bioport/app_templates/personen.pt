@@ -33,7 +33,7 @@
 		</span>
 		</div>
 	</div>
-	<div id="search_form" style="display:None" tal:condition="nothing">
+	<div id="search_form" style="display:None" >
 		<form metal:use-macro="context/@@zoek/macros/search_form"></form>
 	</div>
     <div class="prev_next_navigation"	
