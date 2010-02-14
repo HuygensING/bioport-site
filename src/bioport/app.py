@@ -157,6 +157,7 @@ class Personen(BioPortTraverser,grok.View,RepositoryView, Batcher):
             'category',
             'geboortejaar_min',
             'geboortejaar_max',
+            'geboorteplaats',
             'geslacht',
 #        has_illustrations=None, #boolean: does this person have illustrations?
 #        is_identified=None,
@@ -170,6 +171,7 @@ class Personen(BioPortTraverser,grok.View,RepositoryView, Batcher):
             'status',
             'sterfjaar_min', 
             'sterfjaar_max',
+            'sterfplaats',
 #        start=None,
 #        size=None,
              ]:
@@ -227,7 +229,7 @@ class Personen(BioPortTraverser,grok.View,RepositoryView, Batcher):
             elif geboortejaar_max:
                 result += ' voor %s' % geboortejaar_min
             if geboorteplaats:
-                result += ' in  %s' % geboorteplaats
+                result += ' in  <em>%s</em>' % geboorteplaats
                 
         sterfjaar_min = request.get('sterfjaar_min')
         sterfjaar_max = request.get('sterfjaar_max')
@@ -241,7 +243,7 @@ class Personen(BioPortTraverser,grok.View,RepositoryView, Batcher):
             elif sterfjaar_max:
                 result += ' voor %s' % geboortejaar_min
             if sterfplaats:
-                result += ' in  %s' % sterfplaats
+                result += ' in <em>%s</em>' % sterfplaats
                 
         if request.get('source_id'):
             result += ' uit <em>%s</em>' % self.repository().get_source(request.get('source_id')).description

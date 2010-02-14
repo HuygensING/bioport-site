@@ -19,7 +19,7 @@
     <th>zoeken op naam</th>
     <td>
         <input type="text" name="search_name" 
-            tal:attributes="value python:unicode(request.get('search_name', '')" />
+            tal:attributes="value python:unicode(request.get('search_name', ''))" />
         
         <a class="tooltip_button"
             Onclick="jQuery('#tip_search_name').toggle(200)" class="toggle">[?]</a> 
@@ -49,7 +49,7 @@ meer tekens) om spellingsvarianten te vinden: met
     <th>vrij zoeken in tekst</th>
     <td>
         <input type="text" name="search_term" 
-            tal:attributes="value python:unicode(request.get('search_term', '')" />
+            tal:attributes="value python:unicode(request.get('search_term', ''))" />
         <a class="tooltip_button"
             Onclick="jQuery('#tip_search_term').toggle(200)" class="toggle">[?]</a> 
         <div class="tooltip" id="tip_search_term">
@@ -73,7 +73,7 @@ betreft het OCR tekst, en soms is niet de tekst van de gehele biografie in onze 
             tal:attributes="value python:request.get('geboortejaar_max')" />
         in 
         <input type="text" size="20" name="geboorteplaats"
-            tal:attributes="value python:request.get('geboorteplaats')" />
+            tal:attributes="value python:unicode(request.get('geboorteplaats', ''))" />
         <a class="tooltip_button"
             Onclick="jQuery('#tip_birth').toggle(200)" class="toggle">[?]</a> 
         <div id="tip_birth" class="tooltip">
@@ -91,7 +91,7 @@ betreft het OCR tekst, en soms is niet de tekst van de gehele biografie in onze 
             tal:attributes="value python:request.get('sterfjaar_max')" />
         in 
         <input type="text" size="20" name="sterfplaats" 
-            tal:attributes="value python:request.get('sterfplaats')" />
+            tal:attributes="value python:unicode(request.get('sterfplaats', ''))" />
         <a class="tooltip_button"
             Onclick="jQuery('#tip_death').toggle(200)" class="toggle">[?]</a> 
         <div id="tip_death" class="tooltip">
@@ -151,16 +151,17 @@ betreft het OCR tekst, en soms is niet de tekst van de gehele biografie in onze 
 </td>
 </tr>
 </table>
-</form>
 <h2>
-Disclaimer:
+Disclaimer
 </h2>
 <p metal:define-macro="disclaimer_tekst">
 NB. Alle personen die in het Biografisch Portaal staan, zijn vindbaar op naam. 
-Voor de overige zoekmogelijkheden geldt de waarschuwing dat dit ‘work in progress’ is: de resultaten zijn onvolledig omdat structurele gegevens (‘metadata’) nog niet volledig zijn ingevuld. 
+Voor de overige zoekmogelijkheden geldt de waarschuwing dat dit ‘work in progress’ is: de resultaten zijn onvolledig
+ omdat persoonsgegevens (nog) niet bij alle personen zijn ingevuld. 
 Er wordt hard aan gewerkt om de leemtes op te vullen.
 </p>
 
+</form>
 </div>
 </div>
 </html>
