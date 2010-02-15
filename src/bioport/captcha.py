@@ -33,11 +33,20 @@ class CaptchaWidget(TextWidget):
     def __call__(self):
         original_widget = super(CaptchaWidget, self).__call__()
         old_captcha = self.request.form.get('captcha_text', None)
+        new_captcha_needed = True
         if old_captcha:
-            enc_value = old_captcha
-        else:
+            try:
+                self.getInputValue()
+                # No error in the previous statement means that the user has already
+                # submitted a succesful captcha. No need to return a new one.
+                new_captcha_needed = False
+            except:
+                pass
+        if new_captcha_needed:
             solution = get_random_sequence()
             enc_value = encrypt(ENCRYPTION_KEY, solution)
+        else:
+            enc_value = old_captcha
         base_url = self.application_url()
         image_url = base_url + '/captcha_image?' + urlencode({'key':enc_value})
         my_widget = original_widget 
