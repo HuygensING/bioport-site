@@ -6,5 +6,5 @@ When you create an instance there are no objects in it::
 
    >>> from bioport.app import Bioport
    >>> grokapp = Bioport()
-   >>> list(grokapp.keys())
-   [u'admin']
+   >>> sorted(list(grokapp.keys()))
+   [u'admin', u'biodes']
