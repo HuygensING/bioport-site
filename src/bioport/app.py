@@ -60,7 +60,7 @@ class RepositoryView:
                 (self.application_url('agenda'), 'agenda'),
 #                (self.url('colofon'), 'colofon'),
                 (self.application_url('links'), 'links'),
-                (self.application_url('faq'), 'faq'),
+                (self.application_url('faq'), 'vragen'),
                 (self.application_url('contact'), 'contact'),
 #                (self.url('english'), 'english'),
         ]    
