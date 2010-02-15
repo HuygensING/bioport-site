@@ -32,6 +32,7 @@ setup(name='bioport',
                         'python-Levenshtein',
                         'zope.sendmail==3.5',
                         'captchaimage', # This probably requires libfreetype-dev
+                        'FormEncode',
                         # Add extra requirements here
                         ],
       entry_points = """
