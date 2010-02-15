@@ -1,0 +1,359 @@
+#
+# BIODES 
+# version: 1.0
+# date: 2009-04-06
+# url: http:/www.biografischportaal.nl/biodes
+# author: Jelle Gerbrandy (http://www.gerbrandy.com)
+#
+# [the definitions of the form tei_* are loosely based on TEI P5, http://www.tei-c.org/Guidelines/P5/]
+# 
+#
+
+start = biodes 
+
+biodes =
+  element biodes {
+    attribute version { xsd:decimal }?,
+    (
+    tei_fileDesc,
+    tei_person,
+    biodes_biography?
+    )
+  }
+
+tei_availability =
+  ## supplies information about the availability of a text, for
+  ##   example any restrictions on its use or distribution, its copyright
+  ##   status, etc.
+  element availability {
+     attribute status { "free" | "unknown" | "restricted" }?,
+     text
+     }
+
+tei_bibl =
+  ## (bibliographic citation) contains a loosely-structured bibliographic citation of which the sub-components may or may
+  ##     not be explicitly tagged. 
+  element bibl {
+    (text
+     | tei_title
+     | tei_author
+     | tei_date
+     | tei_persName
+     | tei_place
+     | element publisher {text}
+     | tei_ref
+     | tei_idno
+     )*,
+    empty
+  }
+
+biodes_biography = element biography { tei_graphic*, tei_text*  }
+
+tei_fileDesc =
+  element fileDesc {
+     (
+     tei_idno?,
+     tei_title?,
+     tei_author*,
+     tei_ref,
+     tei_date?,
+     tei_revisionDesc?,
+     tei_publisher,
+     tei_availability?,
+     tei_bibl?,
+     empty
+     ),
+    empty
+  }
+
+tei_graphic =
+  ## indicates the location of an inline graphic, illustration, or figure.
+  element graphic {
+    ## (uniform resource locator) A URL which refers to the image itself.
+    attribute url { xsd:anyURI }?,
+    att.internetMedia.attributes, 
+    empty
+  }
+
+tei_idno =
+    element idno {
+    text,
+    attribute type { xsd:Name }?,
+    empty
+  }
+
+tei_author = element author { text }
+
+tei_title = element title { text }
+
+tei_ref =
+  ## (reference) defines a reference to another location, possibly modified by additional text or comment.
+  element ref {
+    text,
+    ## specifies the destination of the reference by supplying one or more URI References
+    attribute target {
+      list { xsd:anyURI+ }
+    }?,
+    empty
+  }
+
+tei_text = element text { 
+    att.global.attribute.xmllang,
+    text  
+    }
+
+tei_change =
+  ## summarizes a particular change or correction made
+  ## to a particular version of an electronic text which is
+  ## shared between several researchers.
+  element change {
+    text,
+    ## supplies the date of the change in standard form, i.e. YYYY-MM-DD.
+    attribute when {
+      xsd:date
+      | xsd:gYear
+      | xsd:gMonth
+      | xsd:gDay
+      | xsd:gYearMonth
+      | xsd:gMonthDay
+      | xsd:time
+      | xsd:dateTime
+    }?,
+    empty
+  }
+
+
+biodes_name = element name {
+    attribute type { "prepositie" | "voornaam" | "intrapositie" | "geslachtsnaam" | "postpositie" }?,
+    text
+}
+tei_publisher =
+  element publisher {
+    element name {text} , 
+    tei_ref ,
+    empty
+  }
+
+tei_revisionDesc =
+  ## (revision description) summarizes the revision history for a file.
+  element revisionDesc { 
+    tei_change+, 
+    empty 
+    }
+
+
+tei_person =
+  ## provides information about an identifiable individual, for example a participant in a language interaction, or a person referred to in a
+  ##     historical source.
+  element person {
+    (
+     tei_idno*,
+     tei_persName+,
+     tei_sex?,
+     tei_event*,
+     tei_state*,
+     tei_person*,
+     tei_relation*,
+     empty
+     ),
+    att.global.attributes,
+    att.global.attribute.xmllang,
+    empty
+  }
+
+tei_persName =
+  element persName {
+    (biodes_name | text)*,
+    att.datable.attributes,
+    empty
+  } 
+
+tei_state =
+  ## contains a description of some status or quality
+  ## attributed to a person, place, or organization at some specific time.
+  element state {
+    text,
+    att.datable.attributes,
+    att.typed.attributes,
+    empty
+  }
+
+tei_sex =
+  ## specifies the sex of a person.
+  element sex {
+    att.datable.attributes,
+    attribute value { "0" | "1" | "2" | "9" }?,
+    text,    
+    empty
+  }
+
+tei_event =
+  ## (event) contains data relating to any kind of significant event associated with a person, place, or
+  ##     organization.
+  element event {
+    text,  
+    tei_place?,
+    text,
+    att.datable.attributes,
+    att.typed.attributes,
+    empty
+  }
+
+tei_place =
+  ## contains data about a geographic location
+  element place {
+    text,
+    empty
+  }
+
+tei_relation =
+  ## (relationship) describes any kind of relationship or linkage amongst a specified
+  ## group of participants.
+  element relation {
+    text,
+    att.datable.attributes,
+    ## supplies a name for the kind of  relationship of which
+    ##	this is an instance.
+    attribute name { xsd:Name },
+    
+    ## identifies the passive participants in a non-mutual
+    ## relationship.
+    attribute passive {
+      list { xsd:anyURI+ }
+    }?,
+    (
+     ## identifies the active participants in a non-mutual
+     ## relationship, or all the participants in a mutual one.
+     attribute active {
+       list { xsd:anyURI+ }
+     }?
+     | 
+       ## supplies a list of participants amongst all of whom the relationship holds equally.
+       attribute mutual {
+         list { xsd:anyURI+ }
+       }?),
+    empty
+  }
+
+tei_date =
+  ## contains a date in any format.
+  element date {
+    text,
+    att.datable.attributes,
+    empty
+  }
+
+att.global.attributes =
+  att.global.attribute.xmlid,
+  empty
+
+att.global.attribute.xmllang =
+  ## (language) indicates the language of the element content using a
+  ##       tag generated according to BCP 47
+  attribute xml:lang { xsd:language }?
+
+att.global.attribute.xmlid =
+  ## (identifier) provides a unique identifier for the element bearing the
+  ##       attribute.
+  attribute xml:id { xsd:ID }?
+
+att.datable.attributes =
+  att.datable.w3c.attributes, 
+  empty
+
+att.datable.w3c.attributes =
+#  att.datable.w3c.attribute.period,
+  att.datable.w3c.attribute.when,
+  att.datable.w3c.attribute.notBefore,
+  att.datable.w3c.attribute.notAfter,
+  att.datable.w3c.attribute.from,
+  att.datable.w3c.attribute.to,
+  empty
+
+att.datable.w3c.attribute.when =
+  ## supplies the value of the date or time in a standard form,
+  ##       e.g. yyyy-mm-dd.
+  attribute when {
+    xsd:date
+    | xsd:gYear
+    | xsd:gMonth
+    | xsd:gDay
+    | xsd:gYearMonth
+    | xsd:gMonthDay
+    | xsd:time
+    | xsd:dateTime
+  }?
+att.datable.w3c.attribute.notBefore =
+  
+  ## specifies the earliest possible date for the event in
+  ##	  standard form, e.g. yyyy-mm-dd.
+  attribute notBefore {
+    xsd:date
+    | xsd:gYear
+    | xsd:gMonth
+    | xsd:gDay
+    | xsd:gYearMonth
+    | xsd:gMonthDay
+    | xsd:time
+    | xsd:dateTime
+  }?
+
+att.datable.w3c.attribute.notAfter =
+  ## specifies the latest possible date for the event in
+  ##	  standard form, e.g. yyyy-mm-dd.
+  attribute notAfter {
+    xsd:date
+    | xsd:gYear
+    | xsd:gMonth
+    | xsd:gDay
+    | xsd:gYearMonth
+    | xsd:gMonthDay
+    | xsd:time
+    | xsd:dateTime
+  }?
+
+att.datable.w3c.attribute.from =
+  ## indicates the starting point of the period in standard form, e.g. yyyy-mm-dd.
+  attribute from {
+    xsd:date
+    | xsd:gYear
+    | xsd:gMonth
+    | xsd:gDay
+    | xsd:gYearMonth
+    | xsd:gMonthDay
+    | xsd:time
+    | xsd:dateTime
+  }?
+
+att.datable.w3c.attribute.to =
+  ## indicates the ending point of the period in standard
+  ##	  form, e.g. yyyy-mm-dd.
+  attribute to {
+    xsd:date
+    | xsd:gYear
+    | xsd:gMonth
+    | xsd:gDay
+    | xsd:gYearMonth
+    | xsd:gMonthDay
+    | xsd:time
+    | xsd:dateTime
+  }?
+
+att.internetMedia.attributes =
+  att.internetMedia.attribute.mimeType, empty
+
+att.internetMedia.attribute.mimeType =
+  ## (MIME media type) specifies the applicable multimedia internet mail extension (MIME) media type
+  attribute mimeType {
+    xsd:token { pattern = "(\p{L}|\p{N}|\p{P}|\p{S})+" }
+  }?
+
+
+att.typed.attributes =
+  att.typed.attribute.type
+att.typed.attribute.type =
+  ## characterizes the element in some sense, using any convenient
+  ##  classification scheme or typology.
+  attribute type { xsd:Name }?
+
+

@@ -1,0 +1,416 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+  <xs:import namespace="http://www.w3.org/XML/1998/namespace" schemaLocation="xml.xsd"/>
+  <!--
+    
+    BIODES 
+    version: 1.0
+    date: 2009-04-06
+    url: http:/www.biografischportaal.nl/biodes
+    author: Jelle Gerbrandy (http://www.gerbrandy.com)
+    
+    [the definitions of the form tei_* are loosely based on TEI P5, http://www.tei-c.org/Guidelines/P5/]
+    
+    
+  -->
+  <xs:element name="biodes">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="fileDesc"/>
+        <xs:element ref="person"/>
+        <xs:element minOccurs="0" ref="biography"/>
+      </xs:sequence>
+      <xs:attribute name="version" type="xs:decimal"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="availability">
+    <xs:annotation>
+      <xs:documentation>supplies information about the availability of a text, for
+  example any restrictions on its use or distribution, its copyright
+  status, etc.</xs:documentation>
+    </xs:annotation>
+    <xs:complexType mixed="true">
+      <xs:attribute name="status">
+        <xs:simpleType>
+          <xs:restriction base="xs:token">
+            <xs:enumeration value="free"/>
+            <xs:enumeration value="unknown"/>
+            <xs:enumeration value="restricted"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="bibl">
+    <xs:annotation>
+      <xs:documentation>(bibliographic citation) contains a loosely-structured bibliographic citation of which the sub-components may or may
+    not be explicitly tagged. </xs:documentation>
+    </xs:annotation>
+    <xs:complexType mixed="true">
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="title"/>
+        <xs:element ref="author"/>
+        <xs:element ref="date"/>
+        <xs:element ref="persName"/>
+        <xs:element ref="place"/>
+        <xs:element name="publisher" type="xs:string"/>
+        <xs:element ref="ref"/>
+        <xs:element ref="idno"/>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="biography">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="graphic"/>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="text"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="fileDesc">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" ref="idno"/>
+        <xs:element minOccurs="0" ref="title"/>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="author"/>
+        <xs:element ref="ref"/>
+        <xs:element minOccurs="0" ref="date"/>
+        <xs:element minOccurs="0" ref="revisionDesc"/>
+        <xs:element ref="publisher"/>
+        <xs:element minOccurs="0" ref="availability"/>
+        <xs:element minOccurs="0" ref="bibl"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="graphic">
+    <xs:annotation>
+      <xs:documentation>indicates the location of an inline graphic, illustration, or figure.</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:attribute name="url" type="xs:anyURI">
+        <xs:annotation>
+          <xs:documentation>(uniform resource locator) A URL which refers to the image itself.</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attributeGroup ref="att.internetMedia.attributes"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="idno">
+    <xs:complexType mixed="true">
+      <xs:attribute name="type" type="xs:Name"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="author" type="xs:string"/>
+  <xs:element name="title" type="xs:string"/>
+  <xs:element name="ref">
+    <xs:annotation>
+      <xs:documentation>(reference) defines a reference to another location, possibly modified by additional text or comment.</xs:documentation>
+    </xs:annotation>
+    <xs:complexType mixed="true">
+      <xs:attribute name="target">
+        <xs:annotation>
+          <xs:documentation>specifies the destination of the reference by supplying one or more URI References</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:simpleType>
+              <xs:list itemType="xs:anyURI"/>
+            </xs:simpleType>
+            <xs:minLength value="1"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="text">
+    <xs:complexType mixed="true">
+      <xs:attributeGroup ref="att.global.attribute.xmllang"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="change">
+    <xs:annotation>
+      <xs:documentation>summarizes a particular change or correction made
+to a particular version of an electronic text which is
+shared between several researchers.</xs:documentation>
+    </xs:annotation>
+    <xs:complexType mixed="true">
+      <xs:attribute name="when">
+        <xs:annotation>
+          <xs:documentation>supplies the date of the change in standard form, i.e. YYYY-MM-DD.</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:union memberTypes="xs:date xs:gYear xs:gMonth xs:gDay xs:gYearMonth xs:gMonthDay xs:time xs:dateTime"/>
+        </xs:simpleType>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="name">
+    <xs:complexType mixed="true">
+      <xs:attribute name="type">
+        <xs:simpleType>
+          <xs:restriction base="xs:token">
+            <xs:enumeration value="prepositie"/>
+            <xs:enumeration value="voornaam"/>
+            <xs:enumeration value="intrapositie"/>
+            <xs:enumeration value="geslachtsnaam"/>
+            <xs:enumeration value="postpositie"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="publisher">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="name" type="xs:string"/>
+        <xs:element ref="ref"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="revisionDesc">
+    <xs:annotation>
+      <xs:documentation>(revision description) summarizes the revision history for a file.</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" ref="change"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="person">
+    <xs:annotation>
+      <xs:documentation>provides information about an identifiable individual, for example a participant in a language interaction, or a person referred to in a
+    historical source.</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="idno"/>
+        <xs:element maxOccurs="unbounded" ref="persName"/>
+        <xs:element minOccurs="0" ref="sex"/>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="event"/>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="state"/>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="person"/>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="relation"/>
+      </xs:sequence>
+      <xs:attributeGroup ref="att.global.attributes"/>
+      <xs:attributeGroup ref="att.global.attribute.xmllang"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="persName">
+    <xs:complexType mixed="true">
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="name"/>
+      </xs:sequence>
+      <xs:attributeGroup ref="att.datable.attributes"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="state">
+    <xs:annotation>
+      <xs:documentation>contains a description of some status or quality
+attributed to a person, place, or organization at some specific time.</xs:documentation>
+    </xs:annotation>
+    <xs:complexType mixed="true">
+      <xs:attributeGroup ref="att.datable.attributes"/>
+      <xs:attributeGroup ref="att.typed.attributes"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="sex">
+    <xs:annotation>
+      <xs:documentation>specifies the sex of a person.</xs:documentation>
+    </xs:annotation>
+    <xs:complexType mixed="true">
+      <xs:attributeGroup ref="att.datable.attributes"/>
+      <xs:attribute name="value">
+        <xs:simpleType>
+          <xs:restriction base="xs:token">
+            <xs:enumeration value="0"/>
+            <xs:enumeration value="1"/>
+            <xs:enumeration value="2"/>
+            <xs:enumeration value="9"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="event">
+    <xs:annotation>
+      <xs:documentation>(event) contains data relating to any kind of significant event associated with a person, place, or
+    organization.</xs:documentation>
+    </xs:annotation>
+    <xs:complexType mixed="true">
+      <xs:sequence>
+        <xs:element minOccurs="0" ref="place"/>
+      </xs:sequence>
+      <xs:attributeGroup ref="att.datable.attributes"/>
+      <xs:attributeGroup ref="att.typed.attributes"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="place" type="xs:string">
+    <xs:annotation>
+      <xs:documentation>contains data about a geographic location</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="relation">
+    <xs:annotation>
+      <xs:documentation>(relationship) describes any kind of relationship or linkage amongst a specified
+group of participants.</xs:documentation>
+    </xs:annotation>
+    <xs:complexType mixed="true">
+      <xs:attributeGroup ref="att.datable.attributes"/>
+      <xs:attribute name="name" use="required" type="xs:Name">
+        <xs:annotation>
+          <xs:documentation>supplies a name for the kind of  relationship of which
+	this is an instance.</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="passive">
+        <xs:annotation>
+          <xs:documentation>identifies the passive participants in a non-mutual
+relationship.</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:simpleType>
+              <xs:list itemType="xs:anyURI"/>
+            </xs:simpleType>
+            <xs:minLength value="1"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute name="active">
+        <xs:annotation>
+          <xs:documentation>identifies the active participants in a non-mutual
+relationship, or all the participants in a mutual one.</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:simpleType>
+              <xs:list itemType="xs:anyURI"/>
+            </xs:simpleType>
+            <xs:minLength value="1"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute name="mutual">
+        <xs:annotation>
+          <xs:documentation>supplies a list of participants amongst all of whom the relationship holds equally.</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction>
+            <xs:simpleType>
+              <xs:list itemType="xs:anyURI"/>
+            </xs:simpleType>
+            <xs:minLength value="1"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="date">
+    <xs:annotation>
+      <xs:documentation>contains a date in any format.</xs:documentation>
+    </xs:annotation>
+    <xs:complexType mixed="true">
+      <xs:attributeGroup ref="att.datable.attributes"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:attributeGroup name="att.global.attributes">
+    <xs:attributeGroup ref="att.global.attribute.xmlid"/>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="att.global.attribute.xmllang">
+    <xs:attribute ref="xml:lang"/>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="att.global.attribute.xmlid">
+    <xs:attribute ref="xml:id"/>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="att.datable.attributes">
+    <xs:attributeGroup ref="att.datable.w3c.attributes"/>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="att.datable.w3c.attributes">
+    <xs:attributeGroup ref="att.datable.w3c.attribute.when"/>
+    <xs:attributeGroup ref="att.datable.w3c.attribute.notBefore"/>
+    <xs:attributeGroup ref="att.datable.w3c.attribute.notAfter"/>
+    <xs:attributeGroup ref="att.datable.w3c.attribute.from"/>
+    <xs:attributeGroup ref="att.datable.w3c.attribute.to"/>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="att.datable.w3c.attribute.when">
+    <xs:attribute name="when">
+      <xs:annotation>
+        <xs:documentation>supplies the value of the date or time in a standard form,
+      e.g. yyyy-mm-dd.</xs:documentation>
+      </xs:annotation>
+      <xs:simpleType>
+        <xs:union memberTypes="xs:date xs:gYear xs:gMonth xs:gDay xs:gYearMonth xs:gMonthDay xs:time xs:dateTime"/>
+      </xs:simpleType>
+    </xs:attribute>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="att.datable.w3c.attribute.notBefore">
+    <xs:attribute name="notBefore">
+      <xs:annotation>
+        <xs:documentation>specifies the earliest possible date for the event in
+	  standard form, e.g. yyyy-mm-dd.</xs:documentation>
+      </xs:annotation>
+      <xs:simpleType>
+        <xs:union memberTypes="xs:date xs:gYear xs:gMonth xs:gDay xs:gYearMonth xs:gMonthDay xs:time xs:dateTime"/>
+      </xs:simpleType>
+    </xs:attribute>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="att.datable.w3c.attribute.notAfter">
+    <xs:attribute name="notAfter">
+      <xs:annotation>
+        <xs:documentation>specifies the latest possible date for the event in
+	  standard form, e.g. yyyy-mm-dd.</xs:documentation>
+      </xs:annotation>
+      <xs:simpleType>
+        <xs:union memberTypes="xs:date xs:gYear xs:gMonth xs:gDay xs:gYearMonth xs:gMonthDay xs:time xs:dateTime"/>
+      </xs:simpleType>
+    </xs:attribute>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="att.datable.w3c.attribute.from">
+    <xs:attribute name="from">
+      <xs:annotation>
+        <xs:documentation>indicates the starting point of the period in standard form, e.g. yyyy-mm-dd.</xs:documentation>
+      </xs:annotation>
+      <xs:simpleType>
+        <xs:union memberTypes="xs:date xs:gYear xs:gMonth xs:gDay xs:gYearMonth xs:gMonthDay xs:time xs:dateTime"/>
+      </xs:simpleType>
+    </xs:attribute>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="att.datable.w3c.attribute.to">
+    <xs:attribute name="to">
+      <xs:annotation>
+        <xs:documentation>indicates the ending point of the period in standard
+	  form, e.g. yyyy-mm-dd.</xs:documentation>
+      </xs:annotation>
+      <xs:simpleType>
+        <xs:union memberTypes="xs:date xs:gYear xs:gMonth xs:gDay xs:gYearMonth xs:gMonthDay xs:time xs:dateTime"/>
+      </xs:simpleType>
+    </xs:attribute>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="att.internetMedia.attributes">
+    <xs:attributeGroup ref="att.internetMedia.attribute.mimeType"/>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="att.internetMedia.attribute.mimeType">
+    <xs:attribute name="mimeType">
+      <xs:annotation>
+        <xs:documentation>(MIME media type) specifies the applicable multimedia internet mail extension (MIME) media type</xs:documentation>
+      </xs:annotation>
+      <xs:simpleType>
+        <xs:restriction base="xs:token">
+          <xs:pattern value="(\p{L}|\p{N}|\p{P}|\p{S})+"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="att.typed.attributes">
+    <xs:attributeGroup ref="att.typed.attribute.type"/>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="att.typed.attribute.type">
+    <xs:attribute name="type" type="xs:Name">
+      <xs:annotation>
+        <xs:documentation>characterizes the element in some sense, using any convenient
+ classification scheme or typology.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:attributeGroup>
+</xs:schema>

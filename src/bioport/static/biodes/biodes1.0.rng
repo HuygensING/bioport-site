@@ -1,0 +1,529 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<grammar xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0" xmlns="http://relaxng.org/ns/structure/1.0" datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes">
+  <!--
+    
+    BIODES 
+    version: 1.0
+    date: 2009-04-06
+    url: http:/www.biografischportaal.nl/biodes
+    author: Jelle Gerbrandy (http://www.gerbrandy.com)
+    
+    [the definitions of the form tei_* are loosely based on TEI P5, http://www.tei-c.org/Guidelines/P5/]
+    
+    
+  -->
+  <start>
+    <ref name="biodes"/>
+  </start>
+  <define name="biodes">
+    <element name="biodes">
+      <optional>
+        <attribute name="version">
+          <data type="decimal"/>
+        </attribute>
+      </optional>
+      <group>
+        <ref name="tei_fileDesc"/>
+        <ref name="tei_person"/>
+        <optional>
+          <ref name="biodes_biography"/>
+        </optional>
+      </group>
+    </element>
+  </define>
+  <define name="tei_availability">
+    <element name="availability">
+      <a:documentation>supplies information about the availability of a text, for
+  example any restrictions on its use or distribution, its copyright
+  status, etc.</a:documentation>
+      <optional>
+        <attribute name="status">
+          <choice>
+            <value>free</value>
+            <value>unknown</value>
+            <value>restricted</value>
+          </choice>
+        </attribute>
+      </optional>
+      <text/>
+    </element>
+  </define>
+  <define name="tei_bibl">
+    <element name="bibl">
+      <a:documentation>(bibliographic citation) contains a loosely-structured bibliographic citation of which the sub-components may or may
+    not be explicitly tagged. </a:documentation>
+      <zeroOrMore>
+        <choice>
+          <text/>
+          <ref name="tei_title"/>
+          <ref name="tei_author"/>
+          <ref name="tei_date"/>
+          <ref name="tei_persName"/>
+          <ref name="tei_place"/>
+          <element name="publisher">
+            <text/>
+          </element>
+          <ref name="tei_ref"/>
+          <ref name="tei_idno"/>
+        </choice>
+      </zeroOrMore>
+      <empty/>
+    </element>
+  </define>
+  <define name="biodes_biography">
+    <element name="biography">
+      <zeroOrMore>
+        <ref name="tei_graphic"/>
+      </zeroOrMore>
+      <zeroOrMore>
+        <ref name="tei_text"/>
+      </zeroOrMore>
+    </element>
+  </define>
+  <define name="tei_fileDesc">
+    <element name="fileDesc">
+      <group>
+        <optional>
+          <ref name="tei_idno"/>
+        </optional>
+        <optional>
+          <ref name="tei_title"/>
+        </optional>
+        <zeroOrMore>
+          <ref name="tei_author"/>
+        </zeroOrMore>
+        <ref name="tei_ref"/>
+        <optional>
+          <ref name="tei_date"/>
+        </optional>
+        <optional>
+          <ref name="tei_revisionDesc"/>
+        </optional>
+        <ref name="tei_publisher"/>
+        <optional>
+          <ref name="tei_availability"/>
+        </optional>
+        <optional>
+          <ref name="tei_bibl"/>
+        </optional>
+        <empty/>
+      </group>
+      <empty/>
+    </element>
+  </define>
+  <define name="tei_graphic">
+    <element name="graphic">
+      <a:documentation>indicates the location of an inline graphic, illustration, or figure.</a:documentation>
+      <optional>
+        <attribute name="url">
+          <a:documentation>(uniform resource locator) A URL which refers to the image itself.</a:documentation>
+          <data type="anyURI"/>
+        </attribute>
+      </optional>
+      <ref name="att.internetMedia.attributes"/>
+      <empty/>
+    </element>
+  </define>
+  <define name="tei_idno">
+    <element name="idno">
+      <text/>
+      <optional>
+        <attribute name="type">
+          <data type="Name"/>
+        </attribute>
+      </optional>
+      <empty/>
+    </element>
+  </define>
+  <define name="tei_author">
+    <element name="author">
+      <text/>
+    </element>
+  </define>
+  <define name="tei_title">
+    <element name="title">
+      <text/>
+    </element>
+  </define>
+  <define name="tei_ref">
+    <element name="ref">
+      <a:documentation>(reference) defines a reference to another location, possibly modified by additional text or comment.</a:documentation>
+      <text/>
+      <optional>
+        <attribute name="target">
+          <a:documentation>specifies the destination of the reference by supplying one or more URI References</a:documentation>
+          <list>
+            <oneOrMore>
+              <data type="anyURI"/>
+            </oneOrMore>
+          </list>
+        </attribute>
+      </optional>
+      <empty/>
+    </element>
+  </define>
+  <define name="tei_text">
+    <element name="text">
+      <ref name="att.global.attribute.xmllang"/>
+      <text/>
+    </element>
+  </define>
+  <define name="tei_change">
+    <element name="change">
+      <a:documentation>summarizes a particular change or correction made
+to a particular version of an electronic text which is
+shared between several researchers.</a:documentation>
+      <text/>
+      <optional>
+        <attribute name="when">
+          <a:documentation>supplies the date of the change in standard form, i.e. YYYY-MM-DD.</a:documentation>
+          <choice>
+            <data type="date"/>
+            <data type="gYear"/>
+            <data type="gMonth"/>
+            <data type="gDay"/>
+            <data type="gYearMonth"/>
+            <data type="gMonthDay"/>
+            <data type="time"/>
+            <data type="dateTime"/>
+          </choice>
+        </attribute>
+      </optional>
+      <empty/>
+    </element>
+  </define>
+  <define name="biodes_name">
+    <element name="name">
+      <optional>
+        <attribute name="type">
+          <choice>
+            <value>prepositie</value>
+            <value>voornaam</value>
+            <value>intrapositie</value>
+            <value>geslachtsnaam</value>
+            <value>postpositie</value>
+          </choice>
+        </attribute>
+      </optional>
+      <text/>
+    </element>
+  </define>
+  <define name="tei_publisher">
+    <element name="publisher">
+      <element name="name">
+        <text/>
+      </element>
+      <ref name="tei_ref"/>
+      <empty/>
+    </element>
+  </define>
+  <define name="tei_revisionDesc">
+    <element name="revisionDesc">
+      <a:documentation>(revision description) summarizes the revision history for a file.</a:documentation>
+      <oneOrMore>
+        <ref name="tei_change"/>
+      </oneOrMore>
+      <empty/>
+    </element>
+  </define>
+  <define name="tei_person">
+    <element name="person">
+      <a:documentation>provides information about an identifiable individual, for example a participant in a language interaction, or a person referred to in a
+    historical source.</a:documentation>
+      <group>
+        <zeroOrMore>
+          <ref name="tei_idno"/>
+        </zeroOrMore>
+        <oneOrMore>
+          <ref name="tei_persName"/>
+        </oneOrMore>
+        <optional>
+          <ref name="tei_sex"/>
+        </optional>
+        <zeroOrMore>
+          <ref name="tei_event"/>
+        </zeroOrMore>
+        <zeroOrMore>
+          <ref name="tei_state"/>
+        </zeroOrMore>
+        <zeroOrMore>
+          <ref name="tei_person"/>
+        </zeroOrMore>
+        <zeroOrMore>
+          <ref name="tei_relation"/>
+        </zeroOrMore>
+        <empty/>
+      </group>
+      <ref name="att.global.attributes"/>
+      <ref name="att.global.attribute.xmllang"/>
+      <empty/>
+    </element>
+  </define>
+  <define name="tei_persName">
+    <element name="persName">
+      <zeroOrMore>
+        <choice>
+          <ref name="biodes_name"/>
+          <text/>
+        </choice>
+      </zeroOrMore>
+      <ref name="att.datable.attributes"/>
+      <empty/>
+    </element>
+  </define>
+  <define name="tei_state">
+    <element name="state">
+      <a:documentation>contains a description of some status or quality
+attributed to a person, place, or organization at some specific time.</a:documentation>
+      <text/>
+      <ref name="att.datable.attributes"/>
+      <ref name="att.typed.attributes"/>
+      <empty/>
+    </element>
+  </define>
+  <define name="tei_sex">
+    <element name="sex">
+      <a:documentation>specifies the sex of a person.</a:documentation>
+      <ref name="att.datable.attributes"/>
+      <optional>
+        <attribute name="value">
+          <choice>
+            <value>0</value>
+            <value>1</value>
+            <value>2</value>
+            <value>9</value>
+          </choice>
+        </attribute>
+      </optional>
+      <text/>
+      <empty/>
+    </element>
+  </define>
+  <define name="tei_event">
+    <element name="event">
+      <a:documentation>(event) contains data relating to any kind of significant event associated with a person, place, or
+    organization.</a:documentation>
+      <text/>
+      <optional>
+        <ref name="tei_place"/>
+      </optional>
+      <text/>
+      <ref name="att.datable.attributes"/>
+      <ref name="att.typed.attributes"/>
+      <empty/>
+    </element>
+  </define>
+  <define name="tei_place">
+    <element name="place">
+      <a:documentation>contains data about a geographic location</a:documentation>
+      <text/>
+      <empty/>
+    </element>
+  </define>
+  <define name="tei_relation">
+    <element name="relation">
+      <a:documentation>(relationship) describes any kind of relationship or linkage amongst a specified
+group of participants.</a:documentation>
+      <text/>
+      <ref name="att.datable.attributes"/>
+      <attribute name="name">
+        <a:documentation>supplies a name for the kind of  relationship of which
+	this is an instance.</a:documentation>
+        <data type="Name"/>
+      </attribute>
+      <optional>
+        <attribute name="passive">
+          <a:documentation>identifies the passive participants in a non-mutual
+relationship.</a:documentation>
+          <list>
+            <oneOrMore>
+              <data type="anyURI"/>
+            </oneOrMore>
+          </list>
+        </attribute>
+      </optional>
+      <choice>
+        <optional>
+          <attribute name="active">
+            <a:documentation>identifies the active participants in a non-mutual
+relationship, or all the participants in a mutual one.</a:documentation>
+            <list>
+              <oneOrMore>
+                <data type="anyURI"/>
+              </oneOrMore>
+            </list>
+          </attribute>
+        </optional>
+        <optional>
+          <attribute name="mutual">
+            <a:documentation>supplies a list of participants amongst all of whom the relationship holds equally.</a:documentation>
+            <list>
+              <oneOrMore>
+                <data type="anyURI"/>
+              </oneOrMore>
+            </list>
+          </attribute>
+        </optional>
+      </choice>
+      <empty/>
+    </element>
+  </define>
+  <define name="tei_date">
+    <element name="date">
+      <a:documentation>contains a date in any format.</a:documentation>
+      <text/>
+      <ref name="att.datable.attributes"/>
+      <empty/>
+    </element>
+  </define>
+  <define name="att.global.attributes">
+    <ref name="att.global.attribute.xmlid"/>
+    <empty/>
+  </define>
+  <define name="att.global.attribute.xmllang">
+    <optional>
+      <attribute name="xml:lang">
+        <a:documentation>(language) indicates the language of the element content using a
+      tag generated according to BCP 47</a:documentation>
+        <data type="language"/>
+      </attribute>
+    </optional>
+  </define>
+  <define name="att.global.attribute.xmlid">
+    <optional>
+      <attribute name="xml:id">
+        <a:documentation>(identifier) provides a unique identifier for the element bearing the
+      attribute.</a:documentation>
+        <data type="ID"/>
+      </attribute>
+    </optional>
+  </define>
+  <define name="att.datable.attributes">
+    <ref name="att.datable.w3c.attributes"/>
+    <empty/>
+  </define>
+  <define name="att.datable.w3c.attributes">
+    <!--  att.datable.w3c.attribute.period, -->
+    <ref name="att.datable.w3c.attribute.when"/>
+    <ref name="att.datable.w3c.attribute.notBefore"/>
+    <ref name="att.datable.w3c.attribute.notAfter"/>
+    <ref name="att.datable.w3c.attribute.from"/>
+    <ref name="att.datable.w3c.attribute.to"/>
+    <empty/>
+  </define>
+  <define name="att.datable.w3c.attribute.when">
+    <optional>
+      <attribute name="when">
+        <a:documentation>supplies the value of the date or time in a standard form,
+      e.g. yyyy-mm-dd.</a:documentation>
+        <choice>
+          <data type="date"/>
+          <data type="gYear"/>
+          <data type="gMonth"/>
+          <data type="gDay"/>
+          <data type="gYearMonth"/>
+          <data type="gMonthDay"/>
+          <data type="time"/>
+          <data type="dateTime"/>
+        </choice>
+      </attribute>
+    </optional>
+  </define>
+  <define name="att.datable.w3c.attribute.notBefore">
+    <optional>
+      <attribute name="notBefore">
+        <a:documentation>specifies the earliest possible date for the event in
+	  standard form, e.g. yyyy-mm-dd.</a:documentation>
+        <choice>
+          <data type="date"/>
+          <data type="gYear"/>
+          <data type="gMonth"/>
+          <data type="gDay"/>
+          <data type="gYearMonth"/>
+          <data type="gMonthDay"/>
+          <data type="time"/>
+          <data type="dateTime"/>
+        </choice>
+      </attribute>
+    </optional>
+  </define>
+  <define name="att.datable.w3c.attribute.notAfter">
+    <optional>
+      <attribute name="notAfter">
+        <a:documentation>specifies the latest possible date for the event in
+	  standard form, e.g. yyyy-mm-dd.</a:documentation>
+        <choice>
+          <data type="date"/>
+          <data type="gYear"/>
+          <data type="gMonth"/>
+          <data type="gDay"/>
+          <data type="gYearMonth"/>
+          <data type="gMonthDay"/>
+          <data type="time"/>
+          <data type="dateTime"/>
+        </choice>
+      </attribute>
+    </optional>
+  </define>
+  <define name="att.datable.w3c.attribute.from">
+    <optional>
+      <attribute name="from">
+        <a:documentation>indicates the starting point of the period in standard form, e.g. yyyy-mm-dd.</a:documentation>
+        <choice>
+          <data type="date"/>
+          <data type="gYear"/>
+          <data type="gMonth"/>
+          <data type="gDay"/>
+          <data type="gYearMonth"/>
+          <data type="gMonthDay"/>
+          <data type="time"/>
+          <data type="dateTime"/>
+        </choice>
+      </attribute>
+    </optional>
+  </define>
+  <define name="att.datable.w3c.attribute.to">
+    <optional>
+      <attribute name="to">
+        <a:documentation>indicates the ending point of the period in standard
+	  form, e.g. yyyy-mm-dd.</a:documentation>
+        <choice>
+          <data type="date"/>
+          <data type="gYear"/>
+          <data type="gMonth"/>
+          <data type="gDay"/>
+          <data type="gYearMonth"/>
+          <data type="gMonthDay"/>
+          <data type="time"/>
+          <data type="dateTime"/>
+        </choice>
+      </attribute>
+    </optional>
+  </define>
+  <define name="att.internetMedia.attributes">
+    <ref name="att.internetMedia.attribute.mimeType"/>
+    <empty/>
+  </define>
+  <define name="att.internetMedia.attribute.mimeType">
+    <optional>
+      <attribute name="mimeType">
+        <a:documentation>(MIME media type) specifies the applicable multimedia internet mail extension (MIME) media type</a:documentation>
+        <data type="token">
+          <param name="pattern">(\p{L}|\p{N}|\p{P}|\p{S})+</param>
+        </data>
+      </attribute>
+    </optional>
+  </define>
+  <define name="att.typed.attributes">
+    <ref name="att.typed.attribute.type"/>
+  </define>
+  <define name="att.typed.attribute.type">
+    <optional>
+      <attribute name="type">
+        <a:documentation>characterizes the element in some sense, using any convenient
+ classification scheme or typology.</a:documentation>
+        <data type="Name"/>
+      </attribute>
+    </optional>
+  </define>
+</grammar>

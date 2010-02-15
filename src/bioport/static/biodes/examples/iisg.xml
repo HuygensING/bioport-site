@@ -1,0 +1,23 @@
+<biodes version="1.0">
+  <fileDesc>
+    <title>Maria Elize Baart</title>
+    <ref target="http://iisg.nl/bwsa//bios/baart-m.html"/>
+    <publisher>
+      <name>Biografisch Woordenboek van het Socialisme en de Arbeidersbeweging in Nederland</name>
+      <ref target="http://iisg.nl/bwsa/"/>
+    </publisher>
+  </fileDesc>
+  <person>
+    <persName>
+      <name type="voornaam">Maria Elize</name>
+      <name type="geslachtsnaam">Baart</name>
+    </persName>
+    <event type="birth" when="1854-06-20"/>
+    <event type="death" when="1879-10-13"/>
+    <state type="occupation">(roepnaam: Elize) voorvechtster van vrouwenemancipatie</state>
+  </person>
+  <biography>
+    <graphic url="http://iisg.nl/bwsa//images/baart-m.jpg"/>
+  </biography>
+</biodes>	
+

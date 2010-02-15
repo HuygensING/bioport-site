@@ -1,0 +1,33 @@
+<biodes version="1.0">
+  <fileDesc>
+    <title>Jacobs, Aletta Henri&amp;euml;tte (1854-1929)</title>
+    <ref target="http://www.inghist.nl/Onderzoek/Projecten/BWN/lemmata/bwn1/jacobs"/>
+    <publisher>
+      <name>Biografisch Woordenboek van Nederland</name>
+      <ref target="http://www.inghist.nl/Onderzoek/Projecten/BWN"/>
+    </publisher>
+  </fileDesc>
+  <person>
+    <persName>
+      <name type="geslachtsnaam">Jacobs</name>
+    </persName>
+    <sex value="2"/>
+    <event type="birth" when="1854"/>
+    <event type="death" when="1929"/>
+    <state type="occupation">feministe</state>
+  </person>
+  <biography>
+    <graphic url="http://www.inghist.nl/Onderzoek/Projecten/BWN/lemmata/bwn1/images/images/JACOBSALETTA.jpg"/>
+    <text>&amp;lt;dtml-var bwn_header&amp;gt;
+ &amp;lt;p class='genealogie'&amp;gt;
+  &amp;lt;strong&amp;gt;Jacobs, Aletta Henri&amp;amp;euml;tte&amp;lt;/strong&amp;gt;, feministe (Sappemeer 9-2-1854 - Baarn 10-8-1929).
+
+Dochter van Abraham Jacobs, heel- en vroedmeester, en Anna de Jongh.
+Gehuwd op 28-4-1892 met Carel Victor Gerritsen, graanhandelaar. Uit dit
+huwelijk was 1 jong overleden kind.
+
+[ETCETERA]
+
+</text>
+  </biography>
+</biodes>

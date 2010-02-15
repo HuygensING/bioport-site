@@ -1,0 +1,55 @@
+<biodes version="1.0">
+  <fileDesc>
+    <idno>/bwn/hermanswf</idno>
+    <author>Wilbert Smulders</author>
+    <ref target="http://www.inghist.nl/Onderzoek/Projecten/BWN/lemmata/bwn6/hermanswf"/>
+    <date when="2008-08-25"/>
+    <revisionDesc>
+      <change when="2008-08-25"/>
+    </revisionDesc>
+    <publisher>
+      <name>Biografisch Woordenboek van Nederland</name>
+      <ref target="http://www.inghist.nl/Onderzoek/Projecten/BWN" />
+    </publisher>
+    <availability status="restricted">© ING - Den Haag. Bronvermelding: Wilbert Smulders, 'Hermans, Willem Frederik (1921-1995)', in Biografisch Woordenboek van Nederland. URL:http://www.inghist.nl/Onderzoek/Projecten/BWN/lemmata/bwn6/hermanswf [25-08-2008]</availability>
+    <bibl>
+Op te nemen in: 
+        <title>Biografisch Woordenboek van Nederland 6</title>
+        <author>J. Charité</author>
+        <author>A.J.C.M. Gabriëls</author>
+      <publisher>ING, Den Haag</publisher>
+    </bibl>
+  </fileDesc>
+  <person xml:id="p1">
+    <persName><name type="voornaam">Willem</name> <name type="voornaam">Frederik</name> <name type="geslachtsnaam">Hermans</name></persName>
+    <persName>Age Bijkaart</persName>
+    <persName>
+      <name type="prepositie">mr.</name>
+      <name type="voornaam">Jan</name>
+      <name type="intrapositie">van</name>
+      <name type="geslachtsnaam">Voorbeeld</name>
+      <name type="postpositie">Esq.</name>
+    </persName>
+    <persName>John</persName>
+    <sex value="1"/>
+    <event type="birth" when="1921-09-01">in <place>Amsterdam</place></event>
+    <event type="death" when="1995-04-27">te <place>Utrecht</place></event>
+    <event type="marriage" when="1950-04-07">getrouwd met Emelie Henriëtte Meurs (1923-2008)</event>
+    <state type="occupation" from="1940" to="1960">schrijver</state>
+    <state type="occupation" from="1953" to="1973">fysisch geograaf</state>
+    <state type="residence" from="1953" to="1973">Groningen</state>
+    <state type="claim_to_fame">schrijver</state>
+    <state type="occupation" from="1940" to="1960">schilder</state>
+    <person xml:id="ruprecht">
+      <persName>Ruprecht Hermans</persName>
+    </person>
+    <relation name="kinderen" active="#1" passive="#ruprecht"/>
+    <idno type="bioport">1234</idno>
+    <idno type="sofinummer">123-345</idno>
+  </person>
+  <biography>
+    <graphic url="http://illustratie1.jpg"/>
+    <graphic url="http://illustratie2.jpg"/>
+    <text>tekst van de biografie kan &lt;em&gt;Markup&lt;/em&gt; &lt;p&gt;bevatten&lt;/p&gt;</text>
+  </biography>
+</biodes>
