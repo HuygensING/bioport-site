@@ -37,10 +37,11 @@ class ContactFormTest(FunctionalTestCase):
         messages_before = len(messages)
         self.browser.open(self.base_url + '/contact')
         self.fill_form()
+        self.browser.getControl('Emailadres').value = 'E.J.vanderVeldt1@uu.nl'
         self.solve_captcha()
         self.browser.getControl('Submit').click()
         self.failUnless('admin-destination@example.com' in messages[-1]['dest'])
-        self.failUnlessEqual(messages[-1]['source'], 'me@example.com')
+        self.failUnlessEqual(messages[-1]['source'], 'E.J.vanderVeldt1@uu.nl')
         self.failUnlessEqual(messages[-1]['dest'],
                              ['admin-destination@example.com'])
     def test_contact_form_bad_email(self):
