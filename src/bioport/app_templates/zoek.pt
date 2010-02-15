@@ -19,7 +19,9 @@
     <th>zoeken op naam</th>
     <td>
         <input type="text" name="search_name" 
-            tal:attributes="value python:unicode(request.get('search_name', ''))" />
+            xtal:attributes="value python:unicode(request.get('search_name', ''), 'latin1')" 
+            tal:attributes="value python:request.get('search_name', '')"
+             />
         
         <a class="tooltip_button"
             Onclick="jQuery('#tip_search_name').toggle(200)" class="toggle">[?]</a> 
@@ -55,8 +57,9 @@ meer tekens) om spellingsvarianten te vinden: met
         <div class="tooltip" id="tip_search_term">
 U kunt vrij zoeken op woord(en) in de tekst van de biografieën. 
 <br/>
-De tekst waarin u zoekt komt uit de opgenomen bronnen. De kwaliteit daarvan is niet altijd even goed - in sommige gevallen 
-betreft het OCR tekst, en soms is niet de tekst van de gehele biografie in onze index opgenomen.
+Daarmee zoekt u in de tekst van alle naslagwerken die in het portaal zijn opgenomen. 
+De kwaliteit daarvan is niet altijd even goed - in sommige gevallen 
+betreft het OCR tekst, en soms is niet de tekst van de gehele biografie opgenomen.
 
         <a class="tooltip_button_hide"
         tal:condition="nothing"
@@ -95,7 +98,7 @@ betreft het OCR tekst, en soms is niet de tekst van de gehele biografie in onze 
         <a class="tooltip_button"
             Onclick="jQuery('#tip_death').toggle(200)" class="toggle">[?]</a> 
         <div id="tip_death" class="tooltip">
-            U kunt aangeven tussen welke jaren de persoon gestorven is, en in welke plaats. 
+        U kunt personen selecteren die in een bepaalde periode en/of plaats hebben geleefd.
         </div> 
      </td>
 </tr>
@@ -155,7 +158,7 @@ betreft het OCR tekst, en soms is niet de tekst van de gehele biografie in onze 
 Disclaimer
 </h2>
 <p metal:define-macro="disclaimer_tekst">
-NB. Alle personen die in het Biografisch Portaal staan, zijn vindbaar op naam en bron. 
+NB. Alle personen die in het Biografisch Portaal staan, zijn vindbaar op naam. 
 Voor de overige zoekmogelijkheden geldt de waarschuwing dat de de resultaten onvolledig zijn,
  omdat persoonsgegevens (nog) niet bij alle personen zijn ingevuld. 
 Er wordt hard aan gewerkt om de leemtes op te vullen.

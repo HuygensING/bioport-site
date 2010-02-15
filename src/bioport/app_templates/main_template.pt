@@ -34,7 +34,8 @@
 <body tal:attributes="id python:view.url().split('/')[-1].capitalize()" >
     <div id="wrapper">
         <div id="layHead">
-            <h2><span class="textOnly">Het Biografisch Portaal van Nederland</span></h2>
+            <h2 tal:attributes="OnClick string:window.location.href='${view/application_url}'">
+	            <span class="textOnly">Het Biografisch Portaal van Nederland</span></h2>
             <div id="stats">
                 <span tal:replace="python:view.count_persons()" /> personen<br/>
                 van 634 tot 2005

@@ -1,0 +1,26 @@
+<html metal:use-macro="context/@@main_template/macros/master">
+
+<div metal:fill-slot="content">
+<div id="colright">
+
+<div metal:use-macro="context/@@index/macros/navigation_box"></div>
+</div>
+<div id="colcenter">
+<h1>BioDes1.0 Schemas</h1>
+<p>
+
+De formele specificatie van het BioDes1.0 formaat is opgesteld in RELAX NG (Compact) syntax. 
+<p>
+Er zijn ook schemas in RELAX NG XML formaat, en in W3C XML Schema.  Deze zijn gegenereerd uit het RELAX NG (Compact) schema met behulp van <a href="http://www.thaiopensource.com/relaxng/trang.html">trang</a>.
+<ul>
+<li><a tal:attributes="href static/biodes/biodes1.0.rnc">biodes1.0.rnc</a> (RELAX NG  - Compact Syntax)
+<li><a tal:attributes="href static/biodes/biodes1.0.rng">biodes1.0.rng</a> (RELAX NG  - XML Syntax)
+<li><a tal:attributes="href static/biodes/biodes1.0.xsd">biodes1.0.xsd</a> (W3C XML Schema)
+</ul>
+
+</div>
+
+
+</div>
+</html>
+

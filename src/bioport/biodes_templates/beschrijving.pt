@@ -1,0 +1,20 @@
+<html metal:use-macro="context/@@main_template/macros/master">
+
+<div metal:fill-slot="content">
+<div id="colright">
+<div metal:use-macro="context/@@index/macros/navigation_box"></div>
+</div>
+<div id="colcenter">
+<h1>Beschrijving</h1>
+<p>
+In het volgende document wordt de structuur van een BioDes XML bestand beschreven, en worden de verschillende data elementen toegelicht.
+
+<ul>
+<li><a tal:attributes="href static/biodes/biodes1.0.pdf">biodes1.0.pdf</a> (182KB, 27 paginas)
+</ul>
+</div>
+
+
+</div>
+</html>
+

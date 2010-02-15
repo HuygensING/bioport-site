@@ -99,7 +99,7 @@
     <div tal:repeat="biography view/person/get_biographies" tal:omit-tag="">
     <div
         tal:define="url python:biography.get_value('url_biografie')"
-	   tal:attributes="OnClick string:window.open('${url}')"
+	   tal:attributes="OnClick string:window.open('${url}');;return false;;"
         class="biography_reference"
         tal:condition="python:biography.source_id != 'bioport'">
         Biografie

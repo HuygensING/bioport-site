@@ -1,0 +1,18 @@
+<html metal:use-macro="context/@@main_template/macros/master">
+
+<div metal:fill-slot="content">
+<div id="colright">
+<div metal:use-macro="context/@@index/macros/navigation_box"></div>
+</div>
+<div id="colcenter">
+<h1>Persoonsnamen</h1>
+<p>
+Jos Gabri&euml;ls heeft voor het Instituut voor Nederlandse Geschiedenis een nota opgesteld waarin een structurering van persoonsnamen wordt voorgesteld en aan de hand van een aantal voorbeelden ge&iuml;llustreerd. 
+Deze nota is als bijlage bij de BioDes1.0 specificatie opgenomen, en via op de onderstaande link down te loaden:
+<ul>
+<li><a tal:attributes="href static/biodes/persoonsnaam.pdf">persoonsnaam.pdf</a> (102KB, 7 paginas)
+</ul>
+</div>
+</div>
+</html>
+

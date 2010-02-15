@@ -1,0 +1,56 @@
+<html metal:use-macro="context/@@main_template/macros/master">
+
+<div metal:fill-slot="content">
+
+<div id="colright">
+<div class="navigation_box"
+    metal:define-macro="navigation_box">
+<ul>
+    <li>
+    <a tal:attributes="href python:view.url('')">BioDes</a>
+    </li>
+    <li>
+    <a tal:attributes="href python:view.url('beschrijving')">beschrijving</a>
+    </li>
+    <li>
+    <a tal:attributes="href python:view.url('persoonsnaam')">persoonsnamen</a>
+    </li>
+    <li>
+    <a tal:attributes="href python:view.url('schemas')">schemas</a>
+    </li>
+    <li>
+    <a tal:attributes="href python:view.url('voorbeelden')">voorbeelden</a>
+    </li>
+    </ul>
+</div>
+</div>
+
+
+<div id="colcenter">
+
+<h1>BioDes</h1>
+<p>
+BioDes is een XML formaat voor het representeren van informatie over levensbeschrijvingen die op het internet zijn gepubliceerd. 
+Het formaat is ontwikkeld in het kader van het Biografisch Portaal - een website waarop biografische informatie uit een groot aantal diverse bronnen te vinden is.  De standaard is ontwikkeld in samenwerking met de  <a href="partners">partners</a> in dat project.
+<p>
+BioDes neemt de TEI P5 Guidelines (Text Encoding Initiative, 
+<a href="http://www.tei-c.org/Guidelines/P5/">http://www.tei-c.org/Guidelines/P5/)</a>) als uitgangspunt. TEI is een internationale standaard voor het annoteren van teksten, en besteedt specifiek aandacht aan het annoteren van biografische informatie.
+<p>
+De huidige versie van BioDes is versie 1.0.  De redactie van BioDes is open voor suggesties voor uitbreidingen en verbeteringen, die in een volgende versie kunnen worden opgenomen.
+<p>
+Op deze website vindt u de volgende documenten:
+<ul>
+<li>Het <a href="beschrijving">document</a> waarin de BioDes element worden beschreven.
+<li><a href="persoonsnaam">Persoonsnaam</a>, waarin de structurering van Nederlandse persoonsnamen wordt beschreven en gemotiveerd. 
+<li><a href="schema">Formele definities</a> van het XML formaat
+<li>Een aantal <a href="voorbeelden">voorbeelden</a> van correcte BioDes documenten.
+<li>De lijst van <a href="partners">partners</a> die betrokken waren bij het defini&euml;ren van BioDes1.0.
+
+
+</div>
+
+
+
+</div>
+</html>
+

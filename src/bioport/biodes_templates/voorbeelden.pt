@@ -1,0 +1,34 @@
+<html metal:use-macro="context/@@main_template/macros/master">
+<div metal:fill-slot="content">
+
+<div id="colright">
+	<div metal:use-macro="context/@@index/macros/navigation_box"></div>
+</div>
+<div id="colcenter">
+<h1>BioDes voorbeelden</h1>
+<p>
+Enkele voorbeelden van geldige BioDes1.0 documenten:
+
+<ul>
+<li>
+<a tal:attributes="href static/biodes/examples/bwn.xml">bwn.xml</a>
+<li>
+<a tal:attributes="href static/biodes/examples/dvn.xml">dvn.xml</a>
+<li>
+<a tal:attributes="href static/biodes/examples/iisg.xml">iisg.xml</a>
+<li>
+<a tal:attributes="href static/biodes/examples/knaw.xml">knaw.xml</a>
+<li>
+<a tal:attributes="href static/biodes/examples/maximal.xml">maximal.xml</a>
+<li>
+<a tal:attributes="href static/biodes/examples/minimal.xml">minimal.xml</a>
+<li>
+<a tal:attributes="href static/biodes/examples/nnbw.xml">nnbw.xml</a>
+
+</li>
+</ul>
+
+</div>
+</div>
+</html>
+
