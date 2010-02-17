@@ -249,7 +249,7 @@ class Personen(BioPortTraverser,grok.View,RepositoryView, Batcher):
             result += ' uit <em>%s</em>' % self.repository().get_source(request.get('source_id')).description
             
         if request.get('search_name'):
-            result += u' wiens naam lijkt op <em>%s</em>' % request.get('search_name')
+            result += u' wier naam lijkt op <em>%s</em>' % request.get('search_name')
             
         if request.get('search_term'):
             result += u' met het woord <em>%s</em> in de tekst' % request.get('search_term')

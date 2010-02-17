@@ -23,3 +23,5 @@ class Schemas(grok.View, RepositoryView):
 
 class Voorbeelden(grok.View, RepositoryView):
     pass
+class Partners(grok.View, RepositoryView):
+    pass
