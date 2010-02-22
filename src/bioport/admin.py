@@ -521,11 +521,9 @@ class Persoon(app.Persoon, grok.EditForm, RepositoryView):
     def _set_category(self):
         category_ids = self.request.get('category_id', [])
         category_ids = [id for id in category_ids if id]
-        print 'saving categories', category_ids
         self.bioport_biography.set_category(category_ids)
            
         self.save_biography()
-#        print 'states now: ', [s.idno for s in self.get_states(type='category')]
             
         new_category_ids = self.request.get('new_category_id')
         if type(new_category_ids) != type([]):
@@ -537,9 +535,9 @@ class Persoon(app.Persoon, grok.EditForm, RepositoryView):
             self.bioport_biography.add_state(type='category', idno=new_category_id, text=name)
             
         self.save_biography()
-#        print 'states now: ', [s.idno for s in self.get_states(type='category')]
         
         self.categories = self.get_states(type='category')
+        
 #    @grok.action('bewaar beroep', name="save_occupation")
 #    def save_occupation(self):
 #        self._set_occupation()

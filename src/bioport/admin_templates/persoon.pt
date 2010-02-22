@@ -40,7 +40,7 @@
 });
 </script>
 
-<h1>Bewerk gegevens van <em tal:content="view/title" /></h1>
+<h1>Bewerk gegevens van <em tal:content="structure view/title" /></h1>
 
 <p>
 De gegevens in het formulier zijn de gegevens zoals ze op het biografisch portaal worden 
