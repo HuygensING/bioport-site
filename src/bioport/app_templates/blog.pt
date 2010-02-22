@@ -7,11 +7,48 @@
 </script>
 
 <div metal:fill-slot="content">
-<div id="colright"
-	metal:use-macro="context/@@index/macros/birthdays_box"></div>
+<div id="colright">
+<div class="navigation_box"
+    metal:define-macro="navigation_box">
+<ul>
+    <li>
+    <a href="#20100222">Maandag 22 februari</a>
+    </li>
+    <li>
+    <a href="#20100217">Woensdag 17 februari</a>
+    </li>
+    <li>
+    <a href="#20100211">Donderdag 11 februari</a>
+    </li>
+    </ul>
+</div>
+</div>
 
 <div id="colcenter">
-<h1>Woensdag 17 februari</h1>
+<h1><a name="20100222" ></a>Maandag 22 februari</h1>
+<p>
+“Wij willen meer.” Dat was de belangrijkste wens van de deelnemers aan het forum, bij de presentatie van het Biografisch Portaal op 17 februari. En meer zullen ze krijgen, want het Biografisch Portaal staat pas aan het begin en moet gaan groeien. De 'aftrap' was een groot succes, met een volle zaal, een vrolijke notaris die de oprichting van de stichting officieel bekrachtigde en natuurlijk alle media-aandacht. Het is pas het begin, maar er is al veel werk gedaan. Hans Blom memoreerde in zijn openingslezing dat er altijd mensen schuil gaan achter de abstracte structuren van de geschiedenis. Zo is het ook met ons project: een site als Bioport wordt gemaakt door mensen, heel veel mensen. Een korte impressie:
+</p>
+
+<p>
+We wilden het simpel en doorzichtig houden, maar simpel is moeilijk. Els, Anne-Marie, Jelle en ikzelf hebben heel wat versies van projectvoorstellen heen en weer gestuurd. Google-Docs was vaak onze redding van over elkaar buitelende versies, last-minute wijzigingen en opdoemende deadlines. Het was een nieuwe belevenis om terwijl je aan een document zat te werken, andermans wijzigingen in afwijkende kleur op het scherm te zien verschijnen. Veelzeggend waren de namen die we eraan gaven: de laatste_versie.doc werd gevolgd door de bijna_allerlaatste_versie.doc, de  allerlaatste_versie_met_opmerkingen_ van_Els.doc en de allerallerlaatste_versie_ waaraan_echt_niks_meer_veranderd_mag_worden.doc. 
+</p>
+
+<p>
+Veel naslagwerken bestaan alleen in boekvorm en moeten worden gedigitaliseerd. Soms doen we dat samen met anderen (vooral DBNL), soms doen we dat zelf. Een simpele pdf is niet genoeg: we hebben namen en biografische kerngegevens nodig, want we willen geen amorfe massa van teksten. We willen een gestructureerd, efficiënt en betrouwbaar zoekmiddel. Ineke en haar assistenten hebben ervaring met de transformatie van een deftig drukwerk tot een digitaal boek dat de originele tekst behoudt en tegelijk digitaal doorzoekbaar is. De meest onverwachte problemen kunnen daarbij komen kijken: pagina’s die per kolom zijn genummerd 
+(<a href="http://www.inghist.nl/retroboeken/nnbw" class="external_link">NNBW</a>) en dus twee paginanummers hebben, het 21ste deel 
+van <a href="http://www.inghist.nl/retroboeken/vdaa" class="external_link">Van der Aa</a> dat halverwege opeens weer begint te tellen bij pagina 1, enzovoorts.
+</p>
+
+<p>
+Vervolgens de inhoud. Veel gegevens zijn verstopt of zijn onderling tegenstrijdig, terwijl het Biografisch Portaal juist betrouwbaarheid moet uitstralen. De medewerkers Jeltje en Mandy zaten drie dagen per week te identificeren, te on-identificeren, te vergelijken en te bewerken. Ze stonden continu in contact met Jelle om de invoerapplicatie te optimaliseren.Ook hadden we onze 'Chinese landdagen' (Els' term): drie dagen lang zaten circa acht ING-ers gegevens in te voeren om zo een eerste grote stap te zetten.
+</p>
+
+<p>
+En tot slot de 'harde' techniek. Els wilde de site voor de aftrap zo ver mogelijk ‘af’ hebben, maar na enig gemompel van mij ging ze ermee akkoord dat vooral de basis goed moest zijn. De toeters en bellen komen later wel. Een site is nooit af, en deze al helemaal niet. Het was onvoorspelbaar hoeveel bezoekers we zouden krijgen en gezien de belangstelling van de pers wilden we op alles voorbereid zijn. Voor onverwachte problemen waren er vijf, zes mensen aanwezig in onze chatbox. Bas en ikzelf op het ING, Diebert thuis in Leiden, Jelle in Friesland en zijn medewerker Silvio uit zijn woonplaats Turijn. Op dinsdagmiddag besloten we nog ingrijpende wijzigingen op de Bioport-machine door te voeren die de snelheid aanzienlijk zouden verbeteren. Deze ‘virtuele’ samenwerking laat zien wat er kan en waarheen we op weg zijn.
+</p>
+<p>Rik Hoekstra</p>
+<h1><a name="20100217"></a>Woensdag 17 februari</h1>
 <p>Ik zie mezelf nog met tegenzin naar de universiteitsbibliotheek
 sjokken, een paar jaar geleden. Ik hou van boeken en van bibliotheken,
 dus daar lag het niet aan. Maar nu was het voor biografisch onderzoek
@@ -76,7 +113,7 @@ het team de laatste punten op de i. De laatste punten? Zover zijn we nog
 lang niet, maar de laatste punten voor de opening in ieder geval.</p>
 
 <p>Jeltje Zijlstra</p>
-<h1>Donderdag 11 februari 2010</h1>
+<h1><a name="20100211"></a>Donderdag 11 februari 2010</h1>
 <p>De dag van de lancering van de site komt akelig dichtbij: nog zes dagen. Gisteren is de nieuwste versie op de server gezet, met alle schrikmomenten die daar bij horen: afbeeldingen zijn verdwenen, de lijst 'meer jarigen' doet het niet meer, de lay-out van de bladerpagina is nog niet goed. Maar toch: het ziet er allemaal meer dan prachtig uit, en ik blijf alle vertrouwen hebben in <a href="http://www.gerbrandy.com/" class="external_link">Jelle</a> en <a href= http://www.trilobiet.nl/ class="external_link">Richard</a>, die gestaag doorwerken en hun eigen prioriteitenlijstjes rustig afhandelen. Vanochtend vroeg rende ik meteen weer naar mijn pc: kijken of er intussen nog wat was gebeurd. Maar nee, kennelijk hadden Jelle en Richard er na gisteravond 10 uur (!) niets meer aan gedaan. Gelijk hebben ze. Het enige nieuwe waren de jarigen: niet die van gisteren, maar die van vandaag staan nu prominent op de openingspagina. Uiteraard! Bijna had ik de site alweer gesloten, toen mijn oog viel op de jarige Christina Bader, geboren op 11 februari 1878, die eruit zag als een man. Ik weet dat mannen soms de meeste vreemde namen hebben gehad (Popke, Aleid, Gesina), maar Christina...???  Ik klik op 'zijn' portretje en zie dat het een bug moet zijn: Christina Bader blijkt een vrouw - ze heeft aan liefdadigheid gedaan.</p>
 <p>De genderwisseling van Christina Bader doet me denken aan die dag in november 2004 toen we de pilot van het <a href="http://www.inghist.nl/Onderzoek/Projecten/DVN" class="external_link">Digitaal Vrouwenlexicon van Nederland</a> presenteerden in de aula van de KB: we hadden zo'n honderd vrouwenlevens beschreven en beloofden dat het er duizend zouden worden. Onder meer Herman Pleij en Nelleke Noordervliet zouden spreken. Tot onze verrassing noemde Pleij ons project achterhaalde apartheid, en Noordervliet vergeleek ons project met botox: al die aandacht voor vrouwen hielp hooguit een paar maanden, en zou de 'kop van de geschiedenis' -  een man! -  nooit blijvend veranderen. Het klonk als kritiek, en dat terwijl wijzelf er ook van overtuigd waren (en zijn) dat je vrouwen niet apart moet zetten. Wij fantaseerden ook toen al over een nieuw biografisch woordenboek waarin onze vrouwen ge&iuml;ntegreerd waren. Ik was toen, op die dag in 2004, niet echt in de gelegenheid om dat uit te leggen, dus ik heb hun speeches maar gelaten over me heen laten komen. Wacht maar, dacht ik, heb geduld. </p>
 <p>Nu is het vijf jaar later, en de bijna 950 vrouwen van mijn DVN zijn ge&iuml;ntegreerd in het Biografisch Portaal van Nederland. Niks geen botox, niks geen nieuwe apartheid. Goede dingen ontstaan vaak vanuit de marge, en het Biografisch Portaal is daar een voorbeeld van. Nog vijf dagen, en dan zijn de levensbeschrijvingen van  meer dan 40.000 beroemdheden en mindere goden uit de Nederlandse geschiedenis voor iedereen te raadplegen op het internet. Christina Bader zal er dan weer uitzien als een vrouw. Maar opnieuw moet ik vragen om geduld. Dit is pas het begin van het Biografisch Portaal, de 'kick-off'. We moeten nog heel veel data invoeren, collecties digitaliseren, de doorzoekbaarheid verbeteren, et cetera. Maar wie weet dat het Biografisch Portaal een opstapje vormt naar die oude fantasie: een nieuw, volledig (M/V!), betrouwbaar en actueel biografisch Woordenboek van Nederland op internet. De eerste stap is gezet. Of is het de tweede?</p>
