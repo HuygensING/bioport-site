@@ -59,8 +59,8 @@ Veel tijd om uit te blazen hebben we niet na de intensieve week waarin onze site
 
 <p>
 Maar eerst toch nog maar een beetje nagenieten van de aandacht voor ons eigen project. Het Biografisch Portaal van Nederland heeft zelfs de 
-voorpagina en het 
-hoofdredactioneel commentaar van de NRC gehaald! En daarnaast hadden we artikelen in 
+<a tal:attributes="href static/pdf/voorpagina_NRC_16_feb_2010-1.pdf">voorpagina</a> en het 
+<a tal:attributes="href static/pdf/NRC_hoofdredcom.pdf">hoofdredactioneel commentaar</a> van de NRC gehaald! En daarnaast hadden we artikelen in 
 <a tal:attributes="href static/pdf/nrc_next_wetenschap_16feb2010.pdf">NRC Next</a>, 
 De Volkskrant (op 
 <a tal:attributes="href static/pdf/de_Volkskrant _Wetenschap_12feb2010.pdf">12 februari</a> 
