@@ -11,9 +11,6 @@ from plone.memoize.instance import memoize
 from time import time
 from z3c.batching.batch import Batch
 
-def _request_data_cachekey(method, self):
-    return self.request.form
-    
 class RepositoryView:
     def repository(self):
         principal = self.request.principal
@@ -278,7 +275,6 @@ class Personen(BioPortTraverser,grok.View,RepositoryView, Batcher):
     def batch_navigation(self, batch):
         return '<a href="%s">%s</a>' % (self.batch_url(start=batch.start), batch[0].naam().geslachtsnaam())
 
-    @ram.cache(_request_data_cachekey)
     def navigation_box_data(self):
         """  This function returns a list of 3-tuples representing pages
              of paged results. They have the form
@@ -288,10 +284,7 @@ class Personen(BioPortTraverser,grok.View,RepositoryView, Batcher):
         for batch in self.batch.batches:
             url = self.batch_url(start=batch.start)
             n1 = batch.firstElement.geslachtsnaam() or batch.firstElement.naam()
-#            n1 = n1 and n1.geslachtsnaam()
             n2 = batch.lastElement.geslachtsnaam() or batch.lastElement.naam()
-#            n2 = unicode(dir(batch))
-#            n2 = n2 and n2.geslachtsnaam()
             ls.append((url, n1, n2))
         return ls
 
