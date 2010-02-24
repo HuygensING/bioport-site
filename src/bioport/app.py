@@ -530,3 +530,11 @@ class GoogleWebmasterSilvio(grok.View):
     grok.name('googlee0ed19dd49699977.html')
     def render(self):
         return "google-site-verification: googlee0ed19dd49699977.html"
+
+class Robots_txt(grok.View):
+    grok.name('robots.txt')
+    def render(self):
+        self.request.response.setHeader('Content-Type','text/plain')
+        return "User-agent: *\nAllow: /\n"
+
+
