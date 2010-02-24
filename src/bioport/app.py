@@ -487,7 +487,7 @@ class Blog(grok.View,RepositoryView):
     pass
 
 class SiteMaps(grok.View,RepositoryView):
-    MAX_PER_FILE = 10000
+    MAX_PER_FILE = 2000
     def render(self):
         self.request.response.setHeader('Content-Type','text/xml; charset=utf-8')
         if hasattr(self, 'start_index'):
