@@ -493,4 +493,4 @@ class GoogleWebmasterSilvio(grok.View):
     """
     grok.name('googlee0ed19dd49699977.html')
     def render(self):
-        return "Here I am"
+        return "google-site-verification: googlee0ed19dd49699977.html"
