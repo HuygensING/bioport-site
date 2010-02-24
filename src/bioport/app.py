@@ -485,3 +485,12 @@ class Links(grok.View,RepositoryView):
     pass
 class Blog(grok.View,RepositoryView):
     pass
+
+class GoogleWebmasterSilvio(grok.View):
+    """This view tells Google that Silvio (silviot@gmail.com)
+       is authorized to use https://www.google.com/webmasters/
+       for this site
+    """
+    grok.name('googlee0ed19dd49699977.html')
+    def render(self):
+        return "Here I am"
