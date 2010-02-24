@@ -486,6 +486,42 @@ class Links(grok.View,RepositoryView):
 class Blog(grok.View,RepositoryView):
     pass
 
+class SiteMaps(grok.View,RepositoryView):
+    MAX_PER_FILE = 10000
+    def render(self):
+        self.request.response.setHeader('Content-Type','text/xml; charset=utf-8')
+        if hasattr(self, 'start_index'):
+           return self.render_sitemap(self.start_index)
+        all_records = self.repository().get_persons_sequence()
+        num_records = len(all_records)
+        out = '<?xml version="1.0" encoding="UTF-8"?>\n'
+        out += '<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+        for start in xrange(0, num_records, self.MAX_PER_FILE):
+            sitemap_file_name = "sitemap-%i" % start
+            sitemap_url = self.application_url() + '/sitemaps/' + sitemap_file_name
+            out += '  <sitemap>\n'
+            out += '    <loc>%s</loc>\n' % sitemap_url
+            out += '  </sitemap>\n'
+        out += '</sitemapindex>\n'
+        return out
+    def render_sitemap(self, start_index):
+        all_records = self.repository().get_persons_sequence()
+        application_url = self.application_url()
+        out = '<?xml version="1.0" encoding="UTF-8"?>\n'
+        out += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+        for person in all_records[start_index:start_index + self.MAX_PER_FILE]:
+            person_url = application_url + '/persoon/' + person.id
+            out += '  <url>\n'
+            out += '    <loc>%s</loc>\n' % person_url
+            out += '  </url>\n'
+        out += '</urlset>\n'
+        return out
+
+    def publishTraverse(self, request, name):
+        if name[:8] == 'sitemap-':
+            self.start_index = int(name[8:])
+            return self
+
 class GoogleWebmasterSilvio(grok.View):
     """This view tells Google that Silvio (silviot@gmail.com)
        is authorized to use https://www.google.com/webmasters/
