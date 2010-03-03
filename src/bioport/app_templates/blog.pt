@@ -11,7 +11,20 @@
 <div class="navigation_box"
     metal:define-macro="navigation_box">
 <ul>
+<li>
+<a href="#20100303b">
+Woensdag 3 maart
+<br />
+Els Kloek: Een Biografisch Portaal van Europa?
+</a>
  <li>
+ <a href="#20100303">
+
+3 maart
+      <br />
+De toespraak Hans Blom van 17 februari
+</a>
+<li>
     <a href="#20100222">
       23 februari 
       <br />
@@ -50,6 +63,42 @@ De genderwisseling van Christina Bader
 </div>
 
 <div id="colcenter">
+
+
+<h1><a name="20100303b"></a>
+Woensdag 3 maart
+</h1>
+<h2>
+Een Biografisch Portaal van Europa?
+</h2>
+
+<p>
+Van 25 tot 27 februari waren Anne-Marie, Jelle en ik op een internationaal congres in München om te praten over de mogelijkheden van internationale samenwerking. De Duitsers, Zwitsers en Oostenrijkers hebben namelijk vorig jaar de handen ineen geslagen om te komen tot een Biografisch Portaal van Europa, en proberen nu ook andere landen erbij te betrekken. 
+<p>
+Er waren makers van biografische naslagwerken uit deze drie landen, uit Zweden, Tsjechië, Slovenië, Engeland, Ierland, en uit een heleboel Duitse ‘Länder’, die allemaal hun projecten toonden. Lawrence Goldman van het Oxford DNB hield een wervelende show, ook de Ieren bleken in korte tijd iets heel moois te hebben ontwikkeld (dib.cambridge.org). Probleem alleen is dat deze twee projecten allebei commercieel zijn – de gebruiker moet dus betalen. Door de Duitstalige deelnemers werd veel gesproken over de noodzaak van hun PND: Personennamendatei ( 
+<a href="http://de.wikipedia.org/wiki/Personennamendatei">http://de.wikipedia.org/wiki/Personennamendatei</a>), 
+miljoenen persoonsgegevens in een gestandaardiseerde database (ook 14.000 Nederlanders) die wordt gehost door de Beierse Staatsbibliotheek. Ook was er iemand van de Duitse Wikipedia (Mathias Schindler) die liet zien hoe snel en slim de Duitse Wikipedia is, een hoogleraar uit Hamburg (Ulrike Spree) die expert is in onderzoek naar usability en darover een zeer leerzame presentatie hield, een kunsthistoricus uit Marburg (Michael Buchkremer), die een geweldig portaal van portretten aan het maken is: der Digitäle Poträtindex – nog niet online, maar veelbelovend. 
+<p>
+Wij Nederlanders traden maar liefst drie keer op: zelf mocht ik meteen bij de opening van de conferentie mijn licht laten schijnen over de perspectieven van internationale samenwerking, Anne-Marie en ik presenteerden op de tweede dag onze Vrouwenlexicon en ons Biografisch Portaal, en Jelle liet de technische ‘achterkant’ van ons portaal zien. Eén ding is zeker: we hebben met onze presentaties indruk gemaakt, juist omdat we met weinig middelen toch al een mooie en goedwerkende site konden laten zien. We hebben voor de ontwikkeling van het Europese portaal onze software en onze werkwijze nog aangeprezen, maar daarmee liepen we misschien een beetje te hard van stapel. De Oostenrijkers, Zwitsers en Duitsers zijn namelijk zelf al een tijdlang bezig met een portaal (zie 
+<a href="http://www.biographie-portal.eu/">http://www.biographie-portal.eu/</a>) en houden voorlopig liever vast aan hun eigen aanpak.
+<p>
+Gelukkig wilden de – Duitstalige – initiatiefnemers ons wel graag bij hun initiatief betrekken, en die uitnodiging biedt perspectieven. Het zou immers echt prachtig zijn als we het biografisch materiaal ook internationaal kunnen koppelen. Dan wordt het biografisch erfgoed pas echt ‘gedenationaliseerd’, en zal er een prachtig transnationaal onderzoeksinstrument ontstaan. Wie kan daar nu tegen zijn?
+<p>
+Els Kloek
+<h1><a name="20100303"></a>
+Woensdag 3 maart
+</h1>
+<h2>
+De toespraak Hans Blom van 17 februari
+</h2>
+
+Een paar dagen na de oprichting van de stichting en de lancering van de site (17 feb.) moesten we naar een congres in München over de mogelijkheden van een Biografisch Portaal van Europa. Zodoende waren we er nog niet aan toegekomen om de tekst van de toespraak op de site te zetten die Hans Blom op die bijeenkomst van 17 februari heeft gehouden. Beter laat dan nooit, 
+dus: 
+<a tal:attributes="href static/pdf/rede_hans_blom_17feb2010.pdf">bij deze!</a> (PDF)
+<p>
+Els Kloek
+
+
 <h1><a name="20100223"></a>Dinsdag 23 februari</h1>
 <h2>De grotere broer van het Biografisch Portaal</h2>
 <p>
