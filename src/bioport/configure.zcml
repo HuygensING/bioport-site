@@ -8,6 +8,13 @@
   <include file="permissions.zcml" />
   <include file="mail.zcml" />
 
+  <adapter factory=".app_i18n.EnglishAbsoluteURL"
+      provides="zope.traversing.browser.interfaces.IAbsoluteURL"
+     />
+  <adapter factory=".app_i18n.EnglishAbsoluteURL"
+      provides="zope.interface.Interface"
+     name="absolute_url" />
+
 <subscriber 
     for="zope.app.folder.interfaces.IRootFolder
          zope.app.publication.interfaces.IBeforeTraverseEvent" 
