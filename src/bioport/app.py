@@ -10,6 +10,7 @@ from plone.memoize import ram
 from plone.memoize.instance import memoize
 from time import time
 from z3c.batching.batch import Batch
+from interfaces import IBioport
 
 class RepositoryView:
     def repository(self):
@@ -80,6 +81,7 @@ class Batcher:
         return self.url(data= data)    
  
 class Bioport(grok.Application, grok.Container):
+    zope.interface.implements(IBioport)
               
     SVN_REPOSITORY = None
     SVN_REPOSITORY_LOCAL_COPY = None

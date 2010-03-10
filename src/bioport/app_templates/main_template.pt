@@ -3,11 +3,18 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 </metal:block> 
 
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"
+    xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+    xmlns:tal="http://xml.zope.org/namespaces/tal"
+    i18n:domain="bioport" >
 
 <!-- created by gerbrandy.com -->    
 <head>
-    <title metal:define-slot="head_title" tal:content="string:Het Biografisch Portaal van Nederland" />
+    <title metal:define-slot="head_title">
+        <tal:block i18n:translate="portal_title">
+            Site title
+        </tal:block>
+    </title>
     <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
     <meta metal:define-slot="description" name="Description" content="Het Biografisch Portaal van Nederland" />
     <meta metal:define-slot="keywords" name="Keywords" content="biografie portaal biografieën Nederland" />
