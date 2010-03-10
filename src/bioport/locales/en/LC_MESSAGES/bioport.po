@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Wed Mar 10 13:06:02 2010\n"
+"POT-Creation-Date: Wed Mar 10 19:07:26 2010\n"
 "PO-Revision-Date: 2010-03-10 12:59+0100\n"
 "Last-Translator: silvio <silviot@gmail.com>\n"
 "Language-Team: Italian\n"
@@ -28,7 +28,66 @@ msgstr ""
 msgid "${DYNAMIC_CONTENT}"
 msgstr ""
 
-#. Default: "Dutch Biografic Portal"
-#: src/bioport/app_templates/main_template.pt:13
+#: src/bioport/app.py:54
+msgid "home"
+msgstr ""
+
+#: src/bioport/app.py:55
+msgid "zoeken"
+msgstr "search"
+
+#: src/bioport/app.py:57
+msgid "bladeren"
+msgstr "browse"
+
+#: src/bioport/app.py:58
+msgid "project"
+msgstr ""
+
+#: src/bioport/app.py:59
+msgid "blog"
+msgstr ""
+
+#: src/bioport/app.py:60
+msgid "agenda"
+msgstr ""
+
+#: src/bioport/app.py:62
+msgid "links"
+msgstr ""
+
+#: src/bioport/app.py:63
+msgid "vragen"
+msgstr "FAQ"
+
+#: src/bioport/app.py:64
+msgid "contact"
+msgstr ""
+
+#. Default: "Site title"
+#: src/bioport/app_templates/main_template.pt:14
+#: src/bioport/app_templates/main_template.pt:51
 msgid "portal_title"
 msgstr "Dutch Biografic Portal"
+
+#: src/bioport/app_templates/main_template.pt:20
+msgid "meta_description"
+msgstr "Dutch Biografic Portal"
+
+#: src/bioport/app_templates/main_template.pt:25
+msgid "meta_keywords"
+msgstr "biography portal dutch"
+
+#. Default: ""
+#.  "${persons} personen<br />\n"
+#.  "                van 634 tot 2005\n"
+#.  "                <br />\n"
+#.  "                in ${biographies} biografie\303\253n"
+#: src/bioport/app_templates/main_template.pt:56
+msgid "count_persons_and_biographies"
+msgstr ""
+"${persons} persons <br /> from 634 to 2005 <br /> in $biographies biographies"
+
+#: src/bioport/app_templates/main_template.pt:62
+msgid "Contents"
+msgstr "Contents"

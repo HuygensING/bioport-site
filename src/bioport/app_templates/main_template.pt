@@ -16,9 +16,15 @@
         </tal:block>
     </title>
     <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
-    <meta metal:define-slot="description" name="Description" content="Het Biografisch Portaal van Nederland" />
-    <meta metal:define-slot="keywords" name="Keywords" content="biografie portaal biografieën Nederland" />
-    
+    <tal:block metal:define-slot="description" >
+    <meta name="Description" content="meta_description"
+    i18n:attributes="content"
+        />
+    </tal:block>
+    <tal:keywords metal:define-slot="keywords" >
+    <meta name="Keywords" content="meta_keywords"
+        i18n:attributes="content" />
+    </tal:keywords>
 
     <link tal:attributes="href static/css/reset.css" rel="stylesheet" type="text/css" />
     <link tal:attributes="href static/css/layout.css" rel="stylesheet" media="screen" type="text/css" />
@@ -42,21 +48,21 @@
     <div id="wrapper">
         <div id="layHead">
             <h2 tal:attributes="OnClick string:window.location.href='${view/application_url}'">
-	            <span class="textOnly">Het Biografisch Portaal van Nederland</span></h2>
-            <div id="stats">
-                <span tal:replace="python:view.count_persons()" /> personen<br/>
+	            <span class="textOnly" i18n:translate="portal_title" >Het Biografisch Portaal van Nederland</span></h2>
+            <div id="stats" i18n:translate="count_persons_and_biographies" >
+                <span tal:replace="python:view.count_persons()" i18n:name="persons"/> personen<br/>
                 van 634 tot 2005
                 <br/>
-                in <span tal:replace="python: view.count_biographies()" /> biografieën
+                in <span tal:replace="python: view.count_biographies()" i18n:name="biographies" /> biografieën
             </div>
             <hr class="textOnly"/>
         </div>
         
         <div id="layMenu">
-            <h3 class="textOnly">Inhoud</h3>
+            <h3 class="textOnly" i18n:translate="">Contents</h3>
             <ul>
                 <li tal:repeat="item python:view.menu_items()">
-                    <a tal:attributes="href python:item[0]" tal:content="python:item[1]"></a>
+                    <a tal:attributes="href python:item[0]" i18n:translate="" tal:content="python:item[1]"></a>
                 </li>
 	        </ul>
 	        <form class="search_form" tal:condition="python:view.__name__ != 'index'" 

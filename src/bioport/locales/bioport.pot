@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Wed Mar 10 13:06:02 2010\n"
+"POT-Creation-Date: Wed Mar 10 19:07:26 2010\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope3-dev@zope.org>\n"
@@ -27,8 +27,66 @@ msgstr ""
 msgid "${DYNAMIC_CONTENT}"
 msgstr ""
 
-#: src/bioport/app_templates/main_template.pt:13
-#. Default: "Dutch Biografic Portal"
+#: src/bioport/app.py:54
+msgid "home"
+msgstr ""
+
+#: src/bioport/app.py:55
+msgid "zoeken"
+msgstr ""
+
+#: src/bioport/app.py:57
+msgid "bladeren"
+msgstr ""
+
+#: src/bioport/app.py:58
+msgid "project"
+msgstr ""
+
+#: src/bioport/app.py:59
+msgid "blog"
+msgstr ""
+
+#: src/bioport/app.py:60
+msgid "agenda"
+msgstr ""
+
+#: src/bioport/app.py:62
+msgid "links"
+msgstr ""
+
+#: src/bioport/app.py:63
+msgid "vragen"
+msgstr ""
+
+#: src/bioport/app.py:64
+msgid "contact"
+msgstr ""
+
+#: src/bioport/app_templates/main_template.pt:14
+#: src/bioport/app_templates/main_template.pt:51
+#. Default: "Site title"
 msgid "portal_title"
+msgstr ""
+
+#: src/bioport/app_templates/main_template.pt:20
+msgid "meta_description"
+msgstr ""
+
+#: src/bioport/app_templates/main_template.pt:25
+msgid "meta_keywords"
+msgstr ""
+
+#: src/bioport/app_templates/main_template.pt:56
+#. Default: ""
+#.  "${persons} personen<br />\n"
+#.  "                van 634 tot 2005\n"
+#.  "                <br />\n"
+#.  "                in ${biographies} biografie\303\253n"
+msgid "count_persons_and_biographies"
+msgstr ""
+
+#: src/bioport/app_templates/main_template.pt:62
+msgid "Contents"
 msgstr ""
 

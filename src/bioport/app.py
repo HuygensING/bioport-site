@@ -5,12 +5,13 @@ import random
 import zope.interface
 from chameleon.zpt.template import PageTemplateFile
 from common import format_date, format_dates, format_number, html2unicode, maanden
+from interfaces import IBioport
 from NamenIndex.common import to_ymd
 from plone.memoize import ram
 from plone.memoize.instance import memoize
 from time import time
 from z3c.batching.batch import Batch
-from interfaces import IBioport
+from bioport import BioportMessageFactory as _
 
 class RepositoryView:
     def repository(self):
@@ -50,16 +51,17 @@ class RepositoryView:
        
     def menu_items(self):
         return [
-                (self.application_url(), 'home'),
-                (self.application_url('zoek'), 'zoeken'),
-                (self.application_url('personen') + '?beginletter=a', 'bladeren'),
-                (self.application_url('about'), 'project'),
-                (self.application_url('blog'), 'blog'),
-                (self.application_url('agenda'), 'agenda'),
+                (self.application_url(), _('home')),
+                (self.application_url('zoek'), _('zoeken')),
+                (self.application_url('personen') + '?beginletter=a',
+                 _('bladeren')),
+                (self.application_url('about'), _('project')),
+                (self.application_url('blog'), _('blog')),
+                (self.application_url('agenda'), _('agenda')),
 #                (self.url('colofon'), 'colofon'),
-                (self.application_url('links'), 'links'),
-                (self.application_url('faq'), 'vragen'),
-                (self.application_url('contact'), 'contact'),
+                (self.application_url('links'), _('links')),
+                (self.application_url('faq'), _('vragen')),
+                (self.application_url('contact'), _('contact')),
 #                (self.url('english'), 'english'),
         ]    
     def today(self):
