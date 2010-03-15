@@ -541,4 +541,4 @@ class Robots_txt(grok.View):
         self.request.response.setHeader('Content-Type','text/plain')
         return "User-agent: *\nAllow: /\n"
 
-
+    
