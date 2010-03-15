@@ -65,7 +65,7 @@
             <th>naamsvarianten</th>
             <td>
             <ul><li tal:repeat="naam python:view.biography.get_names()"
-                tal:content="structure python:naam.volledige_naam()"/>
+                tal:content="structure python:naam.guess_normal_form2()"/>
             </ul>
             </td>
         </tr>

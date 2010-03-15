@@ -51,8 +51,7 @@
     </span>
     
     </div>
-   <div class="list_of_persons"
-   >
+   <div class="list_of_persons" >
 	<div tal:repeat="person persons" tal:omit-tag="">
 	
 	<div class="persoon" metal:define-macro="render_person"

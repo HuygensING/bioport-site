@@ -75,7 +75,11 @@ class Batcher:
         self.size = int(self.request.get('size', 30))
         
     def batch_url(self, start=None, size=None):
-        data = self.request.form
+        
+        #next two lines replaces data = self.request.form
+        #which magickally resolves a unicode error
+        data = {}
+        data.update(self.request.form)
         if start != None:
             data['start'] = start
         if size != None:
@@ -299,8 +303,8 @@ class Personen(BioPortTraverser,grok.View,RepositoryView, Batcher):
                       'app_templates',
                       'navigation_block.cpt')
         template = PageTemplateFile(template_filename)
+        
         return template(view=self, request=self.request)
-        return "Navigation box"
     
 class Persoon(BioPortTraverser, grok.View,RepositoryView): #, BioPortTraverser):
     def update(self, **args):

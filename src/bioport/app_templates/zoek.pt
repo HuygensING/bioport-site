@@ -20,7 +20,7 @@
     <td>
         <input type="text" name="search_name" 
             xtal:attributes="value python:unicode(request.get('search_name', ''), 'latin1')" 
-            tal:attributes="value python:request.get('search_name', '')"
+            tal:attributes="value python:unicode(request.get('search_name', ''))"
              />
         
         <a class="tooltip_button"
