@@ -8,7 +8,7 @@
                 tal:condition="illustration">
                 <img tal:attributes="src illustration/cached_url"  alt="person/naam" />
             </div>
-	            <div class="subscript"><span tal:replace="person/name" ></span> 
+	            <div class="subscript"><span tal:replace="structure person/name" ></span> 
 	               <span tal:replace="python:context.format_dates(person.get_value('geboortedatum'), person.get_value('sterfdatum'), show_year_only=True)"></span>
                </div>
                 </a>
