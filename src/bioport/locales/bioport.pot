@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Mon Mar 22 17:11:12 2010\n"
+"POT-Creation-Date: Mon Mar 22 18:14:18 2010\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope3-dev@zope.org>\n"
@@ -91,7 +91,7 @@ msgid "zoek"
 msgstr ""
 
 #: src/bioport/app_templates/main_template.pt:14
-#: src/bioport/app_templates/main_template.pt:51
+#: src/bioport/app_templates/main_template.pt:52
 #. Default: "Site title"
 msgid "portal_title"
 msgstr ""
@@ -104,7 +104,11 @@ msgstr ""
 msgid "meta_keywords"
 msgstr ""
 
-#: src/bioport/app_templates/main_template.pt:56
+#: src/bioport/app_templates/main_template.pt:50
+msgid "language_name"
+msgstr ""
+
+#: src/bioport/app_templates/main_template.pt:57
 #. Default: ""
 #.  "${persons} personen<br />\n"
 #.  "                van 634 tot 2005\n"
@@ -113,7 +117,7 @@ msgstr ""
 msgid "count_persons_and_biographies"
 msgstr ""
 
-#: src/bioport/app_templates/main_template.pt:62
+#: src/bioport/app_templates/main_template.pt:63
 msgid "Contents"
 msgstr ""
 

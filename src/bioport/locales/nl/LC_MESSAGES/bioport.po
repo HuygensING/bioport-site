@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Mon Mar 22 17:11:12 2010\n"
+"POT-Creation-Date: Mon Mar 22 18:14:18 2010\n"
 "PO-Revision-Date: 2010-03-10 12:59+0100\n"
 "Last-Translator: silvio <silviot@gmail.com>\n"
 "Language-Team: Italian\n"
@@ -100,7 +100,7 @@ msgstr ""
 
 #. Default: "Site title"
 #: src/bioport/app_templates/main_template.pt:14
-#: src/bioport/app_templates/main_template.pt:51
+#: src/bioport/app_templates/main_template.pt:52
 msgid "portal_title"
 msgstr "Het Biografisch Portaal van Nederland"
 
@@ -112,17 +112,21 @@ msgstr "Het Biografisch Portaal van Nederland"
 msgid "meta_keywords"
 msgstr "biografie portaal biografieën Nederland"
 
+#: src/bioport/app_templates/main_template.pt:50
+msgid "language_name"
+msgstr "dutch"
+
 #. Default: ""
 #.  "${persons} personen<br />\n"
 #.  "                van 634 tot 2005\n"
 #.  "                <br />\n"
 #.  "                in ${biographies} biografie\303\253n"
-#: src/bioport/app_templates/main_template.pt:56
+#: src/bioport/app_templates/main_template.pt:57
 msgid "count_persons_and_biographies"
 msgstr ""
 "${persons} personen<br /> van 634 tot 2005 <br /> in ${biographies} "
 "biografieën"
 
-#: src/bioport/app_templates/main_template.pt:62
+#: src/bioport/app_templates/main_template.pt:63
 msgid "Contents"
 msgstr "Inhoud"

@@ -259,9 +259,8 @@ p {
 	#popup #content_box {
 	width : 460px;	
 	}	
+
 body#popup {
 	width : 500px;	
 	min-width : 500px;
-	}	
-
-}
+}	

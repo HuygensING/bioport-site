@@ -34,7 +34,11 @@
 			width: 242px;
 			height: 78px;
 			background: url(../images/logobpn.png) no-repeat;
+            cursor: pointer;
 		}
+		#layHead h2.english {
+			background: url(../images/logobpn-en.png) no-repeat;
+        }
 		
 		#layHead div#stats {
 			float: right;
