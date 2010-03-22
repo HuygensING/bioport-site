@@ -1,4 +1,5 @@
-<html metal:use-macro="context/@@main_template/macros/master">
+<html metal:use-macro="context/@@main_template/macros/master"
+      i18n:domain="bioport">
 <script type="text/javascript" metal:fill-slot="extra_header_content">
 	/* load sidebar on doc ready */
 	$(document).ready(function() {
@@ -54,12 +55,12 @@
             $$('#photoframe-3').css('opacity',0.3);
             "> 
         </script>
-        <h1>Welkom</h1>
+        <h1 i18n:translate="">Welkom</h1>
 
-        <p class="intropar">
+        <p class="intropar" i18n:translate="home_bold_paragraph">
        Dit is de site van het Biografisch Portaal van Nederland. Hier vindt u oude en nieuwe informatie over kopstukken en andere opzienbarende figuren uit de Nederlandse geschiedenis, van het vroegste verleden tot nu. 
         </p>    
-        <p>      
+        <p i18n:translate="home_plain_paragraph">      
    Het Biografisch Portaal is een samenwerkingsproject van wetenschappelijke en culturele instellingen van Nederland. 
    De site toont 'work in progress': de verzameling van levensbeschrijvingen wordt steeds aangevuld met nieuwe informatie 
    en beeldmateriaal. 
@@ -68,11 +69,11 @@
            </p>    
         
         <div class="searchcontainer freeform">
-            <h3>Zoeken</h3>
+            <h3 i18n:translate="Zoeken">Zoeken</h3>
             <form id="searchform" action="personen">
                 <fieldset>
                     <input type="text" name="search_name"/>
-                    <button type="submit" value="zoek">zoek</button>
+                    <button type="submit" value="zoek" i18n:attributes="value">zoek</button>
                     <a href="zoek">geavanceerde zoekopties</a>
                 </fieldset>
             </form>

@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Wed Mar 10 19:07:26 2010\n"
+"POT-Creation-Date: Mon Mar 22 17:11:12 2010\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope3-dev@zope.org>\n"
@@ -61,6 +61,33 @@ msgstr ""
 
 #: src/bioport/app.py:64
 msgid "contact"
+msgstr ""
+
+#: src/bioport/app_templates/index.pt:58
+msgid "Welkom"
+msgstr ""
+
+#: src/bioport/app_templates/index.pt:60
+#. Default: "Dit is de site van het Biografisch Portaal van Nederland. Hier vindt u oude en nieuwe informatie over kopstukken en andere opzienbarende figuren uit de Nederlandse geschiedenis, van het vroegste verleden tot nu."
+msgid "home_bold_paragraph"
+msgstr ""
+
+#: src/bioport/app_templates/index.pt:63
+#. Default: ""
+#.  "Het Biografisch Portaal is een samenwerkingsproject van wetenschappelijke en culturele instellingen van Nederland. \n"
+#.  "   De site toont 'work in progress': de verzameling van levensbeschrijvingen wordt steeds aangevuld met nieuwe informatie \n"
+#.  "   en beeldmateriaal. \n"
+#.  "   Ook aan de doorzoekbaarheid wordt nog gewerkt. \n"
+#.  "   Onder de knop 'project' kunt u meer lezen over de voortgang van het project."
+msgid "home_plain_paragraph"
+msgstr ""
+
+#: src/bioport/app_templates/index.pt:72
+msgid "Zoeken"
+msgstr ""
+
+#: src/bioport/app_templates/index.pt:76
+msgid "zoek"
 msgstr ""
 
 #: src/bioport/app_templates/main_template.pt:14
