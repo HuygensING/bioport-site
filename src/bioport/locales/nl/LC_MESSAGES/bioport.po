@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Mon Mar 22 18:14:18 2010\n"
+"POT-Creation-Date: Tue Mar 23 12:49:26 2010\n"
 "PO-Revision-Date: 2010-03-10 12:59+0100\n"
 "Last-Translator: silvio <silviot@gmail.com>\n"
 "Language-Team: Italian\n"

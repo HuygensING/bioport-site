@@ -14,9 +14,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Mon Mar 22 18:14:18 2010\n"
-"PO-Revision-Date: 2010-03-10 12:59+0100\n"
-"Last-Translator: silvio <silviot@gmail.com>\n"
+"POT-Creation-Date: Tue Mar 23 12:49:26 2010\n"
+"PO-Revision-Date: 2010-03-23 12:52+0100\n"
+"Last-Translator: Silvio Tomatis <silviot@gmail.com>\n"
 "Language-Team: Italian\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -71,10 +71,7 @@ msgstr "Welcome"
 #. Default: "Dit is de site van het Biografisch Portaal van Nederland. Hier vindt u oude en nieuwe informatie over kopstukken en andere opzienbarende figuren uit de Nederlandse geschiedenis, van het vroegste verleden tot nu."
 #: src/bioport/app_templates/index.pt:60
 msgid "home_bold_paragraph"
-msgstr ""
-"This is the site of the Dutch Biography Portal. You can find new and old "
-"information here about various leaders and other prominent figures from "
-"Dutch history, from the earliest times up to the present day."
+msgstr "This is the site of the Dutch Biography Portal. You can find new and old information here about various leaders and other prominent figures from Dutch history, from the earliest times up to the present day."
 
 #. Default: ""
 #.  "Het Biografisch Portaal is een samenwerkingsproject van wetenschappelijke en culturele instellingen van Nederland. \n"
@@ -83,23 +80,14 @@ msgstr ""
 #.  "   Ook aan de doorzoekbaarheid wordt nog gewerkt. \n"
 #.  "   Onder de knop 'project' kunt u meer lezen over de voortgang van het project."
 #: src/bioport/app_templates/index.pt:63
-#, fuzzy
 msgid "home_plain_paragraph"
-msgstr ""
-"The Biography Portal is a joint venture involving diverse academic and "
-"cultural  institutions in the Netherlands. The site represents a work in "
-"progress: the collection of biographies is constantly being updated with new "
-"information and images. We are also working on ways of refining the search "
-"functions. Clicking on ‘project’ will take you to a page with further "
-"information about new developments."
+msgstr "The Biography Portal is a joint venture involving diverse academic and cultural institutions in the Netherlands. The site represents a work in progress: the collection of biographies is constantly being updated with new information and images. We are also working on ways of refining the search functions. Clicking on ‘project’ will take you to a page with further information about new developments. "
 
 #: src/bioport/app_templates/index.pt:72
-#, fuzzy
 msgid "Zoeken"
 msgstr "search"
 
 #: src/bioport/app_templates/index.pt:76
-#, fuzzy
 msgid "zoek"
 msgstr "search"
 
@@ -128,9 +116,9 @@ msgstr "english"
 #.  "                in ${biographies} biografie\303\253n"
 #: src/bioport/app_templates/main_template.pt:57
 msgid "count_persons_and_biographies"
-msgstr ""
-"${persons} persons <br /> from 634 to 2005 <br /> in $biographies biographies"
+msgstr "${persons} persons <br /> from 634 to 2005 <br /> in $biographies biographies"
 
 #: src/bioport/app_templates/main_template.pt:63
 msgid "Contents"
 msgstr "Contents"
+
