@@ -14,8 +14,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Tue Mar 23 12:49:26 2010\n"
-"PO-Revision-Date: 2010-03-23 12:52+0100\n"
+"POT-Creation-Date: Tue Mar 23 15:33:12 2010\n"
+"PO-Revision-Date: 2010-03-23 15:31+0100\n"
 "Last-Translator: Silvio Tomatis <silviot@gmail.com>\n"
 "Language-Team: Italian\n"
 "MIME-Version: 1.0\n"
@@ -25,6 +25,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: src/bioport/admin_templates/edit.pt:19
+#: src/bioport/app_templates/zoek.pt:119
 msgid "${DYNAMIC_CONTENT}"
 msgstr ""
 
@@ -64,6 +65,70 @@ msgstr "FAQ"
 msgid "contact"
 msgstr ""
 
+#: src/bioport/app_templates/dummy_translations.py:10
+msgid "Beeldende kunsten &amp; vormgeving"
+msgstr ""
+
+#: src/bioport/app_templates/dummy_translations.py:11
+msgid "Kerk en godsdienst"
+msgstr ""
+
+#: src/bioport/app_templates/dummy_translations.py:12
+msgid "Koloniale en overzeese betrekkingen en handel"
+msgstr ""
+
+#: src/bioport/app_templates/dummy_translations.py:13
+msgid "Krijgsmacht en oorlog"
+msgstr ""
+
+#: src/bioport/app_templates/dummy_translations.py:14
+msgid "Letterkunde"
+msgstr ""
+
+#: src/bioport/app_templates/dummy_translations.py:15
+msgid "Maatschappelijke bewegingen"
+msgstr ""
+
+#: src/bioport/app_templates/dummy_translations.py:16
+msgid "Rechtspraak"
+msgstr ""
+
+#: src/bioport/app_templates/dummy_translations.py:17
+msgid "Onderwijs &amp; wetenschappen"
+msgstr ""
+
+#: src/bioport/app_templates/dummy_translations.py:18
+msgid "Politiek en bestuur"
+msgstr ""
+
+#: src/bioport/app_templates/dummy_translations.py:19
+msgid "Radio en TV"
+msgstr ""
+
+#: src/bioport/app_templates/dummy_translations.py:20
+msgid "Sport en vrije tijd"
+msgstr ""
+
+#: src/bioport/app_templates/dummy_translations.py:21
+msgid "Uitvoerende kunsten"
+msgstr ""
+
+#: src/bioport/app_templates/dummy_translations.py:22
+msgid "Zorg"
+msgstr ""
+
+#: src/bioport/app_templates/dummy_translations.py:23
+msgid "Overig"
+msgstr ""
+
+#: src/bioport/app_templates/dummy_translations.py:8
+msgid "Adel en vorstenhuizen"
+msgstr "Aristocracy and royal houses"
+
+#: src/bioport/app_templates/dummy_translations.py:9
+msgid "Bedrijfsleven"
+msgstr ""
+
 #: src/bioport/app_templates/index.pt:58
 msgid "Welkom"
 msgstr "Welcome"
@@ -83,13 +148,22 @@ msgstr "This is the site of the Dutch Biography Portal. You can find new and old
 msgid "home_plain_paragraph"
 msgstr "The Biography Portal is a joint venture involving diverse academic and cultural institutions in the Netherlands. The site represents a work in progress: the collection of biographies is constantly being updated with new information and images. We are also working on ways of refining the search functions. Clicking on ‘project’ will take you to a page with further information about new developments. "
 
-#: src/bioport/app_templates/index.pt:72
-msgid "Zoeken"
-msgstr "search"
-
 #: src/bioport/app_templates/index.pt:76
 msgid "zoek"
 msgstr "search"
+
+#: src/bioport/app_templates/index.pt:77
+msgid "geavanceerde zoekopties"
+msgstr "Advanced search"
+
+#: src/bioport/app_templates/index.pt:83
+msgid "Bladeren"
+msgstr "Browse"
+
+#. Default: "Deelnemers aan het Biografisch Portaal van Nederland zijn:"
+#: src/bioport/app_templates/index.pt:92
+msgid "participants_in_the_portal_are"
+msgstr "Participants in the Biography Portal are:"
 
 #. Default: "Site title"
 #: src/bioport/app_templates/main_template.pt:14
@@ -121,4 +195,134 @@ msgstr "${persons} persons <br /> from 634 to 2005 <br /> in $biographies biogra
 #: src/bioport/app_templates/main_template.pt:63
 msgid "Contents"
 msgstr "Contents"
+
+#: src/bioport/app_templates/zoek.pt:103
+msgid "man"
+msgstr "male"
+
+#: src/bioport/app_templates/zoek.pt:107
+msgid "vrouw"
+msgstr "female"
+
+#. Default: "rubriek"
+#: src/bioport/app_templates/zoek.pt:115
+msgid "category"
+msgstr "category"
+
+#. Default: ""
+#.  "De \342\200\230reden van roem\342\200\231 van mensen in een biografisch naslagwerk is zeer divers,\n"
+#.  "            en mensen kunnen bovendien om meer dan \303\251\303\251n reden beroemd zijn.\n"
+#.  "            Voorlopig gebruiken we een grofmazig rubriekensysteem om hen in te delen in diverse levenssferen.\n"
+#.  "           <br />\n"
+#.  "           Voor meer informatie, zie ${faq}."
+#: src/bioport/app_templates/zoek.pt:133
+msgid "category_help_text"
+msgstr "The ‘reasons’ for people’s fame and hence their inclusion in a biographical register may be extremely diverse, besides which people may be famous for more than one thing. For the time being, we are using a rough classification system to assign people to various walks of life. <br />For more information, see ${faq}"
+
+#. Default: "de veelgestelde vragen"
+#: src/bioport/app_templates/zoek.pt:133
+msgid "FAQs"
+msgstr "FAQs"
+
+#. Default: "bron"
+#: src/bioport/app_templates/zoek.pt:138
+msgid "source"
+msgstr "source"
+
+#: src/bioport/app_templates/zoek.pt:14
+msgid "Zoeken"
+msgstr "search"
+
+#. Default: ""
+#.  "NB. Alle personen die in het Biografisch Portaal staan, zijn vindbaar op naam. \n"
+#.  "Voor de overige zoekmogelijkheden geldt de waarschuwing dat de de resultaten onvolledig zijn,\n"
+#.  " omdat persoonsgegevens (nog) niet bij alle personen zijn ingevuld. \n"
+#.  "Er wordt hard aan gewerkt om de leemtes op te vullen."
+#: src/bioport/app_templates/zoek.pt:167
+msgid "disclaimer_text"
+msgstr "NB. All persons included in the Biographical Portal can be found by name. Users should be aware that the results generated by other search options may be incomplete, since in some cases the personal details have not yet been filled in. We are hard at work filling in all the remaining gaps. "
+
+#: src/bioport/app_templates/zoek.pt:19
+msgid "zoeken op naam"
+msgstr "search by name"
+
+#. Default: ""
+#.  "Typ de naam of een gedeelte van de naam.  \n"
+#.  "           <br /> \n"
+#.  "            De zoekfunctie houdt rekening met spellingsvarianten (zoeken op \n"
+#.  "            ${uil} \n"
+#.  "            en \n"
+#.  "            ${uyl} \n"
+#.  "            geeft hetzelfde resultaat).\n"
+#.  "            Vindt u dat vervelend, gebruik dan dubbele aanhalingstekens om letterlijk \n"
+#.  "            ${uijl} \n"
+#.  "            te vinden.\n"
+#.  "           <br /> \n"
+#.  "            Gebruik wildcards (? voor \303\251\303\251n teken, * voor \303\251\303\251n of \n"
+#.  "    meer tekens) om spellingsvarianten te vinden: met \n"
+#.  "            ${seven_star} \n"
+#.  "     vindt u alle namen die met 'seven' beginnen."
+#: src/bioport/app_templates/zoek.pt:42
+msgid "search_by_name_help"
+msgstr "Type all or part of the name. <br />The search function takes account of variant spellings (searching for ${uil} and ${uyl} will produce the same result). To disable this facility, use double quotation marks to search for one spelling only, e.g.: ${uijl}. You can use wildcards to find variant spellings.<br />Use a question mark for a single character, an asterisk for one or more characters: e.g. the search ${seven_star} will find all names starting with 'seven'."
+
+#: src/bioport/app_templates/zoek.pt:48
+msgid "vrij zoeken in tekst"
+msgstr "free search in the text"
+
+#. Default: ""
+#.  "U kunt vrij zoeken op woord(en) in de tekst van de biografie\303\253n. \n"
+#.  "            <br />\n"
+#.  "            Daarmee zoekt u in de tekst van alle naslagwerken die in het portaal zijn opgenomen. \n"
+#.  "            De kwaliteit daarvan is niet altijd even goed - in sommige gevallen \n"
+#.  "            betreft het OCR tekst, en soms is niet de tekst van de gehele biografie opgenomen."
+#: src/bioport/app_templates/zoek.pt:54
+msgid "search_in_text_help"
+msgstr "You can perform a free search by entering a keyword or keywords.<br />In this way you can search all the reference material included in the portal. The results generated by this search will not always be of good quality: in some cases the text has been scanned in using OCR software. You may also find that only part of the biography has been included."
+
+#. Default: "geboren"
+#: src/bioport/app_templates/zoek.pt:63
+msgid "born"
+msgstr "born"
+
+#. Default: "tussen"
+#: src/bioport/app_templates/zoek.pt:65
+#: src/bioport/app_templates/zoek.pt:84
+msgid "between"
+msgstr "between"
+
+#. Default: "en"
+#: src/bioport/app_templates/zoek.pt:67
+#: src/bioport/app_templates/zoek.pt:86
+msgid "and"
+msgstr "and"
+
+#: src/bioport/app_templates/zoek.pt:70
+#: src/bioport/app_templates/zoek.pt:88
+msgid "in"
+msgstr "in"
+
+#. Default: "U kunt personen selecteren die in een bepaalde periode en/of plaats hebben geleefd."
+#: src/bioport/app_templates/zoek.pt:75
+msgid "born_help_text"
+msgstr "You can select people who lived in a particular place and/or period of time."
+
+#. Default: "gestorven"
+#: src/bioport/app_templates/zoek.pt:82
+msgid "died"
+msgstr "died"
+
+#: src/bioport/app_templates/zoek.pt:9
+msgid "Zoek"
+msgstr "Search"
+
+#. Default: "U kunt personen selecteren die in een bepaalde periode en/of plaats hebben geleefd."
+#: src/bioport/app_templates/zoek.pt:93
+msgid "died_help_text"
+msgstr "You can select people who died in a particular place and/or period of time."
+
+#. Default: "sekse"
+#: src/bioport/app_templates/zoek.pt:99
+msgid "gender"
+msgstr "gender"
 

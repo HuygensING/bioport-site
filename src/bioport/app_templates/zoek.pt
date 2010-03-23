@@ -6,17 +6,17 @@
     });
 
 </script>
-    <title metal:fill-slot="head_title">Zoek</title> 
+    <title metal:fill-slot="head_title" i18n:translate="">Zoek</title> 
     <div metal:fill-slot="content">
 <div id="colright" metal:use-macro="context/@@index/macros/birthdays_box">
 </div>
 <div id="colcenter">
-<h1>Zoeken</h1>
+<h1 i18n:translate="">Zoeken</h1>
 <form tal:attributes="action python:view.url('personen')" 
     metal:define-macro="search_form">
 <table>
 <tr>
-    <th>zoeken op naam</th>
+    <th i18n:translate="">zoeken op naam</th>
     <td>
         <input type="text" name="search_name" 
             xtal:attributes="value python:unicode(request.get('search_name', ''), 'latin1')" 
@@ -25,97 +25,94 @@
         
         <a class="tooltip_button"
             Onclick="jQuery('#tip_search_name').toggle(200)" class="toggle">[?]</a> 
-        <div class="tooltip" id="tip_search_name">
-        Typ de naam of een gedeelte van de naam.  
-       <br /> 
-        De zoekfunctie houdt rekening met spellingsvarianten (zoeken op 
-        <a href='./personen?search_name=uil'>uil</a> 
-        en 
-        <a href='./personen?search_name=uyl'>uyl</a> 
-        geeft hetzelfde resultaat).
-        Vindt u dat vervelend, gebruik dan dubbele aanhalingstekens om letterlijk 
-        <a href='./personen?search_name="uijl"'>"uijl"</a> 
-        te vinden.
-       <br /> 
-        Gebruik wildcards (? voor één teken, * voor één of 
-meer tekens) om spellingsvarianten te vinden: met 
-        <a href='./personen?search_name=seven*'>seven*</a> 
- vindt u alle namen die met 'seven' beginnen. 
-        <a class="tooltip_button_hide"
-        tal:condition="nothing"
-        OnClick="jQuery('#tip_search_name').hide(200)">[verberg deze tekst]</a>
-</div>
-    </td>
-</tr>
-<tr>
-    <th>vrij zoeken in tekst</th>
+        <div class="tooltip" id="tip_search_name" i18n:translate="search_by_name_help">
+            Typ de naam of een gedeelte van de naam.  
+           <br /> 
+            De zoekfunctie houdt rekening met spellingsvarianten (zoeken op 
+            <a href='./personen?search_name=uil' i18n:name="uil">uil</a> 
+            en 
+            <a href='./personen?search_name=uyl' i18n:name="uyl">uyl</a> 
+            geeft hetzelfde resultaat).
+            Vindt u dat vervelend, gebruik dan dubbele aanhalingstekens om letterlijk 
+            <a href='./personen?search_name="uijl"' i18n:name="uijl">"uijl"</a> 
+            te vinden.
+           <br /> 
+            Gebruik wildcards (? voor één teken, * voor één of 
+    meer tekens) om spellingsvarianten te vinden: met 
+            <a href='./personen?search_name=seven*' i18n:name="seven_star">seven*</a> 
+     vindt u alle namen die met 'seven' beginnen. 
+        </div>
+            </td>
+        </tr>
+        <tr>
+    <th i18n:translate="">vrij zoeken in tekst</th>
     <td>
         <input type="text" name="search_term" 
             tal:attributes="value python:unicode(request.get('search_term', ''))" />
         <a class="tooltip_button"
             Onclick="jQuery('#tip_search_term').toggle(200)" class="toggle">[?]</a> 
-        <div class="tooltip" id="tip_search_term">
-U kunt vrij zoeken op woord(en) in de tekst van de biografieën. 
-<br/>
-Daarmee zoekt u in de tekst van alle naslagwerken die in het portaal zijn opgenomen. 
-De kwaliteit daarvan is niet altijd even goed - in sommige gevallen 
-betreft het OCR tekst, en soms is niet de tekst van de gehele biografie opgenomen.
-
-        <a class="tooltip_button_hide"
-        tal:condition="nothing"
-        OnClick="jQuery('#tip_search_term').hide(200)">[verberg deze tekst]</a>
+        <div class="tooltip" id="tip_search_term" i18n:translate="search_in_text_help">
+            U kunt vrij zoeken op woord(en) in de tekst van de biografieën. 
+            <br/>
+            Daarmee zoekt u in de tekst van alle naslagwerken die in het portaal zijn opgenomen. 
+            De kwaliteit daarvan is niet altijd even goed - in sommige gevallen 
+            betreft het OCR tekst, en soms is niet de tekst van de gehele biografie opgenomen.
         </div>
 </tr>
 <tr>
-    <th>geboren</th>
+    <th i18n:translate="born">geboren</th>
     <td>
-        tussen <input type="text" size="4" name="geboortejaar_min" 
+        <tal:b i18n:translate="between">tussen</tal:b> <input type="text" size="4" name="geboortejaar_min" 
             tal:attributes="value python:request.get('geboortejaar_min')" />
-        en 
+        <tal:b i18n:translate="and">en</tal:b> 
         <input type="text" size="4" name="geboortejaar_max" 
             tal:attributes="value python:request.get('geboortejaar_max')" />
-        in 
+        <tal:b i18n:translate="in">in</tal:b> 
         <input type="text" size="20" name="geboorteplaats"
             tal:attributes="value python:unicode(request.get('geboorteplaats', ''))" />
         <a class="tooltip_button"
             Onclick="jQuery('#tip_birth').toggle(200)" class="toggle">[?]</a> 
-        <div id="tip_birth" class="tooltip">
+        <div id="tip_birth" class="tooltip" i18n:translate="born_help_text">
         U kunt personen selecteren die in een bepaalde periode en/of plaats hebben geleefd.
         </div> 
      </td>
 </tr>
 
 <tr>
-    <th>gestorven</th>
+    <th i18n:translate="died">gestorven</th>
     <td>
-        tussen <input type="text" size="4" name="sterfjaar_min"
+        <tal:b i18n:translate="between">tussen</tal:b> <input type="text" size="4" name="sterfjaar_min"
             tal:attributes="value python:request.get('sterfjaar_min')" />
-        en <input type="text" size="4" name="sterfjaar_max" 
+        <tal:b i18n:translate="and">en</tal:b> <input type="text" size="4" name="sterfjaar_max" 
             tal:attributes="value python:request.get('sterfjaar_max')" />
-        in 
+        <tal:b i18n:translate="in">in</tal:b> 
         <input type="text" size="20" name="sterfplaats" 
             tal:attributes="value python:unicode(request.get('sterfplaats', ''))" />
         <a class="tooltip_button"
             Onclick="jQuery('#tip_death').toggle(200)" class="toggle">[?]</a> 
-        <div id="tip_death" class="tooltip">
+        <div id="tip_death" class="tooltip" i18n:translate="died_help_text">
         U kunt personen selecteren die in een bepaalde periode en/of plaats hebben geleefd.
         </div> 
      </td>
 </tr>
 <tr>
-    <th>sekse</th>
+    <th i18n:translate="gender">sekse</th>
     <td>
         <select name="geslacht">
             <option />
-            <option tal:repeat="sex python:[('1', 'man'), ('2', 'vrouw')]"
-                tal:attributes="value python:sex[0];
-                    selected python:sex[0] == request.get('geslacht')"
-                tal:content="python:sex[1]" />
+            <option value="1" i18n:translate=""
+                    tal:attributes="selected python:request.get('geslacht')=='1'">
+                    man
+            </option>
+            <option value="2" i18n:translate=""
+                    tal:attributes="selected python:request.get('geslacht')=='2'">
+                vrouw
+            </option>
         </select>
     </td>
 </tr>
 <tr>
-    <th>rubriek</th>
+    <th i18n:translate="category">rubriek</th>
     <td>
         <select name="category">
             <option />
@@ -123,19 +120,22 @@ betreft het OCR tekst, en soms is niet de tekst van de gehele biografie opgenome
                 tal:attributes="value category/id;
                     selected python:str(category.id) == request.get('category');
                 "
-                tal:content="python:category.name" />
+                tal:content="python:category.name"
+                i18n:translate="" />
         </select>
         <a class="tooltip_button"
             Onclick="jQuery('#tip_category').toggle(200)" class="toggle">[?]</a> 
-        <div id="tip_category" class="tooltip">
-        De ‘reden van roem’ van mensen in een biografisch naslagwerk is zeer divers, en mensen kunnen bovendien om meer dan één reden beroemd zijn. Voorlopig gebruiken we een grofmazig rubriekensysteem om hen in te delen in diverse levenssferen.
-       <br />
-       Voor meer informatie, zie <a href="faq#category">de veelgestelde vragen</a>.
+        <div id="tip_category" class="tooltip" i18n:translate="category_help_text">
+            De ‘reden van roem’ van mensen in een biografisch naslagwerk is zeer divers,
+            en mensen kunnen bovendien om meer dan één reden beroemd zijn.
+            Voorlopig gebruiken we een grofmazig rubriekensysteem om hen in te delen in diverse levenssferen.
+           <br />
+           Voor meer informatie, zie <a href="faq#category" i18n:translate="FAQs" i18n:name="faq">de veelgestelde vragen</a>.
         </div> 
     </td>
 </tr>
 <tr>
-    <th>bron</th>
+    <th i18n:translate="source">bron</th>
     <td>
     <select name="source_id" style="width:20em">
     <option></option>
@@ -164,7 +164,7 @@ betreft het OCR tekst, en soms is niet de tekst van de gehele biografie opgenome
 <h2>
 Disclaimer
 </h2>
-<p metal:define-macro="disclaimer_tekst">
+<p metal:define-macro="disclaimer_tekst" i18n:translate="disclaimer_text">
 NB. Alle personen die in het Biografisch Portaal staan, zijn vindbaar op naam. 
 Voor de overige zoekmogelijkheden geldt de waarschuwing dat de de resultaten onvolledig zijn,
  omdat persoonsgegevens (nog) niet bij alle personen zijn ingevuld. 

@@ -74,13 +74,13 @@
                 <fieldset>
                     <input type="text" name="search_name"/>
                     <button type="submit" value="zoek" i18n:attributes="value">zoek</button>
-                    <a href="zoek">geavanceerde zoekopties</a>
+                    <a href="zoek" i18n:translate="">geavanceerde zoekopties</a>
                 </fieldset>
             </form>
         </div>
     
         <div class="searchcontainer browse">
-            <h3>Bladeren</h3>
+            <h3 i18n:translate="">Bladeren</h3>
             <a tal:repeat="letter string:abcdefghijklmnopqrstuvwxyz"
                 tal:content="letter"
                 tal:attributes="href string:personen?beginletter=${letter}">X</a>
@@ -89,7 +89,7 @@
         <div class="credits">
             <hr/>
             <h3 class="textOnly">Deelnemers</h3>
-            Deelnemers aan het Biografisch Portaal van Nederland zijn: 
+            <span i18n:translate="participants_in_the_portal_are">Deelnemers aan het Biografisch Portaal van Nederland zijn: </span>
             <a target="_blank" href="http://www.inghist.nl">Instituut voor Nederlandse Geschiedenis</a>, 
             <a target="_blank" href="http://www.huygensinstituut.knaw.nl">Huygens Instituut</a>, 
             <a target="_blank" href="http://www.iisg.nl">Internationaal Instituut voor Sociale Geschiedenis</a>, 
