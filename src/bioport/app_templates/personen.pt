@@ -8,8 +8,8 @@
     <tal:block tal:replace="structure view/get_navigation_box" />
 </div>
 <div class="colcenter">
-<h1 tal:condition="search_description">Zoekresultaten</h1>
-<h1 tal:condition="not:search_description">Bladeren</h1>
+<h1 tal:condition="search_description" i18n:translate="">Zoekresultaten</h1>
+<h1 tal:condition="not:search_description" i18n:translate="">Bladeren</h1>
 <span metal:define-macro="alfabet" tal:repeat="letter string:abcdefghijklmnopqrstuvwxyz"
     tal:condition="not:search_description"
     tal:attributes="class python:letter == request.get('beginletter') and 'alfabet selected' or 'alfabet'"

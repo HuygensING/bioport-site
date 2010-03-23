@@ -9,6 +9,7 @@ from zope.component import getUtility
 from zope.interface import Interface
 from zope.sendmail.interfaces import IMailDelivery
 from zope.schema import ValidationError
+from bioport import BioportMessageFactory as _
 
 grok.context(Bioport)
 
@@ -21,10 +22,10 @@ def email_validator(value):
     return True
 
 class IContact(Interface):
-    name = schema.TextLine(title=u"Naam")
-    sender = schema.TextLine(title=u"Emailadres", constraint=email_validator)
-    text = schema.Text(title=u"Tekst")
-    verification = schema.Text(title=u"Vul de letters in in het vakje")
+    name = schema.TextLine(title=_(u"Naam"))
+    sender = schema.TextLine(title=_(u"Emailadres"), constraint=email_validator)
+    text = schema.Text(title=_(u"Tekst"))
+    verification = schema.Text(title=_(u"Vul de letters in in het vakje"))
 
 class ContactForm(grok.AddForm, RepositoryView):
     form_fields = grok.AutoFields(IContact)

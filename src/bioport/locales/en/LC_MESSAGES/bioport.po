@@ -14,8 +14,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Tue Mar 23 15:33:12 2010\n"
-"PO-Revision-Date: 2010-03-23 15:31+0100\n"
+"POT-Creation-Date: Tue Mar 23 16:32:48 2010\n"
+"PO-Revision-Date: 2010-03-23 16:11+0100\n"
 "Last-Translator: Silvio Tomatis <silviot@gmail.com>\n"
 "Language-Team: Italian\n"
 "MIME-Version: 1.0\n"
@@ -65,70 +65,6 @@ msgstr "FAQ"
 msgid "contact"
 msgstr ""
 
-#: src/bioport/app_templates/dummy_translations.py:10
-msgid "Beeldende kunsten &amp; vormgeving"
-msgstr ""
-
-#: src/bioport/app_templates/dummy_translations.py:11
-msgid "Kerk en godsdienst"
-msgstr ""
-
-#: src/bioport/app_templates/dummy_translations.py:12
-msgid "Koloniale en overzeese betrekkingen en handel"
-msgstr ""
-
-#: src/bioport/app_templates/dummy_translations.py:13
-msgid "Krijgsmacht en oorlog"
-msgstr ""
-
-#: src/bioport/app_templates/dummy_translations.py:14
-msgid "Letterkunde"
-msgstr ""
-
-#: src/bioport/app_templates/dummy_translations.py:15
-msgid "Maatschappelijke bewegingen"
-msgstr ""
-
-#: src/bioport/app_templates/dummy_translations.py:16
-msgid "Rechtspraak"
-msgstr ""
-
-#: src/bioport/app_templates/dummy_translations.py:17
-msgid "Onderwijs &amp; wetenschappen"
-msgstr ""
-
-#: src/bioport/app_templates/dummy_translations.py:18
-msgid "Politiek en bestuur"
-msgstr ""
-
-#: src/bioport/app_templates/dummy_translations.py:19
-msgid "Radio en TV"
-msgstr ""
-
-#: src/bioport/app_templates/dummy_translations.py:20
-msgid "Sport en vrije tijd"
-msgstr ""
-
-#: src/bioport/app_templates/dummy_translations.py:21
-msgid "Uitvoerende kunsten"
-msgstr ""
-
-#: src/bioport/app_templates/dummy_translations.py:22
-msgid "Zorg"
-msgstr ""
-
-#: src/bioport/app_templates/dummy_translations.py:23
-msgid "Overig"
-msgstr ""
-
-#: src/bioport/app_templates/dummy_translations.py:8
-msgid "Adel en vorstenhuizen"
-msgstr "Aristocracy and royal houses"
-
-#: src/bioport/app_templates/dummy_translations.py:9
-msgid "Bedrijfsleven"
-msgstr ""
-
 #: src/bioport/app_templates/index.pt:58
 msgid "Welkom"
 msgstr "Welcome"
@@ -136,7 +72,10 @@ msgstr "Welcome"
 #. Default: "Dit is de site van het Biografisch Portaal van Nederland. Hier vindt u oude en nieuwe informatie over kopstukken en andere opzienbarende figuren uit de Nederlandse geschiedenis, van het vroegste verleden tot nu."
 #: src/bioport/app_templates/index.pt:60
 msgid "home_bold_paragraph"
-msgstr "This is the site of the Dutch Biography Portal. You can find new and old information here about various leaders and other prominent figures from Dutch history, from the earliest times up to the present day."
+msgstr ""
+"This is the site of the Dutch Biography Portal. You can find new and old "
+"information here about various leaders and other prominent figures from "
+"Dutch history, from the earliest times up to the present day."
 
 #. Default: ""
 #.  "Het Biografisch Portaal is een samenwerkingsproject van wetenschappelijke en culturele instellingen van Nederland. \n"
@@ -146,7 +85,13 @@ msgstr "This is the site of the Dutch Biography Portal. You can find new and old
 #.  "   Onder de knop 'project' kunt u meer lezen over de voortgang van het project."
 #: src/bioport/app_templates/index.pt:63
 msgid "home_plain_paragraph"
-msgstr "The Biography Portal is a joint venture involving diverse academic and cultural institutions in the Netherlands. The site represents a work in progress: the collection of biographies is constantly being updated with new information and images. We are also working on ways of refining the search functions. Clicking on ‘project’ will take you to a page with further information about new developments. "
+msgstr ""
+"The Biography Portal is a joint venture involving diverse academic and "
+"cultural institutions in the Netherlands. The site represents a work in "
+"progress: the collection of biographies is constantly being updated with new "
+"information and images. We are also working on ways of refining the search "
+"functions. Clicking on ‘project’ will take you to a page with further "
+"information about new developments. "
 
 #: src/bioport/app_templates/index.pt:76
 msgid "zoek"
@@ -155,10 +100,6 @@ msgstr "search"
 #: src/bioport/app_templates/index.pt:77
 msgid "geavanceerde zoekopties"
 msgstr "Advanced search"
-
-#: src/bioport/app_templates/index.pt:83
-msgid "Bladeren"
-msgstr "Browse"
 
 #. Default: "Deelnemers aan het Biografisch Portaal van Nederland zijn:"
 #: src/bioport/app_templates/index.pt:92
@@ -190,11 +131,20 @@ msgstr "english"
 #.  "                in ${biographies} biografie\303\253n"
 #: src/bioport/app_templates/main_template.pt:57
 msgid "count_persons_and_biographies"
-msgstr "${persons} persons <br /> from 634 to 2005 <br /> in $biographies biographies"
+msgstr ""
+"${persons} persons <br /> from 634 to 2005 <br /> in $biographies biographies"
 
 #: src/bioport/app_templates/main_template.pt:63
 msgid "Contents"
 msgstr "Contents"
+
+#: src/bioport/app_templates/personen.pt:11
+msgid "Zoekresultaten"
+msgstr "Search results"
+
+#: src/bioport/app_templates/personen.pt:12
+msgid "Bladeren"
+msgstr "Browse"
 
 #: src/bioport/app_templates/zoek.pt:103
 msgid "man"
@@ -217,7 +167,12 @@ msgstr "category"
 #.  "           Voor meer informatie, zie ${faq}."
 #: src/bioport/app_templates/zoek.pt:133
 msgid "category_help_text"
-msgstr "The ‘reasons’ for people’s fame and hence their inclusion in a biographical register may be extremely diverse, besides which people may be famous for more than one thing. For the time being, we are using a rough classification system to assign people to various walks of life. <br />For more information, see ${faq}"
+msgstr ""
+"The ‘reasons’ for people’s fame and hence their inclusion in a biographical "
+"register may be extremely diverse, besides which people may be famous for "
+"more than one thing. For the time being, we are using a rough classification "
+"system to assign people to various walks of life. <br />For more "
+"information, see ${faq}"
 
 #. Default: "de veelgestelde vragen"
 #: src/bioport/app_templates/zoek.pt:133
@@ -240,7 +195,11 @@ msgstr "search"
 #.  "Er wordt hard aan gewerkt om de leemtes op te vullen."
 #: src/bioport/app_templates/zoek.pt:167
 msgid "disclaimer_text"
-msgstr "NB. All persons included in the Biographical Portal can be found by name. Users should be aware that the results generated by other search options may be incomplete, since in some cases the personal details have not yet been filled in. We are hard at work filling in all the remaining gaps. "
+msgstr ""
+"NB. All persons included in the Biographical Portal can be found by name. "
+"Users should be aware that the results generated by other search options may "
+"be incomplete, since in some cases the personal details have not yet been "
+"filled in. We are hard at work filling in all the remaining gaps. "
 
 #: src/bioport/app_templates/zoek.pt:19
 msgid "zoeken op naam"
@@ -264,7 +223,14 @@ msgstr "search by name"
 #.  "     vindt u alle namen die met 'seven' beginnen."
 #: src/bioport/app_templates/zoek.pt:42
 msgid "search_by_name_help"
-msgstr "Type all or part of the name. <br />The search function takes account of variant spellings (searching for ${uil} and ${uyl} will produce the same result). To disable this facility, use double quotation marks to search for one spelling only, e.g.: ${uijl}. You can use wildcards to find variant spellings.<br />Use a question mark for a single character, an asterisk for one or more characters: e.g. the search ${seven_star} will find all names starting with 'seven'."
+msgstr ""
+"Type all or part of the name. <br />The search function takes account of "
+"variant spellings (searching for ${uil} and ${uyl} will produce the same "
+"result). To disable this facility, use double quotation marks to search for "
+"one spelling only, e.g.: ${uijl}. You can use wildcards to find variant "
+"spellings.<br />Use a question mark for a single character, an asterisk for "
+"one or more characters: e.g. the search ${seven_star} will find all names "
+"starting with 'seven'."
 
 #: src/bioport/app_templates/zoek.pt:48
 msgid "vrij zoeken in tekst"
@@ -278,7 +244,12 @@ msgstr "free search in the text"
 #.  "            betreft het OCR tekst, en soms is niet de tekst van de gehele biografie opgenomen."
 #: src/bioport/app_templates/zoek.pt:54
 msgid "search_in_text_help"
-msgstr "You can perform a free search by entering a keyword or keywords.<br />In this way you can search all the reference material included in the portal. The results generated by this search will not always be of good quality: in some cases the text has been scanned in using OCR software. You may also find that only part of the biography has been included."
+msgstr ""
+"You can perform a free search by entering a keyword or keywords.<br />In "
+"this way you can search all the reference material included in the portal. "
+"The results generated by this search will not always be of good quality: in "
+"some cases the text has been scanned in using OCR software. You may also "
+"find that only part of the biography has been included."
 
 #. Default: "geboren"
 #: src/bioport/app_templates/zoek.pt:63
@@ -286,26 +257,24 @@ msgid "born"
 msgstr "born"
 
 #. Default: "tussen"
-#: src/bioport/app_templates/zoek.pt:65
-#: src/bioport/app_templates/zoek.pt:84
+#: src/bioport/app_templates/zoek.pt:65 src/bioport/app_templates/zoek.pt:84
 msgid "between"
 msgstr "between"
 
 #. Default: "en"
-#: src/bioport/app_templates/zoek.pt:67
-#: src/bioport/app_templates/zoek.pt:86
+#: src/bioport/app_templates/zoek.pt:67 src/bioport/app_templates/zoek.pt:86
 msgid "and"
 msgstr "and"
 
-#: src/bioport/app_templates/zoek.pt:70
-#: src/bioport/app_templates/zoek.pt:88
+#: src/bioport/app_templates/zoek.pt:70 src/bioport/app_templates/zoek.pt:88
 msgid "in"
 msgstr "in"
 
 #. Default: "U kunt personen selecteren die in een bepaalde periode en/of plaats hebben geleefd."
 #: src/bioport/app_templates/zoek.pt:75
 msgid "born_help_text"
-msgstr "You can select people who lived in a particular place and/or period of time."
+msgstr ""
+"You can select people who lived in a particular place and/or period of time."
 
 #. Default: "gestorven"
 #: src/bioport/app_templates/zoek.pt:82
@@ -319,10 +288,109 @@ msgstr "Search"
 #. Default: "U kunt personen selecteren die in een bepaalde periode en/of plaats hebben geleefd."
 #: src/bioport/app_templates/zoek.pt:93
 msgid "died_help_text"
-msgstr "You can select people who died in a particular place and/or period of time."
+msgstr ""
+"You can select people who died in a particular place and/or period of time."
 
 #. Default: "sekse"
 #: src/bioport/app_templates/zoek.pt:99
 msgid "gender"
 msgstr "gender"
 
+#: src/bioport/contact.py:25
+msgid "Naam"
+msgstr "Name"
+
+#: src/bioport/contact.py:26
+msgid "Emailadres"
+msgstr "Email address"
+
+#: src/bioport/contact.py:27
+msgid "Tekst"
+msgstr "Text"
+
+#: src/bioport/contact.py:28
+msgid "Vul de letters in in het vakje"
+msgstr "Please write the letters in the picture"
+
+#. Default: ""
+#.  "Wij ontvangen graag opmerkingen en reacties. Ook staan wij open\n"
+#.  "voor correcties op de data. Daaraan zitten wel beperkingen, want \342\200\223 de\n"
+#.  "naam zegt het al \342\200\223 we zijn een portaal: we kunnen alleen correcties\n"
+#.  "aanbrengen in de \342\200\230biografische kerngegevens\342\200\231. Correcties worden alleen\n"
+#.  "doorgevoerd als ze zijn onderbouwd met verwijzingen naar betrouwbare\n"
+#.  "bronnen. Met klem verzoeken we u om geduld te hebben. De functionaliteit voor het verwerken van aanvullingen en correcties is nog in ontwikkeling."
+#: src/bioport/contact_templates/contact.pt:18
+msgid "contact_page_text"
+msgstr ""
+"We are very happy to receive remarks and reactions. We are also open to "
+"corrections to mistakes in the database. We are limited in our capacity to "
+"respond to these at present, since as a ‘portal’, we can only make changes "
+"to the ‘essential biographical information’. Corrections will only be made "
+"if accompanied by corroborative references to reliable sources. We would "
+"kindly ask all respondents to be patient in waiting for a response, since "
+"the operational capacity for dealing with additions and corrections is still "
+"being built up."
+
+#: src/bioport/dummy_translations.py:10
+msgid "Beeldende kunsten & vormgeving"
+msgstr "Visual arts and design"
+
+#: src/bioport/dummy_translations.py:11
+msgid "Kerk en godsdienst"
+msgstr "Church and religion"
+
+#: src/bioport/dummy_translations.py:12
+msgid "Koloniale en overzeese betrekkingen en handel"
+msgstr "Colonial and overseas relations and trade"
+
+#: src/bioport/dummy_translations.py:13
+msgid "Krijgsmacht en oorlog"
+msgstr "Armed forces and war"
+
+#: src/bioport/dummy_translations.py:14
+msgid "Letterkunde"
+msgstr "Literature"
+
+#: src/bioport/dummy_translations.py:15
+msgid "Maatschappelijke bewegingen"
+msgstr "Social movements"
+
+#: src/bioport/dummy_translations.py:16
+msgid "Rechtspraak"
+msgstr "Justice system"
+
+#: src/bioport/dummy_translations.py:17
+msgid "Onderwijs & wetenschappen"
+msgstr "Education and sciences"
+
+#: src/bioport/dummy_translations.py:18
+msgid "Politiek en bestuur"
+msgstr "Politics and administration"
+
+#: src/bioport/dummy_translations.py:19
+msgid "Radio en TV"
+msgstr "Radio and TV"
+
+#: src/bioport/dummy_translations.py:20
+msgid "Sport en vrije tijd"
+msgstr "Sports and recreation"
+
+#: src/bioport/dummy_translations.py:21
+msgid "Uitvoerende kunsten"
+msgstr "Performing arts"
+
+#: src/bioport/dummy_translations.py:22
+msgid "Zorg"
+msgstr "Care"
+
+#: src/bioport/dummy_translations.py:23
+msgid "Overig"
+msgstr "Other categories"
+
+#: src/bioport/dummy_translations.py:8
+msgid "Adel en vorstenhuizen"
+msgstr "Nobility and members of royal houses"
+
+#: src/bioport/dummy_translations.py:9
+msgid "Bedrijfsleven"
+msgstr "Industry"

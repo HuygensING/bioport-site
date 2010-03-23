@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Tue Mar 23 15:33:12 2010\n"
+"POT-Creation-Date: Tue Mar 23 16:32:48 2010\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope3-dev@zope.org>\n"
@@ -64,70 +64,6 @@ msgstr ""
 msgid "contact"
 msgstr ""
 
-#: src/bioport/app_templates/dummy_translations.py:10
-msgid "Beeldende kunsten &amp; vormgeving"
-msgstr ""
-
-#: src/bioport/app_templates/dummy_translations.py:11
-msgid "Kerk en godsdienst"
-msgstr ""
-
-#: src/bioport/app_templates/dummy_translations.py:12
-msgid "Koloniale en overzeese betrekkingen en handel"
-msgstr ""
-
-#: src/bioport/app_templates/dummy_translations.py:13
-msgid "Krijgsmacht en oorlog"
-msgstr ""
-
-#: src/bioport/app_templates/dummy_translations.py:14
-msgid "Letterkunde"
-msgstr ""
-
-#: src/bioport/app_templates/dummy_translations.py:15
-msgid "Maatschappelijke bewegingen"
-msgstr ""
-
-#: src/bioport/app_templates/dummy_translations.py:16
-msgid "Rechtspraak"
-msgstr ""
-
-#: src/bioport/app_templates/dummy_translations.py:17
-msgid "Onderwijs &amp; wetenschappen"
-msgstr ""
-
-#: src/bioport/app_templates/dummy_translations.py:18
-msgid "Politiek en bestuur"
-msgstr ""
-
-#: src/bioport/app_templates/dummy_translations.py:19
-msgid "Radio en TV"
-msgstr ""
-
-#: src/bioport/app_templates/dummy_translations.py:20
-msgid "Sport en vrije tijd"
-msgstr ""
-
-#: src/bioport/app_templates/dummy_translations.py:21
-msgid "Uitvoerende kunsten"
-msgstr ""
-
-#: src/bioport/app_templates/dummy_translations.py:22
-msgid "Zorg"
-msgstr ""
-
-#: src/bioport/app_templates/dummy_translations.py:23
-msgid "Overig"
-msgstr ""
-
-#: src/bioport/app_templates/dummy_translations.py:8
-msgid "Adel en vorstenhuizen"
-msgstr ""
-
-#: src/bioport/app_templates/dummy_translations.py:9
-msgid "Bedrijfsleven"
-msgstr ""
-
 #: src/bioport/app_templates/index.pt:58
 msgid "Welkom"
 msgstr ""
@@ -153,10 +89,6 @@ msgstr ""
 
 #: src/bioport/app_templates/index.pt:77
 msgid "geavanceerde zoekopties"
-msgstr ""
-
-#: src/bioport/app_templates/index.pt:83
-msgid "Bladeren"
 msgstr ""
 
 #: src/bioport/app_templates/index.pt:92
@@ -193,6 +125,14 @@ msgstr ""
 
 #: src/bioport/app_templates/main_template.pt:63
 msgid "Contents"
+msgstr ""
+
+#: src/bioport/app_templates/personen.pt:11
+msgid "Zoekresultaten"
+msgstr ""
+
+#: src/bioport/app_templates/personen.pt:12
+msgid "Bladeren"
 msgstr ""
 
 #: src/bioport/app_templates/zoek.pt:103
@@ -323,5 +263,96 @@ msgstr ""
 #: src/bioport/app_templates/zoek.pt:99
 #. Default: "sekse"
 msgid "gender"
+msgstr ""
+
+#: src/bioport/contact.py:25
+msgid "Naam"
+msgstr ""
+
+#: src/bioport/contact.py:26
+msgid "Emailadres"
+msgstr ""
+
+#: src/bioport/contact.py:27
+msgid "Tekst"
+msgstr ""
+
+#: src/bioport/contact.py:28
+msgid "Vul de letters in in het vakje"
+msgstr ""
+
+#: src/bioport/contact_templates/contact.pt:18
+#. Default: ""
+#.  "Wij ontvangen graag opmerkingen en reacties. Ook staan wij open\n"
+#.  "voor correcties op de data. Daaraan zitten wel beperkingen, want \342\200\223 de\n"
+#.  "naam zegt het al \342\200\223 we zijn een portaal: we kunnen alleen correcties\n"
+#.  "aanbrengen in de \342\200\230biografische kerngegevens\342\200\231. Correcties worden alleen\n"
+#.  "doorgevoerd als ze zijn onderbouwd met verwijzingen naar betrouwbare\n"
+#.  "bronnen. Met klem verzoeken we u om geduld te hebben. De functionaliteit voor het verwerken van aanvullingen en correcties is nog in ontwikkeling."
+msgid "contact_page_text"
+msgstr ""
+
+#: src/bioport/dummy_translations.py:10
+msgid "Beeldende kunsten & vormgeving"
+msgstr ""
+
+#: src/bioport/dummy_translations.py:11
+msgid "Kerk en godsdienst"
+msgstr ""
+
+#: src/bioport/dummy_translations.py:12
+msgid "Koloniale en overzeese betrekkingen en handel"
+msgstr ""
+
+#: src/bioport/dummy_translations.py:13
+msgid "Krijgsmacht en oorlog"
+msgstr ""
+
+#: src/bioport/dummy_translations.py:14
+msgid "Letterkunde"
+msgstr ""
+
+#: src/bioport/dummy_translations.py:15
+msgid "Maatschappelijke bewegingen"
+msgstr ""
+
+#: src/bioport/dummy_translations.py:16
+msgid "Rechtspraak"
+msgstr ""
+
+#: src/bioport/dummy_translations.py:17
+msgid "Onderwijs & wetenschappen"
+msgstr ""
+
+#: src/bioport/dummy_translations.py:18
+msgid "Politiek en bestuur"
+msgstr ""
+
+#: src/bioport/dummy_translations.py:19
+msgid "Radio en TV"
+msgstr ""
+
+#: src/bioport/dummy_translations.py:20
+msgid "Sport en vrije tijd"
+msgstr ""
+
+#: src/bioport/dummy_translations.py:21
+msgid "Uitvoerende kunsten"
+msgstr ""
+
+#: src/bioport/dummy_translations.py:22
+msgid "Zorg"
+msgstr ""
+
+#: src/bioport/dummy_translations.py:23
+msgid "Overig"
+msgstr ""
+
+#: src/bioport/dummy_translations.py:8
+msgid "Adel en vorstenhuizen"
+msgstr ""
+
+#: src/bioport/dummy_translations.py:9
+msgid "Bedrijfsleven"
 msgstr ""
 
