@@ -20,16 +20,32 @@
 		<span tal:replace="structure search_description"></span>  
 		<div tal:omit-tag="" tal:define="results persons">
 			<div tal:omit-tag="" metal:define-macro="aantal_resultaten">
-				<span tal:omit-tag="" tal:condition="python:results.grand_total == 0">Er zijn geen personen gevonden.</span>
-				<span tal:omit-tag="" tal:condition="python:results.grand_total == 1">Er is &eacute;&eacute;n persoon gevonden.</span>
-				<span tal:omit-tag="" tal:condition="python:results.grand_total > 2">Er zijn <span tal:replace="python:context.format_number(results.grand_total)" /> personen gevonden.</span>
+                <span tal:omit-tag="" tal:condition="python:results.grand_total == 0"
+                      i18n:translate="search_results_none">
+                    Er zijn geen personen gevonden.
+                </span>
+                <span tal:omit-tag="" tal:condition="python:results.grand_total == 1"
+                      i18n:translate="search_results_one">
+                    Er is &eacute;&eacute;n persoon gevonden.
+                </span>
+                <span tal:omit-tag=""
+                      tal:condition="python:results.grand_total > 2"
+                      i18n:translate="search_results_many">
+                      Er zijn 
+                      <span tal:replace="python:context.format_number(results.grand_total)" i18n:name="total_results" />
+                      personen gevonden.
+                </span>
 			</div>
-		<span tal:condition="search_description">
-		U kunt uw zoekopdracht
-			<a onClick="jQuery('#search_form').toggle(200)" class="toggle">aanpassen of beperken.</a>
+		<span tal:condition="search_description" i18n:translate="refine_search_inline">
+            U kunt uw zoekopdracht
+            <a onClick="jQuery('#search_form').toggle(200)" class="toggle"
+               i18n:name="search_form_link" i18n:translate="search_form_link">
+                aanpassen of beperken.
+            </a>
 		</span>
-		<span tal:condition="not:search_description">
-			Kunt u niet vinden wie U zocht? Probeer het met het <a tal:attributes="href python:view.url('zoek')">zoekscherm</a>.
+		<span tal:condition="not:search_description" i18n:translate="suggest_to_refine_search">
+            Kunt u niet vinden wie U zocht? Probeer het met het 
+            <a i18n:name="search_form" i18n:translate="search_form" tal:attributes="href python:view.url('zoek')">zoekscherm</a>.
 		</span>
 		</div>
 	</div>
@@ -40,14 +56,21 @@
         metal:define-macro="prev_next_navigation"
         tal:condition="persons"
              tal:define="results persons">   
-    <span tal:replace="python:'%s-%s van %s' % (context.format_number(results.start + 1),context.format_number( results.end + 1),  context.format_number(results.grand_total))" />  
+             <tal:block i18n:translate="result_page_detail">
+             <span tal:replace="python:'%s-%s' % (context.format_number(results.start + 1),
+                                                  context.format_number( results.end + 1))" 
+                   i18n:name="current_page" />
+                 van
+                 <span tal:replace="python: '%s' % context.format_number(results.grand_total)"
+                     i18n:name="total_results" />  
+             </tal:block>
     <span tal:condition="results/previous">
         <a tal:attributes="href python:view.batch_url(start=results.previous.start)"
-            tal:content="string:vorige">vorige X</a>
+            i18n:translate="">vorige</a>
     </span>  
     <span tal:condition="results/next">
         <a tal:attributes="href python:view.batch_url(start=results.next.start);"
-            tal:content="string:volgende">vorige X</a>
+            i18n:translate="">volgende</a>
     </span>
     
     </div>

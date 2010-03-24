@@ -155,8 +155,9 @@
 <tr>
     <td></td>
 <td>
-<input type="submit" value=" zoek " />
-<input type="submit" value=" wis " OnClick="jQuery('form').clearForm();return false;" />
+<input type="submit" value=" zoek " i18n:attributes="value" />
+<input type="submit" value=" wis " OnClick="jQuery('form').clearForm();return false;"
+ i18n:attributes="value" />
 
 </td>
 </tr>

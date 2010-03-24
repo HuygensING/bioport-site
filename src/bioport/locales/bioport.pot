@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Tue Mar 23 16:32:48 2010\n"
+"POT-Creation-Date: Wed Mar 24 17:55:12 2010\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope3-dev@zope.org>\n"
@@ -28,39 +28,93 @@ msgstr ""
 msgid "${DYNAMIC_CONTENT}"
 msgstr ""
 
-#: src/bioport/app.py:54
-msgid "home"
+#: src/bioport/app.py:227
+#: src/bioport/app_templates/zoek.pt:65
+#: src/bioport/app_templates/zoek.pt:84
+msgid "between"
 msgstr ""
 
-#: src/bioport/app.py:55
-msgid "zoeken"
+#: src/bioport/app.py:228
+#: src/bioport/app_templates/zoek.pt:67
+#: src/bioport/app_templates/zoek.pt:86
+msgid "and"
+msgstr ""
+
+#: src/bioport/app.py:229
+msgid "after"
+msgstr ""
+
+#: src/bioport/app.py:230
+msgid "before"
+msgstr ""
+
+#: src/bioport/app.py:238
+#: src/bioport/app_templates/zoek.pt:63
+msgid "born"
+msgstr ""
+
+#: src/bioport/app.py:254
+#: src/bioport/app_templates/zoek.pt:82
+msgid "died"
+msgstr ""
+
+#: src/bioport/app.py:267
+msgid "from"
+msgstr ""
+
+#: src/bioport/app.py:284
+msgid "of_the_category"
+msgstr ""
+
+#: src/bioport/app.py:292
+msgid "men"
+msgstr ""
+
+#: src/bioport/app.py:294
+msgid "women"
+msgstr ""
+
+#: src/bioport/app.py:296
+msgid "persons"
+msgstr ""
+
+#: src/bioport/app.py:301
+msgid "you_searched_for"
 msgstr ""
 
 #: src/bioport/app.py:57
-msgid "bladeren"
+msgid "home"
 msgstr ""
 
 #: src/bioport/app.py:58
-msgid "project"
-msgstr ""
-
-#: src/bioport/app.py:59
-msgid "blog"
+msgid "zoeken"
 msgstr ""
 
 #: src/bioport/app.py:60
-msgid "agenda"
+msgid "bladeren"
+msgstr ""
+
+#: src/bioport/app.py:61
+msgid "project"
 msgstr ""
 
 #: src/bioport/app.py:62
-msgid "links"
+msgid "blog"
 msgstr ""
 
 #: src/bioport/app.py:63
+msgid "agenda"
+msgstr ""
+
+#: src/bioport/app.py:65
+msgid "links"
+msgstr ""
+
+#: src/bioport/app.py:66
 msgid "vragen"
 msgstr ""
 
-#: src/bioport/app.py:64
+#: src/bioport/app.py:67
 msgid "contact"
 msgstr ""
 
@@ -135,6 +189,64 @@ msgstr ""
 msgid "Bladeren"
 msgstr ""
 
+#: src/bioport/app_templates/personen.pt:23
+#. Default: "Er zijn geen personen gevonden."
+msgid "search_results_none"
+msgstr ""
+
+#: src/bioport/app_templates/personen.pt:27
+#. Default: "Er is &eacute;&eacute;n persoon gevonden."
+msgid "search_results_one"
+msgstr ""
+
+#: src/bioport/app_templates/personen.pt:35
+#. Default: ""
+#.  "Er zijn \n"
+#.  "                      ${total_results}\n"
+#.  "                      personen gevonden."
+msgid "search_results_many"
+msgstr ""
+
+#: src/bioport/app_templates/personen.pt:41
+#. Default: "aanpassen of beperken."
+msgid "search_form_link"
+msgstr ""
+
+#: src/bioport/app_templates/personen.pt:41
+#. Default: ""
+#.  "U kunt uw zoekopdracht\n"
+#.  "            ${search_form_link}"
+msgid "refine_search_inline"
+msgstr ""
+
+#: src/bioport/app_templates/personen.pt:48
+#. Default: "zoekscherm"
+msgid "search_form"
+msgstr ""
+
+#: src/bioport/app_templates/personen.pt:48
+#. Default: ""
+#.  "Kunt u niet vinden wie U zocht? Probeer het met het \n"
+#.  "            ${search_form}."
+msgid "suggest_to_refine_search"
+msgstr ""
+
+#: src/bioport/app_templates/personen.pt:64
+#. Default: ""
+#.  "${current_page}\n"
+#.  "                 van\n"
+#.  "                 ${total_results}"
+msgid "result_page_detail"
+msgstr ""
+
+#: src/bioport/app_templates/personen.pt:68
+msgid "vorige"
+msgstr ""
+
+#: src/bioport/app_templates/personen.pt:72
+msgid "volgende"
+msgstr ""
+
 #: src/bioport/app_templates/zoek.pt:103
 msgid "man"
 msgstr ""
@@ -172,7 +284,17 @@ msgstr ""
 msgid "Zoeken"
 msgstr ""
 
-#: src/bioport/app_templates/zoek.pt:167
+#: src/bioport/app_templates/zoek.pt:158
+#. Default: "zoek"
+msgid " zoek "
+msgstr ""
+
+#: src/bioport/app_templates/zoek.pt:159
+#. Default: "wis"
+msgid " wis "
+msgstr ""
+
+#: src/bioport/app_templates/zoek.pt:168
 #. Default: ""
 #.  "NB. Alle personen die in het Biografisch Portaal staan, zijn vindbaar op naam. \n"
 #.  "Voor de overige zoekmogelijkheden geldt de waarschuwing dat de de resultaten onvolledig zijn,\n"
@@ -219,23 +341,6 @@ msgstr ""
 msgid "search_in_text_help"
 msgstr ""
 
-#: src/bioport/app_templates/zoek.pt:63
-#. Default: "geboren"
-msgid "born"
-msgstr ""
-
-#: src/bioport/app_templates/zoek.pt:65
-#: src/bioport/app_templates/zoek.pt:84
-#. Default: "tussen"
-msgid "between"
-msgstr ""
-
-#: src/bioport/app_templates/zoek.pt:67
-#: src/bioport/app_templates/zoek.pt:86
-#. Default: "en"
-msgid "and"
-msgstr ""
-
 #: src/bioport/app_templates/zoek.pt:70
 #: src/bioport/app_templates/zoek.pt:88
 msgid "in"
@@ -244,11 +349,6 @@ msgstr ""
 #: src/bioport/app_templates/zoek.pt:75
 #. Default: "U kunt personen selecteren die in een bepaalde periode en/of plaats hebben geleefd."
 msgid "born_help_text"
-msgstr ""
-
-#: src/bioport/app_templates/zoek.pt:82
-#. Default: "gestorven"
-msgid "died"
 msgstr ""
 
 #: src/bioport/app_templates/zoek.pt:9
@@ -281,7 +381,7 @@ msgstr ""
 msgid "Vul de letters in in het vakje"
 msgstr ""
 
-#: src/bioport/contact_templates/contact.pt:18
+#: src/bioport/contact_templates/contact.pt:19
 #. Default: ""
 #.  "Wij ontvangen graag opmerkingen en reacties. Ook staan wij open\n"
 #.  "voor correcties op de data. Daaraan zitten wel beperkingen, want \342\200\223 de\n"

@@ -12,6 +12,9 @@ from plone.memoize.instance import memoize
 from time import time
 from z3c.batching.batch import Batch
 from bioport import BioportMessageFactory as _
+from zope.i18n import translate
+from zope.app.publisher.browser import IUserPreferredLanguages
+
 
 class RepositoryView:
     def repository(self):
@@ -220,19 +223,27 @@ class Personen(BioPortTraverser,grok.View,RepositoryView, Batcher):
 #        size=None,
 #        status=None,
 #        where_clause=None,
+        current_language = IUserPreferredLanguages(self.request).getPreferredLanguages()[0]
+        _between = translate(_(u'between'),target_language=current_language)
+        _and = translate(_(u'and'), target_language=current_language)
+        _after = translate(_(u'after'),target_language=current_language)
+        _before = translate(_(u'before'),target_language=current_language)
+        repository = self.repository()
         result= ''
         request = self.request
         geboortejaar_min = request.get('geboortejaar_min')
         geboortejaar_max = request.get('geboortejaar_max')
         geboorteplaats = request.get('geboorteplaats')
         if geboortejaar_min or geboortejaar_max or geboorteplaats:
-            result += ' geboren'
+            result += ' ' + translate(_(u'born'),
+                                      target_language=current_language)
             if geboortejaar_min and geboortejaar_max:
-                result += ' tussen %s en %s' % (geboortejaar_min, geboortejaar_max)
+                result += ' ' + _between + ' ' + geboortejaar_min + ' ' 
+                result += _and + ' ' + geboortejaar_max
             elif geboortejaar_min:
-                result += ' na %s' % geboortejaar_min
+                result += ' %s %s' % (_after, geboortejaar_min)
             elif geboortejaar_max:
-                result += ' voor %s' % geboortejaar_min
+                result += ' %s %s' % (_before, geboortejaar_max)
             if geboorteplaats:
                 result += ' in  <em>%s</em>' % geboorteplaats
                 
@@ -240,18 +251,22 @@ class Personen(BioPortTraverser,grok.View,RepositoryView, Batcher):
         sterfjaar_max = request.get('sterfjaar_max')
         sterfplaats = request.get('sterfplaats')
         if sterfjaar_min or sterfjaar_max or sterfplaats:
-            result += ' gestorven '
+            result += ' ' + translate(_(u'died'),target_language=current_language)
             if sterfjaar_min and sterfjaar_max:
-                result += ' tussen %s en %s' % (sterfjaar_min, sterfjaar_max)
+                result += ' %s %s %s %s' % (_between, sterfjaar_min, _and, sterfjaar_max)
             elif sterfjaar_min:
-                result += ' na %s' % geboortejaar_min
+                result += ' %s %s' % (_after, sterfjaar_min)
             elif sterfjaar_max:
-                result += ' voor %s' % geboortejaar_min
+                result += ' %s %s' % (_before, sterfjaar_max)
             if sterfplaats:
                 result += ' in <em>%s</em>' % sterfplaats
                 
-        if request.get('source_id'):
-            result += ' uit <em>%s</em>' % self.repository().get_source(request.get('source_id')).description
+        source_id = request.get('source_id')
+        if source_id:
+            source_name = repository.get_source(source_id).description
+            result += ' %s <em>%s</em>' % (translate(_(u'from'),
+                                                      target_language=current_language),
+             source_name)
             
         if request.get('search_name'):
             result += u' wier naam lijkt op <em>%s</em>' % request.get('search_name')
@@ -262,22 +277,29 @@ class Personen(BioPortTraverser,grok.View,RepositoryView, Batcher):
 #            result += u' wiens naam lijkt op <em>%s</em>' % request.get('search_soundex')
         
         if request.get('category'):
-            result += ' uit de rubriek <em>%s</em>' % self.repository().db.get_category(request.get('category')).name
+            category_name_untranslated = repository.db.get_category(request.get('category')).name
+            category_name = translate(_(category_name_untranslated),
+                                      target_language=current_language)
+            result += ' %s <em>%s</em>' % (
+                translate(_("of_the_category"), target_language=current_language), #uit de rubriek
+                             category_name)
         
         #NB: in the template, we show the alphabet only if the search description is emtpy
         #uncommenting the following lines messes up this logic    
 #        if request.get('beginletter'):
 #            result += ' met een achternaam beginnend met een <em>%s</em>' % request.get('beginletter')
-        geslacht = request.get('geslacht')
-        if geslacht == '1':
-            geslacht = '<em>mannen</em>'
-        elif geslacht == '2':
-            geslacht = '<em>vrouwen</em>'
-        else:
-            geslacht = 'personen'
+        geslacht_id = request.get('geslacht', None)
+        gender_name = {'1': '<em>' + translate(_("men"),
+                                      target_language=current_language) + '</em>',
+                       '2': '<em>' + translate(_("women"),
+                                      target_language=current_language) + '</em>',}
+        _persons = translate(_("persons"), target_language=current_language)
+        geslacht = gender_name.get(geslacht_id, _persons)
             
         if result:
-            result = 'U zocht naar %s %s.' % (geslacht, result)
+            result = '%s %s %s.' % (
+                    translate(_("you_searched_for"), target_language=current_language),
+                    geslacht, result)
         result = unicode(result)
         return result
     def batch_navigation(self, batch):
