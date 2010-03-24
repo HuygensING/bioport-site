@@ -93,6 +93,14 @@
 				text-decoration:underline;
 			}
 
+               #layMenu ul#portal-languageselector {
+                       float: right;
+               }
+       
+                       #layMenu ul#portal-languageselector li {
+                               border-width: 0 0 0 1px;
+                       }
+
 		#layMenu .search_form {
 			padding: 5px 12px 0 0;
 			margin: 0;
