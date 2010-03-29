@@ -155,9 +155,9 @@ class Personen(BioPortTraverser,grok.View,RepositoryView, Batcher):
     def update(self):
         Batcher.update(self)
     @memoize
-    def get_persons(self):
+    def get_persons(self, **args):
         """get Persons - with restrictions given by request"""
-        qry = {}
+        qry = args
         #request.form has unicode keys - make strings
         for k in [
             'bioport_id', 
@@ -191,7 +191,7 @@ class Personen(BioPortTraverser,grok.View,RepositoryView, Batcher):
         repository = self.repository()
         persons = repository.get_persons_sequence(**qry)
         try:
-	        batch = Batch(persons,  start=self.start, size=self.size)
+            batch = Batch(persons,  start=self.start, size=self.size)
         except IndexError:
             batch = Batch(persons,size= self.size)
         batch.grand_total = len(persons)
@@ -199,6 +199,7 @@ class Personen(BioPortTraverser,grok.View,RepositoryView, Batcher):
         self.batch = batch
         return batch
 
+        
     def search_description(self):
         """return a description for the user of the search parameters in the request"""
 #        beginletter=None,
@@ -273,6 +274,7 @@ class Personen(BioPortTraverser,grok.View,RepositoryView, Batcher):
             
         if request.get('search_term'):
             result += u' met het woord <em>%s</em> in de tekst' % request.get('search_term')
+            
 #        if request.get('search_soundex'):
 #            result += u' wiens naam lijkt op <em>%s</em>' % request.get('search_soundex')
         

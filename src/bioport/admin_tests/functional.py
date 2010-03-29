@@ -3,6 +3,7 @@ Do a functional test on the app.
 
 :Test-Layer: python
 """
+import sys
 from bioport.app import Bioport
 from zope.testbrowser.testing import Browser
 import os
@@ -74,12 +75,12 @@ class SimpleSampleFunctionalTest(FunctionalTestCase):
             else:
                 data = ''
             try:
-	            browser.open(self.base_url + '/' + url, data.encode('utf8'))
+                browser.open(self.base_url + '/' + url, data.encode('utf8'))
             except:
                 raise
                 assert 0, 'error opening %s?%s' % (self.base_url + '/' + url, data.encode('utf8'))
+                
     def test_personidentify_workflow(self):
-        
         browser = Browser('http://localhost/app/admin/persoonidentify')
         browser.handleErrors = False
         
@@ -90,7 +91,10 @@ class SimpleSampleFunctionalTest(FunctionalTestCase):
         assert 'Hilbrand' in browser.contents, browser.contents
         
         #choose it and put it in the list
-        browser.getLink('kies').click()
+        try:
+            browser.getLink('kies').click()
+        except:
+            assert 0, browser.contents
        
         #we now selected the person
         #we can find the name of the person, followed by a 'verwijder' link
@@ -102,11 +106,14 @@ class SimpleSampleFunctionalTest(FunctionalTestCase):
         self.assertEqual(form.getControl(name='search_term').value, 'hilbrand')
         
         #search for a second person, using a wildcard pattern
-        form.getControl(name='search_term').value =  'Heyns*'
+        form.getControl(name='search_term').value =  'h*'
         form.getControl(name='form.actions.search_persons').click()
         
         #choose it as well
-        browser.getLink('kies').click()
+        try:
+            browser.getLink('kies').click()
+        except:
+            assert 0, browser.contents
         
         assert re.findall('Hilbrand.*verwijder', browser.contents, re.DOTALL), browser.contents
         assert re.findall('Heyns.*verwijder', browser.contents, re.DOTALL), browser.contents
@@ -133,8 +140,6 @@ class SimpleSampleFunctionalTest(FunctionalTestCase):
         pass
     def test_edit_workflow(self):
         """ test creating a bioport instance into Zope """
-
-        
         browser = Browser('http://localhost/app/admin')
         browser.handleErrors = False
         link = browser.getLink('Bewerk personen')
@@ -143,8 +148,6 @@ class SimpleSampleFunctionalTest(FunctionalTestCase):
         #click on one of the "bewerk" links
         link = browser.getLink('bewerk gegevens', index=0)
         link.click()
-        
-        assert 'Bewerk gegevens van' in browser.contents, browser.contents
         edit_url = browser.url
         #remove the birth date
         form = browser.getForm()
@@ -213,11 +216,10 @@ class SimpleSampleFunctionalTest(FunctionalTestCase):
             ('birth_y', ''),
             ('state_floruit_from_y', '2000'),
             ('status', ['1']),
-            ('remarks', 'ongeveer rond'),
         ]
         for k, v in vals:
             try:
-	            form.getControl(name=k).value = v
+                form.getControl(name=k, index=0).value = v
             except:
                 print '********', k, v
                 raise

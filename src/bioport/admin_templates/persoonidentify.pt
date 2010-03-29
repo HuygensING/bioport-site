@@ -4,7 +4,6 @@
 
 <h1>Identificeer Persoon</h1>
 
-
 <!--  the chosen persons -->
 <table tal:condition="view/selected_persons">
 <tr tal:repeat="person view/selected_persons">
@@ -36,8 +35,8 @@ of <a metal:define-macro="button_begin_opnieuw" tal:attributes="href python:view
 <table>
 <tr metal:define-macro="search_field_naam">
     <th>zoeken op naam</th>
-    <td><input type="text" name="search_term"
-        tal:attributes="value request/search_term | nothing">
+    <td><input type="text" name="search_name"
+        tal:attributes="value request/search_name | nothing">
         
         [<a tal:attributes="href python:view.url('uitleg_zoek')">tips voor het zoeken</a>]</td>
 </tr>

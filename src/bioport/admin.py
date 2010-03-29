@@ -192,17 +192,17 @@ class Biography(grok.View):
     grok.require('bioport.Edit')
     pass
 
-
 class Persons(app.Personen,RepositoryView):
     grok.require('bioport.Edit')
-
-    
+    def get_persons(self):
+        return app.Personen.get_persons(self, hide_invisible=False)
 class Source(grok.EditForm,RepositoryView):
     grok.require('bioport.Edit')
 
     def update(self, source_id=None):
         repository = self.repository()
         self.source =repository.get_source(source_id) 
+        
     @grok.action('Save settings', name='save_settings')    
     def save_settings(self,**args):
         source = self.source
@@ -515,11 +515,13 @@ class Persoon(app.Persoon, grok.EditForm, RepositoryView):
     def save_category(self):
         self._set_category()
         self.save_biography()
-        self.msg = 'beroep bewaard' 
+        self.msg = 'rubriek bewaard' 
     
     
     def _set_category(self):
         category_ids = self.request.get('category_id', [])
+        if type(category_ids) != type([]):
+            category_ids = [category_ids]
         category_ids = [id for id in category_ids if id]
         self.bioport_biography.set_category(category_ids)
            
