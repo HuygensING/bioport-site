@@ -12,7 +12,7 @@
         tal:attributes="href python:view.url('persoon', data={'bioport_id':person.bioport_id})"
         tal:content="person/title"></a> </td>
     <td tal:define="other_persons python:[p.bioport_id for p in view.selected_persons if p != person]">
-        [<a tal:attributes="href python:view.url(data ={'bioport_ids': other_persons, 'search_term':request.get('search_term', '')})">verwijder keuze</a>]</td>
+        [<a tal:attributes="href python:view.url(data ={'bioport_ids': other_persons, 'search_name':request.get('search_name', '')})">verwijder keuze</a>]</td>
 </tr>
 </table>
 <div 
@@ -25,7 +25,7 @@
 <div style="clear:both" />
 <p tal:condition="python:len(view.selected_persons) == 0">Zoek een persoon om te vergelijken, en klik op [kies]</p>
 <p tal:condition="python:len(view.selected_persons) == 1">Kies nog een persoon om te vergelijken,
-of <a metal:define-macro="button_begin_opnieuw" tal:attributes="href python:view.url(data={'bioport_ids': [], 'search_term':request.get('search_term', '')})">begin opnieuw</a></p>
+of <a metal:define-macro="button_begin_opnieuw" tal:attributes="href python:view.url(data={'bioport_ids': [], 'search_name':request.get('search_name', '')})">begin opnieuw</a></p>
 <p tal:condition="python:len(view.selected_persons) == 2"><a metal:use-macro="template/macros/button_begin_opnieuw"></a></p>
 
 
@@ -92,7 +92,7 @@ of <a metal:define-macro="button_begin_opnieuw" tal:attributes="href python:view
         'form.actions.search_person':'', 
         'bioport_ids':view.bioport_ids,
         'new_bioport_id':person.get_bioport_id(),
-        'search_term':request.get('search_term', ''),
+        'search_name':request.get('search_name', ''),
         })">kies</a>]
         <br />
         </span>

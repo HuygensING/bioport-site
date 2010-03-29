@@ -86,7 +86,7 @@ class SimpleSampleFunctionalTest(FunctionalTestCase):
         
         #search for the first person
         form = browser.getForm(index=0)
-        form.getControl(name='search_term').value='hilbrand'
+        form.getControl(name='search_name').value='hilbrand'
         form.getControl(name='form.actions.search_persons').click()
         assert 'Hilbrand' in browser.contents, browser.contents
         
@@ -103,10 +103,10 @@ class SimpleSampleFunctionalTest(FunctionalTestCase):
         
         #the page remembered the serach term
         form = browser.getForm()
-        self.assertEqual(form.getControl(name='search_term').value, 'hilbrand')
+        self.assertEqual(form.getControl(name='search_name').value, 'hilbrand')
         
         #search for a second person, using a wildcard pattern
-        form.getControl(name='search_term').value =  'h*'
+        form.getControl(name='search_name').value =  'Heyns'
         form.getControl(name='form.actions.search_persons').click()
         
         #choose it as well
@@ -126,7 +126,7 @@ class SimpleSampleFunctionalTest(FunctionalTestCase):
         
         #choose another person
         form = browser.getForm()
-        form.getControl(name='search_term').value= 'kraemer'
+        form.getControl(name='search_name').value= 'kraemer'
         form.getControl(name='form.actions.search_persons').click()
         browser.getLink('kies').click()
         
@@ -155,7 +155,6 @@ class SimpleSampleFunctionalTest(FunctionalTestCase):
         form.getControl(name='birth_text').value=''
         form.getControl(name='form.actions.save_event_birth').click()
        
-        
         #go the the public view 
         browser.getLink('getoond').click()
         public_url = browser.url

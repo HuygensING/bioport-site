@@ -276,7 +276,7 @@ class Personen(BioPortTraverser,grok.View,RepositoryView, Batcher):
             result += u' met het woord <em>%s</em> in de tekst' % request.get('search_term')
             
 #        if request.get('search_soundex'):
-#            result += u' wiens naam lijkt op <em>%s</em>' % request.get('search_soundex')
+#            result += u' wier naam lijkt op <em>%s</em>' % request.get('search_soundex')
         
         if request.get('category'):
             category_name_untranslated = repository.db.get_category(request.get('category')).name
@@ -433,10 +433,10 @@ class Birthdays_Box(grok.View, RepositoryView):
         #get the month and day of today
         today = datetime.date.today().strftime('-%m-%d')
         #query the database for persons born on this date
-        persons = self.repository().get_persons(where_clause='geboortedatum like "____%s"' % today, has_illustrations=True)
+        persons = self.repository().get_persons(where_clause='geboortedatum like "____%s"' % today, has_illustrations=True, hide_foreigners=True)
         if len(persons) < 3:
             #if we have less then 3 people, we cheat a bit and take someone who died today
-            persons += self.repository().get_persons(where_clause='sterfdatum like "____%s"' % today, has_illustrations=True)
+            persons += self.repository().get_persons(where_clause='sterfdatum like "____%s"' % today, has_illustrations=True, hide_foreigners=True)
              
         return persons[:3]
 
