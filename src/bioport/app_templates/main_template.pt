@@ -1,9 +1,8 @@
-<metal:block define-macro="master">
-<metal:block define-slot="doctype">
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-</metal:block> 
-
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"
+<metal:block define-macro="master"><metal:block define-slot="doctype"><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"></metal:block> 
+<html xmlns="http://www.w3.org/1999/xhtml"
+    tal:define="current_language path: view/context/@@language_chooser/get_current_language"
+    tal:attributes="lang current_language; xml:lang current_language"
+    lang="en" xml:lang="en"
     xmlns:i18n="http://xml.zope.org/namespaces/i18n"
     xmlns:tal="http://xml.zope.org/namespaces/tal"
     i18n:domain="bioport" >
@@ -41,6 +40,14 @@
 
     <!--[if IE 6]>
     <![endif]-->
+<script  type="text/javascript" tal:content="string:
+    /* load sidebar on doc ready */
+    $(document).ready(function() {
+        if ($('#pBirthdays').is('div'))
+            refreshElem('pBirthdays','${view/application_url}/birthdays_box');;
+    });;">
+</script>
+
 <div metal:define-slot="extra_header_content" />
 </head>
 
@@ -68,10 +75,11 @@
 	        </ul>
 	        <form class="search_form" tal:condition="python:view.__name__ != 'index'" 
 	           tal:attributes="action python:view.url('personen')">
-	           <input type="text" name="search_name" size="20" tal:attributes="value request/search_name | nothing">
-	           <input type="submit" value="zoek">
+	           <input type="text" name="search_name" size="20" tal:attributes="value request/search_name | nothing" />
+	           <input type="submit" value="zoek" />
 	        </form>
-        <hr class="textOnly"/>
+                <tal:languageSelector replace="structure context/@@language_chooser" />
+        <hr class="textOnly" />
         </div>
         
         <div id="layContent">

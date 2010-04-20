@@ -1,6 +1,8 @@
 <div class="navigation_box" tal:define="
     batch python:view.get_persons();
-    navigation_box_data python:view.navigation_box_data(); "
+    navigation_box_data python:view.navigation_box_data();
+    current_language path: view/context/@@language_chooser/get_current_language;
+    translated_to python: current_language == 'en' and 'to' or 'tot'; "
     xmlns:i18n="http://xml.zope.org/namespaces/i18n"
     i18n:domain="bioport">
     <div tal:repeat="item navigation_box_data"
@@ -10,7 +12,7 @@
             tal:define="item1 python: item[1]  or '??';
                           item2 python: item[2] or '??'">
             <span tal:replace="item1"></span>
-            <em i18n:translate="tot">tot</em>
+            <em tal:content="translated_to">tot</em>
             <span tal:replace="item2"></span>
         </a>
     </div>

@@ -123,17 +123,20 @@
 	}
 
 
-	.navigation_box {
+	.navigation_box,
+        .portletNavigationTree {
 		/*border: solid 1px #DFBD48;*/
 		background: #EEE;
 		padding: 10px;
 	}
 
-		.navigation_box ul a {
+		.navigation_box ul a,
+                .portletNavigationTree ul a {
 			font-weight: bold; /* pseudo-menu */
 		}
 
-		.navigation_box ul li {
+		.navigation_box ul li,
+                .portletNavigationTree ul li {
 			margin: 0 0 .5em 0;
 		}
 

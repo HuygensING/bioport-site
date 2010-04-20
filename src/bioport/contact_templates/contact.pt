@@ -1,13 +1,5 @@
 <html metal:use-macro="context/@@main_template/macros/master"
     i18n:domain="bioport">
-<tal:block metal:fill-slot="extra_header_content">
-<script  type="text/javascript" tal:content="string:
-    /* load sidebar on doc ready */
-    $(document).ready(function() {
-        refreshElem('pBirthdays','${view/application_url}/birthdays_box');;
-    });;"></script>
-</tal:block>
-
 <div metal:fill-slot="content">
 <div id="colright" metal:use-macro="context/@@index/macros/birthdays_box">
 </div>

@@ -9,7 +9,7 @@
 	</div>
 </div>
 <div class="colright">
-           <h1>Op <span tal:replace="view/today">deze dag</span> gestorven</h1>
+           <h1 i18n:translate="born_on_day">Op <span i18n:name="today_date" tal:replace="view/today">deze dag</span> gestorven</h1>
 
    <div class="list_of_persons">
             <span tal:omit-tag=""

@@ -1,0 +1,9 @@
+<ul id="portal-languageselector">
+	<li>
+		<a title="Nederlands" href="?set_language=nl"
+                   tal:attributes="title view/other_language_name;
+                                   href view/other_language_url"
+                   tal:content="view/other_language_name" >
+		    Nederlands</a>&nbsp;
+	</li>
+</ul>

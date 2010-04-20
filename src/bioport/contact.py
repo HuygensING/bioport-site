@@ -28,6 +28,7 @@ class IContact(Interface):
     verification = schema.Text(title=_(u"Vul de letters in in het vakje"))
 
 class ContactForm(grok.AddForm, RepositoryView):
+    template = grok.PageTemplateFile("contact_templates/bare_edit_form.pt")
     form_fields = grok.AutoFields(IContact)
     form_fields["verification"].custom_widget = CaptchaWidget
     @grok.action('Submit')

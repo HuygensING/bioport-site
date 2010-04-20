@@ -1,19 +1,13 @@
 <html metal:use-macro="context/@@main_template/macros/master"
       i18n:domain="bioport">
-<script type="text/javascript" metal:fill-slot="extra_header_content">
-	/* load sidebar on doc ready */
-	$(document).ready(function() {
-	    refreshElem('pBirthdays','birthdays_box');
-	});
-</script>
 <div metal:fill-slot="content">
 
     <div id="colright" metal:define-macro="birthdays_box">
     
-        <h3>
+        <h3 i18n:translate="born_on_day">
             <span onclick="refreshElem('pBirthdays','birthdays_box');" class="refresh"
                 tal:condition="nothing" >XXX: This element would show a new set of jarigen, if activated.</span>
-            op <span tal:replace="view/today">deze dag</span> geboren
+            op <span i18n:name="today_date" tal:replace="view/today">deze dag</span> geboren
         </h3>
     
         <div class="sidebar gallery">
@@ -86,10 +80,10 @@
                 tal:attributes="href string:personen?beginletter=${letter}">X</a>
         </div>
         
-        <div class="credits">
+        <div class="credits" i18n:translate="credits_paragraph">
             <hr/>
             <h3 class="textOnly">Deelnemers</h3>
-            <span i18n:translate="participants_in_the_portal_are">Deelnemers aan het Biografisch Portaal van Nederland zijn: </span>
+            <span>Deelnemers aan het Biografisch Portaal van Nederland zijn: </span>
             <a target="_blank" href="http://www.inghist.nl">Instituut voor Nederlandse Geschiedenis</a>, 
             <a target="_blank" href="http://www.huygensinstituut.knaw.nl">Huygens Instituut</a>, 
             <a target="_blank" href="http://www.iisg.nl">Internationaal Instituut voor Sociale Geschiedenis</a>, 

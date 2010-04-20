@@ -51,8 +51,8 @@ class CaptchaWidget(TextWidget):
         image_url = base_url + '/captcha_image?' + urlencode({'key':enc_value})
         my_widget = original_widget 
 #        my_widget += '<br>'
-        my_widget += ' <img src="%s">' % image_url
-        my_widget += ' <input type="hidden" name="captcha_text" value="%s">' % enc_value        
+        my_widget += ' <img alt="tekst" src="%s" />' % image_url
+        my_widget += ' <input type="hidden" name="captcha_text" value="%s" />' % enc_value        
         return my_widget
     
     def application_url(self, name=None):

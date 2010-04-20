@@ -27,6 +27,7 @@ def language_switch(object, event):
     preferred_languages.setPreferredLanguages(['nl'])
     
 class EnglishAbsoluteURL(AbsoluteURL):
+    "This ensures that english requests will provide english urls"
     adapts(IBioport, IEnglishRequest)
     implements(IAbsoluteURL)
     def __call__(self):

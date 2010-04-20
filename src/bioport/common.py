@@ -13,6 +13,21 @@ maanden = [
     'november', 
     'december',
     ]
+
+months = [
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December',
+]
         
 
 def format_date(s, show_year_only=False):

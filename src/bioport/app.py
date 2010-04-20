@@ -4,7 +4,8 @@ import os
 import random
 import zope.interface
 from chameleon.zpt.template import PageTemplateFile
-from common import format_date, format_dates, format_number, html2unicode, maanden
+from common import (format_date, format_dates, format_number, 
+                    html2unicode, maanden, months)
 from interfaces import IBioport
 from NamenIndex.common import to_ymd
 from plone.memoize import ram
@@ -14,6 +15,7 @@ from z3c.batching.batch import Batch
 from bioport import BioportMessageFactory as _
 from zope.i18n import translate
 from zope.app.publisher.browser import IUserPreferredLanguages
+from urllib import urlencode
 
 
 class RepositoryView:
@@ -53,24 +55,36 @@ class RepositoryView:
         return self.context._count_biographies
        
     def menu_items(self):
-        return [
+        items = [
                 (self.application_url(), _('home')),
                 (self.application_url('zoek'), _('zoeken')),
                 (self.application_url('personen') + '?beginletter=a',
                  _('bladeren')),
                 (self.application_url('about'), _('project')),
-                (self.application_url('blog'), _('blog')),
-                (self.application_url('agenda'), _('agenda')),
+        ]
+
+        adapter = IUserPreferredLanguages(self.request)
+        lang = adapter.getPreferredLanguages()[0]
+        if lang != 'en':
+            items += [(self.application_url('blog'), _('blog')),
+                    (self.application_url('agenda'), _('agenda')),]
+        items += [
 #                (self.url('colofon'), 'colofon'),
                 (self.application_url('links'), _('links')),
                 (self.application_url('faq'), _('vragen')),
                 (self.application_url('contact'), _('contact')),
-#                (self.url('english'), 'english'),
         ]    
+        return items
     def today(self):
         today = datetime.date.today()
-        month = maanden[today.month-1]
-        return '%s %s' % (today.day, month)    
+        adapter = IUserPreferredLanguages(self.request)
+        lang = adapter.getPreferredLanguages()[0]
+        if lang == 'en':
+            month = months[today.month-1]
+            return '%s %s' % (month, today.day) 
+        else:
+            month = maanden[today.month-1]
+            return '%s %s' % (today.day, month)
     
 class Batcher: 
     def update(self, **kw):
@@ -146,6 +160,33 @@ class Main_Template(grok.View, RepositoryView):
 class Admin_Template(grok.View):
     #make the main template avaible for everything
     grok.context(zope.interface.Interface)   
+
+class Language_Chooser(grok.View):
+    "A UI control to switch between English and Dutch"
+    grok.context(zope.interface.Interface)
+    def get_current_language(self):
+        adapter = IUserPreferredLanguages(self.request)
+        return adapter.getPreferredLanguages()[0]
+    def get_other_language(self):
+        current_language = self.get_current_language()
+        return {'en': 'nl', 'nl': 'en'}[current_language]
+    def other_language_name(self):
+        lang = self.get_other_language()
+        return {'en': 'english',
+                'nl': 'nederlands'}[lang]
+    def other_language_url(self):
+        lang = self.get_other_language()
+        if lang == 'nl': # convert en --> nl
+            new_application_url = self.application_url()[:-3]
+        else: # convert nl --> en
+            new_application_url = self.application_url() + '/en'
+        old_application_url = self.application_url()
+        current_url = self.request.getURL()
+        new_url = new_application_url + current_url[len(old_application_url):]
+        if self.request.form:
+            encoded_params = urlencode(self.request.form)
+            new_url += '?' + encoded_params
+        return new_url
 
 class SiteMacros(grok.View):
     grok.context(zope.interface.Interface)   
@@ -270,7 +311,9 @@ class Personen(BioPortTraverser,grok.View,RepositoryView, Batcher):
              source_name)
             
         if request.get('search_name'):
-            result += u' wier naam lijkt op <em>%s</em>' % request.get('search_name')
+            whose_name_is_like = translate(_(u'whose_name_is_like'),target_language=current_language)
+            result += ' ' + whose_name_is_like
+            result += ' <em>%s</em>' % request.get('search_name')
             
         if request.get('search_term'):
             result += u' met het woord <em>%s</em> in de tekst' % request.get('search_term')

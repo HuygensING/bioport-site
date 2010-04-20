@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Wed Mar 24 17:54:43 2010\n"
+"POT-Creation-Date: Tue Mar 30 14:45:06 2010\n"
 "PO-Revision-Date: 2010-03-24 17:36+0100\n"
 "Last-Translator: Silvio Tomatis <silviot@gmail.com>\n"
 "Language-Team: Italian\n"
@@ -26,94 +26,107 @@ msgstr ""
 
 #: src/bioport/admin_templates/edit.pt:19
 #: src/bioport/app_templates/zoek.pt:119
+#: src/bioport/contact_templates/bare_edit_form.pt:4
+#: src/bioport/contact_templates/bare_edit_form.pt:12
+#: src/bioport/contact_templates/bare_edit_form.pt:31
+#: src/bioport/contact_templates/bare_edit_form.pt:37
 msgid "${DYNAMIC_CONTENT}"
 msgstr ""
 
-#: src/bioport/app.py:227 src/bioport/app_templates/zoek.pt:65
+#: src/bioport/app.py:255 src/bioport/app_templates/zoek.pt:65
 #: src/bioport/app_templates/zoek.pt:84
 msgid "between"
 msgstr "tussen"
 
-#: src/bioport/app.py:228 src/bioport/app_templates/zoek.pt:67
+#: src/bioport/app.py:256 src/bioport/app_templates/zoek.pt:67
 #: src/bioport/app_templates/zoek.pt:86
 msgid "and"
 msgstr "en"
 
-#: src/bioport/app.py:229
+#: src/bioport/app.py:257
 msgid "after"
 msgstr "na"
 
-#: src/bioport/app.py:230
+#: src/bioport/app.py:258
 msgid "before"
 msgstr "voor"
 
-#: src/bioport/app.py:238 src/bioport/app_templates/zoek.pt:63
+#: src/bioport/app.py:266 src/bioport/app_templates/zoek.pt:63
 msgid "born"
 msgstr "geboren"
 
-#: src/bioport/app.py:254 src/bioport/app_templates/zoek.pt:82
+#: src/bioport/app.py:282 src/bioport/app_templates/zoek.pt:82
 msgid "died"
 msgstr "gestorven"
 
-#: src/bioport/app.py:267
+#: src/bioport/app.py:295
 msgid "from"
 msgstr "uit"
 
-#: src/bioport/app.py:284
+#: src/bioport/app.py:300
+msgid "whose_name_is_like"
+msgstr "wier naam lijkt op "
+
+#: src/bioport/app.py:314
 msgid "of_the_category"
 msgstr "uit de rubriek"
 
-#: src/bioport/app.py:292
+#: src/bioport/app.py:322
 msgid "men"
 msgstr "mannen"
 
-#: src/bioport/app.py:294
+#: src/bioport/app.py:324
 msgid "women"
 msgstr "vrouwen"
 
-#: src/bioport/app.py:296
+#: src/bioport/app.py:326
 msgid "persons"
 msgstr "personen"
 
-#: src/bioport/app.py:301
+#: src/bioport/app.py:331
 msgid "you_searched_for"
 msgstr "U zocht naar"
 
-#: src/bioport/app.py:57
+#: src/bioport/app.py:58
 msgid "home"
 msgstr ""
 
-#: src/bioport/app.py:58
+#: src/bioport/app.py:59
 msgid "zoeken"
 msgstr ""
 
-#: src/bioport/app.py:60
+#: src/bioport/app.py:61
 msgid "bladeren"
 msgstr ""
 
-#: src/bioport/app.py:61
+#: src/bioport/app.py:62
 msgid "project"
 msgstr ""
 
-#: src/bioport/app.py:62
+#: src/bioport/app.py:63
 msgid "blog"
 msgstr ""
 
-#: src/bioport/app.py:63
+#: src/bioport/app.py:64
 msgid "agenda"
 msgstr ""
 
-#: src/bioport/app.py:65
+#: src/bioport/app.py:66
 msgid "links"
 msgstr ""
 
-#: src/bioport/app.py:66
+#: src/bioport/app.py:67
 msgid "vragen"
 msgstr ""
 
-#: src/bioport/app.py:67
+#: src/bioport/app.py:68
 msgid "contact"
 msgstr ""
+
+#. Default: "Op ${today_date} gestorven"
+#: src/bioport/app_templates/birthdays.pt:12
+msgid "born_on_day"
+msgstr "Op ${today_date} geboren"
 
 #: src/bioport/app_templates/index.pt:58
 msgid "Welkom"
@@ -145,26 +158,49 @@ msgstr ""
 msgid "geavanceerde zoekopties"
 msgstr ""
 
-#. Default: "Deelnemers aan het Biografisch Portaal van Nederland zijn:"
-#: src/bioport/app_templates/index.pt:92
-msgid "participants_in_the_portal_are"
+#. Default: ""
+#.  "<hr />\n"
+#.  "            <h3 class=\"textOnly\">Deelnemers</h3>\n"
+#.  "            <span>Deelnemers aan het Biografisch Portaal van Nederland zijn: </span>\n"
+#.  "            <a target=\"_blank\" href=\"http://www.inghist.nl\">Instituut voor Nederlandse Geschiedenis</a>, \n"
+#.  "            <a target=\"_blank\" href=\"http://www.huygensinstituut.knaw.nl\">Huygens Instituut</a>, \n"
+#.  "            <a target=\"_blank\" href=\"http://www.iisg.nl\">Internationaal Instituut voor Sociale Geschiedenis</a>, \n"
+#.  "            <a target=\"_blank\" href=\"http://biografieinstituut.ub.rug.nl/\">Biografie Instituut</a>, \n"
+#.  "            <a target=\"_blank\" href=\"http://www.cbg.nl/\">Centraal Bureau voor Genealogie</a>, \n"
+#.  "            <a target=\"_blank\" href=\"http://www.dbnl.org/\">Digitale Bibliotheek voor de Nederlandse Letteren</a>, \n"
+#.  "            <a target=\"_blank\" href=\"http://www.uu.nl/NL/faculteiten/geesteswetenschappen/Onderzoek/onderzoekinstituten/ogc/Pages/default.aspx\">Onderzoekscentrum voor Geschiedenis en Cultuur (UU)</a>, \n"
+#.  "            <a target=\"_blank\" href=\"http://www.parlementairdocumentatiecentrum.nl/\">Parlementair Documentatie Centrum</a>, \n"
+#.  "            <a target=\"_blank\" href=\"http://website.rkd.nl/\">Rijksbureau voor Kunsthistorische Documentatie</a>, \n"
+#.  "            <a target=\"_blank\" href=\"http://dans.knaw.nl/nl/\">Data Archiving and Networked Services</a>. \n"
+#.  "            Het project werd mede mogelijk gemaakt door een startsubsidie van \n"
+#.  "            <a target=\"_blank\" href=\"http://www.nwo.nl/\">NWO</a>\n"
+#.  "            en subsidies van het \n"
+#.  "            <a target=\"_blank\" href=\"http://www.cultuurfonds.nl/\">Prins Bernhard Cultuurfonds</a> \n"
+#.  "            en \n"
+#.  "            <a target=\"_blank\" href=\"http://www.senternovem.nl/\">SenterNovem</a> ('Digitaliseren met beleid' / OCW)."
+#: src/bioport/app_templates/index.pt:89
+#, fuzzy
+msgid "credits_paragraph"
 msgstr ""
+"Dit is de site van het Biografisch Portaal van Nederland. Hier vindt u oude "
+"en nieuwe informatie over kopstukken en andere opzienbaren de figuren uit de "
+"Nederlandse geschiedenis, van het vroegste verleden tot nu."
 
 #. Default: "Site title"
-#: src/bioport/app_templates/main_template.pt:14
-#: src/bioport/app_templates/main_template.pt:52
+#: src/bioport/app_templates/main_template.pt:13
+#: src/bioport/app_templates/main_template.pt:51
 msgid "portal_title"
 msgstr "Het Biografisch Portaal van Nederland"
 
-#: src/bioport/app_templates/main_template.pt:20
+#: src/bioport/app_templates/main_template.pt:19
 msgid "meta_description"
 msgstr "Het Biografisch Portaal van Nederland"
 
-#: src/bioport/app_templates/main_template.pt:25
+#: src/bioport/app_templates/main_template.pt:24
 msgid "meta_keywords"
 msgstr "biografie portaal biografieën Nederland"
 
-#: src/bioport/app_templates/main_template.pt:50
+#: src/bioport/app_templates/main_template.pt:49
 msgid "language_name"
 msgstr "dutch"
 
@@ -173,13 +209,13 @@ msgstr "dutch"
 #.  "                van 634 tot 2005\n"
 #.  "                <br />\n"
 #.  "                in ${biographies} biografie\303\253n"
-#: src/bioport/app_templates/main_template.pt:57
+#: src/bioport/app_templates/main_template.pt:56
 msgid "count_persons_and_biographies"
 msgstr ""
 "${persons} personen<br /> van 634 tot 2005 <br /> in ${biographies} "
 "biografieën"
 
-#: src/bioport/app_templates/main_template.pt:63
+#: src/bioport/app_templates/main_template.pt:62
 msgid "Contents"
 msgstr "Inhoud"
 
