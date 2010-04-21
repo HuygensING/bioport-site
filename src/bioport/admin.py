@@ -93,9 +93,14 @@ class Edit(grok.EditForm,RepositoryView):
         self.repository().db.fill_similarity_cache()
         
     @grok.action('Refresh the similarity cache [I.E. EMPTYING IT FIRST]')
-    def refresh_similirity_cache(self, **data): 
-        self.repository().db.fill_similarity_cache(refresh=True)       
-#       
+    def refresh_similarity_cache(self, **data): 
+        self.repository().db.fill_similarity_cache(refresh=True, source_id=data.get('source_id'))
+
+        
+    @grok.action('Refresh similarity for blnp')
+    def refresh_similarity_cache_blnp(self, **data): 
+        self.repository().db.fill_similarity_cache(refresh=True, source_id='blnp')
+##       
 #    @grok.action('Refresh the similar persons cache')
 #    def fill_most_similar_persons_cache(self, **data):
 #        self.repository().db.fill_most_similar_persons_cache(refresh=True)
@@ -152,17 +157,18 @@ class Edit(grok.EditForm,RepositoryView):
 #            repo.add_biography(bio)        
             
 
-    @grok.action('tmp_fixup_category_doublures ')
-    def tmp_fixup_category_doublures(self, **data):
-        self.repository().db.tmp_fixup_category_doublures()
+#    @grok.action('tmp_fixup_category_doublures ')
+#    def tmp_fixup_category_doublures(self, **data):
+#        self.repository().db.tmp_fixup_category_doublures()
         
-    @grok.action('tmp_identify_misdaad_recht')
-    def tmp_identify_misdaad_recht(self, **data):
-        self.repository().db.tmp_identify_misdaad_recht()
+#    @grok.action('tmp_identify_misdaad_recht')
+#    def tmp_identify_misdaad_recht(self, **data):
+#        self.repository().db.tmp_identify_misdaad_recht()
         
-    @grok.action('tmp_fix_weird_categeries')
-    def tmp_fix_weird_categeries(self, **data):
-        self.repository().db.tmp_fix_weird_categeries()
+#    @grok.action('tmp_fix_weird_categeries')
+#    def tmp_fix_weird_categeries(self, **data):
+#        self.repository().db.tmp_fix_weird_categeries()
+        
     @grok.action('tmp_update_soundexes')
     def tmp_update_soundexes(self, **data):
         self.repository().db.tmp_update_soundexes()
@@ -273,9 +279,16 @@ class MostSimilar(grok.Form,RepositoryView, Batcher):
     def update(self):
         self.start = int(self.request.get('start', 0))
         self.size = int(self.request.get('size', 20))
-        self.similar_to = self.request.get('similar_to', None)
+        self.similar_to = self.request.get('bioport_id') or self.request.get('similar_to', None)
         self.redirect_to = None
-        self.most_similar_persons = self.repository().get_most_similar_persons(start=self.start, size=self.size, similar_to = self.similar_to)
+        self.most_similar_persons = self.repository().get_most_similar_persons(
+           start=self.start, 
+           size=self.size, 
+           bioport_id=self.similar_to,
+           source_id=self.request.get('source_id'),
+           search_name=self.request.get('search_name'),
+           status=self.request.get('status'),
+           )
         
     def goback(self,  data = None):
         for k in data.keys():
@@ -388,7 +401,7 @@ class Persoon(app.Persoon, grok.EditForm, RepositoryView):
    
     grok.require('bioport.Edit')
     def update(self, **args):
-        self.bioport_id = self.request.get('bioport_id')         
+        self.bioport_id = self.traverse_subpath_helper(0) or self.request.get('bioport_id')
         if not self.bioport_id:
             #XXX make a userfrienlider error
             assert 0, 'need bioport_id in the request'
@@ -480,15 +493,9 @@ class Persoon(app.Persoon, grok.EditForm, RepositoryView):
         else:
             return 'merged'
             
-#        if self.bioport_biography.get_value(k):
-#            return 'bioport'
-#        elif self.merged_biography.get_value(k):
-#            return 'merged'
-#        else:
-#            return ''    
-        
     def validate_event(self, action, data):
         pass
+    
     def _get_date_from_request(self, prefix):
         y = self.request.get('%s_y' % prefix)
         m = self.request.get('%s_m' % prefix)
@@ -712,6 +719,12 @@ class Persoon(app.Persoon, grok.EditForm, RepositoryView):
             illustration.download()
             self.msg += 'downloaded %s\n' % illustration
         
+    @grok.action('recompute similarities for this person', name="compute_similarity")
+    def compute_similarity(self, **data):
+        self.msg = 'computed similarity for this person'
+        id = self.person.bioport_id
+        self.repository().db.fill_similarity_cache(person=self.person, refresh=True)
+        self.person = self.repository().get_person(bioport_id = id)
         
 class PersoonIdentify(MostSimilar, Persons, Persoon):
     

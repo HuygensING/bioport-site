@@ -709,6 +709,10 @@ De gegevens zijn grijs als ze uit de bronnen-publikaties komen, zwart als ze zij
 	</table>
 </div>
 
+<form action="." tal:attributes="action request/URL" method="get">
+<input type="hidden" name="bioport_id" tal:attributes="value view/bioport_id" />
+	<span tal:replace="structure python:view.actions.byname['form.actions.compute_similarity'].render()" ></span>
+</form>
 </div>
 <div id="right_column">
 	<tal:block repeat="bio view/person/get_biographies" >

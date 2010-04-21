@@ -1,7 +1,7 @@
 <html metal:use-macro="context/@@admin_template/macros/master">
 <div metal:fill-slot="content">
 <!-- render the form tag -->
-<form action="." tal:attributes="action request/URL" method="post"
+<form action="." tal:attributes="action request/URL" method="get"
       class="edit-form" enctype="multipart/form-data">
   <!-- render any validation errors on top -->
   <ul class="errors" tal:condition="view/errors">

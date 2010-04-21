@@ -91,10 +91,7 @@ class SimpleSampleFunctionalTest(FunctionalTestCase):
         assert 'Hilbrand' in browser.contents, browser.contents
         
         #choose it and put it in the list
-        try:
-            browser.getLink('kies').click()
-        except:
-            assert 0, browser.contents
+        browser.getLink('kies').click()
        
         #we now selected the person
         #we can find the name of the person, followed by a 'verwijder' link
@@ -106,14 +103,11 @@ class SimpleSampleFunctionalTest(FunctionalTestCase):
         self.assertEqual(form.getControl(name='search_name').value, 'hilbrand')
         
         #search for a second person, using a wildcard pattern
-        form.getControl(name='search_name').value =  'Heyns'
+        form.getControl(name='search_name').value =  'heyns*'
         form.getControl(name='form.actions.search_persons').click()
         
         #choose it as well
-        try:
-            browser.getLink('kies').click()
-        except:
-            assert 0, browser.contents
+        browser.getLink('kies').click()
         
         assert re.findall('Hilbrand.*verwijder', browser.contents, re.DOTALL), browser.contents
         assert re.findall('Heyns.*verwijder', browser.contents, re.DOTALL), browser.contents
