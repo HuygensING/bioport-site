@@ -169,7 +169,10 @@ class Edit(grok.EditForm,RepositoryView):
 #    def tmp_fix_weird_categeries(self, **data):
 #        self.repository().db.tmp_fix_weird_categeries()
         
-    @grok.action('tmp_update_soundexes')
+    @grok.action('give blnps a categorie')
+    def tmp_give_blnps_a_category(self, **data):
+        self.repository().db.tmp_give_blnps_a_category()
+    @grok.action('recompute_soundexes')
     def tmp_update_soundexes(self, **data):
         self.repository().db.tmp_update_soundexes()
         
@@ -302,6 +305,15 @@ class MostSimilar(grok.Form,RepositoryView, Batcher):
             redirect_url = '?'.join([self.redirect_to, redirect_url.split('?')[1]])
             
         self.redirect(redirect_url) 
+    
+    def data(self, **args):
+        data = {}
+        for k in ['source_id', 'search_name', 'status', 'bioport_id']:
+            if self.request.get(k): 
+                data[k] = self.request[k]
+        for k in args:
+            data[k] = args[k]
+        return data
         
     @grok.action('identificeer', name='identify')
     def identify(self):
@@ -320,7 +332,6 @@ class MostSimilar(grok.Form,RepositoryView, Batcher):
         data['msg'] =  msg
         if data.has_key('bioport_ids'):
             del data['bioport_ids']
-
         self.goback(data = data)
         
     @grok.action('anti-identificeer', name='antiidentify')
@@ -804,14 +815,14 @@ class ChangeName(Persoon, grok.EditForm,RepositoryView):
             volledige_naam = ' '.join(parts)
         
         try:
-	        self.naam = name = Naam(
-	            volledige_naam = volledige_naam,
-	            **args
-	        )
-	        repository = self.repository()
-	        bio._replace_name(name, self.idx)
-	        repository.save_biography(bio)
-	        self.msg = 'De veranderingen zijn bewaard'
+            self.naam = name = Naam(
+                volledige_naam = volledige_naam,
+                **args
+            )
+            repository = self.repository()
+            bio._replace_name(name, self.idx)
+            repository.save_biography(bio)
+            self.msg = 'De veranderingen zijn bewaard'
         except Exception, error:
             self.msg = unicode(error)
             self.msg += ' Uw veranderingen zijn niet bewaard'

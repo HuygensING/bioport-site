@@ -45,20 +45,20 @@ Klik <a tal:attributes="href python:view.url('persoonidentify')">hier om zelf in
 			>
 			<li><a id="identify"
 			     tal:attributes="
-					 href python:view.url(data={'form.actions.identify': 'submit', 'bioport_ids':bioport_ids, 'start':view.start,'size':view.size, 'redirect_to':view.redirect_to});
+					 href python:view.url(data=view.data(**{'form.actions.identify': 'submit', 'bioport_ids':bioport_ids, 'start':view.start,'size':view.size, 'redirect_to':view.redirect_to}));
 					 accesskey string:i;
 			" ><span class="accesskey">i</span>dentiek</a>
 			</li>
-			<li><a tal:attributes="href python:view.url(data={'form.actions.antiidentify':'', 'bioport_ids': bioport_ids, 'start':view.start,'size':view.size,  'redirect_to':view.redirect_to});
+			<li><a tal:attributes="href python:view.url(data=view.data(**{'form.actions.antiidentify':'', 'bioport_ids': bioport_ids, 'start':view.start,'size':view.size,  'redirect_to':view.redirect_to}));
 				 accesskey string:n;
 			" ><span class="accesskey">n</span>iet identiek </a>
 			</li>
 			<li tal:condition="python:not view.url().endswith('deferred')">
-				<a tal:attributes="href python:view.url(data={'form.actions.deferidentification':'', 'bioport_ids':bioport_ids, 'start':view.start,'size':view.size,  'redirect_to':view.redirect_to})"
+				<a tal:attributes="href python:view.url(data=view.data(**{'form.actions.deferidentification':'', 'bioport_ids':bioport_ids, 'start':view.start,'size':view.size,  'redirect_to':view.redirect_to}))"
 				    accesskey="g"> moeilijk <span class="accesskey">g</span>eval</a>
 			</li>
 			<li tal:condition="python:not view.url().endswith('identifymoreinfo')">
-				<a tal:attributes="href python:view.url('identifymoreinfo', data={'bioport_ids':bioport_ids, 'start':view.start,'size':view.size})"
+				<a tal:attributes="href python:view.url('identifymoreinfo', data=view.data(**{'bioport_ids':bioport_ids, 'start':view.start,'size':view.size}))"
 				    accesskey="m"><span class="accesskey">m</span>eer informatie </a>
 			</li>
 		</ul>
