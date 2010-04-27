@@ -245,8 +245,24 @@ class Source(grok.EditForm,RepositoryView):
     @grok.action('Download biographies', name='download_data')    
     def download_data(self, **data):
         source = self.source
-        self.repository().download_biographies(source=source)
-         
+        
+        import logging 
+        import zLOG
+        from StringIO import StringIO
+        f = StringIO()    
+        handler = logging.StreamHandler(f)
+        handler.setLevel(zLOG.INFO)
+        logger = logging.getLogger('BioPort')
+        logger.addHandler(handler)
+        try: 
+            self.repository().download_biographies(source=source)
+#            logger: torni allo stato di prima
+            
+        except Exception, error:
+            self.message = str(error)
+        f.seek(0)
+        self.message = f.read()
+        handler.close()
          
     @grok.action('Delete biographies', name='delete_biographies')    
     def delete_biographies(self, **data):
@@ -282,7 +298,7 @@ class MostSimilar(grok.Form,RepositoryView, Batcher):
     def update(self):
         self.start = int(self.request.get('start', 0))
         self.size = int(self.request.get('size', 20))
-        self.similar_to = self.request.get('bioport_id') or self.request.get('similar_to', None)
+        self.similar_to = self.request.get('bioport_id') or self.request.get('similar_to', None) or getattr(self, 'similar_to')
         self.redirect_to = None
         self.most_similar_persons = self.repository().get_most_similar_persons(
            start=self.start, 
@@ -382,7 +398,7 @@ class MostSimilar(grok.Form,RepositoryView, Batcher):
         self.update()
         if len(self.selected_persons) == 1:
             person = self.selected_persons[0]
-            ls = self.repository().get_most_similar_persons(similar_to=person.bioport_id)
+            ls = self.repository().get_most_similar_persons(bioport_id=person.bioport_id)
             def other_person(i):
                 score, p1, p2 = i
                 if person.bioport_id == p1.bioport_id:
@@ -416,8 +432,8 @@ class Persoon(app.Persoon, grok.EditForm, RepositoryView):
         if not self.bioport_id:
             #XXX make a userfrienlider error
             assert 0, 'need bioport_id in the request'
-        repository= self.repository() 
-        self.person  = self.get_person(bioport_id=self.bioport_id)  
+        repository = self.repository() 
+        self.person = self.get_person(bioport_id=self.bioport_id)  
         if not self.person:
             id = repository.redirects_to(self.bioport_id)
             if id != self.bioport_id:
@@ -741,21 +757,22 @@ class PersoonIdentify(MostSimilar, Persons, Persoon):
     
     grok.require('bioport.Edit')
     def update(self, **args):
-        Persons.update(self, **args)
-        MostSimilar.update(self, **args)
-        #Persoon.update(self, **args)
-#        self.persons =Batch([])
-#        self.persons.grand_total = 0
         self.bioport_ids = self.request.get('bioport_ids', [])
         if type(self.bioport_ids) != type([]):
             self.bioport_ids = [self.bioport_ids]
+        if len(self.bioport_ids) == 1:
+            self.similar_to =  self.bioport_ids[0]
+        else:
+            self.persons = []
+        
+
+        Persons.update(self, **args)
+        MostSimilar.update(self, **args)
+        #Persoon.update(self, **args)
         if self.request.get('new_bioport_id'):
             self.bioport_ids.append(self.request.get('new_bioport_id'))
         self.selected_persons = [self.repository().get_person(bioport_id) for bioport_id in self.bioport_ids]
         self.selected_persons = [p for p in self.selected_persons if p]
-
-        self.persons = []
-        
 
 
 class IdentifyMoreInfo(MostSimilar, Persons, Persoon,RepositoryView):

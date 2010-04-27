@@ -195,6 +195,7 @@ class Personen(BioPortTraverser,grok.View,RepositoryView, Batcher):
     
     def update(self):
         Batcher.update(self)
+        
     @memoize
     def get_persons(self, **args):
         """get Persons - with restrictions given by request"""
