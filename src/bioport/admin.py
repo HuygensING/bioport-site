@@ -254,12 +254,7 @@ class Source(grok.EditForm,RepositoryView):
         handler.setLevel(zLOG.INFO)
         logger = logging.getLogger('BioPort')
         logger.addHandler(handler)
-        try: 
-            self.repository().download_biographies(source=source)
-#            logger: torni allo stato di prima
-            
-        except Exception, error:
-            self.message = str(error)
+        self.repository().download_biographies(source=source)
         f.seek(0)
         self.message = f.read()
         handler.close()
