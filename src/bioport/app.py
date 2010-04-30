@@ -614,3 +614,15 @@ class Robots_txt(grok.View):
         return "User-agent: *\nAllow: /\n"
 
     
+from zope.interface.common.interfaces import IException
+ 
+class ErrorHandler(grok.View, RepositoryView):
+    grok.context(IException)
+    grok.name('index.html')
+ 
+    def get_traceback_message(self):
+        import traceback
+        return traceback.format_exc()
+
+
+
