@@ -164,16 +164,20 @@ class Admin_Template(grok.View):
 class Language_Chooser(grok.View):
     "A UI control to switch between English and Dutch"
     grok.context(zope.interface.Interface)
+    
     def get_current_language(self):
         adapter = IUserPreferredLanguages(self.request)
         return adapter.getPreferredLanguages()[0]
+
     def get_other_language(self):
         current_language = self.get_current_language()
         return {'en': 'nl', 'nl': 'en'}[current_language]
+
     def other_language_name(self):
         lang = self.get_other_language()
         return {'en': 'english',
                 'nl': 'nederlands'}[lang]
+
     def other_language_url(self):
         lang = self.get_other_language()
         if lang == 'nl': # convert en --> nl
@@ -186,7 +190,10 @@ class Language_Chooser(grok.View):
         if self.request.form:
             encoded_params = urlencode(self.request.form)
             new_url += '?' + encoded_params
+        if new_url.endswith("@@index"):
+            new_url = new_url[:-len('@@index')]    
         return new_url
+
 
 class SiteMacros(grok.View):
     grok.context(zope.interface.Interface)   
