@@ -188,7 +188,15 @@ class Language_Chooser(grok.View):
         current_url = self.request.getURL()
         new_url = new_application_url + current_url[len(old_application_url):]
         if self.request.form:
-            encoded_params = urlencode(self.request.form)
+
+            # XXX - converting the string to UTF-8 seems to be a working fix for when
+            # a name with extra-ascii characters is submitted through the search form.
+            params = self.request.form.copy()
+            for x, y in params.iteritems():
+                params[x] = y.encode("utf-8")
+            encoded_params = urlencode(params)
+            # /XXX
+
             new_url += '?' + encoded_params
         if new_url.endswith("@@index"):
             new_url = new_url[:-len('@@index')]    
