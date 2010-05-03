@@ -75,8 +75,8 @@
 	        </ul>
 	        <form class="search_form" tal:condition="python:view.__name__ != 'index'" 
 	           tal:attributes="action python:view.url('personen')">
-	           <input type="text" name="search_name" size="20" tal:attributes="value request/search_name | nothing" />
-	           <input type="submit" value="zoek" />
+	           <input class="textArea" type="text" name="search_name" size="20" tal:attributes="value request/search_name | nothing" />
+	           <input class="submitButton" type="submit" value="zoek" />
 	        </form>
                 <tal:languageSelector replace="structure context/@@language_chooser" />
         <hr class="textOnly" />
