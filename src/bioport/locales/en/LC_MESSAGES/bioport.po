@@ -557,5 +557,15 @@ msgstr "Nobility and members of royal houses"
 msgid "Bedrijfsleven"
 msgstr "Industry"
 
+
+msgid "Er is een fout opgetreden"
+msgstr "An error has occurred"
+
+msgid "contact_site_admin"
+msgstr "Feel free to contact the site administrator at the followinf address:"
+
+
 #~ msgid "tot"
 #~ msgstr "to"
+
+

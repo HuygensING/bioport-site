@@ -375,6 +375,7 @@ class Personen(BioPortTraverser,grok.View,RepositoryView, Batcher):
         return template(view=self, request=self.request)
     
 class Persoon(BioPortTraverser, grok.View,RepositoryView): #, BioPortTraverser):
+
     def update(self, **args):
         self.bioport_id = self.traverse_subpath_helper(0) or self.request.get('bioport_id')
         redirects_to = self.repository().redirects_to(self.bioport_id)
@@ -616,13 +617,54 @@ class Robots_txt(grok.View):
     
 from zope.interface.common.interfaces import IException
  
+
 class ErrorHandler(grok.View, RepositoryView):
     grok.context(IException)
     grok.name('index.html')
- 
-    def get_traceback_message(self):
-        import traceback
-        return traceback.format_exc()
 
+    def repository(self):
+        return self.__parent__.__parent__.repository()
+
+    def get_traceback_message(self):
+        if self.request.principal.id == 'zope.anybody':
+            return ""
+        else:
+            import traceback
+            return traceback.format_exc()
+
+
+#from zope.publisher.interfaces import INotFound
+#from zope.location import LocationProxy
+
+#class PageNotFound(grok.View, RepositoryView):
+
+#    grok.context(INotFound)
+#    grok.name('index.html')
+#    grok.require("zope.Public")
+
+#    def application_url(self):
+#        return ""
+
+#    def repository(self, *args, **kwargs):
+#        try:
+#            return self.__parent__.__parent__.repository('')
+#        except:
+#            return self.__parent__.__parent__.repository()
+
+#    @apply
+#    def context():
+#        # This is done to avoid redefining context in the __init__, after
+#        # calling Page.__init__. This way, the error is directly located.
+
+#        def fset(self, error):
+#            self._context = LocationProxy(error, error.ob, "Not found")
+
+#        def fget(self):
+#            return self._context
+
+#        return property(fget, fset)
+
+#    def update(self):
+#        self.request.response.setStatus(404)
 
 
