@@ -8,7 +8,7 @@
 
         <div tal:condition="not:traceback">
             <span  i18n:translate="contact_site_admin">U kunt de systeembeheerder bereiken via het onderstaande adres: </span>
-            <a href="mailto:bioport@agerbrandy.com">bioport@gerbrandy.com</a>
+            <a href="mailto:bioport@inghist.nl">bioport@inghist.nl</a>
         </div>
     </tal:block>
 
