@@ -33,8 +33,6 @@ class RepositoryView:
     def get_status_values(self, k=None):
         return self.repository().get_status_values(k)
     
-
-    
     @ram.cache(lambda *args: time() // (60 * 60))
     def count_persons(self):
         #XXX cache this

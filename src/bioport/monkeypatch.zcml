@@ -1,0 +1,15 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:monkey="http://namespaces.plone.org/monkey"
+    i18n_domain="collective.monkeypatcher">
+
+    <include package="collective.monkeypatcher" />
+
+    <monkey:patch
+        description="Add sqlalchemy.exc.OperationalError to retryable exceptions"
+        class="zope.app.publication.zopepublication.ZopePublication"
+        original="handleException"
+        replacement=".monkeypatch.patchedhandleException"
+        />
+
+</configure>

@@ -34,6 +34,7 @@ setup(name='bioport',
                         'captchaimage', # This probably requires libfreetype-dev
                         'FormEncode',
                         # Add extra requirements here
+                        'collective.monkeypatcher',
                         ],
       entry_points = """
       [console_scripts]
