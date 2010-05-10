@@ -1,4 +1,4 @@
-<html metal:use-macro="context/@@main_template/macros/master">
+<html metal:use-macro="context/@@main_template/macros/master" i18n:domain="bioport">
     <meta metal:fill-slot="description" name="Description" 
         tal:attributes="content string:Biografieen van ${view/biography/title}" />
     <meta metal:fill-slot="keywords" name="Keywords" 
@@ -26,10 +26,10 @@
     <table class="leefjaren">
        <tal:block define="
 	       event python:view.get_event('birth');
-   			title string:geboren;">
+   			title string:born;">
        	<tr metal:define-macro="event"
        		tal:condition="python:event and (event.when or event.place or event.date_text)">
-            <th tal:content="title">title</th>
+            <th tal:content="title" i18n:translate="">title</th>
             <td>
              <span tal:replace="event/place" /><br tal:condition="event/place">
             <span tal:replace="python:event.when_formatted or event.date_text" />
@@ -38,22 +38,26 @@
 		</tal:block>
       <tal:block define="
 	       event python:view.get_event('baptism');
-   			title string:gedoopt;">
+   			title string:baptized;">
+                        <tal:dummy tal:condition="python: False"
+                                   i18n:translate="">baptized</tal:dummy>
    			<tr metal:use-macro="template/macros/event" />
    		</tal:block>
        <tal:block define="
 	       event python:view.get_event('funeral');
-   			title string:begraven;">
+   			title string:funeral;">
+                        <tal:dummy tal:condition="python: False"
+                                   i18n:translate="">funeral</tal:dummy>
    			<tr metal:use-macro="template/macros/event" />
    		</tal:block>
        <tal:block define="
 	       event python:view.get_event('death');
-   			title string:gestorven;">
+   			title string:died;">
    			<tr metal:use-macro="template/macros/event" />
    		</tal:block>
         <tr tal:define="state python:view.get_state(type='floruit')"
             tal:condition="python:state and state.has_content()">
-            <th>actief</th>
+            <th i18n:translate="">actief</th>
             <td>
                 <span 
                     tal:condition="not:state/text"
@@ -63,7 +67,7 @@
             </td>
         </tr>
         <tr tal:condition="python:len(view.biography.get_names()) > 1">
-            <th>naamsvarianten</th>
+            <th i18n:translate="alternative_names">naamsvarianten</th>
             <td>
             <ul><li tal:repeat="naam python:view.biography.get_names()"
                 tal:content="structure python:naam.guess_normal_form2()"/>
@@ -73,9 +77,10 @@
         <tr tal:define="sexes python:['onbekend', 'man', 'vrouw'];
                 sex python:view.biography.get_value('geslacht')"
             tal:condition="python:sex and sex in ['1','2']">
-            <th>sekse</th>
+            <th i18n:translate="gender">sekse</th>
             <td>
-            <ul><li><span tal:replace="python:sexes[int(sex)]" /></ul>
+            <ul><li><span tal:replace="python:sexes[int(sex)]"
+                          i18n:translate="" /></ul>
             </td>
         </tr>
         <tr tal:condition="python:False and view.biography.get_value('beroep')">
@@ -87,7 +92,7 @@
         </tr>
         <tr tal:define="states python:view.get_states(type='category')"
             tal:condition="states">
-            <th>rubriek(en)</th>
+            <th i18n:translate="categories">rubriek(en)</th>
             <td>
                 <li tal:repeat="state states" 
                     tal:content="python:view.repository().get_category(state.idno).name" />
@@ -95,7 +100,7 @@
         </tr>
      </table>
     <div class="levensbeschrijvingen">
-    <h2>levensbeschrijving(en)</h2>
+    <h2 i18n:translate="Biographies">levensbeschrijving(en)</h2>
     <hr />
     <div tal:repeat="biography view/person/get_biographies" tal:omit-tag="">
     <div
@@ -103,9 +108,9 @@
 	   tal:attributes="OnClick string:window.open('${url}');;return false;;"
         class="biography_reference"
         tal:condition="python:biography.source_id != 'bioport'">
-        Biografie
+        <tal:word i18n:translate="Biography">Biografie</tal:word>
         <span tal:condition="python:biography.get_value('auteur')">
-        	door
+        	<tal:word i18n:translate="by">door</tal:word>
             <span tal:repeat="auteur python:biography.get_value('auteur')" 
                 tal:content="structure auteur" />
         </span>
@@ -122,7 +127,7 @@
              <span tal:replace="structure snippet" />
              <a  tal:attributes="href url"
              target="_blank"
-                class="external_link">meer...</a>
+                class="external_link" i18n:translate="">meer...</a>
            </div>
         </div>
     </div>

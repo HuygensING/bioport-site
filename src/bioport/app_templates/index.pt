@@ -15,7 +15,8 @@
             <div id="pBirthdays"></div>
     
             <span class="sep"></span>
-            <a class="more" tal:attributes="href python:view.url('birthdays')">toon meer</a>
+            <a class="more" tal:attributes="href python:view.url('birthdays')"
+               i18n:translate="show_more">toon meer</a>
             <hr class="textOnly"/>
             
         </div>
@@ -59,7 +60,7 @@
    De site toont 'work in progress': de verzameling van levensbeschrijvingen wordt steeds aangevuld met nieuwe informatie 
    en beeldmateriaal. 
    Ook aan de doorzoekbaarheid wordt nog gewerkt. 
-   Onder de knop 'project' kunt u meer lezen over de voortgang van het project.
+   Onder <a href="./about/collecties">Collecties</a> vindt u de meest recente toevoegingen aan het project.
            </p>    
         
         <div class="searchcontainer freeform">

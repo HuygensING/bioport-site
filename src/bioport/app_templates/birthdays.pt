@@ -1,7 +1,7 @@
     <html metal:use-macro="context/@@main_template/macros/master">
 <div metal:fill-slot="content">
 <div class="colleft">
-   <h1>Op <span tal:replace="view/today">deze dag</span> geboren</h1>
+   <h1 i18n:translate="born_on_day">Op <span i18n:name="today_date" tal:replace="view/today">deze dag</span> geboren</h1>
    <div class="list_of_persons">
        <div  tal:repeat="person view/get_persons_born_today" tal:omit-tag="">
        <div metal:use-macro="context/@@personen/macros/render_person" />
@@ -9,7 +9,7 @@
 	</div>
 </div>
 <div class="colright">
-           <h1 i18n:translate="born_on_day">Op <span i18n:name="today_date" tal:replace="view/today">deze dag</span> gestorven</h1>
+           <h1 i18n:translate="dead_on_day">Op <span i18n:name="today_date" tal:replace="view/today">deze dag</span> gestorven</h1>
 
    <div class="list_of_persons">
             <span tal:omit-tag=""

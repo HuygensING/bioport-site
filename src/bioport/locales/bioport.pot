@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Tue Mar 30 14:45:06 2010\n"
+"POT-Creation-Date: Mon May 10 17:21:01 2010\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope3-dev@zope.org>\n"
@@ -24,7 +24,7 @@ msgstr ""
 "Generated-By: zope/app/locales/extract.py\n"
 
 #: src/bioport/admin_templates/edit.pt:19
-#: src/bioport/app_templates/zoek.pt:119
+#: src/bioport/app_templates/zoek.pt:112
 #: src/bioport/contact_templates/bare_edit_form.pt:4
 #: src/bioport/contact_templates/bare_edit_form.pt:12
 #: src/bioport/contact_templates/bare_edit_form.pt:31
@@ -32,133 +32,155 @@ msgstr ""
 msgid "${DYNAMIC_CONTENT}"
 msgstr ""
 
-#: src/bioport/app.py:255
-#: src/bioport/app_templates/zoek.pt:65
-#: src/bioport/app_templates/zoek.pt:84
+#: src/bioport/app.py:283
+#: src/bioport/app_templates/zoek.pt:58
+#: src/bioport/app_templates/zoek.pt:77
 msgid "between"
 msgstr ""
 
-#: src/bioport/app.py:256
-#: src/bioport/app_templates/zoek.pt:67
-#: src/bioport/app_templates/zoek.pt:86
+#: src/bioport/app.py:284
+#: src/bioport/app_templates/zoek.pt:60
+#: src/bioport/app_templates/zoek.pt:79
 msgid "and"
 msgstr ""
 
-#: src/bioport/app.py:257
+#: src/bioport/app.py:285
 msgid "after"
 msgstr ""
 
-#: src/bioport/app.py:258
+#: src/bioport/app.py:286
 msgid "before"
 msgstr ""
 
-#: src/bioport/app.py:266
-#: src/bioport/app_templates/zoek.pt:63
+#: src/bioport/app.py:294
+#: src/bioport/app_templates/zoek.pt:56
 msgid "born"
 msgstr ""
 
-#: src/bioport/app.py:282
-#: src/bioport/app_templates/zoek.pt:82
+#: src/bioport/app.py:310
+#: src/bioport/app_templates/zoek.pt:75
 msgid "died"
 msgstr ""
 
-#: src/bioport/app.py:295
+#: src/bioport/app.py:323
 msgid "from"
 msgstr ""
 
-#: src/bioport/app.py:300
+#: src/bioport/app.py:328
 msgid "whose_name_is_like"
 msgstr ""
 
-#: src/bioport/app.py:314
+#: src/bioport/app.py:343
 msgid "of_the_category"
 msgstr ""
 
-#: src/bioport/app.py:322
+#: src/bioport/app.py:351
 msgid "men"
 msgstr ""
 
-#: src/bioport/app.py:324
+#: src/bioport/app.py:353
 msgid "women"
 msgstr ""
 
-#: src/bioport/app.py:326
+#: src/bioport/app.py:355
 msgid "persons"
 msgstr ""
 
-#: src/bioport/app.py:331
+#: src/bioport/app.py:360
 msgid "you_searched_for"
 msgstr ""
 
-#: src/bioport/app.py:58
+#: src/bioport/app.py:57
 msgid "home"
 msgstr ""
 
-#: src/bioport/app.py:59
+#: src/bioport/app.py:58
 msgid "zoeken"
 msgstr ""
 
-#: src/bioport/app.py:61
+#: src/bioport/app.py:60
 msgid "bladeren"
 msgstr ""
 
-#: src/bioport/app.py:62
+#: src/bioport/app.py:61
 msgid "project"
 msgstr ""
 
-#: src/bioport/app.py:63
+#: src/bioport/app.py:67
 msgid "blog"
 msgstr ""
 
-#: src/bioport/app.py:64
+#: src/bioport/app.py:68
 msgid "agenda"
 msgstr ""
 
-#: src/bioport/app.py:66
+#: src/bioport/app.py:71
 msgid "links"
 msgstr ""
 
-#: src/bioport/app.py:67
+#: src/bioport/app.py:72
 msgid "vragen"
 msgstr ""
 
-#: src/bioport/app.py:68
+#: src/bioport/app.py:73
 msgid "contact"
 msgstr ""
 
 #: src/bioport/app_templates/birthdays.pt:12
 #. Default: "Op ${today_date} gestorven"
+msgid "dead_on_day"
+msgstr ""
+
+#: src/bioport/app_templates/birthdays.pt:4
+#. Default: ""
+#.  "<span onclick=\"refreshElem('pBirthdays','birthdays_box');\"\n"
+#.  "                  class=\"refresh\">XXX: This element would show a new set of jarigen, if activated.</span>\n"
+#.  "            op ${today_date} geboren"
 msgid "born_on_day"
 msgstr ""
 
-#: src/bioport/app_templates/index.pt:58
+#: src/bioport/app_templates/errorhandler.pt:10
+#. Default: "U kunt de systeembeheerder bereiken via het onderstaande adres:"
+msgid "contact_site_admin"
+msgstr ""
+
+#: src/bioport/app_templates/errorhandler.pt:4
+msgid "Er is een fout opgetreden"
+msgstr ""
+
+#: src/bioport/app_templates/index.pt:18
+#. Default: "toon meer"
+msgid "show_more"
+msgstr ""
+
+#: src/bioport/app_templates/index.pt:53
 msgid "Welkom"
 msgstr ""
 
-#: src/bioport/app_templates/index.pt:60
+#: src/bioport/app_templates/index.pt:55
 #. Default: "Dit is de site van het Biografisch Portaal van Nederland. Hier vindt u oude en nieuwe informatie over kopstukken en andere opzienbarende figuren uit de Nederlandse geschiedenis, van het vroegste verleden tot nu."
 msgid "home_bold_paragraph"
 msgstr ""
 
-#: src/bioport/app_templates/index.pt:63
+#: src/bioport/app_templates/index.pt:58
 #. Default: ""
 #.  "Het Biografisch Portaal is een samenwerkingsproject van wetenschappelijke en culturele instellingen van Nederland. \n"
 #.  "   De site toont 'work in progress': de verzameling van levensbeschrijvingen wordt steeds aangevuld met nieuwe informatie \n"
 #.  "   en beeldmateriaal. \n"
 #.  "   Ook aan de doorzoekbaarheid wordt nog gewerkt. \n"
-#.  "   Onder de knop 'project' kunt u meer lezen over de voortgang van het project."
+#.  "   Onder <a href=\"./about/collecties\">Collecties</a> vindt u de meest recente toevoegingen aan het project."
 msgid "home_plain_paragraph"
 msgstr ""
 
-#: src/bioport/app_templates/index.pt:76
+#: src/bioport/app_templates/index.pt:71
 msgid "zoek"
 msgstr ""
 
-#: src/bioport/app_templates/index.pt:77
+#: src/bioport/app_templates/index.pt:72
 msgid "geavanceerde zoekopties"
 msgstr ""
 
-#: src/bioport/app_templates/index.pt:89
+#: src/bioport/app_templates/index.pt:84
 #. Default: ""
 #.  "<hr />\n"
 #.  "            <h3 class=\"textOnly\">Deelnemers</h3>\n"
@@ -183,7 +205,7 @@ msgid "credits_paragraph"
 msgstr ""
 
 #: src/bioport/app_templates/main_template.pt:13
-#: src/bioport/app_templates/main_template.pt:51
+#: src/bioport/app_templates/main_template.pt:59
 #. Default: "Site title"
 msgid "portal_title"
 msgstr ""
@@ -196,11 +218,11 @@ msgstr ""
 msgid "meta_keywords"
 msgstr ""
 
-#: src/bioport/app_templates/main_template.pt:49
+#: src/bioport/app_templates/main_template.pt:57
 msgid "language_name"
 msgstr ""
 
-#: src/bioport/app_templates/main_template.pt:56
+#: src/bioport/app_templates/main_template.pt:64
 #. Default: ""
 #.  "${persons} personen<br />\n"
 #.  "                van 634 tot 2005\n"
@@ -209,7 +231,7 @@ msgstr ""
 msgid "count_persons_and_biographies"
 msgstr ""
 
-#: src/bioport/app_templates/main_template.pt:62
+#: src/bioport/app_templates/main_template.pt:70
 msgid "Contents"
 msgstr ""
 
@@ -279,20 +301,61 @@ msgstr ""
 msgid "volgende"
 msgstr ""
 
-#: src/bioport/app_templates/zoek.pt:103
-msgid "man"
+#: src/bioport/app_templates/persoon.pt:103
+#. Default: "levensbeschrijving(en)"
+msgid "Biographies"
 msgstr ""
 
-#: src/bioport/app_templates/zoek.pt:107
+#: src/bioport/app_templates/persoon.pt:111
+#. Default: "Biografie"
+msgid "Biography"
+msgstr ""
+
+#: src/bioport/app_templates/persoon.pt:113
+#. Default: "door"
+msgid "by"
+msgstr ""
+
+#: src/bioport/app_templates/persoon.pt:128
+msgid "meer..."
+msgstr ""
+
+#: src/bioport/app_templates/persoon.pt:42
+msgid "baptized"
+msgstr ""
+
+#: src/bioport/app_templates/persoon.pt:49
+msgid "funeral"
+msgstr ""
+
+#: src/bioport/app_templates/persoon.pt:60
+msgid "actief"
+msgstr ""
+
+#: src/bioport/app_templates/persoon.pt:70
+#. Default: "naamsvarianten"
+msgid "alternative_names"
+msgstr ""
+
+#: src/bioport/app_templates/persoon.pt:95
+#. Default: "rubriek(en)"
+msgid "categories"
+msgstr ""
+
+#: src/bioport/app_templates/zoek.pt:100
 msgid "vrouw"
 msgstr ""
 
-#: src/bioport/app_templates/zoek.pt:115
+#: src/bioport/app_templates/zoek.pt:108
 #. Default: "rubriek"
 msgid "category"
 msgstr ""
 
-#: src/bioport/app_templates/zoek.pt:133
+#: src/bioport/app_templates/zoek.pt:12
+msgid "zoeken op naam"
+msgstr ""
+
+#: src/bioport/app_templates/zoek.pt:126
 #. Default: ""
 #.  "De \342\200\230reden van roem\342\200\231 van mensen in een biografisch naslagwerk is zeer divers,\n"
 #.  "            en mensen kunnen bovendien om meer dan \303\251\303\251n reden beroemd zijn.\n"
@@ -302,31 +365,27 @@ msgstr ""
 msgid "category_help_text"
 msgstr ""
 
-#: src/bioport/app_templates/zoek.pt:133
+#: src/bioport/app_templates/zoek.pt:126
 #. Default: "de veelgestelde vragen"
 msgid "FAQs"
 msgstr ""
 
-#: src/bioport/app_templates/zoek.pt:138
+#: src/bioport/app_templates/zoek.pt:131
 #. Default: "bron"
 msgid "source"
 msgstr ""
 
-#: src/bioport/app_templates/zoek.pt:14
-msgid "Zoeken"
-msgstr ""
-
-#: src/bioport/app_templates/zoek.pt:158
+#: src/bioport/app_templates/zoek.pt:151
 #. Default: "zoek"
 msgid " zoek "
 msgstr ""
 
-#: src/bioport/app_templates/zoek.pt:159
+#: src/bioport/app_templates/zoek.pt:152
 #. Default: "wis"
 msgid " wis "
 msgstr ""
 
-#: src/bioport/app_templates/zoek.pt:168
+#: src/bioport/app_templates/zoek.pt:161
 #. Default: ""
 #.  "NB. Alle personen die in het Biografisch Portaal staan, zijn vindbaar op naam. \n"
 #.  "Voor de overige zoekmogelijkheden geldt de waarschuwing dat de de resultaten onvolledig zijn,\n"
@@ -335,11 +394,11 @@ msgstr ""
 msgid "disclaimer_text"
 msgstr ""
 
-#: src/bioport/app_templates/zoek.pt:19
-msgid "zoeken op naam"
+#: src/bioport/app_templates/zoek.pt:2
+msgid "Zoek"
 msgstr ""
 
-#: src/bioport/app_templates/zoek.pt:42
+#: src/bioport/app_templates/zoek.pt:35
 #. Default: ""
 #.  "Typ de naam of een gedeelte van de naam.  \n"
 #.  "           <br /> \n"
@@ -359,11 +418,11 @@ msgstr ""
 msgid "search_by_name_help"
 msgstr ""
 
-#: src/bioport/app_templates/zoek.pt:48
+#: src/bioport/app_templates/zoek.pt:41
 msgid "vrij zoeken in tekst"
 msgstr ""
 
-#: src/bioport/app_templates/zoek.pt:54
+#: src/bioport/app_templates/zoek.pt:47
 #. Default: ""
 #.  "U kunt vrij zoeken op woord(en) in de tekst van de biografie\303\253n. \n"
 #.  "            <br />\n"
@@ -373,28 +432,32 @@ msgstr ""
 msgid "search_in_text_help"
 msgstr ""
 
-#: src/bioport/app_templates/zoek.pt:70
-#: src/bioport/app_templates/zoek.pt:88
+#: src/bioport/app_templates/zoek.pt:63
+#: src/bioport/app_templates/zoek.pt:81
 msgid "in"
 msgstr ""
 
-#: src/bioport/app_templates/zoek.pt:75
+#: src/bioport/app_templates/zoek.pt:68
 #. Default: "U kunt personen selecteren die in een bepaalde periode en/of plaats hebben geleefd."
 msgid "born_help_text"
 msgstr ""
 
-#: src/bioport/app_templates/zoek.pt:9
-msgid "Zoek"
+#: src/bioport/app_templates/zoek.pt:7
+msgid "Zoeken"
 msgstr ""
 
-#: src/bioport/app_templates/zoek.pt:93
+#: src/bioport/app_templates/zoek.pt:86
 #. Default: "U kunt personen selecteren die in een bepaalde periode en/of plaats hebben geleefd."
 msgid "died_help_text"
 msgstr ""
 
-#: src/bioport/app_templates/zoek.pt:99
+#: src/bioport/app_templates/zoek.pt:92
 #. Default: "sekse"
 msgid "gender"
+msgstr ""
+
+#: src/bioport/app_templates/zoek.pt:96
+msgid "man"
 msgstr ""
 
 #: src/bioport/contact.py:25
@@ -413,7 +476,7 @@ msgstr ""
 msgid "Vul de letters in in het vakje"
 msgstr ""
 
-#: src/bioport/contact_templates/contact.pt:19
+#: src/bioport/contact_templates/contact.pt:11
 #. Default: ""
 #.  "Wij ontvangen graag opmerkingen en reacties. Ook staan wij open\n"
 #.  "voor correcties op de data. Daaraan zitten wel beperkingen, want \342\200\223 de\n"
