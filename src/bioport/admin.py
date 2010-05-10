@@ -297,7 +297,7 @@ class MostSimilar(grok.Form,RepositoryView, Batcher):
     def update(self):
         self.start = int(self.request.get('start', 0))
         self.size = int(self.request.get('size', 20))
-        self.similar_to = self.request.get('bioport_id') or self.request.get('similar_to', None) or getattr(self, 'similar_to')
+        self.similar_to = self.request.get('bioport_id') or self.request.get('similar_to', None) or getattr(self, 'similar_to', None)
         self.redirect_to = None
         self.most_similar_persons = self.repository().get_most_similar_persons(
            start=self.start, 
