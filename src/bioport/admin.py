@@ -169,9 +169,10 @@ class Edit(grok.EditForm,RepositoryView):
 #    def tmp_fix_weird_categeries(self, **data):
 #        self.repository().db.tmp_fix_weird_categeries()
         
-    @grok.action('give blnps a categorie')
-    def tmp_give_blnps_a_category(self, **data):
-        self.repository().db.tmp_give_blnps_a_category()
+#    @grok.action('give blnps a categorie')
+#    def tmp_give_blnps_a_category(self, **data):
+#        self.repository().db.tmp_give_blnps_a_category()
+
     @grok.action('recompute_soundexes')
     def tmp_update_soundexes(self, **data):
         self.repository().db.tmp_update_soundexes()
@@ -264,7 +265,10 @@ class Source(grok.EditForm,RepositoryView):
         source = self.source
         self.repository().delete_biographies(source)              
     
-
+    @grok.action('Refresh similarity table', name='refresh_similarity_cache')
+    def refresh_similarity_cache(self, **data): 
+        self.repository().db.fill_similarity_cache(refresh=True, source_id=self.source.id)
+        
 class Sources(grok.View,RepositoryView):
     
     grok.require('bioport.Manage')

@@ -50,6 +50,7 @@
        <span tal:replace="structure python:view.actions.byname['form.actions.download_data'].render()" />
        <span tal:replace="structure python:view.actions.byname['form.actions.download_illustrations'].render()" />
        <span tal:replace="structure python:view.actions.byname['form.actions.delete_biographies'].render()" />
+       <span tal:replace="structure python:view.actions.byname['form.actions.refresh_similarity_cache'].render()" />
 
 </form>
 </div>

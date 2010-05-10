@@ -121,6 +121,7 @@ class Bioport(grok.Application, grok.Container):
 
     def repository(self, user):
         return self['admin'].repository(user=user)
+    
     def format_number(self, s):
         return format_number(s)
 
@@ -148,7 +149,8 @@ class Index(grok.View, RepositoryView):
     pass
 
 class Popup_Template(grok.View):
-    #make the main template avaible for everything
+    
+    #make the .             template avaible for everything
     grok.context(zope.interface.Interface)
     
 class Main_Template(grok.View, RepositoryView):
