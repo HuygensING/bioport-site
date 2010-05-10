@@ -505,7 +505,7 @@ msgstr ""
 
 #: src/bioport/app_templates/zoek.pt:7
 msgid "Zoeken"
-msgstr "search"
+msgstr "Search"
 
 #. Default: "U kunt personen selecteren die in een bepaalde periode en/of plaats hebben geleefd."
 #: src/bioport/app_templates/zoek.pt:86
