@@ -24,9 +24,10 @@ Klik <a tal:attributes="href python:view.url('persoonidentify')">hier om zelf in
 		<span tal:define="person person1" tal:omit-tag="">
 		<td tal:content="python:view.start + repeat['x'].number()" />
 		<td metal:define-macro="person">
+		  <span tal:repeat="naam python:person.get_names()">
 			<a tal:attributes="href python:view.url( 'persoon', data={'bioport_id':person.get_bioport_id()})" 
-				tal:content="structure python:person.naam() and person.naam().get_volledige_naam() or 'geen naam bekend'" />
-			<br />
+		      tal:content="naam" /><br> 
+		  </span>
 			<span tal:content="python:context.format_dates(person.get_value('geboortedatum'), person.get_value('sterfdatum'))" />
 			<br />
 			<span tal:repeat="bio python:[b for b in person.get_biographies() if b.get_source().id != 'bioport']" tal:content="python:bio.get_source().id" />
