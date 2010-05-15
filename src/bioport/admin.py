@@ -761,18 +761,26 @@ class PersoonIdentify(MostSimilar, Persons, Persoon):
             self.bioport_ids = [self.bioport_ids]
         if len(self.bioport_ids) == 1:
             self.similar_to =  self.bioport_ids[0]
-        else:
-            self.persons = []
+#        self.persons = []
         
 
         Persons.update(self, **args)
         MostSimilar.update(self, **args)
-        #Persoon.update(self, **args)
+        persons = self.persons = self.most_similar_persons
+        #Persoon.update(self, **args        try:
+        try:
+            batch = Batch(persons,  start=self.start, size=self.size)
+        except IndexError:
+            batch = Batch(persons,size= self.size)
+        batch.grand_total = len(persons)
         if self.request.get('new_bioport_id'):
             self.bioport_ids.append(self.request.get('new_bioport_id'))
         self.selected_persons = [self.repository().get_person(bioport_id) for bioport_id in self.bioport_ids]
-        self.selected_persons = [p for p in self.selected_persons if p]
 
+        self.persons = self.batch = batch
+        return batch
+ 
+        self.selected_persons = [p for p in self.selected_persons if p]
 
 class IdentifyMoreInfo(MostSimilar, Persons, Persoon,RepositoryView):
     grok.require('bioport.Edit')

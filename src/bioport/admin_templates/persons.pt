@@ -12,35 +12,39 @@ tal:define="batch view/get_persons;
 <p>
 <form metal:define-macro="search_form"
     tal:attributes="action view/url">
-	<span tal:repeat="source python:view.repository().get_sources()"
-		tal:condition="nothing"
-	    tal:attributes="class python:source.id == request.get('source_id') and 'alfabet selected' or 'alfabet'"
-	>
-	    <a tal:attributes="href string:${view/url}?source_id=${source/id}" ><span tal:replace="source/id" /></a></span>
-	    <span class="alfabet" tal:condition="nothing">
-	    <a tal:attributes="href string:${view/url}?beginletter=%" >alle namen</a></span>
-			<label accesskey="n" for="search_name"><span class="accesskey">n</span>aam:</label>
-			<input type="text" name="search_name" id="search_name" tal:attributes="value request/search_name | nothing" />
+	<label accesskey="n" for="search_name"><span class="accesskey">n</span>aam:</label>
+	<input type="text" name="search_name" id="search_name" tal:attributes="value request/search_name | nothing" />
 
-<label accesskey="r" for="source_id">b<span class="accesskey">r</span>on:</label>
-<select 
-    name="source_id" id="source_id" 
-   >
-	<option>
-	<option tal:repeat="source python:[s for s in view.get_sources() if s.id != 'bioport']" 
-		tal:attributes="value source/id;
-			selected python:source.id == request.get('source_id')"
-		tal:content="python:source.id" />
-</select>
-<br />	
-<label accesskey="s" for="status"><span class="accesskey">s</span>tatus:</label>
-<select name="status" id="status">
-	<option></option>
-	<option tal:repeat="status view/get_status_values" 
-	   tal:attributes="value python:status[0];
-	       selected python:str(status[0]) == request.get('status')"
-	   tal:content="python:status[1]">..</option>
-</select>
+	<label accesskey="r" for="source_id">b<span class="accesskey">r</span>on:</label>
+	<select 
+	    name="source_id" id="source_id" 
+	   >
+		<option>
+		<option tal:repeat="source python:[s for s in view.get_sources() if s.id != 'bioport']" 
+			tal:attributes="value source/id;
+				selected python:source.id == request.get('source_id')"
+			tal:content="python:source.id" />
+	</select>
+	<select 
+	tal:condition="nothing"
+	    name="source_id" id="source_id" 
+	   >
+		<option>
+		<option tal:repeat="source python:[s for s in view.get_sources() if s.id != 'bioport']" 
+			tal:attributes="value source/id;
+				selected python:source.id == request.get('source_id') and request.source_id[1]"
+			tal:content="python:source.id" />
+	</select>
+	<br />	
+	<label accesskey="s" for="status"><span class="accesskey">s</span>tatus:</label>
+	<select name="status" id="status">
+		<option></option>
+		<option tal:repeat="status view/get_status_values" 
+		   tal:attributes="value python:status[0];
+		       selected python:str(status[0]) == request.get('status')"
+		   tal:content="python:status[1]">..</option>
+	</select>
+	
 <span tal:condition="nothing">
 <br />	
 levensjaren niet ingevuld <input type="checkbox" />

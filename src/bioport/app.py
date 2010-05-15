@@ -16,7 +16,7 @@ from bioport import BioportMessageFactory as _
 from zope.i18n import translate
 from zope.app.publisher.browser import IUserPreferredLanguages
 from urllib import urlencode
-
+import types
 
 class RepositoryView:
     def repository(self):
@@ -188,12 +188,14 @@ class Language_Chooser(grok.View):
         current_url = self.request.getURL()
         new_url = new_application_url + current_url[len(old_application_url):]
         if self.request.form:
-
             # XXX - converting the string to UTF-8 seems to be a working fix for when
-            # a name with extra-ascii characters is submitted through the search form.
+            # a name with non-ascii characters is submitted through the search form.
             params = self.request.form.copy()
             for x, y in params.iteritems():
-                params[x] = y.encode("utf-8")
+                if type(y) in [types.ListType]:
+	                params[x] = [z.encode("utf-8") for z in y]
+                else:
+	                params[x] = y.encode("utf-8")
             encoded_params = urlencode(params)
             # /XXX
 
