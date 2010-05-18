@@ -204,6 +204,9 @@ class Biography(grok.View):
 
 class Persons(app.Personen,RepositoryView):
     grok.require('bioport.Edit')
+    @grok.action('zoek', name="search_persons")
+    def search_persons(self):
+        self.persons = self.get_persons()
     def get_persons(self):
         return app.Personen.get_persons(self, hide_invisible=False)
 class Source(grok.EditForm,RepositoryView):
@@ -298,7 +301,7 @@ class MostSimilar(grok.Form,RepositoryView, Batcher):
         self.start = int(self.request.get('start', 0))
         self.size = int(self.request.get('size', 20))
         self.similar_to = self.request.get('bioport_id') or self.request.get('similar_to', None) or getattr(self, 'similar_to', None)
-        self.redirect_to = None
+        self.redirect_to = 'xxx' 
         self.most_similar_persons = self.repository().get_most_similar_persons(
            start=self.start, 
            size=self.size, 
@@ -392,9 +395,10 @@ class MostSimilar(grok.Form,RepositoryView, Batcher):
         self.persons = self.get_persons()
         
     @grok.action('similar persons', name='similar_persons')
-    def similar_persons(self):
-        self.request.form['search_term'] = '' 
-        self.update()
+    def get_similar_persons(self):
+        self._get_similar_persons()
+        
+    def _get_similar_persons(self):
         if len(self.selected_persons) == 1:
             person = self.selected_persons[0]
             ls = self.repository().get_most_similar_persons(bioport_id=person.bioport_id)
@@ -409,7 +413,7 @@ class MostSimilar(grok.Form,RepositoryView, Batcher):
             batch = Batch(ls, start=self.start, size=self.size)
             self.persons = batch 
             self.persons.grand_total = len(ls)
-
+            
 class DBNL_Ids(MostSimilar, Batcher):
     def update(self):
         self.start = int(self.request.get('start', 0))
@@ -684,9 +688,21 @@ class Persoon(app.Persoon, grok.EditForm, RepositoryView):
         self.person.remarks = self.request.get('remarks')
         self.repository().save_person(self.person)
        
+    @grok.action('bewaar snippet', name='save_snippet')
+    def save_snippet(self): 
+        self._save_snippet()
+        self.save_biography()
+        self.msg = 'snippet bewaard'
+    
+    def _save_snippet(self): 
+        snippet = self.request.get('snippet')
+        if snippet:
+	        self.bioport_biography.set_value('tekst', snippet)
+      
         
     @grok.action('bewaar alle veranderingen', name='save_everything')  
     def save_everything(self):
+        self._save_snippet()
         self._set_event('birth')
         self._set_event('death')
         self._set_event('funeral')
@@ -759,28 +775,29 @@ class PersoonIdentify(MostSimilar, Persons, Persoon):
         self.bioport_ids = self.request.get('bioport_ids', [])
         if type(self.bioport_ids) != type([]):
             self.bioport_ids = [self.bioport_ids]
-        if len(self.bioport_ids) == 1:
-            self.similar_to =  self.bioport_ids[0]
-#        self.persons = []
+            
+        if self.request.get('new_bioport_id'):
+            self.bioport_ids.append(self.request.get('new_bioport_id'))
+            
+        self.selected_persons = [self.repository().get_person(bioport_id) for bioport_id in self.bioport_ids]
         
-
-        Persons.update(self, **args)
         MostSimilar.update(self, **args)
-        persons = self.persons = self.most_similar_persons
+        self.redirect_to = None
+        if len(self.bioport_ids) == 1 and not self.request.get('search_name') and not self.request.get('bioport_id'):
+            return self._get_similar_persons()
+        
+        persons = self.persons = self.get_persons()
         #Persoon.update(self, **args        try:
         try:
             batch = Batch(persons,  start=self.start, size=self.size)
         except IndexError:
             batch = Batch(persons,size= self.size)
+            
         batch.grand_total = len(persons)
-        if self.request.get('new_bioport_id'):
-            self.bioport_ids.append(self.request.get('new_bioport_id'))
-        self.selected_persons = [self.repository().get_person(bioport_id) for bioport_id in self.bioport_ids]
-
         self.persons = self.batch = batch
         return batch
- 
-        self.selected_persons = [p for p in self.selected_persons if p]
+
+
 
 class IdentifyMoreInfo(MostSimilar, Persons, Persoon,RepositoryView):
     grok.require('bioport.Edit')

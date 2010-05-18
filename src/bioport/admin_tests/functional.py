@@ -29,7 +29,7 @@ class AdminPanelFunctionalTest(baseFunctionalTestCase):
 #        link = browser.getLink(url=self.base_url + '/admin/edit')
 #        link.click()
         browser.open(self.base_url + '/admin/edit')
-        form = browser.getForm()
+        form = browser.getForm(index=0)
         form.getControl(name='form.DB_CONNECTION').value = DB_CONNECTION
         form.getControl(name='form.LIMIT').value = '20'
         form.submit('Edit')
@@ -39,7 +39,7 @@ class AdminPanelFunctionalTest(baseFunctionalTestCase):
         this_dir = os.path.dirname(__file__)
         source_url = 'file://%s' % os.path.join(this_dir, 'data/knaw/list.xml')
         browser.open('http://localhost/app/admin/sources') 
-        form = browser.getForm()
+        form = browser.getForm(index=0)
         form.getControl(name='source_id').value = 'knaw_test'
         form.getControl(name='url').value = source_url
         try:
@@ -144,7 +144,7 @@ class SimpleSampleFunctionalTest(FunctionalTestCase):
         link.click()
         edit_url = browser.url
         #remove the birth date
-        form = browser.getForm()
+        form = browser.getForm(index=0)
         form.getControl(name='birth_y').value=''
         form.getControl(name='birth_text').value=''
         form.getControl(name='form.actions.save_event_birth').click()
@@ -155,7 +155,7 @@ class SimpleSampleFunctionalTest(FunctionalTestCase):
 
        
         browser.open(edit_url)
-        form = browser.getForm()
+        form = browser.getForm(index=0)
         form.getControl(name='birth_y').value='1111'
         form.getControl(name='form.actions.save_event_birth').click()
         browser.open(public_url)
@@ -163,13 +163,13 @@ class SimpleSampleFunctionalTest(FunctionalTestCase):
         
         
         browser.open(edit_url)
-        form = browser.getForm()
+        form = browser.getForm(index=0)
         form.getControl(name='death_y').value='2222'
         form.getControl(name='death_m').value=['2']
 #        form.getControl(name='death_d').value=['1']
         form.getControl(name='death_d').value='1'
         form.getControl(name='form.actions.save_event_death').click()
-        form = browser.getForm()
+        form = browser.getForm(index=0)
         self.assertEqual(form.getControl(name='death_y').value,'2222')
         self.assertEqual(form.getControl(name='death_m').value,['2'])
 #        self.assertEqual(form.getControl(name='death_d').value,['1'])
@@ -178,14 +178,14 @@ class SimpleSampleFunctionalTest(FunctionalTestCase):
         assert re.findall('1 februari 2222', browser.contents, re.DOTALL), browser.contents
         
         browser.open(edit_url)
-        form = browser.getForm()
+        form = browser.getForm(index=0)
         form.getControl(name='funeral_y').value='3333'
         form.getControl(name='form.actions.save_event_funeral').click()
         browser.open(public_url)
         assert re.findall('3333', browser.contents, re.DOTALL)
         
         browser.open(edit_url)
-        form = browser.getForm()
+        form = browser.getForm(index=0)
         form.getControl(name='baptism_y').value='4444'
         form.getControl(name='form.actions.save_event_baptism').click()
         browser.open(public_url)
@@ -193,7 +193,7 @@ class SimpleSampleFunctionalTest(FunctionalTestCase):
         
         #geslacht
         browser.open(edit_url)
-        form = browser.getForm()
+        form = browser.getForm(index=0)
         form.getControl(name='sex').value=['2']
         form.getControl(name='form.actions.save_sex').click()
         browser.open(public_url)
@@ -201,7 +201,7 @@ class SimpleSampleFunctionalTest(FunctionalTestCase):
  
         """does the 'save everyting' button indeed save everything? """
         browser.open(edit_url)
-        form = browser.getForm()
+        form = browser.getForm(index=0)
         vals = [
             ('sex', ['1']),
             ('baptism_y', '555'),
@@ -217,7 +217,7 @@ class SimpleSampleFunctionalTest(FunctionalTestCase):
                 print '********', k, v
                 raise
         form.getControl(name='form.actions.save_everything').click()
-        form = browser.getForm()
+        form = browser.getForm(index=0)
         for k,v in vals:
             self.assertEqual(form.getControl(name=k).value, v)
             

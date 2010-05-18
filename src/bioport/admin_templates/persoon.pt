@@ -557,11 +557,26 @@ De gegevens zijn grijs als ze uit de bronnen-publikaties komen, zwart als ze zij
         <th><span class="accesskey">o</span>pmerkingen (voor en door bewerkers)</th>	
         <td>
             <textarea accesskey="o"
-            name="remarks" id="remarks" style="width:200px" tal:content="view/person/remarks"></textarea>
+            name="remarks" id="remarks" style="width:300px" tal:content="view/person/remarks"></textarea>
         <td>
 	        <span tal:replace="structure python:view.actions.byname['form.actions.save_remarks'].render()" ></span>
     	</td>
    	</tr>
+<div tal:condition="nothing">
+<tr metal:use-macro="template/macros/separator" ></tr> 
+	<tr>
+        <th><span class="accesskey"></span>Snippet</th>	
+        <td>
+            <textarea accesskey=""
+            name="snippet" id="snippet" style="width:300px" 
+            tal:content="python:view.person.db_snippet()"
+            ></textarea>
+        <td>
+	        <span tal:replace="structure python:view.actions.byname['form.actions.save_snippet'].render()" ></span>
+    	</td>
+   	</tr>
+</div>
+   	
 <tr metal:use-macro="template/macros/separator" ></tr> 
     <tr>
    	<th />

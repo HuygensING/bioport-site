@@ -1,9 +1,7 @@
 <html metal:use-macro="context/@@admin_template/macros/master">
 <div metal:fill-slot="content"
     tal:define="batch view/persons" >
-
 <h1>Identificeer Persoon</h1>
-
 <!--  the chosen persons -->
 <table tal:condition="view/selected_persons">
 <tr tal:repeat="person view/selected_persons">
@@ -61,7 +59,6 @@ of <a metal:define-macro="button_begin_opnieuw" tal:attributes="href python:view
 <div  metal:use-macro="context/@@sitemacros/macros/batch_navigation" />
 	
 <table >
-
 <tal:block repeat="person batch">
     <tr tal:attributes="class python:person.bioport_id in view.bioport_ids and 'grey' or ''">
     <td>
