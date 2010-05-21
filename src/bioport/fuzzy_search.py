@@ -7,7 +7,7 @@ Output fields (all integer types):
     year_max
     month
     day
-
+We assume european dates: day/month/year
 
 :Test-Layer: python
 """
@@ -16,7 +16,7 @@ import unittest
 import re
 
 
-def get_search_query(original_search_text):
+def get_search_query(original_search_text, language='en'):
     # Strip out redundant spaces
     search_text = original_search_text.strip()
     re.sub(search_text, ' +', ' ')
@@ -50,4 +50,13 @@ class FuzzySearchTest(unittest.TestCase):
             'day' : 12,
         }
         self.run_test('12/10/1978', expected_result)
+        self.run_test('12-10-1978', expected_result)
+        self.run_test('12 10 1978', expected_result)
+    def test_no_year(self):
+        expected_result = {
+            'month': 10,
+            'day' : 12,
+        }
+        self.run_test('12 october', expected_result)
+        self.run_test('12  10', expected_result)
 
