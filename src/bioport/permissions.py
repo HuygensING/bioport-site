@@ -6,4 +6,3 @@ class Edit(grok.Permission):
     
 class Manage(grok.Permission):
     grok.name('bioport.Manage')
-       
