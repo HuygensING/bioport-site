@@ -23,24 +23,38 @@ def get_search_query(original_search_text, lang='en'):
     # Strip out redundant spaces
     search_text = original_search_text.strip()
     search_text = re.sub(' +', ' ', search_text)
-    result = {}
+    startend = split_start_end(search_text)
+    if startend:
+        pass
+    res = parse_search_query(search_text, lang=lang)
+    return build_result(res, res)
+
+def parse_search_query(search_text, lang='en'):
+    if is_month(search_text):
+        # one month name only
+        month = resolve_month(search_text)
+        return {'month': month}
     if search_text.isdigit():
         # we have a raw number, let's treat it as a year
         named_tokens = dict(year=search_text)
-        return build_result(named_tokens)
+        return named_tokens
     tokens = split_in_n_tokens(search_text, 3)
     if tokens:
         named_tokens = dict(day=tokens[0], month=resolve_month(tokens[1], lang=lang), year=tokens[2])
-        return build_result(named_tokens, named_tokens)
+        return named_tokens
     tokens = split_in_n_tokens(search_text, 2)
     if tokens:
+        if not tokens[0]:
+            import pdb; pdb.set_trace()
         # Here we might have day-month or month-year
         if is_month(tokens[1]):
             named_tokens = dict(day=tokens[0], month=resolve_month(tokens[1], lang=lang))
         else:
             named_tokens = dict(month=resolve_month(tokens[0], lang=lang), year=tokens[1])
-        return build_result(named_tokens, named_tokens)
-    return result
+        return named_tokens
+
+def split_start_end(search_text):
+    pass
 
 def is_month(text):
     try:
@@ -154,4 +168,20 @@ class FuzzySearchTest(unittest.TestCase):
         }
         self.run_test('12 october', expected_result)
         self.run_test('12  10', expected_result)
+    def test_month_only(self):
+        expected_result = {
+            'month_min': 10, 'month_max': 10,
+        }
+        self.run_test(' october', expected_result)
+        self.run_test('oct  ', expected_result)
+        self.run_test('10  ', expected_result)
+    def test_two_complete_dates(self):
+        expected_result = {
+            'year_min': 1970, 'year_max': 1978,
+            'month_min': 2, 'month_max': 10,
+            'day_min' : 13, 'day_max' : 12,
+        }
+        self.run_test('from 13/2/1970 to 12/10/1978', expected_result)
+        self.run_test('13/2/1970 to 12/10/1978', expected_result)
+        self.run_test('between 13/2/1970 and 12/10/1978', expected_result)
 
