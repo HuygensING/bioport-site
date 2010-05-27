@@ -25,11 +25,17 @@ def get_search_query(original_search_text, lang='en'):
     search_text = re.sub(' +', ' ', search_text)
     startend = split_start_end(search_text)
     if startend:
-        pass
+        start, end = startend
+        startdict = parse_search_query(start)
+        enddict = parse_search_query(end)
+        return build_result(startdict, enddict)
     res = parse_search_query(search_text, lang=lang)
     return build_result(res, res)
 
-def parse_search_query(search_text, lang='en'):
+def parse_search_query(original_search_text, lang='en'):
+    # Strip out redundant spaces
+    search_text = original_search_text.strip()
+    search_text = re.sub(' +', ' ', search_text)
     if is_month(search_text):
         # one month name only
         month = resolve_month(search_text)
@@ -54,7 +60,11 @@ def parse_search_query(search_text, lang='en'):
         return named_tokens
 
 def split_start_end(search_text):
-    pass
+    if search_text.find(' to ')>0:
+        return search_text.strip('from').split(' to ')
+    if search_text.find(' and ')>0:
+        return search_text.strip('between').split(' and ')
+
 
 def is_month(text):
     try:
@@ -183,5 +193,5 @@ class FuzzySearchTest(unittest.TestCase):
         }
         self.run_test('from 13/2/1970 to 12/10/1978', expected_result)
         self.run_test('13/2/1970 to 12/10/1978', expected_result)
-        self.run_test('between 13/2/1970 and 12/10/1978', expected_result)
+        self.run_test('between 13/2/1970 and 12-10-1978', expected_result)
 
