@@ -464,6 +464,8 @@ class Persoon(BioPortTraverser, grok.View,RepositoryView): #, BioPortTraverser):
 class Zoek(grok.View, RepositoryView):
     pass
 
+class Zoek_Test(grok.View, RepositoryView):
+    pass
 
 class Auteurs(grok.View,RepositoryView, Batcher):
     def update(self):

@@ -61,9 +61,9 @@ def parse_search_query(original_search_text, lang='en'):
 
 def split_start_end(search_text):
     if search_text.find(' to ')>0:
-        return search_text.strip('from').split(' to ')
+        return search_text.replace('from', '').split(' to ')
     if search_text.find(' and ')>0:
-        return search_text.strip('between').split(' and ')
+        return search_text.replace('between', '').split(' and ')
 
 
 def is_month(text):
@@ -192,6 +192,16 @@ class FuzzySearchTest(unittest.TestCase):
             'day_min' : 13, 'day_max' : 12,
         }
         self.run_test('from 13/2/1970 to 12/10/1978', expected_result)
+        self.run_test('from 13/feb/1970 to 12/10/1978', expected_result)
         self.run_test('13/2/1970 to 12/10/1978', expected_result)
         self.run_test('between 13/2/1970 and 12-10-1978', expected_result)
+    def test_two_partial_dates(self):
+        expected_result = {
+            'month_min': 2, 'month_max': 10,
+            'day_min' : 13, 'day_max' : 12,
+        }
+        self.run_test('from 13/2 to 12/10', expected_result)
+        self.run_test('from 13/feb to 12-10', expected_result)
+        self.run_test('13/2 to 12/10', expected_result)
+        self.run_test('between 13/2 and 12-oct', expected_result)
 
