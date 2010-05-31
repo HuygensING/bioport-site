@@ -17,7 +17,8 @@ from zope.i18n import translate
 from zope.app.publisher.browser import IUserPreferredLanguages
 from urllib import urlencode
 import types
-
+from fuzzy_search import get_search_query
+from fuzzy_search import en_to_nl_for_field
 class RepositoryView:
     def repository(self):
         principal = self.request.principal
@@ -248,6 +249,14 @@ class Personen(BioPortTraverser,grok.View,RepositoryView, Batcher):
 #               qry['search_soundex']= qry['search_name'] 
 #               del qry['search_name'] 
         repository = self.repository()
+        geboorte_fuzzy_text = self.request.form.get('geboorte_fuzzy_text', None)
+        if geboorte_fuzzy_text:
+            geborte_query = get_search_query(geboorte_fuzzy_text)
+            qry.update(en_to_nl_for_field(geborte_query, 'geboorte'))
+        sterf_fuzzy_text = self.request.form.get('sterf_fuzzy_text', None)
+        if geboorte_fuzzy_text:
+            geborte_query = get_search_query(sterf_fuzzy_text)
+            qry.update(en_to_nl_for_field(geborte_query, 'sterf'))
         persons = repository.get_persons_sequence(**qry)
         try:
             batch = Batch(persons,  start=self.start, size=self.size)

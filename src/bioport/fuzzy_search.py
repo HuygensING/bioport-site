@@ -123,11 +123,11 @@ def build_result(data_from, data_to=None):
     query = {}
     data = [('min', data_from), ('max', data_to)]
     for suffix, datadict in data:
-        if 'year' in datadict:
+        if datadict and 'year' in datadict:
             query['year_' + suffix] = int(datadict['year'])
-        if 'month' in datadict:
+        if datadict and 'month' in datadict:
             query['month_' + suffix] = int(datadict['month'])
-        if 'day' in datadict:
+        if datadict and 'day' in datadict:
             query['day_' + suffix] = int(datadict['day'])
     return query
 
@@ -142,6 +142,27 @@ def split_in_n_tokens(text, how_many_tokens):
         if len(result) == how_many_tokens:
             return result
 
+
+def en_to_nl_for_field(thedict, searchtype):
+    """
+    thedict looks like 
+    {'month_max': 1, 'year_min': 1800, 'year_max': 1900}
+    and will be converted (assuming searchtype='sterf') to
+    {'sterfmaand_max': 1, 'sterfjaar_min': 1800, 'sterfjaar_max': 1900}
+    searchtype should be either 'sterf' or 'geboorten'
+    """
+    return dict([
+    (searchtype + name.replace('year', 'jaar').replace('month', 'maand')
+        .replace('day', 'dag'), value)
+    for name, value in thedict.items()
+    ])
+
+class TranslateNamesToDutchTest(unittest.TestCase):
+    def test_names(self):
+        orig = {'month_max': 1, 'year_min': 1800, 'year_max': 1900}
+        res = en_to_nl_for_field(orig, 'sterf')
+        self.assertEqual(res,
+            {'sterfmaand_max': 1, 'sterfjaar_min': 1800, 'sterfjaar_max': 1900})
 
 class FuzzySearchTest(unittest.TestCase):
     def run_test(self, query_text, expected_query):

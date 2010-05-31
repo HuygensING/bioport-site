@@ -55,11 +55,8 @@
 <tr>
     <th i18n:translate="born">geboren</th>
     <td>
-        <tal:b i18n:translate="between">tussen</tal:b> <input type="text" size="4" name="geboortejaar_min" 
-            tal:attributes="value python:request.get('geboortejaar_min')" />
-        <tal:b i18n:translate="and">en</tal:b> 
-        <input type="text" size="4" name="geboortejaar_max" 
-            tal:attributes="value python:request.get('geboortejaar_max')" />
+        <input type="text" size="28" name="geboorte_fuzzy_text" 
+            tal:attributes="value python:request.get('geboorte_fuzzy_text')" />
         <tal:b i18n:translate="in">in</tal:b> 
         <input type="text" size="20" name="geboorteplaats"
             tal:attributes="value python:unicode(request.get('geboorteplaats', ''))" />
@@ -74,10 +71,8 @@
 <tr>
     <th i18n:translate="died">gestorven</th>
     <td>
-        <tal:b i18n:translate="between">tussen</tal:b> <input type="text" size="4" name="sterfjaar_min"
-            tal:attributes="value python:request.get('sterfjaar_min')" />
-        <tal:b i18n:translate="and">en</tal:b> <input type="text" size="4" name="sterfjaar_max" 
-            tal:attributes="value python:request.get('sterfjaar_max')" />
+        <input type="text" size="34" name="sterf_fuzzy_text" 
+            tal:attributes="value python:request.get('sterf_fuzzy_text')" />
         <tal:b i18n:translate="in">in</tal:b> 
         <input type="text" size="20" name="sterfplaats" 
             tal:attributes="value python:unicode(request.get('sterfplaats', ''))" />
