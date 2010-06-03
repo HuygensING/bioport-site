@@ -174,3 +174,10 @@
 				color: #AC8426;
 			}
 
+/* search form ------------------------------------------------*/
+
+#born_help_text, #died_help_text {
+    text-align: center;
+}
+
+

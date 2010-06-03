@@ -55,7 +55,7 @@
 <tr>
     <th i18n:translate="born">geboren</th>
     <td>
-        <input type="text" size="28" name="geboorte_fuzzy_text" 
+        <input type="text" size="20" name="geboorte_fuzzy_text" 
             tal:attributes="value python:request.get('geboorte_fuzzy_text')" />
         <tal:b i18n:translate="in">in</tal:b> 
         <input type="text" size="20" name="geboorteplaats"
@@ -67,11 +67,15 @@
         </div> 
      </td>
 </tr>
-
+<tr><td colspan="2" id="born_help_text">
+    <span i18n:translate="born_help_text">
+        For example "from may 1650 to september 1655"
+    </span>
+</td></tr>
 <tr>
     <th i18n:translate="died">gestorven</th>
     <td>
-        <input type="text" size="34" name="sterf_fuzzy_text" 
+        <input type="text" size="20" name="sterf_fuzzy_text" 
             tal:attributes="value python:request.get('sterf_fuzzy_text')" />
         <tal:b i18n:translate="in">in</tal:b> 
         <input type="text" size="20" name="sterfplaats" 
@@ -83,6 +87,12 @@
         </div> 
      </td>
 </tr>
+<tr><td colspan="2" id="died_help_text">
+    <span i18n:translate="died_help_text">
+        For example "1680 to 1690"
+    </span>
+</td></tr>
+
 <tr>
     <th i18n:translate="gender">sekse</th>
     <td>

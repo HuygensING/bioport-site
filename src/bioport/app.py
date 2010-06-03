@@ -217,7 +217,7 @@ class Personen(BioPortTraverser,grok.View,RepositoryView, Batcher):
     @memoize
     def get_persons(self, **args):
         """get Persons - with restrictions given by request"""
-        qry = args
+        self.qry = qry = args
         #request.form has unicode keys - make strings
         for k in [
             'bioport_id', 
@@ -249,21 +249,27 @@ class Personen(BioPortTraverser,grok.View,RepositoryView, Batcher):
 #               qry['search_soundex']= qry['search_name'] 
 #               del qry['search_name'] 
         repository = self.repository()
-        geboorte_fuzzy_text = self.request.form.get('geboorte_fuzzy_text', None)
-        if geboorte_fuzzy_text:
-            geborte_query = get_search_query(geboorte_fuzzy_text)
-            qry.update(en_to_nl_for_field(geborte_query, 'geboorte'))
-        sterf_fuzzy_text = self.request.form.get('sterf_fuzzy_text', None)
-        if geboorte_fuzzy_text:
-            geborte_query = get_search_query(sterf_fuzzy_text)
-            qry.update(en_to_nl_for_field(geborte_query, 'sterf'))
+        current_language = IUserPreferredLanguages(self.request).getPreferredLanguages()[0]
+        try:
+            geboorte_fuzzy_text = self.request.form.get('geboorte_fuzzy_text', None)
+            if geboorte_fuzzy_text:
+                geborte_query = get_search_query(geboorte_fuzzy_text, current_language)
+                qry.update(en_to_nl_for_field(geborte_query, 'geboorte'))
+            sterf_fuzzy_text = self.request.form.get('sterf_fuzzy_text', None)
+            if sterf_fuzzy_text:
+                sterf_query = get_search_query(sterf_fuzzy_text, current_language)
+                qry.update(en_to_nl_for_field(sterf_query, 'sterf'))
+        except ValueError:
+            url = self.url('zoek_test') # XXX change me to 'zoek' when done
+            url += '?' + urlencode(self.request.form)
+            self.request.response.redirect(url)
+
         persons = repository.get_persons_sequence(**qry)
         try:
             batch = Batch(persons,  start=self.start, size=self.size)
         except IndexError:
             batch = Batch(persons,size= self.size)
         batch.grand_total = len(persons)
-        self.qry = qry
         self.batch = batch
         return batch
 
@@ -474,7 +480,10 @@ class Zoek(grok.View, RepositoryView):
     pass
 
 class Zoek_Test(grok.View, RepositoryView):
-    pass
+    def get_born_description(self):
+        return ""
+    def get_died_description(self):
+        return ""
 
 class Auteurs(grok.View,RepositoryView, Batcher):
     def update(self):
