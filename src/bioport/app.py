@@ -19,6 +19,8 @@ from urllib import urlencode
 import types
 from fuzzy_search import get_search_query
 from fuzzy_search import en_to_nl_for_field
+from fuzzy_search import make_description
+
 class RepositoryView:
     def repository(self):
         principal = self.request.principal
@@ -306,33 +308,23 @@ class Personen(BioPortTraverser,grok.View,RepositoryView, Batcher):
         repository = self.repository()
         result= ''
         request = self.request
-        geboortejaar_min = request.get('geboortejaar_min')
-        geboortejaar_max = request.get('geboortejaar_max')
+        born_description = get_born_description(self.request)
+        died_description = get_died_description(self.request)
+
         geboorteplaats = request.get('geboorteplaats')
-        if geboortejaar_min or geboortejaar_max or geboorteplaats:
+        if born_description or geboorteplaats:
             result += ' ' + translate(_(u'born'),
                                       target_language=current_language)
-            if geboortejaar_min and geboortejaar_max:
-                result += ' ' + _between + ' ' + geboortejaar_min + ' ' 
-                result += _and + ' ' + geboortejaar_max
-            elif geboortejaar_min:
-                result += ' %s %s' % (_after, geboortejaar_min)
-            elif geboortejaar_max:
-                result += ' %s %s' % (_before, geboortejaar_max)
+            if born_description:
+                result += ' ' + born_description
             if geboorteplaats:
                 result += ' in  <em>%s</em>' % geboorteplaats
-                
-        sterfjaar_min = request.get('sterfjaar_min')
-        sterfjaar_max = request.get('sterfjaar_max')
+
         sterfplaats = request.get('sterfplaats')
-        if sterfjaar_min or sterfjaar_max or sterfplaats:
+        if died_description or sterfplaats:
             result += ' ' + translate(_(u'died'),target_language=current_language)
-            if sterfjaar_min and sterfjaar_max:
-                result += ' %s %s %s %s' % (_between, sterfjaar_min, _and, sterfjaar_max)
-            elif sterfjaar_min:
-                result += ' %s %s' % (_after, sterfjaar_min)
-            elif sterfjaar_max:
-                result += ' %s %s' % (_before, sterfjaar_max)
+            if died_description:
+                result += ' ' + died_description
             if sterfplaats:
                 result += ' in <em>%s</em>' % sterfplaats
                 
@@ -475,15 +467,39 @@ class Persoon(BioPortTraverser, grok.View,RepositoryView): #, BioPortTraverser):
         
     def maanden(self):
         return maanden
-    
+
 class Zoek(grok.View, RepositoryView):
     pass
 
+def get_born_description(request):
+    """ Inspect the request and build a natural language description 
+        of the searched born date"""
+    current_language = IUserPreferredLanguages(request).getPreferredLanguages()[0]
+    geboorte_fuzzy_text = request.form.get('geboorte_fuzzy_text')
+    if geboorte_fuzzy_text:
+        try:
+            qry = get_search_query(geboorte_fuzzy_text, current_language)
+        except ValueError, e:
+            return "Unable to parse death date. Please rephrase it" # XXX translate me
+        return make_description(qry)
+
+def get_died_description(request):
+    """ Inspect the request and build a natural language description 
+        of the searched death date"""
+    current_language = IUserPreferredLanguages(request).getPreferredLanguages()[0]
+    sterf_fuzzy_text = request.form.get('sterf_fuzzy_text', None)
+    if sterf_fuzzy_text:
+        try:
+            qry = get_search_query(sterf_fuzzy_text, current_language)
+        except ValueError, e:
+            return "Unable to parse death date. Please rephrase it" # XXX translate me
+        return make_description(qry)
+
 class Zoek_Test(grok.View, RepositoryView):
     def get_born_description(self):
-        return ""
+        return get_born_description(self.request)
     def get_died_description(self):
-        return ""
+        return get_died_description(self.request)
 
 class Auteurs(grok.View,RepositoryView, Batcher):
     def update(self):

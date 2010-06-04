@@ -57,8 +57,6 @@ def parse_search_query(original_search_text, lang='en'):
         return named_tokens
     tokens = split_in_n_tokens(search_text, 2)
     if tokens:
-        if not tokens[0]:
-            import pdb; pdb.set_trace()
         # Here we might have day-month or month-year
         if is_month(tokens[1]):
             named_tokens = dict(day=tokens[0], month=resolve_month(tokens[1], lang=lang))
@@ -71,6 +69,10 @@ def split_start_end(search_text):
         return search_text.replace('from', '').split(' to ')
     if search_text.find(' and ')>0:
         return search_text.replace('between', '').split(' and ')
+    if search_text.find(' tot ')>0:
+        return search_text.replace('from', '').split(' tot ')
+    if search_text.find(' en ')>0:
+        return search_text.replace('tussen', '').split(' en ')
 
 
 def is_month(text):
