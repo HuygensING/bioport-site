@@ -80,6 +80,8 @@ def is_month(text):
     except MonthParseException:
         return False
 
+
+# dictionary to lookup month numbers from names
 month_names = {
     'en': {
         'jan':1,
@@ -106,8 +108,44 @@ month_names = {
         'nov':11,
         'december':12,
         'dec':12,
+    },
+    'nl': {
+        'januari':1,
+        'jan':1,
+        'februari':2,
+        'feb':2,
+        'maart':3,
+        'mar':3,
+        'april':4,
+        'apr':4,
+        'mei':5,
+        'juni':6,
+        'jun':6,
+        'juli':7,
+        'jul':7,
+        'augustus':8,
+        'aug':8,
+        'september':9,
+        'sep':9,
+        'oktober':10,
+        'okt':10,
+        'november':11,
+        'nov':11,
+        'december':12,
+        'dec':12,
     }
 }
+
+month_number_to_names = {}
+# reverse the above dictionary to lookup month names by number
+# we pick the longest name as the canonical one
+for lang in month_names:
+    rev = {}
+    for name, num in month_names[lang].items():
+        if num not in rev or len(rev[num])<len(name):
+            rev[num] = name
+    month_number_to_names[lang] = rev
+
 def resolve_month(month_string, lang='en'):
     if month_string.isdigit():
         month_int = int(month_string)
@@ -166,8 +204,29 @@ def en_to_nl_for_field(thedict, searchtype):
 
 def make_description(querydict, lang='en'):
     " Provide a textual description for a dict of (day|month|year)_(min|max) "
-    query = dict(querydict) # we copy the dictionary to be able to manipulate it
+    max_date = build_date_string(querydict.get('day_max'),
+                                 querydict.get('month_max'),
+                                 querydict.get('year_max'))
+    min_date = build_date_string(querydict.get('day_min'),
+                                 querydict.get('month_min'),
+                                 querydict.get('year_min'))
+    if not min_date:
+        return "before " + maxdate # XXX translate me
+    if not max_date:
+        return "after " + maxdate # XXX translate me
+    if min_date == max_date:
+        return "on " + min_date # XXX translate me
+    return "from %s to %s" % (min_date, max_date) #XXX translate me
 
+def build_date_string(day, month, year, lang='en'):
+    if not (day or month or year):
+        return ''
+    if not day and not month:
+        return str(year)
+    month_name = month_number_to_names[lang][month]
+    if not day:
+        return "%s %s" % (month_name, year)
+    return "%s %s %s" % (day, month_name, year)
 
 class TranslateNamesToDutchTest(unittest.TestCase):
     def test_names(self):
@@ -187,7 +246,7 @@ class FuzzySearchTest(unittest.TestCase):
             'day_min' : 12, 'day_max' : 12,
         }
         res = make_description(querydict, lang='en')
-        self.assertEqual(res, "on 12/10/1978")
+        self.assertEqual(res, "on 12 october 1978")
     def test_make_description_full_range(self):
         querydict = {
             'year_min': 1978, 'year_max': 1982,
@@ -195,7 +254,7 @@ class FuzzySearchTest(unittest.TestCase):
             'day_min' : 12, 'day_max' : 1,
         }
         res = make_description(querydict, lang='en')
-        self.assertEqual(res, "from 12/10/1978 to 1/3/1982")
+        self.assertEqual(res, "from 12 october 1978 to 1 march 1982")
     def test_make_description_no_days(self):
         querydict = {
             'year_min': 1978, 'year_max': 1982,
