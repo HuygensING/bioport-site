@@ -618,17 +618,18 @@ $.DDComboBox.Cache = function(options) {
 				// track all matches
 				csub = [];
 				// loop through all the data grids for matches
+				var add_match_to_array = function(i, x) {
+							// if we've got a match, add it to the array
+							if (matchSubset(x.value, q)) {
+								csub.push(x);
+							}
+				};
 				for( var k in data ){
 					// don't search through the stMatchSets[""] (minChars: 0) cache
 					// this prevents duplicates
 					if( k.length > 0 ){
 						c = data[k];
-						$.each(c, function(i, x) {
-							// if we've got a match, add it to the array
-							if (matchSubset(x.value, q)) {
-								csub.push(x);
-							}
-						});
+						$.each(c, add_match_to_array);
 					}
 				}				
 				return csub;
@@ -638,15 +639,16 @@ $.DDComboBox.Cache = function(options) {
 				return data[q];
 			} else
 			if (options.matchSubset) {
+			    var update_csub = function(i, x) {
+							if (matchSubset(x.value, q)) {
+								csub[csub.length] = x;
+							}
+						};
 				for (var i = q.length - 1; i >= options.minChars; i--) {
 					c = data[q.substr(0, i)];
 					if (c) {
 						csub = [];
-						$.each(c, function(i, x) {
-							if (matchSubset(x.value, q)) {
-								csub[csub.length] = x;
-							}
-						});
+						$.each(c, update_csub);
 						return csub;
 					}
 				}
