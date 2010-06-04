@@ -86,6 +86,30 @@ $.DDComboBox = function(input, button, options) {
 	var config = {
 		mouseDownOnSelect: false
 	};
+
+	function selectCurrent() {
+		var selected = select.selected();
+		if( !selected ) {
+			return false;
+		}
+		
+		var v = selected.result;
+		previousValue = v;
+		
+		if ( options.multiple ) {
+			var words = trimWords($input.val());
+			if ( words.length > 1 ) {
+				v = words.slice(0, words.length - 1).join( options.multipleSeparator ) + options.multipleSeparator + v;
+			}
+			v += options.multipleSeparator;
+		}
+		
+		$input.val(v);
+		hideResultsNow();
+		$input.trigger("result", [selected.data, selected.value]);
+		return true;
+	}
+
 	var select = $.DDComboBox.Select(options, input, selectCurrent, config);
 
   $(button).mousedown(function(event) {
@@ -239,29 +263,6 @@ $.DDComboBox = function(input, button, options) {
         onChange(0, true);
       }
   }
-
-	function selectCurrent() {
-		var selected = select.selected();
-		if( !selected ) {
-			return false;
-		}
-		
-		var v = selected.result;
-		previousValue = v;
-		
-		if ( options.multiple ) {
-			var words = trimWords($input.val());
-			if ( words.length > 1 ) {
-				v = words.slice(0, words.length - 1).join( options.multipleSeparator ) + options.multipleSeparator + v;
-			}
-			v += options.multipleSeparator;
-		}
-		
-		$input.val(v);
-		hideResultsNow();
-		$input.trigger("result", [selected.data, selected.value]);
-		return true;
-	}
 	
 	function onChange(crap, skipPrevCheck) {
 		if( lastKeyPressCode == KEY.DEL ) {
