@@ -12,7 +12,7 @@
  */
 
 (function($) {
-	
+	var combo_counter = 0; // We use this to generate unique ids for more than one combo per page
 $.fn.extend({
 	ddcombo: function(options) {
 		options = $.extend({}, $.DDComboBox.defaults, options);
@@ -443,8 +443,9 @@ $.DDComboBox = function(input, button, options) {
 
 
 $.DDComboBox.main = function(obj, options) {
-
-  var table_id = 'combotable';
+  var current_id = '' + combo_counter;
+  combo_counter += 1;
+  var table_id = 'combotable' + current_id;
   var input_id = table_id + "_input";
   var button_id = table_id + "_button";
   var title = "Type something...";
