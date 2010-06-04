@@ -73,7 +73,9 @@ $.DDComboBox = function(input, button, options) {
 	};
 
 	// Create $ object for input element
-	var $input = $(input).attr("ddcombo_autocomplete", "off").addClass(options.inputClass);
+	var $input = $(input).attr("ddcombo_autocomplete", "off").
+	    attr("autocomplete", "off").
+	    addClass(options.inputClass);
 
   var mouseOverButton = false;
 	var timeout;
@@ -693,10 +695,11 @@ $.DDComboBox.Select = function (options, input, select, config) {
 		}).mouseup(function() {
 			config.mouseDownOnSelect = false;
 		});
-		
+		/*
 		if( options.width > 0 ) {
 			element.css("width", options.width);
 		}
+		*/
 			
 		needsInit = false;
 	} 
