@@ -11,14 +11,14 @@
  *
  */
 
-;(function($) {
+(function($) {
 	
 $.fn.extend({
 	ddcombo: function(options) {
 		options = $.extend({}, $.DDComboBox.defaults, options);
 
 		return this.each(function() {
-			new $.DDComboBox.main(this, options);
+			var dummy = new $.DDComboBox.main(this, options);
 		});
 	},
 	ddcombo_autocomplete: function(button, urlOrData, options) {
@@ -144,8 +144,9 @@ $.DDComboBox = function(input, button, options) {
 			case KEY.RETURN:
 				if( selectCurrent() ){
 					// make sure to blur off the current field
-					if( !options.multiple )
+					if( !options.multiple ) {
 						$input.blur();
+					}
 					event.preventDefault();
 				}
 				break;
@@ -205,8 +206,12 @@ $.DDComboBox = function(input, button, options) {
 					}
 				}
 			}
-			if( typeof fn == "function" ) fn(result);
-			else $input.trigger("result", result && [result.data, result.value]);
+			if( typeof fn == "function" ){
+			    fn(result);
+			}
+			else {
+			    $input.trigger("result", result && [result.data, result.value]);
+			}
 		}
 		$.each(trimWords($input.val()), function(i, value) {
 			request(value, findValueCallback, findValueCallback);
@@ -216,8 +221,9 @@ $.DDComboBox = function(input, button, options) {
 	}).bind("setOptions", function() {
 		$.extend(options, arguments[1]);
 		// if we've updated the data, repopulate
-		if ( "data" in arguments[1] )
+		if ( "data" in arguments[1] ) {
 			cache.populate();
+		}
 	}).bind("unautocomplete", function() {
 		select.unbind();
 		$input.unbind();
@@ -234,8 +240,9 @@ $.DDComboBox = function(input, button, options) {
 
 	function selectCurrent() {
 		var selected = select.selected();
-		if( !selected )
+		if( !selected ) {
 			return false;
+		}
 		
 		var v = selected.result;
 		previousValue = v;
@@ -285,8 +292,9 @@ $.DDComboBox = function(input, button, options) {
     
     if ( currentValue.length >= options.minChars) {
 			$input.addClass(options.loadingClass);
-			if (!options.matchCase)
+			if (!options.matchCase) {
 				currentValue = currentValue.toLowerCase();
+			}
 
 			request(currentValue, receiveData, hideResultsNow);
 		} else {
@@ -297,7 +305,7 @@ $.DDComboBox = function(input, button, options) {
     //if(currentValue.length == 0) {
     //  $input.value = "hi";
     //}
-	};
+	}
 
 	function trimWords(value) {
 		if ( !value ) {
@@ -306,15 +314,17 @@ $.DDComboBox = function(input, button, options) {
 		var words = value.split( options.multipleSeparator );
 		var result = [];
 		$.each(words, function(i, value) {
-			if ( $.trim(value) )
+			if ( $.trim(value) ) {
 				result[i] = $.trim(value);
+			}
 		});
 		return result;
 	}
 	
 	function lastWord(value) {
-		if ( !options.multiple )
+		if ( !options.multiple ) {
 			return value;
+		}
 		var words = trimWords(value);
 		return words[words.length - 1];
 	}
@@ -331,12 +341,12 @@ $.DDComboBox = function(input, button, options) {
 			// select the portion of the value not typed by the user (so the next character will erase)
 			$.DDComboBox.Selection(input, previousValue.length, previousValue.length + sValue.length);
 		}
-	};
+	}
 
 	function hideResults() {
 		clearTimeout(timeout);
 		timeout = setTimeout(hideResultsNow, 200);
-	};
+	}
 
 	function hideResultsNow() {
 		select.hide();
@@ -353,7 +363,7 @@ $.DDComboBox = function(input, button, options) {
         }
 			);
 		}
-	};
+	}
 
 	function receiveData(q, data) {
 		if ( data && data.length && hasFocus ) {
@@ -364,11 +374,12 @@ $.DDComboBox = function(input, button, options) {
 		} else {
 			hideResultsNow();
 		}
-	};
+	}
 
 	function request(term, success, failure) {
-		if (!options.matchCase)
+		if (!options.matchCase) {
 			term = term.toLowerCase();
+		}
 		var data = cache.load(term);
 		// recieve the cached data
 		if (data && data.length) {
@@ -405,7 +416,7 @@ $.DDComboBox = function(input, button, options) {
 			select.emptyList();
 			failure(term);
 		}
-	};
+	}
 	
 	function parse(data) {
 		var parsed = [];
@@ -422,11 +433,11 @@ $.DDComboBox = function(input, button, options) {
 			}
 		}
 		return parsed;
-	};
+	}
 
 	function stopLoading() {
 		$input.removeClass(options.loadingClass);
-	};
+	}
 
 };
 
@@ -442,14 +453,13 @@ $.DDComboBox.main = function(obj, options) {
     'table', { className: 'ddcombo_table', cellspacing: 0, cellpadding: 0, border: 0, id: table_id }, [
         'tr', {}, [
             'td', { className: 'ddcombo_td1' }, [
-              'div', { className: 'ddcombo_div4', style: 'background: url(js/jquery/ddcombo/transparent_pixel.gif)' }, [
+              'div', { className: 'ddcombo_div4'}, [
                 'input', { className: 'ddcombo_input1', id: input_id, title: title, value: title, 
-                style: 'color: gray; background: url(js/jquery/ddcombo/transparent_pixel.gif)' } 
+                style: 'color: gray;' } 
               ]
             ], 
             'td', { className: 'ddcombo_td2', valign: 'top', align: 'left', id: button_id, input_id: input_id }, [
-              'a', {}, '',              
-              'img', { src: 'js/jquery/ddcombo/button2.png', style: 'display: none'}, ''
+              'a', {}, ''
             ]
         ]
     ]
@@ -458,7 +468,7 @@ $.DDComboBox.main = function(obj, options) {
   var button = document.getElementById(button_id);
 
   $.elementReady(input_id, function() {
-    $(this).ddcombo_autocomplete(button, options["options"], {
+    $(this).ddcombo_autocomplete(button, options.options, {
       minChars: 0,
       max: 120,
       width: 250,
@@ -467,7 +477,7 @@ $.DDComboBox.main = function(obj, options) {
     }
     );
   });
-}
+};
 
 $.DDComboBox.defaults = {
 	inputClass: "ddcombo_input",
@@ -502,12 +512,15 @@ $.DDComboBox.Cache = function(options) {
 	var length = 0;
 	
 	function matchSubset(s, sub) {
-		if (!options.matchCase) 
+		if (!options.matchCase){
 			s = s.toLowerCase();
+		}
 		var i = s.indexOf(sub);
-		if (i == -1) return false;
-		return i == 0 || options.matchContains;
-	};
+		if (i == -1){
+		    return false;
+		}
+		return i === 0 || options.matchContains;
+	}
 	
 	function add(q, value) {
 		if (length > options.cacheLength){
@@ -520,13 +533,17 @@ $.DDComboBox.Cache = function(options) {
 	}
 	
 	function populate(){
-		if( !options.data ) return false;
+		if( !options.data ){
+		    return false;
+		}
 		// track the matches
 		var stMatchSets = {},
 			nullData = 0;
 
 		// no url was specified, we need to adjust the cache length to make sure it fits the local data store
-		if( !options.url ) options.cacheLength = 1;
+		if( !options.url ){
+		    options.cacheLength = 1;
+		}
 		
 		// track all options for minChars = 0
 		stMatchSets[""] = [];
@@ -538,13 +555,15 @@ $.DDComboBox.Cache = function(options) {
 			rawValue = (typeof rawValue == "string") ? [rawValue] : rawValue;
 			
 			var value = options.formatMatch(rawValue, i+1, options.data.length);
-			if ( value === false )
+			if ( value === false ) {
 				continue;
+			}
 				
 			var firstChar = value.charAt(0).toLowerCase();
 			// if no lookup array for this character exists, look it up now
-			if( !stMatchSets[firstChar] ) 
+			if( !stMatchSets[firstChar] ) {
 				stMatchSets[firstChar] = [];
+			}
 
 			// if the match is a string
 			var row = {
@@ -560,7 +579,7 @@ $.DDComboBox.Cache = function(options) {
 			if ( nullData++ < options.max ) {
 				stMatchSets[""].push(row);
 			}
-		};
+		}
 
 		// add the data items to the cache
 		$.each(stMatchSets, function(i, value) {
@@ -584,21 +603,23 @@ $.DDComboBox.Cache = function(options) {
 		add: add,
 		populate: populate,
 		load: function(q) {
-			if (!options.cacheLength || !length)
+		    var csub, c;
+			if (!options.cacheLength || !length) {
 				return null;
+			}
 			/* 
 			 * if dealing w/local data and matchContains than we must make sure
 			 * to loop through all the data collections looking for matches
 			 */
 			if( !options.url && options.matchContains ){
 				// track all matches
-				var csub = [];
+				csub = [];
 				// loop through all the data grids for matches
 				for( var k in data ){
 					// don't search through the stMatchSets[""] (minChars: 0) cache
 					// this prevents duplicates
 					if( k.length > 0 ){
-						var c = data[k];
+						c = data[k];
 						$.each(c, function(i, x) {
 							// if we've got a match, add it to the array
 							if (matchSubset(x.value, q)) {
@@ -615,9 +636,9 @@ $.DDComboBox.Cache = function(options) {
 			} else
 			if (options.matchSubset) {
 				for (var i = q.length - 1; i >= options.minChars; i--) {
-					var c = data[q.substr(0, i)];
+					c = data[q.substr(0, i)];
 					if (c) {
-						var csub = [];
+						csub = [];
 						$.each(c, function(i, x) {
 							if (matchSubset(x.value, q)) {
 								csub[csub.length] = x;
@@ -647,8 +668,9 @@ $.DDComboBox.Select = function (options, input, select, config) {
 	
 	// Create results
 	function init() {
-		if (!needsInit)
+		if (!needsInit) {
 			return;
+		}
 		element = $("<div/>")
 		.hide()
 		.addClass(options.resultsClass)
@@ -671,19 +693,22 @@ $.DDComboBox.Select = function (options, input, select, config) {
 			config.mouseDownOnSelect = false;
 		});
 		
-		if( options.width > 0 )
+		if( options.width > 0 ) {
 			element.css("width", options.width);
+		}
 			
 		needsInit = false;
 	} 
 	
 	function target(event) {
 		var element = event.target;
-		while(element && element.tagName != "LI")
+		while(element && element.tagName != "LI") {
 			element = element.parentNode;
+		}
 		// more fun with IE, sometimes event.target is empty, just ignore it then
-		if(!element)
+		if(!element) {
 			return [];
+		}
 		return element;
 	}
 
@@ -702,7 +727,7 @@ $.DDComboBox.Select = function (options, input, select, config) {
                 list.scrollTop(offset);
             }
         }
-	};
+	}
 	
 	function movePosition(step) {
 		active += step;
@@ -714,21 +739,23 @@ $.DDComboBox.Select = function (options, input, select, config) {
 	}
 	
 	function limitNumberOfItems(available) {
-		return options.max && options.max < available
-			? options.max
-			: available;
+		return (options.max && options.max < available ?
+			options.max :
+			available);
 	}
 	
 	function fillList() {
 		list.empty();
 		var max = limitNumberOfItems(data.length);
 		for (var i=0; i < max; i++) {
-			if (!data[i])
+			if (!data[i]) {
 				continue;
+			}
 			var formatted = options.formatItem(data[i].data, i+1, max, data[i].value, term);
-			if ( formatted === false )
+			if ( formatted === false ) {
 				continue;
-			var li = $("<li>").html( options.highlight(formatted, term) ).addClass(i%2 == 0 ? "ddcombo_event" : "ddcombo_odd").appendTo(list)[0];
+			}
+			var li = $("<li>").html( options.highlight(formatted, term) ).addClass(i%2 === 0 ? "ddcombo_event" : "ddcombo_odd").appendTo(list)[0];
 			$.data(li, "ddcombo_data", data[i]);
 		}
 		listItems = list.find("li");
@@ -753,7 +780,7 @@ $.DDComboBox.Select = function (options, input, select, config) {
 			moveSelect(-1);
 		},
 		pageUp: function() {
-			if (active != 0 && active - 8 < 0) {
+			if (active !== 0 && active - 8 < 0) {
 				moveSelect( -active );
 			} else {
 				moveSelect(-8);
@@ -767,7 +794,9 @@ $.DDComboBox.Select = function (options, input, select, config) {
 			}
 		},
 		hide: function() {
-			element && element.hide();
+			if (element) {
+			    element.hide();
+			}
 			active = -1;
 		},
 		visible : function() {
@@ -799,7 +828,7 @@ $.DDComboBox.Select = function (options, input, select, config) {
                     list.css('height', scrollbarsVisible ? options.scrollHeight : listHeight );
 					if (!scrollbarsVisible) {
 						// IE doesn't recalculate width when scrollbar disappears
-						listItems.width( list.width() - parseInt(listItems.css("padding-left")) - parseInt(listItems.css("padding-right")) );
+						listItems.width( list.width() - parseInt(listItems.css("padding-left"), 10) - parseInt(listItems.css("padding-right"), 10) );
 					}
                 }
                 
@@ -810,10 +839,14 @@ $.DDComboBox.Select = function (options, input, select, config) {
 			return selected && selected.length && $.data(selected[0], "ddcombo_data");
 		},
 		emptyList: function (){
-			list && list.empty();
+			if (list) {
+			    list.empty();
+			}
 		},
 		unbind: function() {
-			element && element.remove();
+			if (element) {
+			    element.remove();
+			}
 		}
 	};
 };
