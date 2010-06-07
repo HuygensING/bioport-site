@@ -410,7 +410,8 @@ class Persoon(BioPortTraverser, grok.View,RepositoryView): #, BioPortTraverser):
             self.redirect(self.url(self) + '/'+ self.bioport_id)
         self.person  = self.repository().get_person(bioport_id=self.bioport_id) 
         self.biography  = self.merged_biography = self.person.get_merged_biography()
-
+        self.bioport_biography =  self.repository().get_bioport_biography(self.person) 
+        
     def get_event(self, type, biography=None):
         if not biography:
             biography = self.merged_biography

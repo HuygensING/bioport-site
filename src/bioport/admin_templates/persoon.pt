@@ -113,7 +113,6 @@ De gegevens zijn grijs als ze uit de bronnen-publikaties komen, zwart als ze zij
     xtal:condition="not:view/get_bioport_namen" 
 	    tal:define="namen view/get_non_bioport_namen"
     	tal:repeat="idx python:range(len(namen))">
-
     	<th><span tal:condition="python:idx == 0" ><span class="accesskey">n</span>amen</span></th>
     	<td tal:define="naam python:namen[idx]"
 		    tal:attributes="class python:view.get_bioport_namen() and 'bioport' or 'merged'">
@@ -127,7 +126,6 @@ De gegevens zijn grijs als ze uit de bronnen-publikaties komen, zwart als ze zij
 			verander
 			</a>
 		</td>    
-
    	</tr>
    	
    	<tr>
@@ -135,7 +133,6 @@ De gegevens zijn grijs als ze uit de bronnen-publikaties komen, zwart als ze zij
    		<td colspan="2">
    	        <input name="name_new" type="text" id="name_new"  accesskey="n" />
 	        <span tal:replace="structure python:view.actions.byname['form.actions.add_name'].render()" ></span>
-
 		</td>    
 	</tr>
    	<tr metal:use-macro="template/macros/separator" /> 	
@@ -562,20 +559,31 @@ De gegevens zijn grijs als ze uit de bronnen-publikaties komen, zwart als ze zij
 	        <span tal:replace="structure python:view.actions.byname['form.actions.save_remarks'].render()" ></span>
     	</td>
    	</tr>
-<div tal:condition="nothing">
-<tr metal:use-macro="template/macros/separator" ></tr> 
-	<tr>
-        <th><span class="accesskey"></span>Snippet</th>	
-        <td>
-            <textarea accesskey=""
-            name="snippet" id="snippet" style="width:300px" 
-            tal:content="python:view.person.db_snippet()"
-            ></textarea>
-        <td>
-	        <span tal:replace="structure python:view.actions.byname['form.actions.save_snippet'].render()" ></span>
-    	</td>
-   	</tr>
-</div>
+	<div tal:repeat="bio view/person/get_biographies"
+	   tal:omit-tag="">
+   <div tal:condition="python:bio.source_id != 'bioport'"
+	   tal:omit-tag="">
+		<tr metal:use-macro="template/macros/separator" ></tr> 
+	    <tr>
+	        <th>
+	           <span class="accesskey"></span>Snippet <span tal:replace="bio/source_id" ></span>
+	        </th>	
+	        <td>
+	            <textarea accesskey=""
+	            tal:attributes="
+		            id string:snippet_${bio/id};
+		            name string:snippet_${bio/id};
+		            "
+	            
+	               style="width:300px" 
+	            tal:content="python:view.bioport_biography and view.bioport_biography.get_snippet(bio.id) or ''"
+	            ></textarea>
+	        <td>
+		        <span tal:replace="structure python:view.actions.byname['form.actions.save_snippet'].render()" ></span>
+	    	</td>
+	   	</tr>
+	</div>
+	</div>
    	
 <tr metal:use-macro="template/macros/separator" ></tr> 
     <tr>

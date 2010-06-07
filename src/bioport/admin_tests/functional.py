@@ -199,6 +199,14 @@ class SimpleSampleFunctionalTest(FunctionalTestCase):
         browser.open(public_url)
         assert re.findall('vrouw', browser.contents, re.DOTALL)
  
+        #snippet
+#        browser.open(edit_url)
+#        form = browser.getForm(index=0)
+#        form.getControl(name='snippet').value=['test for snippet']
+#        form.getControl(name='form.actions.save_snippet').click()
+#        browser.open(public_url)
+#        assert re.findall('test for snippet', browser.contents, re.DOTALL)
+        
         """does the 'save everyting' button indeed save everything? """
         browser.open(edit_url)
         form = browser.getForm(index=0)

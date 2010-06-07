@@ -122,7 +122,8 @@
                     tal:content="python:biography.get_source().description"></a>
     	</span>
     	<div class="snippet"
-    		tal:define="snippet biography/snippet"
+         
+    		tal:define="snippet  python:(view.bioport_biography and view.bioport_biography.get_snippet(biography.id)) or biography.snippet"
             tal:condition="snippet">
              <span tal:replace="structure snippet" />
              <a  tal:attributes="href url"
@@ -139,21 +140,6 @@
         <a class="backbutton" onClick="alert('terug naar de zoekresultaten (indien van toepassing). Moet nog geimplementeerd.')">terug naar de zoekresultaten</a>
     </div>    
     
-    <tt tal:condition="context/debug">
-    <br />
-    <br />
-    <br />
-    <hr>
-    <a tal:attributes="href python:view.url(context['admin'], 'persoon', data={'bioport_id':view.bioport_id})" >bewerk de gegevens van deze persoon</a>
-    <pre>Debug information</pre>
-    <pre>
-    redirects_to: <tt tal:content="python:view.person.redirects_to()" />
-    </pre>
-<br />
-<br />
-<pre tal:repeat="bio view/person/get_biographies"  tal:content="bio/to_string"  /> 
-    </tt> 
-
 </div>
 </div>
 </html>

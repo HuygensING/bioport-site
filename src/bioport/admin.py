@@ -695,10 +695,12 @@ class Persoon(app.Persoon, grok.EditForm, RepositoryView):
         self.msg = 'snippet bewaard'
     
     def _save_snippet(self): 
-        snippet = self.request.get('snippet')
-        if snippet:
-	        self.bioport_biography.set_value('tekst', snippet)
-      
+        for k in self.request.keys():
+            if k.split('_')[0] == 'snippet':
+                bio_id = k.split('_')[1]
+                snippet = self.request.get(k)
+                self.bioport_biography.set_snippet(bio_id, snippet)
+                
         
     @grok.action('bewaar alle veranderingen', name='save_everything')  
     def save_everything(self):
@@ -965,4 +967,3 @@ class Log(grok.View,RepositoryView):
     def get_log_messages(self):
         return self.repository().get_log_messages()
     
-    pass
