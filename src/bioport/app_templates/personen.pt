@@ -50,7 +50,7 @@
 		</div>
 	</div>
 	<div id="search_form" style="display:None" >
-		<form metal:use-macro="context/@@zoek_test/macros/search_form"></form>
+		<form metal:use-macro="context/@@zoek/macros/search_form"></form>
 	</div>
     <div class="prev_next_navigation"	
         metal:define-macro="prev_next_navigation"
