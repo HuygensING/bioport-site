@@ -171,9 +171,10 @@ def resolve_month(month_string, lang='en'):
 class MonthParseException(Exception):
     "Raised in case of error during month parsing"
 
-def build_result(data_from, data_to=None):
+_marker = []
+def build_result(data_from, data_to=_marker):
     "Convert two dicts with strings in one dict that represents the query"
-    if not data_to:
+    if data_to is _marker:
         data_to = data_from
     query = {}
     data = [('min', data_from), ('max', data_to)]
@@ -289,6 +290,10 @@ class FuzzySearchTest(unittest.TestCase):
     def test_before_year(self):
         expected_result = {'year_max': 1978}
         self.run_test('before  1978 ', expected_result)
+
+    def test_after_year(self):
+        expected_result = {'year_min': 1978}
+        self.run_test(' after 1978 ', expected_result)
 
     def test_single_year(self):
         expected_result = {'year_min': 1920, 'year_max': 1920}
