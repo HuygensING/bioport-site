@@ -226,18 +226,24 @@ def make_description(querydict, lang='en'):
     if not max_date:
         return "after " + min_date # XXX translate me
     if min_date == max_date:
-        return "on " + min_date # XXX translate me
+        if 'day_max' in querydict:
+            prefix = 'on' # XXX translate me
+        else:
+            prefix = 'in' # XXX translate me
+        return prefix + " " + min_date
     return "from %s to %s" % (min_date, max_date) #XXX translate me
 
 def build_date_string(day, month, year, lang='en'):
+    if not year:
+        year = ''
     if not (day or month or year):
         return ''
     if not day and not month:
         return str(year)
     month_name = month_number_to_names[lang][month]
     if not day:
-        return "%s %s" % (month_name, year)
-    return "%s %s %s" % (day, month_name, year)
+        return ("%s %s" % (month_name, year)).strip()
+    return ("%s %s %s" % (day, month_name, year)).strip()
 
 class TranslateNamesToDutchTest(unittest.TestCase):
     def test_names(self):
@@ -249,7 +255,12 @@ class TranslateNamesToDutchTest(unittest.TestCase):
 class FuzzySearchTest(unittest.TestCase):
     def run_test(self, query_text, expected_query):
         effective_query = get_search_query(query_text)
-        self.assertEqual(expected_query, effective_query)
+        self.assertEqual(effective_query, expected_query)
+
+    def test_make_description_only_month(self):
+        querydict = {'month_max': 10, 'month_min': 10}
+        res = make_description(querydict, lang='en')
+        self.assertEqual(res, "in october")
 
     def test_make_description_before_year(self):
         querydict = {'year_max': 1978}
@@ -353,6 +364,15 @@ class FuzzySearchTest(unittest.TestCase):
         self.run_test('from 13/feb to 12-10', expected_result)
         self.run_test('13/2 to 12/10', expected_result)
         self.run_test('between 13/2 and 12-oct', expected_result)
+    def test_two_partial_dates_reversed(self):
+        expected_result = {
+            'month_min': 10, 'month_max': 2,
+            'day_min' : 12, 'day_max' : 13,
+        }
+        self.run_test('from 12/10 to 13/2', expected_result)
+        self.run_test('from 12/oct to 13-2', expected_result)
+        self.run_test('12/oct to 13 feb', expected_result)
+        self.run_test('between 12-oct and 13/2', expected_result)
     def test_unparsable_should_raise(self):
         self.assertRaises(ValueError, get_search_query, "ERROR")
 
