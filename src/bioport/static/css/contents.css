@@ -384,6 +384,18 @@
 			
 		}
 
+        #layContent table.ddcombo_table {
+                width: auto;
+        }
+
+        #geboorteplaats_field, #sterfplaats_field {
+            float:right;
+        }
+        #layContent form table.ddcombo_table td {
+            padding: 0px;
+        }
+
+
 
 
 /* verjaardagen  */

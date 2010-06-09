@@ -20,6 +20,10 @@ import types
 from fuzzy_search import get_search_query
 from fuzzy_search import en_to_nl_for_field
 from fuzzy_search import make_description
+import simplejson
+
+
+
 
 class RepositoryView:
     def repository(self):
@@ -263,7 +267,9 @@ class Personen(BioPortTraverser,grok.View,RepositoryView, Batcher):
                 qry.update(en_to_nl_for_field(sterf_query, 'sterf'))
         except ValueError:
             url = self.url('zoek_test') # XXX change me to 'zoek' when done
-            url += '?' + urlencode(self.request.form)
+            dict_of_strings = dict([(k,v.encode('utf8')) 
+                                    for k, v in self.request.form.items()])
+            url += '?' + urlencode(dict_of_strings)
             self.request.response.redirect(url)
 
         persons = repository.get_persons_sequence(**qry)
@@ -501,6 +507,20 @@ class Zoek_Test(grok.View, RepositoryView):
         return get_born_description(self.request)
     def get_died_description(self):
         return get_died_description(self.request)
+
+class Zoek_places(grok.View, RepositoryView):
+    def render(self):
+        repo = self.repository()
+        sterf_places = repo.get_places('sterf')
+        geboorte_places = repo.get_places('geboorte')
+        result = {'sterf': sterf_places, 'geboorte': geboorte_places}
+        self.request.response.setHeader('Content-Type', 'text/x-json; charset=UTF-8')
+        oneday = datetime.datetime.now() + datetime.timedelta(days=1)
+        expires = oneday.strftime('%a, %d %b %Y %H:%M:%S GMT')
+        self.request.response.setHeader('Expires', expires)
+        self.request.response.setHeader('Cache-Control', 'max-age=86400')
+        return simplejson.dumps(result)
+
 
 class Auteurs(grok.View,RepositoryView, Batcher):
     def update(self):

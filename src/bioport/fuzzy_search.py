@@ -30,6 +30,14 @@ def get_search_query(original_search_text, lang='en'):
             startdict = parse_search_query(start)
             enddict = parse_search_query(end)
             return build_result(startdict, enddict)
+        first_token = search_text.split()[0].lower()
+        if first_token in ('after', 'before'): # XXX translate me
+            date_to_parse = search_text[len(first_token) + 1:]
+            date_dict = parse_search_query(date_to_parse)
+            if first_token == 'after':
+                return build_result(date_dict, None)
+            if first_token == 'before':
+                return build_result(None, date_dict)
         res = parse_search_query(search_text, lang=lang)
         if not res:
             raise ValueError
@@ -213,9 +221,9 @@ def make_description(querydict, lang='en'):
                                  querydict.get('month_min'),
                                  querydict.get('year_min'))
     if not min_date:
-        return "before " + maxdate # XXX translate me
+        return "before " + max_date # XXX translate me
     if not max_date:
-        return "after " + maxdate # XXX translate me
+        return "after " + min_date # XXX translate me
     if min_date == max_date:
         return "on " + min_date # XXX translate me
     return "from %s to %s" % (min_date, max_date) #XXX translate me
@@ -241,6 +249,17 @@ class FuzzySearchTest(unittest.TestCase):
     def run_test(self, query_text, expected_query):
         effective_query = get_search_query(query_text)
         self.assertEqual(expected_query, effective_query)
+
+    def test_make_description_before_year(self):
+        querydict = {'year_max': 1978}
+        res = make_description(querydict, lang='en')
+        self.assertEqual(res, "before 1978")
+
+    def test_make_description_after_year(self):
+        querydict = {'year_min': 1978}
+        res = make_description(querydict, lang='en')
+        self.assertEqual(res, "after 1978")
+
     def test_make_description_specific_day(self):
         querydict = {
             'year_min': 1978, 'year_max': 1978,
@@ -249,6 +268,7 @@ class FuzzySearchTest(unittest.TestCase):
         }
         res = make_description(querydict, lang='en')
         self.assertEqual(res, "on 12 october 1978")
+
     def test_make_description_full_range(self):
         querydict = {
             'year_min': 1978, 'year_max': 1982,
@@ -257,6 +277,7 @@ class FuzzySearchTest(unittest.TestCase):
         }
         res = make_description(querydict, lang='en')
         self.assertEqual(res, "from 12 october 1978 to 1 march 1982")
+
     def test_make_description_no_days(self):
         querydict = {
             'year_min': 1978, 'year_max': 1982,
@@ -264,9 +285,15 @@ class FuzzySearchTest(unittest.TestCase):
         }
         res = make_description(querydict, lang='en')
         self.assertEqual(res, "from october 1978 to march 1982")
+
+    def test_before_year(self):
+        expected_result = {'year_max': 1978}
+        self.run_test('before  1978 ', expected_result)
+
     def test_single_year(self):
         expected_result = {'year_min': 1920, 'year_max': 1920}
         self.run_test('  1920 ', expected_result)
+
     def test_complete_date(self):
         expected_result = {
             'year_min': 1978, 'year_max': 1978,

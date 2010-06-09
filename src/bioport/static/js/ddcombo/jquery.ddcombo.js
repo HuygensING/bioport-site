@@ -447,11 +447,16 @@ $.DDComboBox = function(input, button, options) {
 
 $.DDComboBox.main = function(obj, options) {
   var current_id = '' + combo_counter;
+  var title;
   combo_counter += 1;
   var table_id = 'combotable' + current_id;
   var input_id = table_id + "_input";
   var button_id = table_id + "_button";
-  var title = "Type something...";
+  if (options.title === undefined) {
+      title = "Type something...";
+  } else {
+      title = options.title;
+  }
   
   $(obj).createAppend(
     'table', { className: 'ddcombo_table', cellspacing: 0, cellpadding: 0, border: 0, id: table_id }, [
