@@ -102,13 +102,13 @@
                        }
 
 		#layMenu .search_form {
-			padding: 5px 12px 0 0;
-			margin: 0;
 			float: right;
+            margin-right:5px;
+            margin-top:4px;
 		}
 
 		#layMenu .search_form .textArea {
-            width:145px;   
+            width:100px;   
         }
 
 
@@ -179,5 +179,7 @@
 #born_help_text, #died_help_text {
     text-align: center;
 }
+
+
 
 
