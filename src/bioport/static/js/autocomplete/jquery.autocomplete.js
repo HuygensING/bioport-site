@@ -16,7 +16,7 @@
   var reEscape = new RegExp('(\\' + ['/', '.', '*', '+', '?', '|', '(', ')', '[', ']', '{', '}', '\\'].join('|\\') + ')', 'g');
 
   function fnFormatResult(value, data, currentValue) {
-    var pattern = '(' + currentValue.replace(reEscape, '\\$1') + ')';
+    var pattern = '^(' + currentValue.replace(reEscape, '\\$1') + ')';
     return value.replace(new RegExp(pattern, 'gi'), '<strong>$1<\/strong>');
   }
 
