@@ -68,18 +68,26 @@
 <tr>
     <th i18n:translate="born">geboren</th>
     <td>
-        <input type="text" size="20" name="geboorte_fuzzy_text" 
-            tal:attributes="value python:request.get('geboorte_fuzzy_text')" />
-        <tal:b i18n:translate="in">in</tal:b> 
-        <div id="geboorteplaats_field">
-            <input type="text" size="20" name="geboorteplaats"
-                tal:attributes="value python:unicode(request.get('geboorteplaats', ''))" />
-        </div>
-        <a class="tooltip_button"
-            Onclick="jQuery('#tip_birth').toggle(200)" class="toggle">[?]</a> 
-        <div id="tip_birth" class="tooltip" i18n:translate="born_help_text">
-        U kunt personen selecteren die in een bepaalde periode en/of plaats hebben geleefd.
-        </div> 
+        <table><tbody>
+            <tr><td>
+                <input type="text" size="20" name="geboorte_fuzzy_text" 
+                    tal:attributes="value python:request.get('geboorte_fuzzy_text')" />
+            </td><td>
+                <tal:b i18n:translate="in">in</tal:b> 
+                <div id="geboorteplaats_field">
+                    <input type="text" size="20" name="geboorteplaats"
+                        tal:attributes="value python:unicode(request.get('geboorteplaats', ''))" />
+                </div>
+            </td><td>
+                <a class="tooltip_button"
+                    Onclick="jQuery('#tip_birth').toggle(200)" class="toggle">[?]</a> 
+            </td></tr>
+            <tr><td colspan="3">
+                <div id="tip_birth" class="tooltip" i18n:translate="born_help_text">
+                U kunt personen selecteren die in een bepaalde periode en/of plaats hebben geleefd.
+                </div>
+            </td></tr>
+        </tbody></table>
      </td>
 </tr>
 
@@ -98,18 +106,29 @@
 <tr>
     <th i18n:translate="died">gestorven</th>
     <td>
-        <input type="text" size="20" name="sterf_fuzzy_text" 
-            tal:attributes="value python:request.get('sterf_fuzzy_text')" />
-        <tal:b i18n:translate="in">in</tal:b> 
-        <div id="sterfplaats_field">
-            <input type="text" size="20" name="sterfplaats" 
-                tal:attributes="value python:unicode(request.get('sterfplaats', ''))" />
-        </div>
-        <a class="tooltip_button"
-            Onclick="jQuery('#tip_death').toggle(200)" class="toggle">[?]</a> 
-        <div id="tip_death" class="tooltip" i18n:translate="died_help_text">
-        U kunt personen selecteren die in een bepaalde periode en/of plaats hebben geleefd.
-        </div> 
+
+        <table><tbody>
+            <tr><td>
+                <input type="text" size="20" name="sterf_fuzzy_text" 
+                    tal:attributes="value python:request.get('sterf_fuzzy_text')" />
+            </td><td>
+                <tal:b i18n:translate="in">in</tal:b>
+                <div id="sterfplaats_field">
+                    <input type="text" size="20" name="sterfplaats" 
+                        tal:attributes="value python:unicode(request.get('sterfplaats', ''))" />
+                </div>
+            </td><td>
+
+                <a class="tooltip_button"
+                    Onclick="jQuery('#tip_death').toggle(200)" class="toggle">[?]</a>
+            </td></tr>
+            <tr><td colspan="3">
+                <div id="tip_death" class="tooltip" i18n:translate="died_help_text">
+                U kunt personen selecteren die in een bepaalde
+                 periode en/of plaats hebben geleefd.
+                </div> 
+            </td></tr>
+        </tbody></table>
      </td>
 </tr>
 
