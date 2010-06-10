@@ -383,18 +383,32 @@
 		#Zoek p {
 			
 		}
-
-        #layContent table.ddcombo_table {
-                width: auto;
-        }
-
-        #geboorteplaats_field, #sterfplaats_field {
-            float:right;
-        }
-        #layContent form table.ddcombo_table td {
-            padding: 0px;
-        }
-
+.autocomplete-w1 {
+    background:url(../js/autocomplete/shadow.png) no-repeat bottom right;
+    position:absolute;
+    top:0px;
+    left:0px;
+    margin:6px 0 0 6px;
+    /* IE6 fix: */
+    _background:none;
+    _margin:1px 0 0 0;
+}
+.autocomplete {
+    border:1px solid #999;
+    background:#FFF;
+    cursor:default;
+    text-align:left;
+    max-height:350px;
+    overflow:auto;
+    margin:-6px 6px 6px -6px;
+    /* IE6 specific: */
+    _height:350px;
+    _margin:0;
+    _overflow-x:hidden;
+}
+.autocomplete .selected { background:#BBBBBB; }
+.autocomplete div { padding:2px 5px; white-space:nowrap; overflow:hidden; }
+.autocomplete strong { font-weight:normal; color:#995500; }
 
 
 
