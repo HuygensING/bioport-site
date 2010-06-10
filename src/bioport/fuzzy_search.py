@@ -31,12 +31,12 @@ def get_search_query(original_search_text, lang='en'):
             enddict = parse_search_query(end)
             return build_result(startdict, enddict)
         first_token = search_text.split()[0].lower()
-        if first_token in ('after', 'before'): # XXX translate me
+        if first_token in ('after', 'before', 'na', 'voor'): # XXX translate me
             date_to_parse = search_text[len(first_token) + 1:]
             date_dict = parse_search_query(date_to_parse)
-            if first_token == 'after':
+            if first_token in ('after', 'na'):
                 return build_result(date_dict, None)
-            if first_token == 'before':
+            if first_token in ('before', 'voor'):
                 return build_result(None, date_dict)
         res = parse_search_query(search_text, lang=lang)
         if not res:
@@ -78,7 +78,7 @@ def split_start_end(search_text):
     if search_text.find(' and ')>0:
         return search_text.replace('between', '').split(' and ')
     if search_text.find(' tot ')>0:
-        return search_text.replace('from', '').split(' tot ')
+        return search_text.replace('van', '').split(' tot ')
     if search_text.find(' en ')>0:
         return search_text.replace('tussen', '').split(' en ')
 
@@ -163,9 +163,12 @@ def resolve_month(month_string, lang='en'):
             return month_int
         else:
             raise MonthParseException("Out of bounds month: %i" % month_int)
-    try:
-        return month_names[lang][month_string.lower()]
-    except KeyError:
+    month = month_string.lower()
+    if month in month_names['en']:
+        return month_names['en'][month]
+    elif month in month_names['nl']:
+        return month_names['nl'][month]
+    else:
         raise MonthParseException("Invalid month name: %s" % month_string)
 
 class MonthParseException(Exception):
@@ -217,21 +220,22 @@ def make_description(querydict, lang='en'):
     " Provide a textual description for a dict of (day|month|year)_(min|max) "
     max_date = build_date_string(querydict.get('day_max'),
                                  querydict.get('month_max'),
-                                 querydict.get('year_max'))
+                                 querydict.get('year_max'), lang=lang)
     min_date = build_date_string(querydict.get('day_min'),
                                  querydict.get('month_min'),
-                                 querydict.get('year_min'))
+                                 querydict.get('year_min'), lang=lang)
     if not min_date:
-        return "before " + max_date # XXX translate me
+        return {'en': "before ", 'nl': 'voor '}[lang] + max_date # XXX translate me
     if not max_date:
-        return "after " + min_date # XXX translate me
+        return {'en': "after ", 'nl': 'na '}[lang] + min_date # XXX translate me
     if min_date == max_date:
         if 'day_max' in querydict:
-            prefix = 'on' # XXX translate me
+            prefix = {'en':'on', 'nl':'op'}[lang] 
         else:
-            prefix = 'in' # XXX translate me
+            prefix = 'in' 
         return prefix + " " + min_date
-    return "from %s to %s" % (min_date, max_date) #XXX translate me
+    tpl = {'en': "from %s to %s", 'nl': "van %s tot %s"}[lang]
+    return tpl % (min_date, max_date) #XXX translate me
 
 def build_date_string(day, month, year, lang='en'):
     if not year:
@@ -266,11 +270,15 @@ class FuzzySearchTest(unittest.TestCase):
         querydict = {'year_max': 1978}
         res = make_description(querydict, lang='en')
         self.assertEqual(res, "before 1978")
+        res = make_description(querydict, lang='nl')
+        self.assertEqual(res, "voor 1978")
 
     def test_make_description_after_year(self):
         querydict = {'year_min': 1978}
         res = make_description(querydict, lang='en')
         self.assertEqual(res, "after 1978")
+        res = make_description(querydict, lang='nl')
+        self.assertEqual(res, "na 1978")
 
     def test_make_description_specific_day(self):
         querydict = {
@@ -289,6 +297,8 @@ class FuzzySearchTest(unittest.TestCase):
         }
         res = make_description(querydict, lang='en')
         self.assertEqual(res, "from 12 october 1978 to 1 march 1982")
+        res = make_description(querydict, lang='nl')
+        self.assertEqual(res, "van 12 oktober 1978 tot 1 maart 1982")
 
     def test_make_description_no_days(self):
         querydict = {
@@ -297,14 +307,18 @@ class FuzzySearchTest(unittest.TestCase):
         }
         res = make_description(querydict, lang='en')
         self.assertEqual(res, "from october 1978 to march 1982")
+        res = make_description(querydict, lang='nl')
+        self.assertEqual(res, "van oktober 1978 tot maart 1982")
 
     def test_before_year(self):
         expected_result = {'year_max': 1978}
         self.run_test('before  1978 ', expected_result)
+        self.run_test('voor  1978 ', expected_result)
 
     def test_after_year(self):
         expected_result = {'year_min': 1978}
         self.run_test(' after 1978 ', expected_result)
+        self.run_test(' na 1978 ', expected_result)
 
     def test_single_year(self):
         expected_result = {'year_min': 1920, 'year_max': 1920}
@@ -320,7 +334,9 @@ class FuzzySearchTest(unittest.TestCase):
         self.run_test('12-10-1978', expected_result)
         self.run_test('12 10 1978', expected_result)
         self.run_test('12 october 1978', expected_result)
+        self.run_test('12 oktober 1978', expected_result)
         self.run_test('12 oct 1978', expected_result)
+
     def test_month_year_date(self):
         expected_result = {
             'year_min': 1978, 'year_max': 1978,
@@ -331,6 +347,7 @@ class FuzzySearchTest(unittest.TestCase):
         self.run_test(' 10 1978', expected_result)
         self.run_test('october 1978', expected_result)
         self.run_test(' oct  1978', expected_result)
+
     def test_no_year(self):
         expected_result = {
             'month_min': 10, 'month_max': 10,
@@ -338,6 +355,7 @@ class FuzzySearchTest(unittest.TestCase):
         }
         self.run_test('12 october', expected_result)
         self.run_test('12  10', expected_result)
+
     def test_month_only(self):
         expected_result = {
             'month_min': 10, 'month_max': 10,
@@ -345,6 +363,7 @@ class FuzzySearchTest(unittest.TestCase):
         self.run_test(' october', expected_result)
         self.run_test('oct  ', expected_result)
         self.run_test('10  ', expected_result)
+
     def test_two_complete_dates(self):
         expected_result = {
             'year_min': 1970, 'year_max': 1978,
@@ -355,6 +374,9 @@ class FuzzySearchTest(unittest.TestCase):
         self.run_test('from 13/feb/1970 to 12/10/1978', expected_result)
         self.run_test('13/2/1970 to 12/10/1978', expected_result)
         self.run_test('between 13/2/1970 and 12-10-1978', expected_result)
+        self.run_test('van 13/2/1970 tot 12-10-1978', expected_result)
+        self.run_test('tussen 13/2/1970 en 12-10-1978', expected_result)
+
     def test_two_partial_dates(self):
         expected_result = {
             'month_min': 2, 'month_max': 10,
@@ -364,6 +386,7 @@ class FuzzySearchTest(unittest.TestCase):
         self.run_test('from 13/feb to 12-10', expected_result)
         self.run_test('13/2 to 12/10', expected_result)
         self.run_test('between 13/2 and 12-oct', expected_result)
+
     def test_two_partial_dates_reversed(self):
         expected_result = {
             'month_min': 10, 'month_max': 2,
@@ -373,6 +396,7 @@ class FuzzySearchTest(unittest.TestCase):
         self.run_test('from 12/oct to 13-2', expected_result)
         self.run_test('12/oct to 13 feb', expected_result)
         self.run_test('between 12-oct and 13/2', expected_result)
+
     def test_unparsable_should_raise(self):
         self.assertRaises(ValueError, get_search_query, "ERROR")
 

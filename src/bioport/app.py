@@ -485,10 +485,10 @@ def get_born_description(request):
     geboorte_fuzzy_text = request.form.get('geboorte_fuzzy_text')
     if geboorte_fuzzy_text:
         try:
-            qry = get_search_query(geboorte_fuzzy_text, current_language)
+            qry = get_search_query(geboorte_fuzzy_text)
         except ValueError, e:
-            return "Unable to parse death date. Please rephrase it" # XXX translate me
-        return make_description(qry)
+            return _("Unable to parse birth date. Please rephrase it")
+        return make_description(qry, lang=current_language)
 
 def get_died_description(request):
     """ Inspect the request and build a natural language description 
@@ -497,10 +497,10 @@ def get_died_description(request):
     sterf_fuzzy_text = request.form.get('sterf_fuzzy_text', None)
     if sterf_fuzzy_text:
         try:
-            qry = get_search_query(sterf_fuzzy_text, current_language)
+            qry = get_search_query(sterf_fuzzy_text)
         except ValueError, e:
-            return "Unable to parse death date. Please rephrase it" # XXX translate me
-        return make_description(qry)
+            return _("Unable to parse death date. Please rephrase it")
+        return make_description(qry, lang=current_language)
 
 class Zoek_Test(grok.View, RepositoryView):
     def get_born_description(self):
