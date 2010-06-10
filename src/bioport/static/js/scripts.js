@@ -26,7 +26,7 @@ var initialize_zoek_form = function() {
 }
 
 jQuery(function() {
-    jQuery('#Index .credits a').click(function() {
+    jQuery('#Index .credits a, .open_in_new_window').click(function() {
         window.open(this.href);
         return false;
     });

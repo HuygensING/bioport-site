@@ -379,10 +379,12 @@
 
 /* zoek */
 
+#born_feedback_text, 
+#died_feedback_text {
+    text-align: center
+}
 
-		#Zoek p {
-			
-		}
+/* Autocomplete voor plaatsen in de zoek form */
 .autocomplete-w1 {
     background:url(../js/autocomplete/shadow.png) no-repeat bottom right;
     position:absolute;

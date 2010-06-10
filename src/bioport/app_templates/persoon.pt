@@ -31,7 +31,7 @@
        		tal:condition="python:event and (event.when or event.place or event.date_text)">
             <th tal:content="title" i18n:translate="">title</th>
             <td>
-             <span tal:replace="event/place" /><br tal:condition="event/place">
+             <span tal:replace="event/place" /><br tal:condition="event/place" />
             <span tal:replace="python:event.when_formatted or event.date_text" />
              </td>
          </tr>
@@ -93,9 +93,10 @@
         <tr tal:define="states python:view.get_states(type='category')"
             tal:condition="states">
             <th i18n:translate="categories">rubriek(en)</th>
-            <td>
+            <td><ul>
                 <li tal:repeat="state states" 
                     tal:content="python:view.repository().get_category(state.idno).name" />
+                </ul>
 	        </td>
         </tr>
      </table>
@@ -117,8 +118,7 @@
         <span>
 			in  <a 
             tal:attributes="href url"
-			     class="external_link"
-			     target="_blank"
+			     class="external_link open_in_new_window"
                     tal:content="python:biography.get_source().description"></a>
     	</span>
     	<div class="snippet"
@@ -127,8 +127,7 @@
             tal:condition="snippet">
              <span tal:replace="structure snippet" />
              <a  tal:attributes="href url"
-             target="_blank"
-                class="external_link" i18n:translate="">meer...</a>
+                class="external_link open_in_new_window" i18n:translate="">meer...</a>
            </div>
         </div>
     </div>
