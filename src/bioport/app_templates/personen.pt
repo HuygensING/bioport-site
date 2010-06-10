@@ -85,7 +85,8 @@
 	        <img 
  	       tal:define="illustrations python:person.get_merged_biography().get_illustrations()" 
  	       tal:condition="illustrations"
-	        tal:attributes="src python:illustrations[0].thumbnail_url()" />
+	        tal:attributes="src python:illustrations[0].thumbnail_url();
+	                        alt person/name" />
         </span>
 		<a 
 		tal:content="structure python:person.db_name()" 

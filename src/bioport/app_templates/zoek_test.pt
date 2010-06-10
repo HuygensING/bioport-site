@@ -10,7 +10,7 @@
     
 
         <script tal:attributes="src static/js/autocomplete/jquery.autocomplete-min.js" type="text/javascript"></script>
-        <script>
+        <script type="text/javascript">
         jQuery(function() {
             initialize_zoek_form();
         });
@@ -24,12 +24,11 @@
     <th i18n:translate="">zoeken op naam</th>
     <td>
         <input type="text" name="search_name" 
-            xtal:attributes="value python:unicode(request.get('search_name', ''), 'latin1')" 
             tal:attributes="value python:unicode(request.get('search_name', ''))"
              />
         
-        <a class="tooltip_button"
-            Onclick="jQuery('#tip_search_name').toggle(200)" class="toggle">[?]</a> 
+        <a class="tooltip_button toggle"
+            Onclick="jQuery('#tip_search_name').toggle(200)">[?]</a> 
         <div class="tooltip" id="tip_search_name" i18n:translate="search_by_name_help">
             Typ de naam of een gedeelte van de naam.  
            <br /> 
@@ -54,8 +53,8 @@
     <td>
         <input type="text" name="search_term" 
             tal:attributes="value python:unicode(request.get('search_term', ''))" />
-        <a class="tooltip_button"
-            Onclick="jQuery('#tip_search_term').toggle(200)" class="toggle">[?]</a> 
+        <a class="tooltip_button toggle"
+            Onclick="jQuery('#tip_search_term').toggle(200)" >[?]</a> 
         <div class="tooltip" id="tip_search_term" i18n:translate="search_in_text_help">
             U kunt vrij zoeken op woord(en) in de tekst van de biografieën. 
             <br/>
@@ -74,8 +73,8 @@
             <input type="text" size="20" name="geboorteplaats"
                 tal:attributes="value python:unicode(request.get('geboorteplaats', ''))" />
         </span>
-        <a class="tooltip_button"
-            Onclick="jQuery('#tip_birth').toggle(200)" class="toggle">[?]</a> 
+        <a class="tooltip_button toggle"
+            Onclick="jQuery('#tip_birth').toggle(200)">[?]</a> 
         <div id="tip_birth" class="tooltip" i18n:translate="born_help_text">
         U kunt personen selecteren die in een bepaalde periode en/of plaats hebben geleefd.
         </div>
@@ -105,8 +104,8 @@
                 tal:attributes="value python:unicode(request.get('sterfplaats', ''))" />
         </span>
 
-        <a class="tooltip_button"
-            Onclick="jQuery('#tip_death').toggle(200)" class="toggle">[?]</a>
+        <a class="tooltip_button toggle"
+            Onclick="jQuery('#tip_death').toggle(200)">[?]</a>
         <div id="tip_death" class="tooltip" i18n:translate="died_help_text">
         U kunt personen selecteren die in een bepaalde
          periode en/of plaats hebben geleefd.
@@ -155,8 +154,8 @@
                 tal:content="python:category.name"
                 i18n:translate="" />
         </select>
-        <a class="tooltip_button"
-            Onclick="jQuery('#tip_category').toggle(200)" class="toggle">[?]</a> 
+        <a class="tooltip_button toggle"
+            Onclick="jQuery('#tip_category').toggle(200)">[?]</a> 
         <div id="tip_category" class="tooltip" i18n:translate="category_help_text">
             De ‘reden van roem’ van mensen in een biografisch naslagwerk is zeer divers,
             en mensen kunnen bovendien om meer dan één reden beroemd zijn.
@@ -186,12 +185,11 @@
 </tr>
 <tr>
     <td></td>
-<td>
-<input type="submit" value=" zoek " i18n:attributes="value" />
-<input type="submit" value=" wis " OnClick="jQuery('form').clearForm();return false;"
- i18n:attributes="value" />
-
-</td>
+    <td>
+        <input type="submit" value=" zoek " i18n:attributes="value" />
+        <input type="submit" value=" wis " OnClick="jQuery('form').clearForm();return false;"
+         i18n:attributes="value" />
+    </td>
 </tr>
 </table>
 <h2>

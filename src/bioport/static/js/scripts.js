@@ -24,3 +24,11 @@ var initialize_zoek_form = function() {
     var places_url = jQuery("link[rel='places_url']").attr('href');
     jQuery.getJSON(places_url, enable_comboboxes);
 }
+
+jQuery(function() {
+    jQuery('#Index .credits a').click(function() {
+        window.open(this.href);
+        return false;
+    });
+}
+);

@@ -48,7 +48,7 @@
     });;">
 </script>
 
-<div metal:define-slot="extra_header_content" />
+<tal:block metal:define-slot="extra_header_content" />
 </head>
 
 <body tal:attributes="id python:view.url().split('/')[-1].capitalize()" >
@@ -75,8 +75,10 @@
 	        </ul>
 	        <form class="search_form" tal:condition="python:view.__name__ != 'index'" 
 	           tal:attributes="action python:view.url('personen')">
+	           <div>
 	           <input class="textArea" type="text" name="search_name" size="20" tal:attributes="value request/search_name | nothing" />
 	           <input class="submitButton" type="submit" value="zoek" />
+	           </div>
 	        </form>
                 <tal:languageSelector replace="structure context/@@language_chooser" />
         <hr class="textOnly" />

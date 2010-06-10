@@ -11,7 +11,7 @@
     <div class="column_right">
     <div class="illustratie" tal:repeat="ill python:illustraties[:]">
     <img
-        tal:attributes="src ill/cached_url; 
+        tal:attributes="src ill/cached_url;
             alt string:illustratie bij deze biografie (${ill/cached_url});
       " /> 
       <div class="caption" tal:content="ill/caption"></div>
