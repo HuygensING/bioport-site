@@ -430,7 +430,7 @@ class Persoon(app.Persoon, grok.EditForm, RepositoryView):
    
     grok.require('bioport.Edit')
     def update(self, **args):
-        self.bioport_id = self.traverse_subpath_helper(0) or self.request.get('bioport_id')
+        self.bioport_id = self.bioport_id or self.request.get('bioport_id')
         if not self.bioport_id:
             #XXX make a userfrienlider error
             assert 0, 'need bioport_id in the request'
