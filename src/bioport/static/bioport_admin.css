@@ -1,6 +1,10 @@
 
 /* --- Main --- */
 
+input {
+    width:183px;
+}
+
 #content_box h1 {
 /*    color:#4F8FB7; */
 }

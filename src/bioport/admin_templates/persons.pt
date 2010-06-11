@@ -12,7 +12,7 @@ tal:define="batch view/get_persons;
 <p>
 <form metal:define-macro="search_form"
     tal:attributes="action view/url">
-	<label accesskey="n" for="search_name"><span class="accesskey">n</span>aam:</label>
+	<label accesskey="n" for="search_name"><span class="accesskey">n</span>aam:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
 	<input type="text" name="search_name" id="search_name" tal:attributes="value request/search_name | nothing" />
 
 	<label accesskey="r" for="source_id">b<span class="accesskey">r</span>on:</label>
@@ -36,7 +36,7 @@ tal:define="batch view/get_persons;
 			tal:content="python:source.id" />
 	</select>
 	<br />	
-	<label accesskey="s" for="status"><span class="accesskey">s</span>tatus:</label>
+	<label accesskey="s" for="status"><span class="accesskey">s</span>tatus:&nbsp;&nbsp;&nbsp;&nbsp;</label>
 	<select name="status" id="status">
 		<option></option>
 		<option tal:repeat="status view/get_status_values" 
@@ -50,6 +50,7 @@ tal:define="batch view/get_persons;
 levensjaren niet ingevuld <input type="checkbox" />
 <br />	
 </span>
+<br />
 <label accesskey="z" for="submit"></label>
 	<button value=" zoek " id="submit"><span class="accesskey">z</span>oek</button>
 	<br />
