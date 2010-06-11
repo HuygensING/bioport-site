@@ -1,7 +1,11 @@
 
 /* --- Main --- */
 
-input {
+.visualClear {
+    clear:both;
+}
+
+input[type=text] {  
     width:183px;
 }
 
@@ -193,7 +197,7 @@ a:hover {
 } 
 .person_edit .info, .person .info h1, .person .info th, .person .info td {
 	font-size : 0.8em;
-        color : grey;
+    color : grey;
 }
 .person_edit .merged {
         color : grey;
@@ -256,3 +260,24 @@ span.accesskey {
 .alfabet {
     background: #CCC
 }
+
+.edit-form input {
+    margin-bottom:10px;
+}
+
+
+
+/* XXX - ripristinarli */
+
+.form_birth, 
+.form_death, 
+.form_baptism, 
+.form_funeral, 
+form_floruit 
+{
+    display:none;
+}
+
+.edit-form table {
+}
+
