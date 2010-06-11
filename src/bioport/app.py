@@ -21,7 +21,7 @@ from fuzzy_search import get_search_query
 from fuzzy_search import en_to_nl_for_field
 from fuzzy_search import make_description
 import simplejson
-from zope.publisher.interfaces import NotFound
+from zope.publisher.interfaces import NotFound, INotFound
 
 
 
@@ -132,8 +132,20 @@ class Bioport(grok.Application, grok.Container):
     def format_number(self, s):
         return format_number(s)
 
-#    
-        
+
+
+
+class BioportNotFound(grok.View, RepositoryView):
+    grok.context(INotFound)
+    grok.name("index.html")
+    static = None
+    def __init__(self, notfound_exception, request):
+        " Put the context back to the last found element "
+        self.notfound_exception = notfound_exception
+        return super(BioportNotFound, self).__init__(notfound_exception.ob, request)
+    def update(self):
+        self.request.response.setStatus(404)
+
 class Index(grok.View, RepositoryView):
     pass
 

@@ -1,0 +1,9 @@
+<html metal:use-macro="context/@@main_template/macros/master">
+<div metal:fill-slot="content">
+<h1 i18n:translate="">Page not found</h1>
+<p i18n:translate="">
+    The page you are looking for is not available.
+    Please check the spelling.
+</p>
+</div>
+</html>
