@@ -13,8 +13,8 @@
 	<meta name="description" content="">
 	<meta name="copyright" content="">
 	<meta name="author" content="">
-	<link rel="stylesheet" type="text/css"  tal:attributes="href static/bioport.css" />
-	<link rel="stylesheet" type="text/css"  tal:attributes="href static/bioport_admin.css" />
+	<link rel="stylesheet" type="text/css"  tal:attributes="href static/css/bioport.css" />
+	<link rel="stylesheet" type="text/css"  tal:attributes="href static/css/bioport_admin.css" />
 
 
     <div metal:define-slot="extra_header_content" />
