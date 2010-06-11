@@ -219,20 +219,19 @@ class Source(grok.EditForm,RepositoryView):
     @grok.action('Save settings', name='save_settings')    
     def save_settings(self,**args):
         source = self.source
-        print 'call save settings'
-        print args
-        print source.repository
         url = self.request.get('url')
         description = self.request.get('description')
         quality = self.request.get('quality')
+        default_status = self.request.get('default_status')
         source.set_value(url=url)
         if description is not None:
             source.set_value(description=description) 
         if quality is not None:
             source.set_quality(int(quality))
+        if default_status is not None:
+            source.default_status = default_status
     
         self.repository().save_source(source)
-            
         msg = 'Changed source %s' % source.id
         print msg
             

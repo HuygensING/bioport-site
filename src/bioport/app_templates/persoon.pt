@@ -109,7 +109,8 @@
 	   tal:attributes="OnClick string:window.open('${url}');;return false;;"
         class="biography_reference"
         tal:condition="python:biography.source_id != 'bioport'">
-        <tal:word i18n:translate="Biography">Biografie</tal:word>
+        <tal:word i18n:translate="Biography"
+            tal:condition="nothing">Biografie</tal:word>
         <span tal:condition="python:biography.get_value('auteur')">
         	<tal:word i18n:translate="by">door</tal:word>
             <span tal:repeat="auteur python:biography.get_value('auteur')" 

@@ -40,6 +40,18 @@
                 <option value="0" tal:attributes="selected python:not source.quality">slechtste kwaliteit van allemaal</option>
             </select>
     </tr>
+    <tr>
+    <th>status of newly created persons</th> 
+    <td>
+       <select name="default_status" id="status" accesskey="s">
+               <option></option> 
+               <option tal:repeat="option python:view.repository().get_status_values()"
+                   tal:attributes="value python:option[0];
+                       selected python:str(option[0])==str(source.default_status)"
+                       tal:content="python:option[1]"></option>
+           </select>
+    </td>
+    </tr>
      <tr>
         <td />
         <td>
