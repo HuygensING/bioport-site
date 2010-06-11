@@ -6,10 +6,11 @@
 Klik <a tal:attributes="href python:view.url('persoonidentify')">hier om zelf in de database te zoeken en personen te vergelijken</a>. 
 
 
-<p>Zie ook de lijsten met 
+Zie ook de lijsten met 
 <a tal:attributes="href python:view.url('identified')">geidentificeerde</a> personen, 
 <a tal:attributes="href python:view.url('antiidentified')">niet identieke</a> personen, 
 <a tal:attributes="href python:view.url('deferred')">de lijst met moeilijke gevallen</a>. 
+<br /><br />
 
 <div metal:use-macro="context/@@persons/macros/search_form" />
 <div metal:use-macro="context/@@sitemacros/macros/sql_query_navigation" />

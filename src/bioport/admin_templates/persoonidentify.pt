@@ -32,18 +32,54 @@ of <a metal:define-macro="button_begin_opnieuw" tal:attributes="href python:view
     type="hidden" name="bioport_ids" tal:attributes="value bioport_id" >
 <table>
 <tr metal:define-macro="search_field_naam">
-    <th>zoeken op naam</th>
-    <td><input type="text" name="search_name"
-        tal:attributes="value request/search_name | nothing">
+    <td width="100px">zoeken op naam</td>
+    <td>
+        <input type="text" name="search_name"
+               tal:attributes="value request/search_name | nothing">
         
-        [<a tal:attributes="href python:view.url('uitleg_zoek')">tips voor het zoeken</a>]</td>
+        [<a onclick="jQuery('#tip_search').toggle(100)" href="#">tips voor het zoeken</a>]
+ 
+<ul style="display:none; padding-left:206px;" id="tip_search">
+<li>
+ Als je zoekt naar een woord, vind je alle personen waarin het woord in the naam voorkomt.
+
+ Dus, met zoeken op "Jan" vind je wel "Jan Klaassen"  maar niet "Klaas Jansen"
+<li>
+Als je twee woorden invult, vind je alle namen waar beide woorden in voorkomen
+
+Dus, als je zoekt op "Klaassen Jan" dan vindt je ook "Jan Klaassen"
+<li>
+Hoofdletters worden genegeerd
+<li>
+Een sterretje "*" staat voor een willekeurig aantal karakters. 
+<li>
+Met zoeken op "jan*" vindt je "Jan" en "Jansen", maar niet "Jongejan".
+<li>
+Met zoeken op "*jan" vindt je "Jan" en "Jongejan", mnaar niet "Jansen"
+<li>
+Met zoeken op  "*jan*" vindt je "Jan" en "Jongenjan" en "Jansen".
+</li>
+<li>
+Het vraagteken "?" staat voor een enkel karakter. Dus zoeken op "Ja?ob" vindt je "Jakob" en "Jacob" maar niet "Jackob".
+</li>
+</ul>
+         
+         
+    </td>
 </tr>
+<!--
+<tr>
+<td colspan="3">
+   <p style="display:none;" id="tip_search"> xs ankx askl xklasm x</p>
+</td>
+</tr>
+-->
+
 <tr metal:define-macro="search_field_bioportid">
-    <th>bioport id</th>
+    <td width="100px">bioport id</td>
     <td><input type="text" name="bioport_id" tal:attributes="value request/bioport_id | nothing" /></td>
 </tr>
 <tr>
-    <th></th>
     <td>
     <span tal:replace="structure python:view.actions.byname['form.actions.search_persons'].render()" ></span>
 
