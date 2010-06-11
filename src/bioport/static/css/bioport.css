@@ -75,7 +75,6 @@ p {
         font-family: Georgia,"Nimbus Roman No9 L",serif;
 		background:#FFF;
 		float:left;
-        _height : 600px;
         min-height : 600px;
 		width:620px;
         padding-left : 1em;
@@ -225,10 +224,12 @@ p {
     div.levensbeschrijvingen {
         clear : both;
     }
+    /*
     ul.levensbeschrijvingen {
-#        text-indent : -2em;
-#        margin-left : 2em;
+        text-indent : -2em;
+        margin-left : 2em;
     }
+    */
     ul.levensbeschrijvingen li {
         list-style-type : none;
 
@@ -259,9 +260,9 @@ p {
 	#popup #content_box {
 	width : 460px;	
 	}	
+
 body#popup {
 	width : 500px;	
 	min-width : 500px;
-	}	
-
 }
+
