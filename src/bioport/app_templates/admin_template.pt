@@ -22,31 +22,40 @@
 <body>
 
 <div id="container_box">
-	<div id="header"><h1>Administratie van Het Biografisch Portaal </h1></div>
-	<div id="nav">
-		<ul>
-			<li>ingelogd als <em tal:content="request/principal/title" /></li>
-		</ul>
-	</div>
-	<div id="nav_left_box">
-	<div metal:define-slot="nav_left_box">
-	<ul metal:define-macro="admin_navigation">
-		<li><a tal:attributes="href python:view.application_url()" accesskey="1">Homepagina</a></li>
-		<li><a tal:attributes="href python:view.url(view.__parent__)" accesskey="2">Admin Homepagina</a></li>
-		<li><a tal:attributes="href python:view.url('persoonidentify')" accesskey="3">Identificeer personen</a></li>
-		<li><a tal:attributes="href python:view.url('mostsimilar')" accesskey="4">Meest gelijkende personen</a></li>
-		<li><a tal:attributes="href python:view.url('identified')" accesskey="5">Ge&iuml;dentificeerde personen</a></li>
-		<li><a tal:attributes="href python:view.url('persons')" accesskey="6">Bewerk personen</a></li>
-		<li><a tal:attributes="href python:view.url('sources')" accesskey="7">Bronnen</a></li>
-		<li><a tal:attributes="href python:view.url('edit')" accesskey="8">Geavanceerd</a></li>
-		<li><a tal:attributes="href python:view.url('uitleg')" accesskey="9">Uitleg</a></li>
-	</ul>
-    </div>     
-    </div>     
 
-	<div id="content_box">
-		<div tal:condition="view/msg | request/msg  |nothing" tal:content="structure view/msg | request/msg" class="message" />
-        <div metal:define-slot="content">
+	<div id="header">
+	    <h1>Administratie van Het Biografisch Portaal </h1>
+	    <ul id="personal-bar">
+		    <li>ingelogd als <em tal:content="request/principal/title" /></li>
+	    </ul>
+
+	</div>
+	
+	<div id="navigation">
+    	<div metal:define-slot="nav_left_box">
+	        <ul metal:define-macro="admin_navigation">
+		        <li><a tal:attributes="href python:view.application_url()" accesskey="1">Home</a></li>
+		        <li><a tal:attributes="href python:view.url(view.__parent__)" accesskey="2">Admin Home</a></li>
+		        <li><a tal:attributes="href python:view.url('persoonidentify')" accesskey="3">Identificeer personen</a></li>
+		        <li><a tal:attributes="href python:view.url('mostsimilar')" accesskey="4">Meest gelijkende personen</a></li>
+		        <li><a tal:attributes="href python:view.url('identified')" accesskey="5">Ge&iuml;dentificeerde personen</a></li>
+		        <li><a tal:attributes="href python:view.url('persons')" accesskey="6">Bewerk personen</a></li>
+		        <li><a tal:attributes="href python:view.url('sources')" accesskey="7">Bronnen</a></li>
+		        <li><a tal:attributes="href python:view.url('edit')" accesskey="8">Geavanceerd</a></li>
+		        <li><a tal:attributes="href python:view.url('uitleg')" accesskey="9">Uitleg</a></li>
+	        </ul>
+        </div>     
+        <!--
+	    <ul>
+		    <li>ingelogd als <em tal:content="request/principal/title" /></li>
+	    </ul>
+        -->
+	</div>
+
+	<div id="content_box_container">
+		<div id="content_box">
+		    <div tal:omit-tag="" tal:condition="view/msg | request/msg  |nothing" tal:content="structure view/msg | request/msg" class="message" />
+        <div tal:omit-tag="" metal:define-slot="content">
         body content goes here
         </div>
 	</div>
