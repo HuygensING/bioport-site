@@ -21,7 +21,7 @@ from fuzzy_search import get_search_query
 from fuzzy_search import en_to_nl_for_field
 from fuzzy_search import make_description
 import simplejson
-
+from zope.publisher.interfaces import NotFound
 
 
 
@@ -133,24 +133,6 @@ class Bioport(grok.Application, grok.Container):
         return format_number(s)
 
 #    
-class BioPortTraverser(object):
-    
-    #CODE for construction traverse_subpath from 
-    #  http://grok.zope.org/documentation/how-to/traversing-subpaths-in-views 
-
-    def publishTraverse(self, request, name):
-       self._traverse_subpath = request.getTraversalStack() + [name]
-       request.setTraversalStack([])
-       return self 
-    def traverse_subpath(self):
-       return getattr(self, '_traverse_subpath', [])
-       
-    def traverse_subpath_helper(self, i, default=None):
-        p = self.traverse_subpath()
-        if i < len(p):
-            return p[i]
-        else:
-            return default   
         
 class Index(grok.View, RepositoryView):
     pass
@@ -215,7 +197,7 @@ class Language_Chooser(grok.View):
 class SiteMacros(grok.View):
     grok.context(zope.interface.Interface)   
     
-class Personen(BioPortTraverser,grok.View,RepositoryView, Batcher):
+class Personen(grok.View,RepositoryView, Batcher):
     
     def update(self):
         Batcher.update(self)
@@ -404,10 +386,39 @@ class Personen(BioPortTraverser,grok.View,RepositoryView, Batcher):
         
         return template(view=self, request=self.request)
     
-class Persoon(BioPortTraverser, grok.View,RepositoryView): #, BioPortTraverser):
+
+class BioPortIdTraverser(object):
+    """ Mixin class that makes a view traversable with an
+        integer id.
+    """
+    bioport_id = None # will be available after traversal
+    def publishTraverse(self, request, name):
+       # We won't traverse more than once
+       # allowing view_url/some_id but not view_url/something/some_id
+       if len(request.getTraversalStack()) > 0 or not name.isdigit():
+           raise NotFound(self.context, name)
+       self.bioport_id = name
+       return self
+
+
+class PersoonXml(BioPortIdTraverser, grok.View,RepositoryView):
+    def render(self):
+        redirects_to = self.repository().redirects_to(self.bioport_id)
+        if redirects_to:
+            self.bioport_id = redirects_to
+        person  = self.repository().get_person(bioport_id=self.bioport_id)
+        self.request.response.setHeader('Content-Type','text/xml; charset=utf-8')
+        return person.get_biographies()[0].to_string()
+
+class Persoon(BioPortIdTraverser, grok.View, RepositoryView):
+
+    def publishTraverse(self, request, name):
+       if name == 'xml':
+           return PersoonXml(self.context, self.request)
+       return super(Persoon, self).publishTraverse(request, name)
 
     def update(self, **args):
-        self.bioport_id = self.traverse_subpath_helper(0) or self.request.get('bioport_id')
+        self.bioport_id = self.bioport_id or self.request.get('bioport_id')
         redirects_to = self.repository().redirects_to(self.bioport_id)
         if redirects_to:
             self.bioport_id = redirects_to
