@@ -40,6 +40,13 @@
 });
 </script>
 
+<style>
+form table th {
+    text-align:left !important;
+}
+
+</style>
+
 <p>
 De gegevens in het formulier zijn de gegevens zoals ze op het biografisch portaal worden 
 <a tal:attributes="href python:view.url(context.__parent__, 'persoon', data={'bioport_id':view.bioport_id})">getoond</a>. 
@@ -60,6 +67,9 @@ De gegevens zijn grijs als ze uit de bronnen-publikaties komen, zwart als ze zij
     |
     <a tal:attributes="OnClick string:history.go(-${view/history_counter});;return false;;" href="">terug</a>
     </p>
+    
+    
+<div id="edit-area">
 <form action="." tal:attributes="action request/URL" method="get"
       class="edit-form" >
       <input type="hidden" name="bioport_id" tal:attributes="value python:view.bioport_id" />
@@ -81,9 +91,11 @@ De gegevens zijn grijs als ze uit de bronnen-publikaties komen, zwart als ze zij
                        tal:content="python:option[1]"></option>
            </select>
        </td>
+       <!-- XXX
        <td>
             <span tal:replace="structure python:view.actions.byname['form.actions.save_status'].render()" ></span>
        </td>
+       -->
     </tr>
     <tr metal:define-macro="separator" class="separator" ><td colspan="3"><hr></td></tr>
     <tr tal:define="namen python:view.get_bioport_namen() or view.get_non_bioport_namen()"
@@ -95,11 +107,12 @@ De gegevens zijn grijs als ze uit de bronnen-publikaties komen, zwart als ze zij
     		<span tal:define="normal_form naam/guess_normal_form"
     		  tal:condition="python:repeat['idx'].start() and naam.volledige_naam() != normal_form"
     		  tal:content="string:[${normal_form}]"  />
-		    </td>
-		<td >
-			<a tal:attributes="href python:view.url('changename', data={'bioport_id':view.bioport_id, 'idx':idx})">
+			[<a tal:attributes="href python:view.url('changename', data={'bioport_id':view.bioport_id, 'idx':idx})">
 			verander
-			</a>
+			</a>]
+
+        </td>
+		<td >
 			<span tal:condition="python:len(namen) > 1">
 			| <a tal:attributes="href python:view.url(data={'form.actions.remove_name':'', 'naam_idx':idx, 'bioport_id':view.bioport_id})"  >verwijder </a>
 			| <a href="" onclick="alert('nog niet geimplementeerd')"> omhoog </a>
@@ -149,9 +162,11 @@ De gegevens zijn grijs als ze uit de bronnen-publikaties komen, zwart als ze zij
 			</select>	
 		
 		</td>
+		<!-- XXX
 		<td>
 	        <span tal:replace="structure python:view.actions.byname['form.actions.save_sex'].render()" />
         </td> 
+        -->
 	</tr>
 
     <!-- geboortedatum -->
@@ -529,10 +544,12 @@ De gegevens zijn grijs als ze uit de bronnen-publikaties komen, zwart als ze zij
                     tal:attributes="value category/id;"></option>
    			</select>	
         </td>
+   		<!-- XXX
         <td>
 	        <span 
 	           tal:condition="not:view/categories" tal:replace="structure python:view.actions.byname['form.actions.save_category'].render()" />
         </td>
+        -->
    	</tr>
    	    <tr tal:repeat="i python:range(len(view.categories), 2)">
         <th></th>   
@@ -555,9 +572,11 @@ De gegevens zijn grijs als ze uit de bronnen-publikaties komen, zwart als ze zij
         <td>
             <textarea accesskey="o"
             name="remarks" id="remarks" style="width:300px" tal:content="view/person/remarks"></textarea>
+        <!--
         <td>
 	        <span tal:replace="structure python:view.actions.byname['form.actions.save_remarks'].render()" ></span>
     	</td>
+    	-->
    	</tr>
 	<div tal:repeat="bio view/person/get_biographies"
 	   tal:omit-tag="">
@@ -578,9 +597,11 @@ De gegevens zijn grijs als ze uit de bronnen-publikaties komen, zwart als ze zij
 	               style="width:300px" 
 	            tal:content="python:view.bioport_biography and view.bioport_biography.get_snippet(bio.id) or ''"
 	            ></textarea>
+            <!--
 	        <td>
 		        <span tal:replace="structure python:view.actions.byname['form.actions.save_snippet'].render()" ></span>
 	    	</td>
+	    	-->
 	   	</tr>
 	</div>
 	</div>
@@ -598,8 +619,23 @@ De gegevens zijn grijs als ze uit de bronnen-publikaties komen, zwart als ze zij
     </tr>
 </table>
 </form>
+</div>
 
-
+<div id="right_column">
+	<tal:block repeat="bio view/person/get_biographies" >
+		<div class="right_column_content"
+		    tal:define="tekst bio/get_text_without_markup"
+			tal:condition="python:bio.get_source().id != 'bioport'">
+			<h1 tal:content="python:bio.get_source().id"></h1>
+			<div tal:content="structure tekst"></div>
+			<p>
+			 <a tal:attributes="
+       href python:bio.get_value('url_biografie'); 
+       target python:bio.get_source().id" >[link]</a>
+			</p>
+		</div>
+	</tal:block>
+</div>
 
 
 <div class="info">
@@ -611,7 +647,8 @@ De gegevens zijn grijs als ze uit de bronnen-publikaties komen, zwart als ze zij
 		<span tal:replace="python:bio.get_source().id"></span> - <span tal:replace="python:bio.get_source().description"></span>
 	</a>
 </h2>
-<table >
+
+<table id="person-form-table">
     <tr tal:condition="python:bio.get_source().id == 'bioport'">
         <th>status</th>
 	    <td tal:content="python:view.person.status and view.repository().get_status_values(view.person.status)" ></td>
@@ -737,21 +774,7 @@ De gegevens zijn grijs als ze uit de bronnen-publikaties komen, zwart als ze zij
 	<span tal:replace="structure python:view.actions.byname['form.actions.compute_similarity'].render()" ></span>
 </form>
 </div>
-<div id="right_column">
-	<tal:block repeat="bio view/person/get_biographies" >
-		<div class="right_column_content"
-		    tal:define="tekst bio/get_text_without_markup"
-			tal:condition="python:bio.get_source().id != 'bioport'">
-			<h1 tal:content="python:bio.get_source().id"></h1>
-			<div tal:content="structure tekst"></div>
-			<p>
-			 <a tal:attributes="
-       href python:bio.get_value('url_biografie'); 
-       target python:bio.get_source().id" >[link]</a>
-			</p>
-		</div>
-	</tal:block>
-</div>
+
 </div>
 </html>
 </div>

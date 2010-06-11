@@ -269,15 +269,26 @@ span.accesskey {
 
 /* XXX - ripristinarli */
 
-.form_birth, 
-.form_death, 
-.form_baptism, 
-.form_funeral, 
-form_floruit 
+.form_birth .button, 
+.form_death .button, 
+.form_baptism .button, 
+.form_funeral .button, 
+.form_floruit .button 
 {
-    display:none;
+    display:none !important;
 }
 
 .edit-form table {
+    width:640px;
 }
+
+#edit-area {
+    float:left;
+}
+
+table {
+    border-collapse:separate;
+    border-spacing:3px;
+}
+
 
