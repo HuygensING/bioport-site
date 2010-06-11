@@ -1,268 +1,268 @@
-body, html, p, table, tr, td {
-	border : 0;
-	margin : 0;
-	padding :0;
-	font-size : 1em;
-	}
-body, html {
-		margin:0;
-		padding:0;
-		background:#a7a09e;
-		color:#000;
-        font-size : 13px;
-	}
-body {
-		min-width:800px;
-	}
+    body, html, p, table, tr, td {
+	    border : 0;
+	    margin : 0;
+	    padding :0;
+	    font-size : 1em;
+	    }
+    body, html {
+		    margin:0;
+		    padding:0;
+		    background:#a7a09e;
+		    color:#000;
+            font-size : 13px;
+	    }
+    body {
+		    min-width:800px;
+	    }
 
-p {
-	margin : .4em 0em .4em 0em;	
-	}
-#container_box {
-		background:#7894aa;
-		margin:0 auto;
-		width:800px;
-        padding : 0;
-	}
+    p {
+	    margin : .4em 0em .4em 0em;	
+	    }
+    #container_box {
+		    background:#7894aa;
+		    margin:0 auto;
+		    width:800px;
+            padding : 0;
+	    }
 
-	#header {
-        background-color : #c6cb53;
-        padding-left : 2em;
-        padding-top : .3em;
-        padding-bottom : .3em;
-        color : white;
-        height : 6em;
-        font-family: Georgia,"Nimbus Roman No9 L",serif;
+	    #header {
+            background-color : #c6cb53;
+            padding-left : 2em;
+            padding-top : .3em;
+            padding-bottom : .3em;
+            color : white;
+            height : 6em;
+            font-family: Georgia,"Nimbus Roman No9 L",serif;
 
-	}
-	#header h1 {
-    	padding:5px;
-	    margin:0;
-        position : relative;
-        top : 10px;
-    }
-	#nav {
-		background:#000;
-        position : absolute;
-        margin-left : 165px;
-        width : 625px;
-        top : 6em; 
-        text-align : right;
-        font-family : arial, sans-serif;
-        color : #FFF;
-	}
-    #nav a {
-        color : #FFF;
-        font-family : arial, sans-serif;
-    }
-	#nav ul{
-		margin:0;
-		padding:0;
-        padding-top: .2em;
-        padding-bottom: .2em;
-		list-style:none;
-	}
-	#nav li{
-		display:inline;
-		margin:0;
-		padding:.4em;
-        padding-left : 4em;
-	}
-    #nav a {
-        text-decoration : none;
-    }
-	#content_box {
-        font-family: Georgia,"Nimbus Roman No9 L",serif;
-		background:#FFF;
-		float:left;
-        min-height : 600px;
-		width:620px;
-        padding-left : 1em;
-        padding-right : 1em;
-        padding-top : 2em;
-	}
-    #content_box div {
-        padding : 0;
-        margin : 0;
-    }
-    #content_box {
-        color : #222;
-    }
-    #content_box a {
-        text-decoration : none;
-    }
-
-    #content_box td {
-        vertical-align : top;
-    }
-    h1, h2, th {
-        margin-top : 0;
-        margin-bottom : .4em;
-        padding-top : 0;
-    }
-    #content_box h1 {
-        font-weight : normal;
-    }
-    #content_box h2 {
-        font-weight : bold;
-        padding : 0;
-        font-size : 1.4em;
-        margin : .3em .3em .3em 0em;
-    
-    }
-	#nav_left_box {
-		background:#7894aa;
-		float:left;
-		width:150px;
-	}
-	#nav_left_box ul {
-		margin-bottom:0;
-        padding : 0;
-        margin : 0;
-    }
-    #nav_left_box li {
-        background-color : #9fa58b;
-		list-style:none;
-        font-size : 1.1em;
-        padding: .1em .3em .1em .3em;
-        margin : .6em .4em .4em .4em;
-    }
-    #nav_left_box li a {
-        color : #FFF;
-        text-decoration : None;
-        font-family : arial, sans-serif;
-    }
-	#footer {
-        height :0px;
-		clear:both;
-	}
-	#footer p {
-		padding:5px;
-		margin:0;
-    }
-   
-    #bioinfo {
-        width : 25em;
-    }
-    #content_box hr {
-        padding : 0;
-        margin : 0;
-        height : 1px;
-        background-color : #555;
-        border : 0;
-    }
-
-    ul.biografien {
-        padding : 0;
-        margin : 0;
-        margin-bottom : .6em;
-        margin-top : .3em;
-        margin-top : 1em;
-        margin-left : 3em;
-    }
-
-    ul.biografien li {
-        margin : 0;
-        margin-top : .2em;
-        list-style-type : none;
-        padding : 0;
-     }
-    .alfabet {
-        background-color : #7894aa; 
-        border : 1px solid #555;
-        width : 2em;
-        padding : 0 .15em 0 .15em;
-        margin-top : 2em;
-        margin-bottom : 2em;
-    }
-    .alfabet a {
-        text-decoration : None;
-    }
-    .selected {
-        background-color : #c6cb53;
-    }
-
-    .illustratie {
-        float: right;
-        top : 0em;
+	    }
+	    #header h1 {
+        	padding:5px;
+	        margin:0;
+            position : relative;
+            top : 10px;
+        }
+	    #nav {
+		    background:#000;
+            position : absolute;
+            margin-left : 165px;
+            width : 625px;
+            top : 6em; 
+            text-align : right;
+            font-family : arial, sans-serif;
+            color : #FFF;
+	    }
+        #nav a {
+            color : #FFF;
+            font-family : arial, sans-serif;
+        }
+	    #nav ul{
+		    margin:0;
+		    padding:0;
+            padding-top: .2em;
+            padding-bottom: .2em;
+		    list-style:none;
+	    }
+	    #nav li{
+		    display:inline;
+		    margin:0;
+		    padding:.4em;
+            padding-left : 4em;
+	    }
+        #nav a {
+            text-decoration : none;
+        }
+	    #content_box {
+            font-family: Georgia,"Nimbus Roman No9 L",serif;
+		    background:#FFF;
+		    float:left;
+            min-height : 600px;
+		    width:620px;
+            padding-left : 1em;
+            padding-right : 1em;
+            padding-top : 2em;
+	    }
+        #content_box div {
+            padding : 0;
+            margin : 0;
+        }
+        #content_box {
+            color : #222;
+        }
+        #content_box a {
+            text-decoration : none;
         }
 
-    #bioinfo ul {
-        margin : 0;
-        padding : 0;
-        padding-left : 0em;
-        margin-left : 0em;
-    }
-    #bioinfo li {
-        list-style-type : none;
-        margin : 0;
-        margin-top : .2em;
- 
-    }
-    #bioinfo table.leefjaren {
-        font-size : 1.1em;
-        width : 100%;
-        margin :0;
-        padding :0;
-        margin-bottom : 1em;
-        border-collapse : collapse;
-    }
-    #bioinfo table.leefjaren th ,
-    #bioinfo table.leefjaren td {
-        font-weight : normal;
-        text-align: left;
-        vertical-align : top;
-        margin :0;
-        padding : 0 .3em 0 0em;
-    }
-    #bioinfo table.leefjaren td.datum {
-        text-align  :right;
-        color : red;
-        width : 7.2em;
-    }   
+        #content_box td {
+            vertical-align : top;
+        }
+        h1, h2, th {
+            margin-top : 0;
+            margin-bottom : .4em;
+            padding-top : 0;
+        }
+        #content_box h1 {
+            font-weight : normal;
+        }
+        #content_box h2 {
+            font-weight : bold;
+            padding : 0;
+            font-size : 1.4em;
+            margin : .3em .3em .3em 0em;
+        
+        }
+	    #nav_left_box {
+		    background:#7894aa;
+		    float:left;
+		    width:150px;
+	    }
+	    #nav_left_box ul {
+		    margin-bottom:0;
+            padding : 0;
+            margin : 0;
+        }
+        #nav_left_box li {
+            background-color : #9fa58b;
+		    list-style:none;
+            font-size : 1.1em;
+            padding: .1em .3em .1em .3em;
+            margin : .6em .4em .4em .4em;
+        }
+        #nav_left_box li a {
+            color : #FFF;
+            text-decoration : None;
+            font-family : arial, sans-serif;
+        }
+	    #footer {
+            height :0px;
+		    clear:both;
+	    }
+	    #footer p {
+		    padding:5px;
+		    margin:0;
+        }
+       
+        #bioinfo {
+            width : 25em;
+        }
+        #content_box hr {
+            padding : 0;
+            margin : 0;
+            height : 1px;
+            background-color : #555;
+            border : 0;
+        }
 
-    div.levensbeschrijvingen {
-        clear : both;
-    }
-    /*
-    ul.levensbeschrijvingen {
-        text-indent : -2em;
-        margin-left : 2em;
-    }
-    */
-    ul.levensbeschrijvingen li {
-        list-style-type : none;
+        ul.biografien {
+            padding : 0;
+            margin : 0;
+            margin-bottom : .6em;
+            margin-top : .3em;
+            margin-top : 1em;
+            margin-left : 3em;
+        }
 
-    }
-    ul.levensbeschrijvingen table {
-        margin-left : 2em;
-    }
-    ul.levensbeschrijvingen table th {
-        font-weight : normal;
-        text-align : right;
-        font-style : italic;
-    }
-    form table {
-        margin-left : 1em;
-    }
-    form table th {
-        text-align : right;
-        padding-right : 1em;
-    }
+        ul.biografien li {
+            margin : 0;
+            margin-top : .2em;
+            list-style-type : none;
+            padding : 0;
+         }
+        .alfabet {
+            background-color : #7894aa; 
+            border : 1px solid #555;
+            width : 2em;
+            padding : 0 .15em 0 .15em;
+            margin-top : 2em;
+            margin-bottom : 2em;
+        }
+        .alfabet a {
+            text-decoration : None;
+        }
+        .selected {
+            background-color : #c6cb53;
+        }
 
-	a:hover {
-		text-decoration : underline;	
-	}
-#popup #container_box {
-	width : 500px;	
-	}	
+        .illustratie {
+            float: right;
+            top : 0em;
+            }
+
+        #bioinfo ul {
+            margin : 0;
+            padding : 0;
+            padding-left : 0em;
+            margin-left : 0em;
+        }
+        #bioinfo li {
+            list-style-type : none;
+            margin : 0;
+            margin-top : .2em;
+     
+        }
+        #bioinfo table.leefjaren {
+            font-size : 1.1em;
+            width : 100%;
+            margin :0;
+            padding :0;
+            margin-bottom : 1em;
+            border-collapse : collapse;
+        }
+        #bioinfo table.leefjaren th ,
+        #bioinfo table.leefjaren td {
+            font-weight : normal;
+            text-align: left;
+            vertical-align : top;
+            margin :0;
+            padding : 0 .3em 0 0em;
+        }
+        #bioinfo table.leefjaren td.datum {
+            text-align  :right;
+            color : red;
+            width : 7.2em;
+        }   
+
+        div.levensbeschrijvingen {
+            clear : both;
+        }
+        /*
+        ul.levensbeschrijvingen {
+            text-indent : -2em;
+            margin-left : 2em;
+        }
+        */
+        ul.levensbeschrijvingen li {
+            list-style-type : none;
+
+        }
+        ul.levensbeschrijvingen table {
+            margin-left : 2em;
+        }
+        ul.levensbeschrijvingen table th {
+            font-weight : normal;
+            text-align : right;
+            font-style : italic;
+        }
+        form table {
+            margin-left : 1em;
+        }
+        form table th {
+            text-align : right;
+            padding-right : 1em;
+        }
+
+	    a:hover {
+		    text-decoration : underline;	
+	    }
+    #popup #container_box {
+	    width : 500px;	
+	    }	
 	
-	#popup #content_box {
-	width : 460px;	
-	}	
+	    #popup #content_box {
+	    width : 460px;	
+	    }	
 
-body#popup {
-	width : 500px;	
-	min-width : 500px;
-}
+    body#popup {
+	    width : 500px;	
+	    min-width : 500px;
+    }
 
