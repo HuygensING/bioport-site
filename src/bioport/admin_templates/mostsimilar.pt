@@ -13,6 +13,7 @@ Zie ook de lijsten met
 <br /><br />
 
 <div metal:use-macro="context/@@persons/macros/search_form" />
+<br />
 <div metal:use-macro="context/@@sitemacros/macros/sql_query_navigation" />
 <table class="gcodetable">
 	<div tal:repeat="x view/most_similar_persons"

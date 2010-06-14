@@ -24,7 +24,7 @@ form {
       class="edit-form" enctype="multipart/form-data">
 
 
-  <table>
+  <table style="width:100%">
   <tr>
   <td>
   <div id="edit">

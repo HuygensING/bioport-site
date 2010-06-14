@@ -768,6 +768,10 @@ class Persoon(app.Persoon, grok.EditForm, RepositoryView):
         id = self.person.bioport_id
         self.repository().db.fill_similarity_cache(person=self.person, refresh=True)
         self.person = self.repository().get_person(bioport_id = id)
+
+
+class Debuginfo(Persoon):
+    pass
         
 class PersoonIdentify(MostSimilar, Persons, Persoon):
     

@@ -7,8 +7,8 @@
 
 <pre class="message" tal:condition="view/message |  nothing" tal:content="view/message" />
 <h1>Bewerk bron <em tal:content="source/id" /></h1>
-
 (<a tal:attributes="href python:view.url(context, 'persons', {'source_id':source.id})"><span tal:replace="python:view.repository().count_biographies(source=source)" /> biografie&euml;n</a>)
+<br/><br/>
 <form tal:attributes="action view/url" method="get">
 <input type="hidden" name="source_id" tal:attributes="value source/id" />
 <table>

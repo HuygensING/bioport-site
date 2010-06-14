@@ -18,14 +18,13 @@ a {
     margin-top:0px;
 }
 
-#content_box a[href^="http"]:after,
-#content_box h1[href^="http"]:after
+
+#content_box a[href^="http://www.inghist.nl"]:after
 {
 	color: #ACAC65;
 	content: "\21D7";
 	font-size: 10px;
-	}
-
+}
 
 
 h1 {
@@ -174,6 +173,8 @@ td ul {
 #content_box_container {
     padding:15px;
     border:1px solid #CCC;
+    border-top:0px;
+    margin-bottom:15px;
 }
 
 #content_box {
@@ -310,12 +311,15 @@ span.accesskey {
 
 
 #navigation-table {
-    margin-top:10px !important;
+    margin-top:15px !important;
+}
+
+#navigation-table .batch_navigation {
+    margin-top:-25px;
 }
 
 .batch_navigation {
     float : right;
-    margin-top:-25px !important;
 }
 
 .alfabet {
@@ -381,11 +385,17 @@ table {
 }
 
 
-input[name="birth_y"] {
-    width:36px;
-}
-
-input[name="death_y"] {
+input[name="death_y"],
+input[name="birth_y"],
+input[name="state_floruit_from_y"],
+input[name="state_floruit_to_y"],
+input[name="baptism_y"],
+input[name="birth_notBefore_y"],
+input[name="birth_notAfter_y"],
+input[name="death_notBefore_y"],
+input[name="death_notAfter_y"],
+input[name="funeral_y"]
+{
     width:36px;
 }
 

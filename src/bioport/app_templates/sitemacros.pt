@@ -60,14 +60,12 @@
     metal:define-macro="sql_query_navigation">
     <div tal:condition="python:view.start > 0" tal:omit-tag="">
         <a tal:attributes="href python:view.batch_url(start=0)">eerste</a> 
-    
+    |
     </div>
     <div tal:condition="python:view.start > view.size" tal:omit-tag="">
-    |
         <a tal:attributes="href python:view.batch_url(start = max(view.start - view.size , 0))">vorige</a> 
     </div> 
     <div tal:condition="python:1" tal:omit-tag="">
-    |
         <a tal:attributes="href python:view.batch_url(start=view.start + view.size)">volgende</a> 
     </div> 
     <div metal:use-macro="context/@@sitemacros/macros/size_select"></div>

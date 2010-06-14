@@ -9,6 +9,7 @@ tal:define="batch view/get_persons;
 	    tal:attributes="class python:letter == request.get('beginletter') and 'alfabet selected' or 'alfabet'"
 	    ><a tal:attributes="href python:view.url(view, data={'beginletter':letter, 'source_id':request.get('source_id', ''), 'status':request.get('status', '')})" ><span tal:replace="letter/upper" /></a></span>
 </div>
+<br/>
 <p>
 <form metal:define-macro="search_form"
     tal:attributes="action view/url">
@@ -60,8 +61,10 @@ levensjaren niet ingevuld <input type="checkbox" />
 <li tal:condition="request/beroep_id | nothing">U zocht naar biografie&euml;n met <em tal:content="structure python:here.get_beroep(request.beroep_id).naam"></em> als beroep.</li>
 </ul>
 
-<div metal:use-macro="context/@@sitemacros/macros/aantal_resultaten" />
-<div metal:use-macro="context/@@sitemacros/macros/batch_navigation" />
+<div id="navigation-table">
+    <div metal:use-macro="context/@@sitemacros/macros/aantal_resultaten" />
+    <div metal:use-macro="context/@@sitemacros/macros/batch_navigation" />
+</div>
 
 <table class="gcodetable">
 <tr>

@@ -91,8 +91,11 @@ Het vraagteken "?" staat voor een enkel karakter. Dus zoeken op "Ja?ob" vindt je
 </form>
 
 <div tal:condition="python:len(view.selected_persons) < 2">
-<div  metal:use-macro="context/@@sitemacros/macros/aantal_resultaten" />
-<div  metal:use-macro="context/@@sitemacros/macros/batch_navigation" />
+
+<div id="navigation-table">
+    <div  metal:use-macro="context/@@sitemacros/macros/aantal_resultaten" />
+    <div  metal:use-macro="context/@@sitemacros/macros/batch_navigation" />
+</div>
 	
 <table class="gcodetable">
     <tr tal:condition="batch">

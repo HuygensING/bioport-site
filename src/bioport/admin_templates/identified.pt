@@ -5,6 +5,7 @@
 <h1>Ge&iuml;dentificeerde personen</h1>
 
 <div metal:use-macro="context/@@persons/macros/alfabet" />
+<br />
 <p>
 <div metal:use-macro="context/@@persons/macros/search_form" />
 

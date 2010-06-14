@@ -49,10 +49,11 @@ table {
     border-top:0px;
 }
 
+
 </style>
 
-<h1>Uitleg</h1>
-    
+<h1>Uitleg</h1> 
+
 <table id="upper-table-container">
 <tr>
 <td width="300">
@@ -642,39 +643,45 @@ table {
 </table>
 
 
-<!-- Explanation -->
-
 <h1>Explanation</h1>
-<p>
-De gegevens in het formulier zijn de gegevens zoals ze op het biografisch portaal worden 
-<a tal:attributes="href python:view.url(context.__parent__, 'persoon', data={'bioport_id':view.bioport_id})">getoond</a>. 
-</p>
-<p>
-De gegevens zijn grijs als ze uit de bronnen-publikaties komen, zwart als ze zijn ingevoerd door de medewerkers van het biografisch portaal.
-</p>
-<p>
-    <a tal:attributes="href python:view.url('persoonidentify', data={'bioport_ids':view.bioport_id})"
-        accesskey="i"><span class="accesskey">i</span>dentificeer deze persoon</a>
-    <span tal:omit-tag=""
-        tal:condition="view/is_identified">
-	    |
-	    <a tal:attributes="href python:view.url('unidentify', data={'bioport_id':view.bioport_id})">
-	       on-identficeer deze persoon
-       </a>
-    </span>
-    |
-    <a tal:attributes="OnClick string:history.go(-${view/history_counter});;return false;;" href="">terug</a>
-</p>
+
+<div id="explanation">
+    <p>
+    De gegevens in het formulier zijn de gegevens zoals ze op het biografisch portaal worden 
+    <a tal:attributes="href python:view.url(context.__parent__, 'persoon', data={'bioport_id':view.bioport_id})">getoond</a>. 
+    </p>
+    <p>
+    De gegevens zijn grijs als ze uit de bronnen-publikaties komen, zwart als ze zijn ingevoerd door de medewerkers van het biografisch portaal.
+    </p>
+    <p>
+        <a tal:attributes="href python:view.url('persoonidentify', data={'bioport_ids':view.bioport_id})"
+            accesskey="i"><span class="accesskey">i</span>dentificeer deze persoon</a>
+        <span tal:omit-tag=""
+            tal:condition="view/is_identified">
+	        |
+	        <a tal:attributes="href python:view.url('unidentify', data={'bioport_id':view.bioport_id})">
+	           on-identficeer deze persoon
+           </a>
+        </span>
+        |
+        <a tal:attributes="OnClick string:history.go(-${view/history_counter});;return false;;" href="">terug</a>
+    </p>
+</div>
 
 
 <!-- XXX -->
 
 <br/><br/>
-<h1 onclick="document.getElementById('debug-info').style.display = 'block'; return;">Debug information</h1>
-
 <!--
-Click <a tal:attributes="href python:view.url('debuginfo')">here</a> to see debug information.
+<h1 onclick="document.getElementById('debuginfo').style.display = 'block'; return;">Debug information</h1>
 -->
+
+
+
+<h1>Debug information</h1>
+
+Click <a target="_blank" tal:attributes="href python:view.url('debuginfo') + '?bioport_id=' + request.get('bioport_id')">here</a> to see debug information.
+
 
 <!--
 <div style="display:none;" id="debug-info">
