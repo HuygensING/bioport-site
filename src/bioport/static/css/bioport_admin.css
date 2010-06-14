@@ -213,7 +213,6 @@ a:hover {
 }
 
 .person_edit form {
-	margin-top : 2em;
 	margin-bottom : 2em;
 }
 
@@ -282,13 +281,25 @@ span.accesskey {
     width:640px;
 }
 
-#edit-area {
-    float:left;
-}
-
 table {
     border-collapse:separate;
     border-spacing:3px;
 }
 
+#right_column {
+    margin-top:-50px !important;
+    min-width:349px;
+}
 
+.right_column_content {
+    border:1px solid #CCC;
+    padding:5px !important;
+    background: #FDEFB3;
+    -moz-border-radius:10px 10px 10px 10px;
+    border-radius:10px 10px 10px 10px;
+    margin-bottom:10px !important;
+}
+
+.highlight {
+    background:#FFFF66;
+}

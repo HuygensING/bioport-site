@@ -45,31 +45,17 @@ form table th {
     text-align:left !important;
 }
 
+table {
+    border-top:0px;
+}
+
 </style>
 
-<p>
-De gegevens in het formulier zijn de gegevens zoals ze op het biografisch portaal worden 
-<a tal:attributes="href python:view.url(context.__parent__, 'persoon', data={'bioport_id':view.bioport_id})">getoond</a>. 
-</p>
-<p>
-De gegevens zijn grijs als ze uit de bronnen-publikaties komen, zwart als ze zijn ingevoerd door de medewerkers van het biografisch portaal.
-</p>
-<p>
-    <a tal:attributes="href python:view.url('persoonidentify', data={'bioport_ids':view.bioport_id})"
-        accesskey="i"><span class="accesskey">i</span>dentificeer deze persoon</a>
-    <span tal:omit-tag=""
-        tal:condition="view/is_identified">
-	    |
-	    <a tal:attributes="href python:view.url('unidentify', data={'bioport_id':view.bioport_id})">
-	       on-identficeer deze persoon
-       </a>
-    </span>
-    |
-    <a tal:attributes="OnClick string:history.go(-${view/history_counter});;return false;;" href="">terug</a>
-    </p>
+<h1>Uitleg</h1>
     
-    
-<div id="edit-area">
+<table id="upper-table-container">
+<tr>
+<td>
 <form action="." tal:attributes="action request/URL" method="get"
       class="edit-form" >
       <input type="hidden" name="bioport_id" tal:attributes="value python:view.bioport_id" />
@@ -619,26 +605,65 @@ De gegevens zijn grijs als ze uit de bronnen-publikaties komen, zwart als ze zij
     </tr>
 </table>
 </form>
-</div>
-
+</td>
+<td>
 <div id="right_column">
 	<tal:block repeat="bio view/person/get_biographies" >
 		<div class="right_column_content"
-		    tal:define="tekst bio/get_text_without_markup"
-			tal:condition="python:bio.get_source().id != 'bioport'">
-			<h1 tal:content="python:bio.get_source().id"></h1>
+		    tal:define="tekst bio/get_text_with_highlight; 
+                        id python:bio.id.replace('/', '');
+                        onclick string:jQuery('#${id} div').toggle(150);
+                       "
+			tal:condition="python:bio.get_source().id != 'bioport'"
+            tal:attributes="id id"
+        >
+			<a style="color:black" href="#"><h1 tal:attributes="onclick onclick"
+                tal:content="python:bio.get_source().id"></h1></a>
 			<div tal:content="structure tekst"></div>
-			<p>
+			<div>
+             <p>
 			 <a tal:attributes="
        href python:bio.get_value('url_biografie'); 
        target python:bio.get_source().id" >[link]</a>
-			</p>
+             </p>
+			</div>
 		</div>
 	</tal:block>
 </div>
+</td>
+</tr>
+</table>
 
 
-<div class="info">
+<!-- Explanation -->
+
+<h1>Explanation</h1>
+<p>
+De gegevens in het formulier zijn de gegevens zoals ze op het biografisch portaal worden 
+<a tal:attributes="href python:view.url(context.__parent__, 'persoon', data={'bioport_id':view.bioport_id})">getoond</a>. 
+</p>
+<p>
+De gegevens zijn grijs als ze uit de bronnen-publikaties komen, zwart als ze zijn ingevoerd door de medewerkers van het biografisch portaal.
+</p>
+<p>
+    <a tal:attributes="href python:view.url('persoonidentify', data={'bioport_ids':view.bioport_id})"
+        accesskey="i"><span class="accesskey">i</span>dentificeer deze persoon</a>
+    <span tal:omit-tag=""
+        tal:condition="view/is_identified">
+	    |
+	    <a tal:attributes="href python:view.url('unidentify', data={'bioport_id':view.bioport_id})">
+	       on-identficeer deze persoon
+       </a>
+    </span>
+    |
+    <a tal:attributes="OnClick string:history.go(-${view/history_counter});;return false;;" href="">terug</a>
+</p>
+
+
+<!-- XXX -->
+
+
+<div class="debug-info">
 <div tal:repeat="bio view/person/get_biographies">
 <h2>Bron: 
 	<a tal:attributes="
