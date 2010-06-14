@@ -55,12 +55,13 @@ table {
     
 <table id="upper-table-container">
 <tr>
-<td>
+<td width="300">
 <form action="." tal:attributes="action request/URL" method="get"
       class="edit-form" >
       <input type="hidden" name="bioport_id" tal:attributes="value python:view.bioport_id" />
       <input type="hidden" name="history_counter" tal:attributes="value python:view.history_counter" />
-<table>
+
+<table width="500">
     <tr>
         <th>bioport identifier</th>
         <td class="bioport" tal:content="view/person/get_bioport_id" />
@@ -131,8 +132,10 @@ table {
    		<th></th>
    		<td colspan="2">
    	        <input name="name_new" type="text" id="name_new"  accesskey="n" />
+<!-- XXX
 	        <span tal:replace="structure python:view.actions.byname['form.actions.add_name'].render()" ></span>
-		</td>    
+-->
+		</td>   
 	</tr>
    	<tr metal:use-macro="template/macros/separator" /> 	
 	<tr>
@@ -188,9 +191,11 @@ table {
                     return false;;;
 	            id string:button_show_${event_type};"
             >[toon]</a></td>
+<!-- XXX
         <td  tal:attributes="class python:not has_data and 'form_%s' % event_type;">
 	        <span tal:replace="structure python:view.actions.byname['form.actions.save_event_%s' % event_type].render()" />
         </td> 
+-->
      </tr>
      <tr tal:attributes="
      	id string:${event_type}_exact;
@@ -513,10 +518,12 @@ table {
    					    selected python:str(state.idno) == str(category.id)"></option>
    			</select>	
    		</td>
+<!-- XXX
         <td>
 	        <span 
 	           tal:condition="repeat/state/start" tal:replace="structure python:view.actions.byname['form.actions.save_category'].render()" />
         </td> 
+-->
    	</tr>	
    	</tal:block>
    	<tr>
@@ -665,6 +672,11 @@ De gegevens zijn grijs als ze uit de bronnen-publikaties komen, zwart als ze zij
 <br/><br/>
 <h1 onclick="document.getElementById('debug-info').style.display = 'block'; return;">Debug information</h1>
 
+<!--
+Click <a tal:attributes="href python:view.url('debuginfo')">here</a> to see debug information.
+-->
+
+<!--
 <div style="display:none;" id="debug-info">
 <div tal:repeat="bio view/person/get_biographies">
 <h2>Bron: 
@@ -801,6 +813,7 @@ De gegevens zijn grijs als ze uit de bronnen-publikaties komen, zwart als ze zij
 	<span tal:replace="structure python:view.actions.byname['form.actions.compute_similarity'].render()" ></span>
 </form>
 </div>
+-->
 
 </div>
 </html>

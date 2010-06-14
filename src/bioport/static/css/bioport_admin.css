@@ -1,5 +1,44 @@
 
+.persoonFormTable {
+    width:500px;
+}
+
 /* --- Main --- */
+
+form {
+    background:#EEEEEE;
+    padding:10px;
+}
+
+a {
+    color:#995500;
+}
+
+#upper-table-container {
+    margin-top:0px;
+}
+
+#content_box a[href^="http"]:after,
+#content_box h1[href^="http"]:after
+{
+	color: #ACAC65;
+	content: "\21D7";
+	font-size: 10px;
+	}
+
+
+
+h1 {
+    color: #4F8FB7;
+}
+
+ul {
+    list-style-image:url("../images/square2.png");
+}
+
+body {
+    background:white;
+}
 
 form {
     padding-bottom:10px;
@@ -31,7 +70,9 @@ html {
 
 #container_box {
     background:white;
-    width:auto;
+    margin-left:auto;
+    margin-right:auto;
+    width:1000px;
 }
 
 th {
@@ -63,12 +104,18 @@ td ul {
 
 /* --- Header --- */
 
+#header h1 {
+    color:black;
+    font-family:Trebuchet MS;
+}
+
 #header {
     background:white;
     color:black;
     height:46px;
     padding-bottom:0px;
     padding-top:0px;
+    padding-left:5px;
 }
 
 #personal-bar {
@@ -95,7 +142,7 @@ td ul {
 }
 
 #navigation ul {
-    padding-left:18px;
+    padding-left:0px;
 }
 
 #navigation ul li {
@@ -107,7 +154,7 @@ td ul {
     overflow:hidden;
     margin-top:0px;
     margin-bottom:0px;
-    padding: 5px 14px 2px 14px;
+    padding: 5px 11px 2px 11px;
 }
 
 #navigation a {
@@ -120,15 +167,19 @@ td ul {
 
 /* --- Content --- */
 
+#content_box {
+    float:none;
+}
+
 #content_box_container {
     padding:15px;
-    }
+    border:1px solid #CCC;
+}
 
 #content_box {
     width:100%;
     font-family: arial, sans-serif;
     padding:0px;
-    max-width:1024px;
 }
 
 #content_box .separator hr {
@@ -289,7 +340,7 @@ span.accesskey {
 }
 
 .edit-form table {
-    width:640px;
+    width:500px;
 }
 
 table {
@@ -328,4 +379,14 @@ table {
     margin:2px;
     padding:5px;
 }
+
+
+input[name="birth_y"] {
+    width:36px;
+}
+
+input[name="death_y"] {
+    width:36px;
+}
+
 
