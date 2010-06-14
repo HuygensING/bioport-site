@@ -63,11 +63,12 @@ levensjaren niet ingevuld <input type="checkbox" />
 <div metal:use-macro="context/@@sitemacros/macros/aantal_resultaten" />
 <div metal:use-macro="context/@@sitemacros/macros/batch_navigation" />
 
-<table>
+<table class="gcodetable">
 <tr>
     <th style="width:50%">Naam</th>
-    <th>status</th>
-    <th>bron</th>
+    <th>Status</th>
+    <th>Bron</th>
+    <th>Bewerkt</th>
     <th tal:condition="nothing">laatst bewerkt</th>
     <th tal:condition="nothing">verant- woordelijk</th>
     <th tal:condition="nothing">status</th>

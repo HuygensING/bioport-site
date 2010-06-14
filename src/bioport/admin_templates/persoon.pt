@@ -662,8 +662,10 @@ De gegevens zijn grijs als ze uit de bronnen-publikaties komen, zwart als ze zij
 
 <!-- XXX -->
 
+<br/><br/>
+<h1 onclick="document.getElementById('debug-info').style.display = 'block'; return;">Debug information</h1>
 
-<div class="debug-info">
+<div style="display:none;" id="debug-info">
 <div tal:repeat="bio view/person/get_biographies">
 <h2>Bron: 
 	<a tal:attributes="

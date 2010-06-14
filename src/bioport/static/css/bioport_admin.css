@@ -1,6 +1,11 @@
 
 /* --- Main --- */
 
+form {
+    padding-bottom:10px;
+}
+
+
 .visualClear {
     clear:both;
 }
@@ -252,12 +257,18 @@ span.accesskey {
     font-style: normal;
 }
 
+
+#navigation-table {
+    margin-top:10px !important;
+}
+
 .batch_navigation {
     float : right;
+    margin-top:-25px !important;
 }
 
 .alfabet {
-    background: #CCC
+    background: white !important;
 }
 
 .edit-form input {
@@ -303,3 +314,18 @@ table {
 .highlight {
     background:#FFFF66;
 }
+
+
+.gcodetable {
+    border-top:0px;
+    border-collapse:separate;
+    border-spacing:3px;
+}
+
+.gcodetable td,
+.gcodetable th {
+    border:1px solid #AAAAAA;
+    margin:2px;
+    padding:5px;
+}
+

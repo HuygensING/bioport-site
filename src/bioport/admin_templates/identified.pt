@@ -8,13 +8,16 @@
 <p>
 <div metal:use-macro="context/@@persons/macros/search_form" />
 
-<div metal:use-macro="context/@@sitemacros/macros/aantal_resultaten" />
-<div metal:use-macro="context/@@sitemacros/macros/batch_navigation" />
-<table>
+<div id="navigation-table">
+    <div metal:use-macro="context/@@sitemacros/macros/aantal_resultaten" />
+    <div metal:use-macro="context/@@sitemacros/macros/batch_navigation" />
+</div>
+<table class="gcodetable">
 <tr>
-    <th>naam</th>
-    <th>status</th>
-    <th>bronnen</th>
+    <th>Naam</th>
+    <th>Status</th>
+    <th>Bronnen</th>
+    <th>Link</th>
 </tr>
 <div tal:omit-tag="" tal:repeat="item batch">
 <tr tal:define="person python:view.get_person(bioport_id=item.bioport_id)" 

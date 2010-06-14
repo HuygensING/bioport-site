@@ -4,8 +4,8 @@
     <div class="message" tal:condition="request/msg | nothing" tal:content="request/msg" />
     <h1>Bronnen</h1>
     <p tal:condition="python:order_by == 'quality'">De bronnen staan in volgorde van kwaliteit - de beste staan bovenaan</p>
-    <table>
-    <tr><th>Id</th><th>URL</th><th>Quality</th><th>actions</th></tr>
+    <table class="gcodetable">
+    <tr><th>Id</th><th>URL</th><th>Quality</th><th>Actions</th></tr>
     <div tal:repeat="source python:view.repository().get_sources(order_by=order_by, desc=True)" tal:omit-tag="">
         <tr>
             <td>

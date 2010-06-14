@@ -14,7 +14,7 @@ Zie ook de lijsten met
 
 <div metal:use-macro="context/@@persons/macros/search_form" />
 <div metal:use-macro="context/@@sitemacros/macros/sql_query_navigation" />
-<table>
+<table class="gcodetable">
 	<div tal:repeat="x view/most_similar_persons"
 		tal:omit-tag="">
 	<tr
