@@ -11,7 +11,10 @@
 
 <div metal:use-macro="context/@@sitemacros/macros/aantal_resultaten" />
 <div metal:use-macro="context/@@sitemacros/macros/batch_navigation" />
-<table>
+
+<br />
+
+<table class="gcodetable">
 	<div tal:repeat="x python:batch" 
 		tal:omit-tag="">
 	<tr
@@ -33,7 +36,7 @@
 		<span tal:define="person person2">
 		<td metal:use-macro="template/macros/person" tal:condition="person" />
 		</span>
-		<td>
+		<td tal:condition="nothing">
 		<ul tal:condition="nothing">
 			<li><a tal:attributes="href python:view.url('identify', data={'bioport_ids': [person1.get_bioport_id(), person2.get_bioport_id()]})" > identiek</a>
 			<li><a tal:attributes="href python:view.url('antiidentify', data={'bioport_ids': [person1.get_bioport_id(), person2.get_bioport_id()]})" > niet identiek </a>

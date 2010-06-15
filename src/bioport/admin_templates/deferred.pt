@@ -11,7 +11,8 @@
 
 <div metal:use-macro="context/@@sitemacros/macros/aantal_resultaten" />
 <div metal:use-macro="context/@@sitemacros/macros/batch_navigation" />
-<table>
+<br />
+<table class="gcodetable">
 	<div tal:repeat="x batch"
 		tal:omit-tag="">
 	<tr
