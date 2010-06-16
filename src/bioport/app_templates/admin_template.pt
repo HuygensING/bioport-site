@@ -54,7 +54,10 @@
 
 	<div id="content_box_container">
 		<div id="content_box">
-		    <div tal:omit-tag="" tal:condition="view/msg | request/msg  |nothing" tal:content="structure view/msg | request/msg" class="message" />
+		    <div id="messagebox" tal:condition="view/msg | request/msg  |nothing" >
+		        <img src="../static/images/info-icon.png" />
+		        <span tal:content="structure view/msg | request/msg" />
+		    </div>
         <div tal:omit-tag="" metal:define-slot="content">
         body content goes here
         </div>

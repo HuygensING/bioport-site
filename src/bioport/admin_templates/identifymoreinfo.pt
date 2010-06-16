@@ -5,10 +5,10 @@
 <ul metal:use-macro="context/@@mostsimilar/macros/identify_actions" />
 <a tal:attributes="href python:view.url('mostsimilar')">ga naar de lijst met meest gelijkende personen</a>
 </tal:block>
-<table metal:define-macro="compare_persons">
+<table metal:define-macro="compare_persons" class="gcodetable">
 
 <tr>
-	<th></th>
+	<th>Naam</th>
 	<td tal:repeat="p view/persons" style="width:40%">
 		 <a tal:attributes="href python:view.url(view.__parent__.__parent__,  '/persoon', data={'bioport_id':p.get_bioport_id()})"
 		 tal:content="structure python:p.naam() and p.naam().get_volledige_naam()" />

@@ -399,3 +399,15 @@ input[name="funeral_y"]
 }
 
 
+#messagebox {
+    background:#DEC34A;
+    padding:10px !important;
+    padding-left:40px !important;
+    margin-bottom:10px !important;
+    font-weight:bold;
+    -moz-border-radius:10px 10px 10px 10px;
+    border-radius:10px 10px 10px 10px;
+    background: url("../images/info-icon.png") no-repeat scroll 0 0 #DEC34A;
+    background-position:12px 8px;
+}
+

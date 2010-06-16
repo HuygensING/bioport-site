@@ -302,7 +302,7 @@ class MostSimilar(grok.Form,RepositoryView, Batcher):
         self.start = int(self.request.get('start', 0))
         self.size = int(self.request.get('size', 20))
         self.similar_to = self.request.get('bioport_id') or self.request.get('similar_to', None) or getattr(self, 'similar_to', None)
-        self.redirect_to = 'xxx' 
+        self.redirect_to = None
         self.most_similar_persons = self.repository().get_most_similar_persons(
            start=self.start, 
            size=self.size, 
@@ -320,7 +320,7 @@ class MostSimilar(grok.Form,RepositoryView, Batcher):
             if v in [None, 'None' ]:
                 del data[k]
         redirect_url = self.url(data=data)
-        if self.redirect_to:
+        if self.redirect_to is not None:
             redirect_url = '?'.join([self.redirect_to, redirect_url.split('?')[1]])
             
         self.redirect(redirect_url) 
