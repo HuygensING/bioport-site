@@ -52,8 +52,6 @@ table {
 
 </style>
 
-<h1>Uitleg</h1> 
-
 <table id="upper-table-container">
 <tr>
 <td width="300">
@@ -106,7 +104,7 @@ table {
 			| <a href="" onclick="alert('nog niet geimplementeerd')"> omhoog </a>
 			| <a href="" onclick="alert('nog niet geimplementeerd')"> omlaag </a>
 			</span>
-		</td>    
+		</td>    uitl
    	</tr>
 
    		
@@ -643,7 +641,7 @@ table {
 </table>
 
 
-<h1>Explanation</h1>
+<h1>Uitleg</h1> 
 
 <div id="explanation">
     <p>

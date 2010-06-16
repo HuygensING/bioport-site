@@ -293,6 +293,8 @@ class Sources(grok.View,RepositoryView):
     
     def add_source(self, source_id, url, description=None):
         source = self.repository().add_source(BioPortRepository.source.Source(source_id, url, description))
+        
+
 class MostSimilar(grok.Form,RepositoryView, Batcher):
     grok.require('bioport.Edit')
 

@@ -45,7 +45,7 @@ Zie ook de lijsten met
 			<br />
 			<span tal:repeat="bio python:[b for b in person.get_biographies() if b.get_source().id != 'bioport']" tal:content="python:bio.get_source().id" />
 			<br />
-			<spant tal:content="person/bioport_id" />
+			<div style="color:#999;" class="snippet" tal:content="person/snippet" />
 		</td>
 		</span>
 		<span tal:define="person person2" tal:omit-tag="">
