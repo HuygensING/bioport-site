@@ -619,7 +619,7 @@ table {
 	<tal:block repeat="bio view/person/get_biographies" >
 		<div class="right_column_content"
 		    tal:define="tekst bio/get_text_with_highlight; 
-                        id python:bio.id.replace('/', '');
+                        id python:abs(hash(bio.id));
                         onclick string:jQuery('#${id} div').toggle(150);
                        "
 			tal:condition="python:bio.get_source().id != 'bioport'"
