@@ -1,0 +1,142 @@
+<html>
+<body>
+
+<div id="debug-info">
+    <div tal:repeat="bio view/person/get_biographies">
+    <h2>Bron: 
+	    <a tal:attributes="
+	       href python:bio.get_value('url_biografie'); 
+	       target python:bio.get_source().id" >
+		    <span tal:replace="python:bio.get_source().id"></span> - <span tal:replace="python:bio.get_source().description"></span>
+	    </a>
+    </h2>
+
+    <table id="person-form-table">
+        <tr tal:condition="python:bio.get_source().id == 'bioport'">
+            <th>status</th>
+	        <td tal:content="python:view.person.status and view.repository().get_status_values(view.person.status)" ></td>
+        </tr>
+        <tr>
+            <th>id</th>
+	        <td><span tal:content="python:bio.get_value('local_id')" ></span>
+	           <a  tal:condition="bio/source_url" 
+	               tal:attributes="href bio/source_url" 
+	               tal:content="bio/source_url" /></td>
+        </tr>
+        <tr 
+            tal:condition="python:bio.get_source().id in ['nnbw', 'vdaa']">
+            <th>dbnl id</th>
+            <td 
+                 ><span tal:content="python:bio.get_idno('dbnl_id')" tal:on-error="string:no dbnl_id idno found"></span>
+            </td>
+        </tr>
+        	<tr>
+		    <th>namen</th>
+		    <td>
+			    <div tal:repeat="naam python:bio.get_namen()" tal:content="naam/volledige_naam"></div>	
+		    </td>
+	    </tr>
+	    <tr tal:condition="python:bio.get_value('geslacht')">
+		    <th>geslacht</th>
+		    <td>
+			    <span tal:replace="python:dict(view.sex_options()).get(bio.get_value('geslacht'))" />
+		    </td>
+	    </tr>
+	    <tal:block repeat="event2 python:[('geboorte', 'birth'), ('dood', 'death'), ('doop', 'baptism'), ('begrafenis', 'funeral')]" >
+	    <span 
+		    tal:define="event python:view.get_event(event2[1], biography=bio);
+			    title python:event2[0]"
+		    tal:condition="python:event"> 
+		    <tr tal:condition="event/when">
+			    <th tal:content="python:'%s-datum' % title" />
+			    <td tal:content="event/when_formatted">
+			    </td>
+		    </tr> 
+		    <tr tal:condition="event/notBefore">
+			    <th tal:content="python:'%s-na' % title" />
+			    <td tal:content="event/notBefore_formatted">
+			    </td>
+		    </tr> 
+		    <tr tal:condition="event/notAfter">
+			    <th tal:content="python:'%s-voor' % title" />
+			    <td tal:content="event/notAfter_formatted">
+			    </td>
+		    </tr> 
+		    <tr tal:condition="event/date_text">
+			    <th tal:content="python:'%s-datum_tekst' % title" />
+			    <td tal:content="event/date_text"> </td>
+		    </tr> 
+		    <tr tal:condition="event/place">
+			    <th tal:content="python:'%s-plaats' % title" />
+			    <td tal:content="event/place"> </td>
+		    </tr> 
+		    </span>
+
+	      </tal:block> 
+    <tal:block repeat="state2 python:[('rubriek', 'category'), ('actief', 'floruit')]">
+		    <tal:block 
+		      repeat="state python:view.get_states(state2[1], biography=bio)"
+		      define="title python:state2[0];" 
+		      >
+		      <tr tal:condition="state/idno">
+		          <th tal:content="string:${title} - idno"></th>
+		          <td tal:content="state/idno" />
+		      </tr> 
+		      <tr tal:condition="state/text">
+		          <th tal:content="string:${title} - text"></th>
+		          <td tal:content="state/text" />
+		      </tr> 
+		      <tr tal:condition="state/frm">
+		          <th tal:content="string:${title} - van"></th>
+		          <td tal:content="state/frm" />
+		      </tr> 
+		      <tr tal:condition="state/to">
+		          <th tal:content="string:${title} - tot"></th>
+		          <td tal:content="state/to" />
+		      </tr> 
+		    </tal:block>
+
+	    </tal:block>
+	    <tr tal:condition="python:bio.get_illustrations()">
+            <th>illustraties</th>	
+            <td>
+                <div tal:repeat="ill bio/get_illustrations">
+                    local : <a tal:attributes="href ill/cached_url" tal:content="ill/cached_url" /><br />
+                    original: <a tal:attributes="href ill/_url" tal:content="ill/_url" />
+                </div>
+                <form>
+                <input type="hidden" name="bioport_id" tal:attributes="value view/bioport_id">
+                <span tal:replace="structure python:view.actions.byname['form.actions.download_illustration'].render()" ></span>
+                </form>
+            </td>
+	    </tr>
+	    <tr tal:condition="python:bio.get_value('tekst')">
+		    <th>tekst</th>
+		    <td>
+			    <span tal:replace="structure  bio/get_text_without_markup" />
+		    </td>
+	
+	    </tr>	
+        <tr tal:condition="python:bio.get_source().id == 'bioport' and view.person.remarks">
+            <th>opmerkingen</th>
+            <td tal:content="python:view.person.remarks" ></td>
+        </tr>
+	    <tr tal:condition="python:bio.record.timestamp">
+		    <th>laatst veranderd</th>
+		    <td tal:content="python:bio.record.timestamp" ></td>
+	    </tr>
+	    <tr>
+            <th></th>	
+            <td><pre tal:content="bio/to_string" /></td>
+	    </tr>
+	    </table>
+    </div>
+
+    <form action="." tal:attributes="action request/URL" method="get">
+    <input type="hidden" name="bioport_id" tal:attributes="value view/bioport_id" />
+	    <span tal:replace="structure python:view.actions.byname['form.actions.compute_similarity'].render()" ></span>
+    </form>
+</div>
+
+</body>
+</html>
