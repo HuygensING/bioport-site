@@ -102,6 +102,7 @@ Het vraagteken "?" staat voor een enkel karakter. Dus zoeken op "Ja?ob" vindt je
         <th>Id</th>
         <th>Naam</th>
         <th>Bronnen</th>
+        <th tal:condition="python:batch and batch[0].score">Score</th>
         <th>Bewerkt</th>
     </tr>
 <tal:block repeat="person batch">
