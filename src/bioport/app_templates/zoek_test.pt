@@ -69,12 +69,10 @@
         <input type="text" size="20" name="geboorte_fuzzy_text" 
             tal:attributes="value python:request.get('geboorte_fuzzy_text')" />
         <tal:b i18n:translate="in">in</tal:b> 
-        <!-- XXX
         <span id="geboorteplaats_field">
             <input type="text" size="20" name="geboorteplaats"
                 tal:attributes="value python:unicode(request.get('geboorteplaats', ''))" />
         </span>
-        -->
         <a class="tooltip_button toggle"
             Onclick="jQuery('#tip_birth').toggle(200)">[?]</a> 
         <div id="tip_birth" class="tooltip" i18n:translate="born_help_text">
