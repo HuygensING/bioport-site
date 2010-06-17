@@ -73,7 +73,9 @@ table {
     border-top:0px;
 }
 
-
+img {
+    margin-bottom:-3px;
+}
 </style>
 
 <table id="upper-table-container">
@@ -103,55 +105,36 @@ table {
        </td>
     </tr>
     <tr metal:define-macro="separator" class="separator" ><td colspan="3"><hr></td></tr>
+    
     <tr tal:define="namen python:view.get_bioport_namen() or view.get_non_bioport_namen()"
     	tal:repeat="idx python:range(len(namen))">
     	<th><span tal:condition="python:idx == 0" ><span class="accesskey">n</span>amen</span></th>
     	<td tal:define="naam python:namen[idx]"
 		    tal:attributes="class python:view.get_bioport_namen() and 'bioport' or 'merged'">
-    		<span tal:content="naam/volledige_naam" />
+    		<input name="personname" tal:attributes="value naam/volledige_naam" />
+			<a tal:attributes="href python:view.url('changename', data={'bioport_id':view.bioport_id, 'idx':idx})" title="verander">
+                 <img tal:attributes="src python:view.application_url() + '/@@/bioport/images/edit-icon.png'" />
+			</a>
+			<span tal:condition="python:len(namen) > 1">
+			 <a tal:attributes="href python:view.url(data={'form.actions.remove_name':'', 'naam_idx':idx, 'bioport_id':view.bioport_id})" title="verwijder">
+                 <img tal:attributes="src python:view.application_url() + '/@@/bioport/images/delete-icon.png'" />
+			 </a>
+			</span>
+			<br />
     		<span tal:define="normal_form naam/guess_normal_form"
     		  tal:condition="python:repeat['idx'].start() and naam.volledige_naam() != normal_form"
     		  tal:content="string:[${normal_form}]"  />
-			[<a tal:attributes="href python:view.url('changename', data={'bioport_id':view.bioport_id, 'idx':idx})">
-			verander
-			</a>]
-
         </td>
 		<td >
-			<span tal:condition="python:len(namen) > 1">
-			| <a tal:attributes="href python:view.url(data={'form.actions.remove_name':'', 'naam_idx':idx, 'bioport_id':view.bioport_id})"  >verwijder </a>
-			| <a href="" onclick="alert('nog niet geimplementeerd')"> omhoog </a>
-			| <a href="" onclick="alert('nog niet geimplementeerd')"> omlaag </a>
-			</span>
-		</td>    uitl
+		</td>
    	</tr>
 
-   		
-    <tr tal:condition="nothing"
-    xtal:condition="not:view/get_bioport_namen" 
-	    tal:define="namen view/get_non_bioport_namen"
-    	tal:repeat="idx python:range(len(namen))">
-    	<th><span tal:condition="python:idx == 0" ><span class="accesskey">n</span>amen</span></th>
-    	<td tal:define="naam python:namen[idx]"
-		    tal:attributes="class python:view.get_bioport_namen() and 'bioport' or 'merged'">
-    		<span tal:replace="naam/volledige_naam" />
-    		<span tal:define="normal_form naam/guess_normal_form"
-    		  tal:condition="python:repeat['idx'].start() and naam.volledige_naam() != normal_form"
-    		  tal:content="string:[${normal_form}]"  />
-	    </td>
-		<td >
-			<a tal:attributes="href python:view.url('changename', data={'bioport_id':view.bioport_id, 'idx':idx})">
-			verander
-			</a>
-		</td>    
-   	</tr>
-   	
    	<tr>
    		<th></th>
    		<td colspan="2">
    	        <input name="name_new" type="text" id="name_new"  accesskey="n" />
-
-		</td>   
+            <span tal:replace="structure python:view.actions.byname['form.actions.add_name'].render()" ></span> 
+		</td>
 	</tr>
    	<tr metal:use-macro="template/macros/separator" /> 	
 	<tr>

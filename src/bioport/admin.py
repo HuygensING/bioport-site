@@ -430,6 +430,7 @@ class Persoon(app.Persoon, grok.EditForm, RepositoryView):
     
     But I am in an incredible hurry and have no time to learn :-("""
    
+  
     grok.require('bioport.Edit')
     def update(self, **args):
         self.bioport_id = self.bioport_id or self.request.get('bioport_id')
@@ -716,9 +717,18 @@ class Persoon(app.Persoon, grok.EditForm, RepositoryView):
         self._save_state('floruit')
         self._set_status()
         self._save_remarks()
+        self._save_names()
         self.save_biography()
         self.msg = 'alle ingevulde waarden bewaard'
         
+    def _save_names(self):
+        names = self.request.get('personname')
+        x = 0
+        for fullname in names:
+            nameobj = Naam(volledige_naam=fullname)
+            self.bioport_biography._replace_name(nameobj, x)
+            x += 1
+
     @grok.action('voeg toe', name='add_name') 
     def add_name(self):
         name_new =  self.request.get('name_new')

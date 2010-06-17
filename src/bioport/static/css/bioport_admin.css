@@ -5,6 +5,10 @@
 
 /* --- Main --- */
 
+img {
+    border:0px;
+}
+
 form {
     background:#EEEEEE;
     padding:10px;
@@ -165,6 +169,7 @@ td ul {
 
 
 /* --- Content --- */
+
 
 #content_box {
     float:none;
@@ -432,3 +437,5 @@ input[name="funeral_y"]
 .autocomplete strong {
     color:#995500;
 }
+
+
