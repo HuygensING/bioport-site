@@ -7,7 +7,6 @@
 <h1 i18n:translate="">Zoeken</h1>
 <form tal:attributes="action python:view.url('personen')" 
     metal:define-macro="search_form">
-    
 
         <script tal:attributes="src static/js/autocomplete/jquery.autocomplete-min.js" type="text/javascript"></script>
         <script type="text/javascript">
@@ -26,10 +25,16 @@
         <input type="text" name="search_name" 
             tal:attributes="value python:unicode(request.get('search_name', ''))"
              />
-        
+         
+ 	 <span i18n:translate="search_name_help_text_example">
+ 	  e.g. <a href="./personen?search_name=huygens">huygens</a> or 
+ 	  <a href="./personen?search_name=aalb*">aalb*</a> or
+ 	  <a href='./personen?search_name="Jan+Klaassen"'>"Jan Klaassen"</a>
+    </span>
         <a class="tooltip_button toggle"
-            Onclick="jQuery('#tip_search_name').toggle(200)">[?]</a> 
-        <div class="tooltip" id="tip_search_name" i18n:translate="search_by_name_help">
+	        i18n:translate="more"
+            Onclick="jQuery('#tip_search_name').toggle(200)">[more...]</a> 
+       <div class="tooltip" id="tip_search_name" i18n:translate="search_by_name_help">
             Typ de naam of een gedeelte van de naam.  
            <br /> 
             De zoekfunctie houdt rekening met spellingsvarianten (zoeken op 
@@ -68,42 +73,49 @@
     <td>
         <input type="text" size="20" name="geboorte_fuzzy_text" 
             tal:attributes="value python:request.get('geboorte_fuzzy_text')" />
-        <tal:b i18n:translate="in">in</tal:b> 
+
+<span tal:condition="born_date_description" id="born_feedback_text">
+    <span tal:content="born_date_description">
+        From october to march
+    </span>
+</span>
+	 <span i18n:translate="born_help_text_example">
+        e.g. <a OnClick="jQuery(&quot;input[name='geboorte_fuzzy_text']&quot;).attr('value', 'may 1650 to september 1665')">may 1650 to september 1655"</a>.
+    </span>
+       <a class="tooltip_button toggle"
+	        i18n:translate="more"
+            Onclick="jQuery('#tip_birth').toggle(200)">[more...]</a> 
+        <div id="tip_birth" class="tooltip" i18n:translate="born_help_text">
+There are different ways of entering values in fields alive, born, and died. Here are some examples; for a more complete explanation see <a href="...">HERE</a>.
+<ul>
+	<li>a search for people born on <b>22 April</b> will return those whose birthday is that date;
+	<li>a search for people who died on <b>March 1946</b> will return those who died anywhere from 1 March to 31 March 1946;
+	<li>a search for people born <b>1946 to 1950</b> will return anyone who was born from 1946 up to 1950. 
+	<li>a search for people born <b>before 1500</b> will return anyone who was born before 1500. 
+	<li>a search for people born <b>after 1798</b> will return anyone who was born after 1798. 
+	<li>a search for people born <b>3 4 1732</b> will return anyone who was born on the third of April 1732. 
+</ul>
+    </div>
+ </td>
+</tr>
+<tr>
+
+    <th i18n:translate="place_of_birth">geboorteplaats</th>
+    <td>
         <span id="geboorteplaats_field">
             <input type="text" size="20" name="geboorteplaats"
                 tal:attributes="value python:unicode(request.get('geboorteplaats', ''))" />
         </span>
-        <a class="tooltip_button toggle"
-            Onclick="jQuery('#tip_birth').toggle(200)">[?]</a> 
-        <div id="tip_birth" class="tooltip" i18n:translate="born_help_text">
-        U kunt personen selecteren die in een bepaalde periode en/of plaats hebben geleefd.
-        </div>
-     </td>
+    </td>
 </tr>
 
-<tr tal:condition="born_date_description"><td colspan="2" id="born_feedback_text">
-    <span tal:content="born_date_description">
-        From october to march
-    </span>
-</td></tr>
-
-
 <tr><td colspan="2" id="born_help_text">
-    <span i18n:translate="born_help_text">
-        For example "from may 1650 to september 1655"
-    </span>
-</td></tr>
+   </td></tr>
 <tr>
     <th i18n:translate="died">gestorven</th>
     <td>
         <input type="text" size="20" name="sterf_fuzzy_text" 
             tal:attributes="value python:request.get('sterf_fuzzy_text')" />
-        <tal:b i18n:translate="in">in</tal:b>
-        <span id="sterfplaats_field">
-            <input type="text" size="20" name="sterfplaats" 
-                tal:attributes="value python:unicode(request.get('sterfplaats', ''))" />
-        </span>
-
         <a class="tooltip_button toggle"
             Onclick="jQuery('#tip_death').toggle(200)">[?]</a>
         <div id="tip_death" class="tooltip" i18n:translate="died_help_text">
@@ -112,7 +124,16 @@
         </div> 
      </td>
 </tr>
+<tr>
+    <th i18n:translate="place_of_death">sterfplaats</th>
+    <td>
+       <span id="sterfplaats_field">
+            <input type="text" size="20" name="sterfplaats" 
+                tal:attributes="value python:unicode(request.get('sterfplaats', ''))" />
+        </span>
+    </td>
 
+</tr>
 <tr tal:condition="died_date_description"><td colspan="2" id="died_feedback_text">
     <span tal:content="died_date_description">
         From october to march

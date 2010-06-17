@@ -522,7 +522,7 @@ def get_died_description(request):
         try:
             qry = get_search_query(sterf_fuzzy_text)
         except ValueError, e:
-            return _("Unable to parse death date. Please rephrase it")
+            return _("Unable to parse death date. Please rephrase it.")
         return make_description(qry, lang=current_language)
 
 class Zoek_Test(grok.View, RepositoryView):
