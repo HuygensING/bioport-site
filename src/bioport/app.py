@@ -259,6 +259,10 @@ class Personen(grok.View,RepositoryView, Batcher):
             if sterf_fuzzy_text:
                 sterf_query = get_search_query(sterf_fuzzy_text, current_language)
                 qry.update(en_to_nl_for_field(sterf_query, 'sterf'))
+            levend_fuzzy_text = self.request.form.get('levend_fuzzy_text', None)
+            if levend_fuzzy_text:
+                levend_query = get_search_query(levend_fuzzy_text, current_language)
+                qry.update(en_to_nl_for_field(levend_query, 'levend'))
         except ValueError:
             url = self.url('zoek_test') # XXX change me to 'zoek' when done
             dict_of_strings = dict([(k,v.encode('utf8')) 
@@ -310,6 +314,7 @@ class Personen(grok.View,RepositoryView, Batcher):
         request = self.request
         born_description = get_born_description(self.request)
         died_description = get_died_description(self.request)
+        alive_description = get_alive_description(self.request)
 
         geboorteplaats = request.get('geboorteplaats')
         if born_description or geboorteplaats:
@@ -328,6 +333,10 @@ class Personen(grok.View,RepositoryView, Batcher):
             if sterfplaats:
                 result += ' in <em>%s</em>' % sterfplaats
                 
+        if alive_description:
+            result += ' ' + translate(_(u'alive'),target_language=current_language)
+            result += ' ' + alive_description
+
         source_id = request.get('source_id')
         if source_id:
             source_name = repository.get_source(source_id).description
@@ -525,11 +534,25 @@ def get_died_description(request):
             return _("Unable to parse death date. Please rephrase it.")
         return make_description(qry, lang=current_language)
 
+def get_alive_description(request):
+    """ Inspect the request and build a natural language description 
+        of the searched 'alive' date"""
+    current_language = IUserPreferredLanguages(request).getPreferredLanguages()[0]
+    levend_fuzzy_text = request.form.get('levend_fuzzy_text', None)
+    if levend_fuzzy_text:
+        try:
+            qry = get_search_query(levend_fuzzy_text)
+        except ValueError, e:
+            return _("Unable to parse alive date. Please rephrase it.")
+        return make_description(qry, lang=current_language)
+
 class Zoek_Test(grok.View, RepositoryView):
     def get_born_description(self):
         return get_born_description(self.request)
     def get_died_description(self):
         return get_died_description(self.request)
+    def get_alive_description(self):
+        return get_alive_description(self.request)
 
 class Zoek_places(grok.View, RepositoryView):
     def render(self):

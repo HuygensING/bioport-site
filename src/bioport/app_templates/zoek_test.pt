@@ -18,7 +18,8 @@
     
 <table tal:define="zoek_view nocall: context/@@zoek_test;
                    born_date_description zoek_view/get_born_description;
-                   died_date_description zoek_view/get_died_description">
+                   died_date_description zoek_view/get_died_description;
+                   alive_date_description zoek_view/get_alive_description;">
 <tr>
     <th i18n:translate="">zoeken op naam</th>
     <td>
@@ -146,6 +147,36 @@ There are different ways of entering values in fields alive, born, and died. Her
         For example "1680 to 1690"
     </span>
 </td></tr>
+
+
+<tr>
+    <th i18n:translate="alive">levend</th>
+    <td>
+        <input type="text" size="20" name="levend_fuzzy_text" 
+            tal:attributes="value python:request.get('levend_fuzzy_text')" />
+        <a class="tooltip_button toggle"
+            Onclick="jQuery('#tip_alive').toggle(200)">[?]</a>
+        <div id="tip_alive" class="tooltip" i18n:translate="alive_help_text">
+        You can search for people who where alive in a specific time range.
+        </div> 
+     </td>
+</tr>
+
+<tr tal:condition="alive_date_description"><td colspan="2" id="alive_feedback_text">
+    <span tal:content="alive_date_description">
+        From 1940 to 1945
+    </span>
+</td></tr>
+
+
+<tr><td colspan="2" id="died_help_text">
+    <span i18n:translate="died_help_text">
+        For example "1680 to 1690"
+    </span>
+</td></tr>
+
+
+
 
 <tr>
     <th i18n:translate="gender">sekse</th>
