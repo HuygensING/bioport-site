@@ -254,19 +254,17 @@ a:hover {
 } 
 .person_edit .info, .person .info h1, .person .info th, .person .info td {
 	font-size : 0.8em;
-    color : grey;
 }
 .person_edit .merged {
-        color : grey;
+/*        color : grey; */
 }
 
 .person_edit .merged input, .person_edit .merged select {
-        color : grey;
+/*        color : grey; */
         
 }
 .person_edit .bioport {
 		color : black;
-
 }
 
 .person_edit form {
@@ -411,3 +409,26 @@ input[name="funeral_y"]
     background-position:12px 8px;
 }
 
+.autocomplete {
+    background:none repeat scroll 0 0 #FFFFFF;
+    border:1px solid #999999;
+    cursor:default;
+    margin:-6px 6px 6px -6px;
+    max-height:350px;
+    min-width:183px;
+    overflow:auto;
+    text-align:left;
+    font-family:trebuchet MS;
+}
+
+.autocomplete-w1 {
+    background:url("../js/autocomplete/shadow.png") no-repeat scroll right bottom transparent;
+    left:0;
+    margin:6px 0 0 6px;
+    position:absolute;
+    top:0;
+}
+
+.autocomplete strong {
+    color:#995500;
+}

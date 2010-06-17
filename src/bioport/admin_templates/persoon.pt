@@ -7,7 +7,13 @@
     	bioport_bio view/bioport_biography; 
     	" 
     >
- <script>
+    
+<link rel="places_url"
+      href="http://localhost:8094/bioport/zoek_places" />
+
+<script tal:attributes="src static/js/autocomplete/jquery.autocomplete-min.js" type="text/javascript"></script>
+
+<script>
  $(document).ready(function(){
 	//on pressing return, make the form submit everything
 	$(function() {
@@ -37,6 +43,24 @@
 		  }
 		});
 	
+});
+
+
+var initialize_places = function() {
+    var enable_comboboxes = function(data) {
+        jQuery('#birth_place input').autocomplete({lookup:data.geboorte});
+        jQuery('#death_place input').autocomplete({lookup:data.geboorte});
+        jQuery('#baptism_place input').autocomplete({lookup:data.geboorte});
+        jQuery('#funeral_place input').autocomplete({lookup:data.geboorte});
+        jQuery('#active input').autocomplete({lookup:data.geboorte});
+    }
+    var places_url = jQuery("link[rel='places_url']").attr('href');
+    jQuery.getJSON(places_url, enable_comboboxes);
+}
+
+
+jQuery(function() {
+    initialize_places();
 });
 </script>
 
@@ -77,11 +101,6 @@ table {
                        tal:content="python:option[1]"></option>
            </select>
        </td>
-       <!-- XXX
-       <td>
-            <span tal:replace="structure python:view.actions.byname['form.actions.save_status'].render()" ></span>
-       </td>
-       -->
     </tr>
     <tr metal:define-macro="separator" class="separator" ><td colspan="3"><hr></td></tr>
     <tr tal:define="namen python:view.get_bioport_namen() or view.get_non_bioport_namen()"
@@ -131,9 +150,7 @@ table {
    		<th></th>
    		<td colspan="2">
    	        <input name="name_new" type="text" id="name_new"  accesskey="n" />
-<!-- XXX
-	        <span tal:replace="structure python:view.actions.byname['form.actions.add_name'].render()" ></span>
--->
+
 		</td>   
 	</tr>
    	<tr metal:use-macro="template/macros/separator" /> 	
@@ -150,11 +167,6 @@ table {
 			</select>	
 		
 		</td>
-		<!-- XXX
-		<td>
-	        <span tal:replace="structure python:view.actions.byname['form.actions.save_sex'].render()" />
-        </td> 
-        -->
 	</tr>
 
     <!-- geboortedatum -->
@@ -190,11 +202,6 @@ table {
                     return false;;;
 	            id string:button_show_${event_type};"
             >[toon]</a></td>
-<!-- XXX
-        <td  tal:attributes="class python:not has_data and 'form_%s' % event_type;">
-	        <span tal:replace="structure python:view.actions.byname['form.actions.save_event_%s' % event_type].render()" />
-        </td> 
--->
      </tr>
      <tr tal:attributes="
      	id string:${event_type}_exact;
@@ -305,13 +312,13 @@ table {
 
     </tr>
 
-   
+<!-- XXX -->   
     <tr tal:attributes="id string:${event_type}_place;
 	        class python:not has_data and 'form_%s' % event_type;
 	        "> 
         <th class="sublabel">plaats</th>
         <td colspan="2" tal:attributes="class python:view.status_value(event_type, 'place')">
-        	<input type="tekst"  
+        	<input id="birth_place" type="tekst"  
 	        	tal:attributes="name string:${event_type}_place;
 		        	value event/place | nothing" />
         </td>
@@ -321,7 +328,7 @@ table {
    	<!--  /geboorte -->
  
  	
-    <!--  plaats -->
+    <!-- plaats -->
    <tr tal:condition="nothing">
     	<th class="sublabel">plaats</th>
         <td colspan="2"
@@ -427,7 +434,7 @@ table {
 		</td>
     </tr>
     
-   	<tr
+   	<tr id="active"
    	    tal:attributes="class python:not has_data and 'form_%s' % state_id">
         <th class="sublabel">plaats</th>
          <td tal:attributes="class python:view.status_value('floruit', 'place')">
@@ -517,12 +524,6 @@ table {
    					    selected python:str(state.idno) == str(category.id)"></option>
    			</select>	
    		</td>
-<!-- XXX
-        <td>
-	        <span 
-	           tal:condition="repeat/state/start" tal:replace="structure python:view.actions.byname['form.actions.save_category'].render()" />
-        </td> 
--->
    	</tr>	
    	</tal:block>
    	<tr>
@@ -536,12 +537,6 @@ table {
                     tal:attributes="value category/id;"></option>
    			</select>	
         </td>
-   		<!-- XXX
-        <td>
-	        <span 
-	           tal:condition="not:view/categories" tal:replace="structure python:view.actions.byname['form.actions.save_category'].render()" />
-        </td>
-        -->
    	</tr>
    	    <tr tal:repeat="i python:range(len(view.categories), 2)">
         <th></th>   
@@ -672,159 +667,10 @@ table {
     </p>
 </div>
 
-
-<!-- XXX -->
-
 <br/><br/>
-<!--
-<h1 onclick="document.getElementById('debuginfo').style.display = 'block'; return;">Debug information</h1>
--->
-
-
 
 <h1>Debug information</h1>
-
 Click <a target="_blank" tal:attributes="href python:view.url('debuginfo') + '?bioport_id=' + request.get('bioport_id')">here</a> to see debug information.
-
-
-<!--
-<div style="display:none;" id="debug-info">
-<div tal:repeat="bio view/person/get_biographies">
-<h2>Bron: 
-	<a tal:attributes="
-	   href python:bio.get_value('url_biografie'); 
-	   target python:bio.get_source().id" >
-		<span tal:replace="python:bio.get_source().id"></span> - <span tal:replace="python:bio.get_source().description"></span>
-	</a>
-</h2>
-
-<table id="person-form-table">
-    <tr tal:condition="python:bio.get_source().id == 'bioport'">
-        <th>status</th>
-	    <td tal:content="python:view.person.status and view.repository().get_status_values(view.person.status)" ></td>
-    </tr>
-    <tr>
-        <th>id</th>
-	    <td><span tal:content="python:bio.get_value('local_id')" ></span>
-	       <a  tal:condition="bio/source_url" 
-	           tal:attributes="href bio/source_url" 
-	           tal:content="bio/source_url" /></td>
-    </tr>
-    <tr 
-        tal:condition="python:bio.get_source().id in ['nnbw', 'vdaa']">
-        <th>dbnl id</th>
-        <td 
-             ><span tal:content="python:bio.get_idno('dbnl_id')" tal:on-error="string:no dbnl_id idno found"></span>
-        </td>
-    </tr>
-    	<tr>
-		<th>namen</th>
-		<td>
-			<div tal:repeat="naam python:bio.get_namen()" tal:content="naam/volledige_naam"></div>	
-		</td>
-	</tr>
-	<tr tal:condition="python:bio.get_value('geslacht')">
-		<th>geslacht</th>
-		<td>
-			<span tal:replace="python:dict(view.sex_options()).get(bio.get_value('geslacht'))" />
-		</td>
-	</tr>
-	<tal:block repeat="event2 python:[('geboorte', 'birth'), ('dood', 'death'), ('doop', 'baptism'), ('begrafenis', 'funeral')]" >
-	<span 
-		tal:define="event python:view.get_event(event2[1], biography=bio);
-			title python:event2[0]"
-		tal:condition="python:event"> 
-		<tr tal:condition="event/when">
-			<th tal:content="python:'%s-datum' % title" />
-			<td tal:content="event/when_formatted">
-			</td>
-		</tr> 
-		<tr tal:condition="event/notBefore">
-			<th tal:content="python:'%s-na' % title" />
-			<td tal:content="event/notBefore_formatted">
-			</td>
-		</tr> 
-		<tr tal:condition="event/notAfter">
-			<th tal:content="python:'%s-voor' % title" />
-			<td tal:content="event/notAfter_formatted">
-			</td>
-		</tr> 
-		<tr tal:condition="event/date_text">
-			<th tal:content="python:'%s-datum_tekst' % title" />
-			<td tal:content="event/date_text"> </td>
-		</tr> 
-		<tr tal:condition="event/place">
-			<th tal:content="python:'%s-plaats' % title" />
-			<td tal:content="event/place"> </td>
-		</tr> 
-		</span>
-
-	  </tal:block> 
-<tal:block repeat="state2 python:[('rubriek', 'category'), ('actief', 'floruit')]">
-		<tal:block 
-		  repeat="state python:view.get_states(state2[1], biography=bio)"
-		  define="title python:state2[0];" 
-		  >
-		  <tr tal:condition="state/idno">
-		      <th tal:content="string:${title} - idno"></th>
-		      <td tal:content="state/idno" />
-		  </tr> 
-		  <tr tal:condition="state/text">
-		      <th tal:content="string:${title} - text"></th>
-		      <td tal:content="state/text" />
-		  </tr> 
-		  <tr tal:condition="state/frm">
-		      <th tal:content="string:${title} - van"></th>
-		      <td tal:content="state/frm" />
-		  </tr> 
-		  <tr tal:condition="state/to">
-		      <th tal:content="string:${title} - tot"></th>
-		      <td tal:content="state/to" />
-		  </tr> 
-		</tal:block>
-
-	</tal:block>
-	<tr tal:condition="python:bio.get_illustrations()">
-        <th>illustraties</th>	
-        <td>
-            <div tal:repeat="ill bio/get_illustrations">
-                local : <a tal:attributes="href ill/cached_url" tal:content="ill/cached_url" /><br />
-                original: <a tal:attributes="href ill/_url" tal:content="ill/_url" />
-            </div>
-            <form>
-            <input type="hidden" name="bioport_id" tal:attributes="value view/bioport_id">
-            <span tal:replace="structure python:view.actions.byname['form.actions.download_illustration'].render()" ></span>
-            </form>
-        </td>
-	</tr>
-	<tr tal:condition="python:bio.get_value('tekst')">
-		<th>tekst</th>
-		<td>
-			<span tal:replace="structure  bio/get_text_without_markup" />
-		</td>
-	
-	</tr>	
-    <tr tal:condition="python:bio.get_source().id == 'bioport' and view.person.remarks">
-        <th>opmerkingen</th>
-        <td tal:content="python:view.person.remarks" ></td>
-    </tr>
-	<tr tal:condition="python:bio.record.timestamp">
-		<th>laatst veranderd</th>
-		<td tal:content="python:bio.record.timestamp" ></td>
-	</tr>
-	<tr>
-        <th></th>	
-        <td><pre tal:content="bio/to_string" /></td>
-	</tr>
-	</table>
-</div>
-
-<form action="." tal:attributes="action request/URL" method="get">
-<input type="hidden" name="bioport_id" tal:attributes="value view/bioport_id" />
-	<span tal:replace="structure python:view.actions.byname['form.actions.compute_similarity'].render()" ></span>
-</form>
-</div>
--->
 
 </div>
 </html>
