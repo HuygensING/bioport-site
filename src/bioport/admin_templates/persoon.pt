@@ -579,21 +579,27 @@ table {
 	        <th>
 	           <span class="accesskey"></span>Snippet <span tal:replace="bio/source_id" ></span>
 	        </th>	
-	        <td>
-	            <textarea accesskey=""
-	            tal:attributes="
-		            id string:snippet_${bio/id};
-		            name string:snippet_${bio/id};
-		            "
-	            
-	               style="width:300px" 
-	            tal:content="python:view.bioport_biography and view.bioport_biography.get_snippet(bio.id) or ''"
-	            ></textarea>
+	        <td tal:define="id python:abs(hash(bio.id))">
+	            <a href="" 
+                   tal:attributes="onclick string:$('#snippet_${id}').show();; 
+                                                    jQuery(this).hide();; return false;;"
+	            >[toon]</a>
+	                <textarea style="display:none;"
+	                          accesskey=""
+	                          tal:attributes="
+		                    id string:snippet_${id};
+		                    name string:snippet_${bio/id};
+		                "
+	                
+	                   style="width:300px" 
+	                tal:content="python:view.bioport_biography and view.bioport_biography.get_snippet(bio.id) or ''"
+	                ></textarea>
             <!--
 	        <td>
 		        <span tal:replace="structure python:view.actions.byname['form.actions.save_snippet'].render()" ></span>
 	    	</td>
 	    	-->
+            </td>
 	   	</tr>
 	</div>
 	</div>
