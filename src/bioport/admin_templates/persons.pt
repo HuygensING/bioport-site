@@ -22,6 +22,18 @@ jQuery(function() {
 });
 </script>
 
+<style>
+input {
+    width:183px;
+    margin-right:15px;
+}
+
+select {
+    width:189px;
+    margin-right:15px;
+}
+</style>
+
 <h1>Persons</h1>
 <div metal:define-macro="alfabet">
 	<span tal:repeat="letter string:abcdefghijklmnopqrstuvwxyz"
@@ -40,7 +52,8 @@ jQuery(function() {
             <span>plaats: 
                 <input type="tekst" value="" name="any_place" id="any_place" autocomplete="off">
             </span>
-	        <label accesskey="r" for="source_id">b<span class="accesskey">r</span>on:</label>
+            <br /><br />
+	        <label accesskey="r" for="source_id">b<span class="accesskey">r</span>on:</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 	        <select 
 	            name="source_id" id="source_id" 
 	           >
@@ -61,7 +74,7 @@ jQuery(function() {
 			        tal:content="python:source.id" />
 	        </select>
 
-	        <label accesskey="s" for="status"><span class="accesskey">s</span>tatus:&nbsp;&nbsp;&nbsp;&nbsp;</label>
+	        <label accesskey="s" for="status"><span class="accesskey">s</span>tatus:</label>
 	        <select name="status" id="status">
 		        <option></option>
 		        <option tal:repeat="status view/get_status_values" 
