@@ -546,6 +546,7 @@ def get_alive_description(request):
             return _("Unable to parse alive date. Please rephrase it.")
         return make_description(qry, lang=current_language)
 
+
 class Zoek_Test(grok.View, RepositoryView):
     def get_born_description(self):
         return get_born_description(self.request)
@@ -554,7 +555,16 @@ class Zoek_Test(grok.View, RepositoryView):
     def get_alive_description(self):
         return get_alive_description(self.request)
 
+
 class Zoek_places(grok.View, RepositoryView):
+    """The JSON used in the search form of the main site.
+    It return a JSON like this:
+    
+    {'sterf' : ['a','b','c',...],
+     'geboorte' : ['a','b','c',...]
+    }
+    """
+
     def render(self):
         repo = self.repository()
         sterf_places = repo.get_places('sterf')
@@ -566,6 +576,26 @@ class Zoek_places(grok.View, RepositoryView):
         self.request.response.setHeader('Expires', expires)
         self.request.response.setHeader('Cache-Control', 'max-age=86400')
         return simplejson.dumps(result)
+        
+
+class Zoek_places_admin(grok.View, RepositoryView):
+    """The JSON used in various search forms of the admin inrface.
+    Return a JSON comprehending *all* places as a JSON list which 
+    looks like this:
+    
+    ['a','b','c',...]
+    """
+
+    def render(self):
+        self.request.response.setHeader('Content-Type', 'text/x-json; charset=UTF-8')
+        repo = self.repository()
+        sterf_places = repo.get_places('sterf')
+        geboorte_places = repo.get_places('geboorte')
+        result = set(sterf_places + geboorte_places)
+        result = list(result) 
+        result.sort()
+        return simplejson.dumps(result)
+
 
 
 class Auteurs(grok.View,RepositoryView, Batcher):
