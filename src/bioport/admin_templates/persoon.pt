@@ -9,7 +9,7 @@
     >
     
 <link rel="places_url"
-      href="http://localhost:8094/bioport/zoek_places" />
+      href="http://localhost:8094/bioport/zoek_places_admin" />
 
 <script tal:attributes="src static/js/autocomplete/jquery.autocomplete-min.js" type="text/javascript"></script>
 
@@ -48,11 +48,11 @@
 
 var initialize_places = function() {
     var enable_comboboxes = function(data) {
-        jQuery('#birth_place input').autocomplete({lookup:data.geboorte});
-        jQuery('#death_place input').autocomplete({lookup:data.geboorte});
-        jQuery('#baptism_place input').autocomplete({lookup:data.geboorte});
-        jQuery('#funeral_place input').autocomplete({lookup:data.geboorte});
-        jQuery('#active input').autocomplete({lookup:data.geboorte});
+        jQuery('#birth_place input').autocomplete({lookup:data});
+        jQuery('#death_place input').autocomplete({lookup:data});
+        jQuery('#baptism_place input').autocomplete({lookup:data});
+        jQuery('#funeral_place input').autocomplete({lookup:data});
+        jQuery('#active input').autocomplete({lookup:data});
     }
     var places_url = jQuery("link[rel='places_url']").attr('href');
     jQuery.getJSON(places_url, enable_comboboxes);
