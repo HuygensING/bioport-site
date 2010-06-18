@@ -205,10 +205,14 @@ class Biography(grok.View):
 class Persons(app.Personen,RepositoryView):
     grok.require('bioport.Edit')
     @grok.action('zoek', name="search_persons")
+
     def search_persons(self):
         self.persons = self.get_persons()
+
     def get_persons(self):
         return app.Personen.get_persons(self, hide_invisible=False)
+
+        
 class Source(grok.EditForm,RepositoryView):
     grok.require('bioport.Edit')
 

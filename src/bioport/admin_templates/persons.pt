@@ -1,4 +1,24 @@
 <html metal:use-macro="context/@@admin_template/macros/master">
+
+<script>
+var initialize_places = function() {
+    var enable_comboboxes = function(data) {
+        jQuery('#birth_place input').autocomplete({lookup:data.geboorte});
+        jQuery('#death_place input').autocomplete({lookup:data.geboorte});
+        jQuery('#baptism_place input').autocomplete({lookup:data.geboorte});
+        jQuery('#funeral_place input').autocomplete({lookup:data.geboorte});
+        jQuery('#active input').autocomplete({lookup:data.geboorte});
+    }
+    var places_url = jQuery("link[rel='places_url']").attr('href');
+    jQuery.getJSON(places_url, enable_comboboxes);
+}
+
+
+jQuery(function() {
+//    initialize_places();
+});
+</script>
+
 <div metal:fill-slot="content" 
 tal:define="batch view/get_persons;
     status_values view/get_status_values;">
@@ -45,6 +65,11 @@ tal:define="batch view/get_persons;
 		       selected python:str(status[0]) == request.get('status')"
 		   tal:content="python:status[1]">..</option>
 	</select>
+
+    <span>any place: 
+        <input type="tekst" value="" name="any_place" id="any_place" autocomplete="off">
+    </span>
+
 	
 <span tal:condition="nothing">
 <br />	
