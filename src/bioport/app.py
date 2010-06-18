@@ -762,6 +762,7 @@ class PersonenXML(grok.View,RepositoryView):
             out += ('<a href="%(url)s" last_changed="%(changed)s">%(name)s</a>\n'
                     % dict(name=name, url=url, changed=changed) )
         out += '</list>\n'
+        self.request.response.setHeader('Content-Type','text/xml; charset=utf-8')
         return out
 
 
