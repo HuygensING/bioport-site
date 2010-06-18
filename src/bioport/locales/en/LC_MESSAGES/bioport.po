@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Thu Jun 17 19:58:46 2010\n"
+"POT-Creation-Date: Fri Jun 18 16:44:08 2010\n"
 "PO-Revision-Date: 2010-03-24 17:53+0100\n"
 "Last-Translator: Silvio Tomatis <silviot@gmail.com>\n"
 "Language-Team: Italian\n"
@@ -143,12 +143,13 @@ msgid "contact"
 msgstr ""
 
 #: src/bioport/app_templates/bioportnotfound.pt:3
-msgid "Page not found"
+msgid "We’re sorry, but that page doesn’t exist"
 msgstr ""
 
 #: src/bioport/app_templates/bioportnotfound.pt:4
 msgid ""
-"The page you are looking for is not available. Please check the spelling."
+"Please double check the web address or use the search function on this page "
+"to find what you are looking for."
 msgstr ""
 
 #. Default: "Op ${today_date} gestorven"
