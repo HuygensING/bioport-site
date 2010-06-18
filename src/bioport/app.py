@@ -749,6 +749,22 @@ class SiteMaps(grok.View,RepositoryView):
             self.start_index = int(name[8:])
             return self
 
+class PersonenXML(grok.View,RepositoryView):
+    def render(self):
+        all_records = self.repository().get_persons_sequence()
+        session = self.repository().db.session()
+        results = session.execute("SELECT bioport_id, timestamp, naam FROM person")
+        out = '<?xml version="1.0" encoding="UTF-8"?>\n'
+        out += '<list>\n'
+        for person_id, timestamp, name in results: # XXX potentially inefficient
+            url = self.url('persoon') + '/xml/' + person_id
+            changed = timestamp.isoformat()
+            out += ('<a href="%(url)s" last_changed="%(changed)s">%(name)s</a>\n'
+                    % dict(name=name, url=url, changed=changed) )
+        out += '</list>\n'
+        return out
+
+
 class GoogleWebmasterSilvio(grok.View):
     """This view tells Google that Silvio (silviot@gmail.com)
        is authorized to use https://www.google.com/webmasters/

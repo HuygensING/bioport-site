@@ -18,8 +18,8 @@ class GoogleSitemapTest(FunctionalTestCase):
         first_sitemap_element = tree.xpath(".//*[local-name() = 'loc']")[0]
         sitemap_url = first_sitemap_element.text
         browser.open(sitemap_url)
-        for id in bioport_ids:
-            self.failUnless(id in browser.contents)
+        for bioid in bioport_ids:
+            self.failUnless(bioid in browser.contents)
         tree = fromstring(browser.contents)
         for url in tree.xpath(".//*[local-name() = 'loc']/text()"):
             browser.open(url)
@@ -32,6 +32,14 @@ class PersoonXmlTest(FunctionalTestCase):
             url = self.base_url + '/persoon/xml/' + p_id
             browser.open(url)
             self.assertEqual(browser.headers.type, 'text/xml')
+
+    def test_xml_index(self):
+        browser = self.browser
+        url = self.base_url + '/personenxml/'
+        browser.open(url)
+        bioport_ids = self.app.repository(user=None).get_bioport_ids()
+        for bioid in bioport_ids:
+            self.failUnless('persoon/xml/' + bioid in browser.contents)
 
 
 class AppTest(FunctionalTestCase):
