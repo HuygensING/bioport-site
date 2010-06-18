@@ -398,7 +398,7 @@ input[name="death_notBefore_y"],
 input[name="death_notAfter_y"],
 input[name="funeral_y"]
 {
-    width:36px;
+    width:36px !important;
 }
 
 

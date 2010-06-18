@@ -58,7 +58,6 @@ var initialize_places = function() {
     jQuery.getJSON(places_url, enable_comboboxes);
 }
 
-
 jQuery(function() {
     initialize_places();
 });
@@ -76,6 +75,21 @@ table {
 img {
     margin-bottom:-3px;
 }
+
+.editTable td,
+.editTable th {
+    padding:0px;
+}
+
+.editTable input {
+    margin-bottom:0px;
+}
+
+.editTable input[type="text"],
+.editTable input[type="tekst"] 
+{
+    width:179px;
+}
 </style>
 
 <table id="upper-table-container">
@@ -86,7 +100,7 @@ img {
       <input type="hidden" name="bioport_id" tal:attributes="value python:view.bioport_id" />
       <input type="hidden" name="history_counter" tal:attributes="value python:view.history_counter" />
 
-<table width="500">
+<table class="editTable" width="500">
     <tr>
         <th>bioport identifier</th>
         <td class="bioport" tal:content="view/person/get_bioport_id" />
@@ -417,6 +431,15 @@ img {
 		</td>
     </tr>
     
+   	<tr tal:attributes="class python:not has_data and 'form_%s' % state_id">
+        <th class="sublabel">tekst</th>
+        <td tal:attributes="class python:view.status_value('floruit', 'text')">
+            <input tal:attributes="name python:'state_%s_text' % 'floruit';
+                value state/text | nothing;
+                " >
+        </td>
+    </tr>
+    
    	<tr id="active"
    	    tal:attributes="class python:not has_data and 'form_%s' % state_id">
         <th class="sublabel">plaats</th>
@@ -424,17 +447,6 @@ img {
         	<input type="tekst"  
 	        	tal:attributes="name string:state_${state_id}_place;
 		        	value state/place | nothing" />
-        </td>
-    </tr>
- 
-    
-    
-   	<tr tal:attributes="class python:not has_data and 'form_%s' % state_id">
-        <th class="sublabel">tekst</th>
-        <td tal:attributes="class python:view.status_value('floruit', 'text')">
-            <input tal:attributes="name python:'state_%s_text' % 'floruit';
-                value state/text | nothing;
-                " >
         </td>
     </tr>
   	</tal:block>
