@@ -503,6 +503,16 @@ class Persoon(BioPortIdTraverser, grok.View, RepositoryView):
         states = self.get_states(type, biography)
         if states:
             return states[0]
+    
+    def get_biographies(self):
+        bios = self.person.get_biographies()
+        bios = [bio for bio in bios if bio.source_id != 'bioport' and bio.source_id != 'portraits']
+        return bios
+    
+    def get_portraits(self):
+        bios = self.person.get_biographies()
+        bios = [bio for bio in bios if bio.source_id == 'portraits']
+        return bios
         
     def maanden(self):
         return maanden

@@ -100,15 +100,18 @@
 	        </td>
         </tr>
      </table>
-    <div class="levensbeschrijvingen">
-    <h2 i18n:translate="Biographies">levensbeschrijving(en)</h2>
+    <div class="levensbeschrijvingen"
+        tal:define="bios view/get_biographies">
+    <h2 i18n:translate="Biographies"
+        tal:condition="bios">levensbeschrijving(en)</h2>
     <hr />
-    <div tal:repeat="biography view/person/get_biographies" tal:omit-tag="">
+    <div tal:repeat="biography bios" tal:omit-tag="">
     <div
+	    metal:define-macro="link2bio"
         tal:define="url python:biography.get_value('url_biografie')"
-	   tal:attributes="OnClick string:window.open('${url}');;return false;;"
+	    tal:attributes="OnClick string:window.open('${url}');;return false;;"
         class="biography_reference"
-        tal:condition="python:biography.source_id != 'bioport'">
+        >
         <tal:word i18n:translate="Biography"
             tal:condition="nothing">Biografie</tal:word>
         <span tal:condition="python:biography.get_value('auteur')">
@@ -131,6 +134,13 @@
                 class="external_link open_in_new_window" i18n:translate="">meer...</a>
            </div>
         </div>
+    </div>
+    </div>
+    <div class="levensbeschrijvingen"
+        tal:define="bios view/get_portraits">
+    <h2 i18n:translate="Portraits" tal:condition="bios">Portret(ten)</h2>
+    <div tal:repeat="biography bios" tal:omit-tag="">
+    <div metal:use-macro="template/macros/link2bio" />
     </div>
     </div>
     <div class="belowbios" tal:condition="nothing"
