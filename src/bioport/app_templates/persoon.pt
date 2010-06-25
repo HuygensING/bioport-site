@@ -10,11 +10,17 @@
     	>
     <div class="column_right">
     <div class="illustratie" tal:repeat="ill python:illustraties[:]">
+    <a tal:attributes="href ill/link_url">
     <img
         tal:attributes="src ill/cached_url;
             alt string:illustratie bij deze biografie (${ill/cached_url});
       " /> 
-      <div class="caption" tal:content="ill/caption"></div>
+      </a>
+      <div class="caption" tal:condition="ill/caption">
+        <span tal:replace="ill/caption"></span>
+        <a  tal:attributes="href ill/link_url"
+                class="external_link open_in_new_window" i18n:translate=""></a>
+       </div>
     </div>
     </div>
     <div class="illustratie" tal:condition="not:illustraties">
@@ -126,7 +132,6 @@
                     tal:content="python:biography.get_source().description"></a>
     	</span>
     	<div class="snippet"
-         
     		tal:define="snippet  python:(view.bioport_biography and view.bioport_biography.get_snippet(biography.id)) or biography.snippet"
             tal:condition="snippet">
              <span tal:replace="structure snippet" />
