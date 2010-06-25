@@ -727,6 +727,10 @@ class Persoon(app.Persoon, grok.EditForm, RepositoryView):
         
     def _save_names(self):
         names = self.request.get('personname')
+        if isinstance(names, (str, unicode)):
+            names = [names]
+            
+            
         x = 0
         for fullname in names:
             nameobj = Naam(volledige_naam=fullname)

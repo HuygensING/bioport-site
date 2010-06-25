@@ -567,21 +567,19 @@ img {
 		<tr metal:use-macro="template/macros/separator" ></tr> 
 	    <tr>
 	        <th>
-	           <span class="accesskey"></span>Snippet <span tal:replace="bio/source_id" ></span>
+	           <span class="accesskey">S</span>nippet <span tal:replace="bio/source_id" ></span>
 	        </th>	
 	        <td tal:define="id python:abs(hash(bio.id))">
 	            <a href="" 
+                   accesskey="s"
                    tal:attributes="onclick string:$('#snippet_${id}').show();; 
                                                     jQuery(this).hide();; return false;;"
 	            >[toon]</a>
-	                <textarea style="display:none;"
-	                          accesskey=""
-	                          tal:attributes="
+	                <textarea style="display:none;width:300px" 
+                          tal:attributes="
 		                    id string:snippet_${id};
 		                    name string:snippet_${bio/id};
 		                "
-	                
-	                   style="width:300px" 
 	                tal:content="python:view.bioport_biography and view.bioport_biography.get_snippet(bio.id) or ''"
 	                ></textarea>
             <!--
