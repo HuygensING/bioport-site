@@ -21,6 +21,17 @@
 
       <grant role="bioport.Editor" principal="bioport.jelle" />
       <grant role="bioport.Manager" principal="bioport.jelle" />
+      
+      <principal id="bioport.giampaolo"
+                 title="giampaolo"
+                 login="giampaolo"
+                 password_manager="Plain Text"
+                 password="N@p0li"
+                 />
+
+      <grant role="bioport.Editor" principal="bioport.giampaolo" />
+      <grant role="bioport.Manager" principal="bioport.giampaolo" />
+      
       <principal id="bioport.els"
                  title="Els"
                  login="els"
