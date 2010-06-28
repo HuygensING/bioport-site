@@ -759,21 +759,52 @@ class SiteMaps(grok.View,RepositoryView):
             self.start_index = int(name[8:])
             return self
 
+
+##
+# Removes HTML or XML character references and entities from a text string.
+# Borrowed from http://effbot.org/zone/re-sub.htm#unescape-html
+# @param text The HTML (or XML) source text.
+# @return The plain text, as a Unicode string, if necessary.
+
+import re, htmlentitydefs
+def unescape(text):
+    def fixup(m):
+        text = m.group(0)
+        if text[:2] == "&#":
+            # character reference
+            try:
+                if text[:3] == "&#x":
+                    return unichr(int(text[3:-1], 16))
+                else:
+                    return unichr(int(text[2:-1]))
+            except ValueError:
+                pass
+        else:
+            # named entity
+            try:
+                text = unichr(htmlentitydefs.name2codepoint[text[1:-1]])
+            except KeyError:
+                pass
+        return text # leave as is
+    return re.sub("&#?\w+;", fixup, text)
+
 class PersonenXML(grok.View,RepositoryView):
     def render(self):
         all_records = self.repository().get_persons_sequence()
         session = self.repository().db.session()
         results = session.execute("SELECT bioport_id, timestamp, naam FROM person")
-        out = '<?xml version="1.0" encoding="UTF-8"?>\n'
-        out += '<list>\n'
+        out = ['<?xml version="1.0" encoding="UTF-8"?>\n']
+        out.append('<list>\n')
         for person_id, timestamp, name in results: # XXX potentially inefficient
+            if '&' in name:
+                name = unescape(name).encode('utf8')
             url = self.url('persoon') + '/xml/' + person_id
             changed = timestamp.isoformat()
-            out += ('<a href="%(url)s" last_changed="%(changed)s">%(name)s</a>\n'
+            out.append('<a href="%(url)s" last_changed="%(changed)s">%(name)s</a>\n'
                     % dict(name=name, url=url, changed=changed) )
-        out += '</list>\n'
+        out.append('</list>\n')
         self.request.response.setHeader('Content-Type','text/xml; charset=utf-8')
-        return out
+        return ''.join(out)
 
 
 class GoogleWebmasterSilvio(grok.View):
