@@ -429,7 +429,8 @@ class PersoonXml(BioPortIdTraverser, grok.View,RepositoryView):
             self.bioport_id = redirects_to
         person  = self.repository().get_person(bioport_id=self.bioport_id)
         self.request.response.setHeader('Content-Type','text/xml; charset=utf-8')
-        return person.get_biographies()[0].to_string()
+        return person.get_merged_biography().to_string()
+
 
 class Persoon(BioPortIdTraverser, grok.View, RepositoryView):
 
@@ -792,15 +793,20 @@ class PersonenXML(grok.View,RepositoryView):
     def render(self):
         all_records = self.repository().get_persons_sequence()
         session = self.repository().db.session()
-        results = session.execute("SELECT bioport_id, timestamp, naam FROM person")
+#        results = session.execute("SELECT bioport_id, timestamp, naam FROM person")
         out = ['<?xml version="1.0" encoding="UTF-8"?>\n']
         out.append('<list>\n')
-        for person_id, timestamp, name in results: # XXX potentially inefficient
-            if '&' in name:
+#        for person_id, timestamp, name in results: # XXX potentially inefficient
+        for person in self.repository().get_persons(): #[:10]:
+            person_id = person.record.bioport_id
+            timestamp = person.record.timestamp
+            name = person.record.naam
+            
+            if name and '&' in name:
                 name = unescape(name).encode('utf8')
             url = self.url('persoon') + '/xml/' + person_id
             changed = timestamp.isoformat()
-            out.append('<a href="%(url)s" last_changed="%(changed)s">%(name)s</a>\n'
+            out.append(u'<a href="%(url)s" last_changed="%(changed)s">%(name)s</a>\n'
                     % dict(name=name, url=url, changed=changed) )
         out.append('</list>\n')
         self.request.response.setHeader('Content-Type','text/xml; charset=utf-8')

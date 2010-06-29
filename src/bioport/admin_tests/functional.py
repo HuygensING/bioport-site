@@ -50,7 +50,7 @@ class AdminPanelFunctionalTest(baseFunctionalTestCase):
             pass
         #download the biographies for this source
         repository = app.repository(user=None)
-        repository.download_biographies(source=repository.get_source('knaw_test'))
+        repository.download_biographies(source=repository.get_source(u'knaw_test'))
         
 
 class SimpleSampleFunctionalTest(FunctionalTestCase):
@@ -147,7 +147,7 @@ class SimpleSampleFunctionalTest(FunctionalTestCase):
         form = browser.getForm(index=0)
         form.getControl(name='birth_y').value=''
         form.getControl(name='birth_text').value=''
-        form.getControl(name='form.actions.save_event_birth').click()
+        form.getControl(name='form.actions.save_everything').click()
        
         #go the the public view 
         browser.getLink('getoond').click()
@@ -157,7 +157,7 @@ class SimpleSampleFunctionalTest(FunctionalTestCase):
         browser.open(edit_url)
         form = browser.getForm(index=0)
         form.getControl(name='birth_y').value='1111'
-        form.getControl(name='form.actions.save_event_birth').click()
+        form.getControl(name='form.actions.save_everything').click()
         browser.open(public_url)
         assert re.findall('1111', browser.contents, re.DOTALL)
         
@@ -168,7 +168,7 @@ class SimpleSampleFunctionalTest(FunctionalTestCase):
         form.getControl(name='death_m').value=['2']
 #        form.getControl(name='death_d').value=['1']
         form.getControl(name='death_d').value='1'
-        form.getControl(name='form.actions.save_event_death').click()
+        form.getControl(name='form.actions.save_everything').click()
         form = browser.getForm(index=0)
         self.assertEqual(form.getControl(name='death_y').value,'2222')
         self.assertEqual(form.getControl(name='death_m').value,['2'])
@@ -180,14 +180,14 @@ class SimpleSampleFunctionalTest(FunctionalTestCase):
         browser.open(edit_url)
         form = browser.getForm(index=0)
         form.getControl(name='funeral_y').value='3333'
-        form.getControl(name='form.actions.save_event_funeral').click()
+        form.getControl(name='form.actions.save_everything').click()
         browser.open(public_url)
         assert re.findall('3333', browser.contents, re.DOTALL)
         
         browser.open(edit_url)
         form = browser.getForm(index=0)
         form.getControl(name='baptism_y').value='4444'
-        form.getControl(name='form.actions.save_event_baptism').click()
+        form.getControl(name='form.actions.save_everything').click()
         browser.open(public_url)
         assert re.findall('4444', browser.contents, re.DOTALL)
         
@@ -195,7 +195,7 @@ class SimpleSampleFunctionalTest(FunctionalTestCase):
         browser.open(edit_url)
         form = browser.getForm(index=0)
         form.getControl(name='sex').value=['2']
-        form.getControl(name='form.actions.save_sex').click()
+        form.getControl(name='form.actions.save_everything').click()
         browser.open(public_url)
         assert re.findall('vrouw', browser.contents, re.DOTALL)
  
