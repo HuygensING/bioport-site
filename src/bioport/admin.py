@@ -734,7 +734,10 @@ class Persoon(app.Persoon, grok.EditForm, RepositoryView):
         x = 0
         for fullname in names:
             nameobj = Naam(volledige_naam=fullname)
-            self.bioport_biography._replace_name(nameobj, x)
+            if self.bioport_biography.get_namen():
+	            self.bioport_biography._replace_name(nameobj, x)
+            else:
+                self.bioport_biography._add_a_name(nameobj)
             x += 1
 
     @grok.action('voeg toe', name='add_name') 

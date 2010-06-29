@@ -147,6 +147,7 @@ class SimpleSampleFunctionalTest(FunctionalTestCase):
         form = browser.getForm(index=0)
         form.getControl(name='birth_y').value=''
         form.getControl(name='birth_text').value=''
+        form.getControl(name='personname'). value = 'xxx'
         form.getControl(name='form.actions.save_everything').click()
        
         #go the the public view 
