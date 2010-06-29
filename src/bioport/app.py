@@ -194,9 +194,9 @@ class Language_Chooser(grok.View):
             params = self.request.form.copy()
             for x, y in params.iteritems():
                 if type(y) in [types.ListType]:
-	                params[x] = [z.encode("utf-8") for z in y]
+                    params[x] = [z.encode("utf-8") for z in y]
                 else:
-	                params[x] = y.encode("utf-8")
+                    params[x] = y.encode("utf-8")
             encoded_params = urlencode(params)
             # /XXX
 
@@ -801,9 +801,13 @@ class PersonenXML(grok.View,RepositoryView):
             person_id = person.record.bioport_id
             timestamp = person.record.timestamp
             name = person.record.naam
-            
-            if name and '&' in name:
-                name = unescape(name).encode('utf8')
+            if name:
+                if not type(name) in (unicode,):
+                    name = name.decode('latin1')
+                
+                if '&' in name: 
+                    name = name.replace('&', '&amp;')
+#                    name = unescape(name).encode('utf8')
             url = self.url('persoon') + '/xml/' + person_id
             changed = timestamp.isoformat()
             out.append(u'<a href="%(url)s" last_changed="%(changed)s">%(name)s</a>\n'
@@ -880,5 +884,4 @@ class ErrorHandler(grok.View, RepositoryView):
 
 #    def update(self):
 #        self.request.response.setStatus(404)
-
 
