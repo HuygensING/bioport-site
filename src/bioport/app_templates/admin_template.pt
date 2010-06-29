@@ -17,6 +17,7 @@
 	<link rel="stylesheet" type="text/css"  tal:attributes="href static/css/bioport_admin.css" />
 	 <script type="text/javascript" tal:attributes="src static/js/jquery-1.4.1.min.js"></script>  
 
+	<link tal:attributes="href static/images/favicon.ico" rel="shortcut icon"/>
     <div metal:define-slot="extra_header_content" />
 </head>
 <body>
