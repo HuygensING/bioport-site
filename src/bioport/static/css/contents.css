@@ -724,9 +724,53 @@
 	}
 
 
-/* contact */
+/* act */
 
 #Contact .widget img {
 	vertical-align: middle;
 	margin-left: 10px;
+}
+
+.portlet {
+    margin-bottom:15px;
+}
+
+/* portlets - generic */
+
+.portletHeader {
+    background:none repeat scroll 0 0 #DFBD48 !important;
+    color:white;
+    font-size:12px;
+    font-weight:bold;
+    line-height:1em;
+    margin:0 !important;
+    padding:7px 10px;
+}
+
+.portletItem {
+    background:#EEEEEE;
+    margin-top:2px;
+}
+
+.portletStaticText .portletItem {
+}
+
+
+.portletStaticText .portletHeader {
+    display:none;
+}
+
+
+
+.portletStaticText .portletItem li {
+    padding-left:10px;
+    padding-right:10px;
+    padding-top:5px;
+    padding-bottom:5px;
+}
+
+.portletStaticText .portletItem a {
+    color:#995500;
+    text-decoration:none;
+    font-weight:bold;
 }
