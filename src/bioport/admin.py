@@ -4,8 +4,8 @@ import grok
 from app import Batcher, RepositoryView
 from BioPortRepository.repository import Repository
 from common import format_date, format_dates, format_number
-from NamenIndex.common import from_ymd, to_ymd
-from NamenIndex.naam import Naam
+from names.common import from_ymd, to_ymd
+from names.name import Naam
 from permissions import *
 from plone.memoize import forever
 from z3c.batching.batch import Batch

@@ -7,7 +7,7 @@ from chameleon.zpt.template import PageTemplateFile
 from common import (format_date, format_dates, format_number, 
                     html2unicode, maanden, months)
 from interfaces import IBioport
-from NamenIndex.common import to_ymd
+from names.common import to_ymd
 from plone.memoize import ram
 from plone.memoize.instance import memoize
 from time import time
@@ -792,7 +792,7 @@ def unescape(text):
 class PersonenXML(grok.View,RepositoryView):
     def render(self):
         all_records = self.repository().get_persons_sequence()
-        session = self.repository().db.session()
+        session = self.repository().db.get_session()
 #        results = session.execute("SELECT bioport_id, timestamp, naam FROM person")
         out = ['<?xml version="1.0" encoding="UTF-8"?>\n']
         out.append('<list>\n')
