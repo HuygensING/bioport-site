@@ -154,7 +154,7 @@ will return all Capricorns
  
         <div id="tip_death" class="tooltip">
         <span 
-            metal:use-macro="template/macros/born_died_help_text">
+            metal:use-macro="context/@@zoek/macros/born_died_help_text">
             </span>
         </div> 
      </td>
@@ -194,7 +194,7 @@ will return all Capricorns
  
         <div id="tip_alive" class="tooltip">
         <span 
-            metal:use-macro="template/macros/born_died_help_text">
+            metal:use-macro="context/@@zoek/macros/born_died_help_text">
             </span>
         </div> 
       </td>
