@@ -31,9 +31,6 @@
  	  e.g. 
      <a OnClick="jQuery(&quot;input[name='search_name']&quot;).attr('value', 'huygens')">huygens</a> or
      <a OnClick="jQuery(&quot;input[name='search_name']&quot;).attr('value', 'aalb*')">aalb*</a>. 
-     <!--  or
-     <a OnClick="jQuery(&quot;input[name='search_name']&quot;).attr('value', '&quot;huygens&quot;')">"huygens"</a>.
-     -->
     </span>
         <a class="tooltip_button toggle"
             i18n:translate="tooltip_button_toggle"
@@ -62,8 +59,8 @@
     <td>
         <input type="text" name="search_term" 
             tal:attributes="value python:unicode(request.get('search_term', ''))" />
-	 	 <span i18n:translate="search_name_help_text_example" class="help_text">
-	 	  bv. 
+	 	 <span i18n:translate="search_term_help_text_example" class="help_text">
+	 	  bijv. 
      <a OnClick="jQuery(&quot;input[name='search_term']&quot;).attr('value', 'vroedvrouw')">vroedvrouw</a> of
      <a OnClick="jQuery(&quot;input[name='search_term']&quot;).attr('value', '*moord*')">*moord*</a>
      </span>
@@ -104,7 +101,7 @@ There are different ways of entering values in fields alive, born, and died. Her
     <a OnClick="jQuery(&quot;input[name='geboorte_fuzzy_text']&quot;).attr('value', '22 April')">22 April</a>
 	will return those whose birthday is that date;
 	<li>a search for people who died on 
-    <a OnClick="jQuery(&quot;input[name='']&quot;).attr('value', 'March 1946')">March 1946</a>
+    <a OnClick="jQuery(&quot;input[name='sterf_fuzzy_text']&quot;).attr('value', 'March 1946')">March 1946</a>
 	will return those who died anywhere from 1 March to 31 March 1946;
 	<li>a search for people alive in
     <a OnClick="jQuery(&quot;input[name='levend_fuzzy_text']&quot;).attr('value', '1940 to 1945')">1940 to 1945</a>
@@ -136,7 +133,7 @@ will return all Capricorns
                 tal:attributes="value python:unicode(request.get('geboorteplaats', ''))" />
         </span>
 	 <span i18n:translate="geboorteplaats_help_text_example" class="help_text">
-        e.g. <a OnClick="jQuery(&quot;input[name='sterfplaats']&quot;).attr('value', 'Zaamslag')">Zaamslag</a>.
+        e.g. <a OnClick="jQuery(&quot;input[name='geboorteplaats']&quot;).attr('value', 'Zaamslag')">Zaamslag</a>.
     </span>
     </td>
 </tr>
