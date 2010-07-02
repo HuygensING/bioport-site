@@ -518,8 +518,8 @@ class Persoon(BioPortIdTraverser, grok.View, RepositoryView):
     def maanden(self):
         return maanden
 
-class Zoek(grok.View, RepositoryView):
-    pass
+#class Zoek(grok.View, RepositoryView):
+#    pass
 
 def get_born_description(request):
     """ Inspect the request and build a natural language description 
@@ -558,7 +558,7 @@ def get_alive_description(request):
         return make_description(qry, lang=current_language)
 
 
-class Zoek_Test(grok.View, RepositoryView):
+class Zoek(grok.View, RepositoryView):
     def get_born_description(self):
         return get_born_description(self.request)
     def get_died_description(self):
