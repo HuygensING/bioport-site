@@ -16,7 +16,7 @@
         </script>
 
     
-<table tal:define="zoek_view nocall: context/@@zoek_test;
+<table tal:define="zoek_view nocall: context/@@zoek;
                    born_date_description zoek_view/get_born_description;
                    died_date_description zoek_view/get_died_description;
                    alive_date_description zoek_view/get_alive_description;">

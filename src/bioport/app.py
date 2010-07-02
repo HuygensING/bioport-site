@@ -264,7 +264,7 @@ class Personen(grok.View,RepositoryView, Batcher):
                 levend_query = get_search_query(levend_fuzzy_text, current_language)
                 qry.update(en_to_nl_for_field(levend_query, 'levend'))
         except ValueError:
-            url = self.url('zoek_test') # XXX change me to 'zoek' when done
+            url = self.url('zoek') # XXX change me to 'zoek' when done
             dict_of_strings = dict([(k,v.encode('utf8')) 
                                     for k, v in self.request.form.items()])
             url += '?' + urlencode(dict_of_strings)
