@@ -66,7 +66,7 @@
      </span>
          <a class="tooltip_button toggle"
             i18n:translate="tooltip_button_toggle"
-            Onclick="jQuery('#tip_search_term').toggle(200)" >[more]</a> 
+            Onclick="jQuery('#tip_search_term').toggle(200)" >[more...]</a> 
         <div class="tooltip" id="tip_search_term" i18n:translate="search_in_text_help">
             U kunt vrij zoeken op woord(en) in de tekst van de biografieën. 
             <br/>
