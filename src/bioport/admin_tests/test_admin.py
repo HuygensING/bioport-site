@@ -7,13 +7,15 @@ Do a Python test on the app.
 
 import unittest
 import sys
+import os
+
 sys.path.append('..')
 sys.path.append('../..')
 from bioport.admin import Sources, Source, Edit
 from bioport.app import Bioport
 from zope.publisher.browser import TestRequest
-import BioPortRepository
-import os
+import bioport_repository
+
 
 class SimpleSampleTest(unittest.TestCase):
     "Test the Sample application"
@@ -30,8 +32,9 @@ class SimpleSampleTest(unittest.TestCase):
         self.repo = repo = self.admin.repository(user=None)
         self.repo.db.metadata.drop_all()
         repo.db.metadata.create_all()
-        url = os.path.join(os.path.dirname(BioPortRepository.__file__), 'tests', 'data','knaw', 'list.xml')
-        src = BioPortRepository.source.Source(id='knaw', url=url) 
+        url = os.path.join(os.path.dirname(bioport_repository.__file__), 
+                         'tests', 'data','knaw', 'list.xml')
+        src = bioport_repository.source.Source(id='knaw', url=url) 
         repo.add_source(src)
         
     def tearDown(self):
@@ -52,3 +55,5 @@ class SimpleSampleTest(unittest.TestCase):
         request = TestRequest()
         edit = Edit(self.admin, request)
         edit.reset_database
+        
+

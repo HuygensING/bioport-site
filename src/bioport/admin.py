@@ -1,8 +1,9 @@
+#!/usr/bin/env python
+
 import app
-import BioPortRepository
 import grok
 from app import Batcher, RepositoryView
-from BioPortRepository.repository import Repository
+
 from common import format_date, format_dates, format_number
 from names.common import from_ymd, to_ymd
 from names.name import Naam
@@ -12,6 +13,9 @@ from z3c.batching.batch import Batch
 from zope import schema
 from zope.interface import Interface
 from zope.session.interfaces import ISession
+
+import bioport_repository
+from bioport_repository.repository import Repository
     
 class IAdminSettings(Interface):           
     SVN_REPOSITORY = schema.TextLine(title=u'URL of svn repository', required=False)
@@ -25,7 +29,9 @@ class IAdminSettings(Interface):
     EMAIL_FROM_ADDRESS = schema.TextLine(title=u'''Emails sent by the site will have this email address as source''', required=False)
     CONTACT_DESTINATION_ADDRESS = schema.TextLine(title=u'''Emails sent by the site will be sent to this email address''', required=False)
 
+
 class Admin(grok.Container  ):
+
     grok.require('bioport.Edit')
     grok.implements(IAdminSettings)
     grok.template('admin_index')
@@ -69,11 +75,10 @@ class Admin(grok.Container  ):
     def format_number(self, s):
         return format_number(s)
 
-
-    
     def get_auteurs(self, **args):
         return self.repository().get_authors()   
     
+
 class Edit(grok.EditForm,RepositoryView):
     grok.require('bioport.Manage')
     grok.template('edit')
@@ -126,18 +131,18 @@ class Edit(grok.EditForm,RepositoryView):
         
 #    @grok.action('Set state of edited persons to bewerkte(JG: DELETE THIS BUTTON WHEN DONE)')
 #    def set_state_to_bewerkt(self, **data):
-#        from BioPortRepository.upgrade import upgrade_persons
+#        from bioport_repository.upgrade import upgrade_persons
 #        upgrade_persons(self.repository())
     
 #    @grok.action('refill table with identical dbnl ids')
 #    def refill_identical_dbnl_ids(self, **data):
-#        from BioPortRepository.tmp import update_vdaa_and_nnbw_doubles
+#        from bioport_repository.tmp import update_vdaa_and_nnbw_doubles
 #        repository = self.repository()
 #        update_vdaa_and_nnbw_doubles.update_table_dbnl_ids(repo=repository)
 
 #    @grok.action('identify vdaa and nnbw doubles')
 #    def identify_vdaa_etc(self, **args):
-#        from BioPortRepository.tmp.update_vdaa_and_nnbw_doubles import identify_doubles
+#        from bioport_repository.tmp.update_vdaa_and_nnbw_doubles import identify_doubles
 #        identify_doubles(repo =self.repository())
 #    
     @grok.action('update persons')
@@ -152,7 +157,7 @@ class Edit(grok.EditForm,RepositoryView):
 #        ]
 #        repo = self.repository()
 #        for source_id, bio_id, biourl in ls:
-#            bio = BioPortRepository.biography.Biography(source_id=source_id, repository=repo)
+#            bio = bioport_repository.biography.Biography(source_id=source_id, repository=repo)
 #            bio.from_url(biourl)
 #            repo.add_biography(bio)        
             
@@ -296,7 +301,7 @@ class Sources(grok.View,RepositoryView):
         return msg
     
     def add_source(self, source_id, url, description=None):
-        source = self.repository().add_source(BioPortRepository.source.Source(source_id, url, description))
+        source = self.repository().add_source(bioport_repository.source.Source(source_id, url, description))
         
 
 class MostSimilar(grok.Form,RepositoryView, Batcher):
@@ -342,7 +347,7 @@ class MostSimilar(grok.Form,RepositoryView, Batcher):
     def identify(self):
         bioport_ids = self.request.get('bioport_ids')
         repo = self.repository()
-        persons = [BioPortRepository.person.Person(id, repository=repo) for id in bioport_ids]
+        persons = [bioport_repository.person.Person(id, repository=repo) for id in bioport_ids]
         assert len(persons) == 2
         repo.identify(persons[0], persons[1])
         
@@ -361,7 +366,7 @@ class MostSimilar(grok.Form,RepositoryView, Batcher):
     def antiidentify(self):
         bioport_ids = self.request.get('bioport_ids')
         repo = self.repository()
-        persons = [BioPortRepository.person.Person(id, repository=repo) for id in bioport_ids]
+        persons = [bioport_repository.person.Person(id, repository=repo) for id in bioport_ids]
         p1, p2 = persons
         repo.antiidentify(p1, p2)
         
@@ -381,7 +386,7 @@ class MostSimilar(grok.Form,RepositoryView, Batcher):
     def deferidentification(self):
         bioport_ids = self.request.get('bioport_ids') 
         repo = self.repository()
-        persons = [BioPortRepository.person.Person(id, repository=repo) for id in bioport_ids]
+        persons = [bioport_repository.person.Person(id, repository=repo) for id in bioport_ids]
         p1, p2 = persons
         repo.defer_identification(p1, p2)
         
@@ -831,7 +836,7 @@ class IdentifyMoreInfo(MostSimilar, Persons, Persoon,RepositoryView):
     grok.require('bioport.Edit')
     def update(self, bioport_ids=[]):
         repo = self.repository()
-        persons = [BioPortRepository.person.Person(id, repository=repo) for id in bioport_ids]
+        persons = [bioport_repository.person.Person(id, repository=repo) for id in bioport_ids]
         self.bioport_ids = bioport_ids
         self.persons = persons
         self.start = int(self.request.get('start', 0))
