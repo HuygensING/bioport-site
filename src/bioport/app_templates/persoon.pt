@@ -9,20 +9,56 @@
     	tal:define="illustraties  python:view.biography.get_illustrations()"
     	>
     <div class="column_right">
-    <div class="illustratie" tal:repeat="ill python:illustraties[:]">
-    <a tal:attributes="href ill/link_url">
-    <img
-        tal:attributes="src ill/cached_url;
-            alt string:illustratie bij deze biografie (${ill/cached_url});
-      " /> 
-      </a>
-      <div class="caption" tal:condition="ill/caption">
-        <span tal:replace="ill/caption"></span>
-        <a  tal:attributes="href ill/link_url"
-                class="external_link open_in_new_window" i18n:translate=""></a>
-       </div>
+    
+        <!-- one picture -->
+        <div class="illustratie" 
+             tal:condition="python:len(illustraties) == 1" 
+             tal:repeat="ill python:illustraties[:]"
+        >
+            <a tal:attributes="href ill/link_url">
+                <img tal:attributes="src ill/cached_url;
+                                     alt string:illustratie bij deze biografie (${ill/cached_url});" /> 
+            </a>
+            <div class="caption" tal:condition="ill/caption">
+                <span tal:replace="ill/caption"></span>
+                <a tal:attributes="href ill/link_url"
+                   class="external_link open_in_new_window" i18n:translate="" />
+            </div>
+        </div>
+
+        <!-- more pictures -->
+        <div class="illustratie" 
+             tal:condition="python:len(illustraties) > 1" 
+             tal:define="ill python:illustraties[0]"
+        >
+            <a tal:attributes="href ill/link_url">
+                <img id="illustratie-image"
+                     tal:attributes="src ill/cached_url;
+                                     alt string:illustratie bij deze biografie (${ill/cached_url});" /> 
+            </a>
+            <div class="caption" tal:condition="ill/caption">
+                <span id="illustratie-caption" tal:content="ill/caption"></span>
+                <a tal:attributes="href ill/link_url"
+                   class="external_link open_in_new_window" i18n:translate="" />
+            </div>
+                   
+            <div class="thumbs">
+                <tal:repeat repeat="ill2 python:illustraties[:]">
+                    <a tal:attributes="onclick string:document.getElementById('illustratie-image').setAttribute('src', '${ill2/cached_url}');;
+                                                      document.getElementById('illustratie-caption').textContent = '${ill2/caption}';;"
+                       href="#"
+                    >
+                        <img tal:attributes="src ill2/thumbnail_url;
+                                             alt string:illustratie bij deze biografie (${ill2/cached_url});" /> 
+                    </a>
+                </tal:repeat>
+            </div>
+
+        </div>
+
+        
     </div>
-    </div>
+    
     <div class="illustratie" tal:condition="not:illustraties">
         <div class="geenplaatje"></div>
     </div>
