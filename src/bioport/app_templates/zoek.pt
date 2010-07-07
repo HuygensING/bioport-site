@@ -95,31 +95,35 @@
         <div id="tip_birth" class="tooltip">
         <span i18n:translate="born_died_help_text"
             metal:define-macro="born_died_help_text">
-There are different ways of entering values in fields alive, born, and died. Here are some examples:
 <ul>
-	<li>a search for people born on 
-    <a OnClick="jQuery(&quot;input[name='geboorte_fuzzy_text']&quot;).attr('value', '22 April')">22 April</a>
-	will return those whose birthday is that date;
-	<li>a search for people who died on 
-    <a OnClick="jQuery(&quot;input[name='sterf_fuzzy_text']&quot;).attr('value', 'March 1946')">March 1946</a>
-	will return those who died anywhere from 1 March to 31 March 1946;
-	<li>a search for people alive in
-    <a OnClick="jQuery(&quot;input[name='levend_fuzzy_text']&quot;).attr('value', '1940 to 1945')">1940 to 1945</a>
-	will return anyone who was alive during WWII.
-	<li>a search for people born 
-    <a OnClick="jQuery(&quot;input[name='geboorte_fuzzy_text']&quot;).attr('value', 'before 1500')">before 1500</a>
-	will return anyone who was born before 1500. 
-	<li>a search for people born 
-    <a OnClick="jQuery(&quot;input[name='geboorte_fuzzy_text']&quot;).attr('value', 'after 1798')">after 1798</a>
-	will return anyone who was born after 1798. 
-	<li>a search for people born 
-    <a OnClick="jQuery(&quot;input[name='geboorte_fuzzy_text']&quot;).attr('value', '3 4 1732')">3 4 1732</a>
-	will return anyone who was born on the third of April 1732. 
-	<li>a search for 
-    <a OnClick="jQuery(&quot;input[name='geboorte_fuzzy_text']&quot;).attr('value', '22 december to 20 january')">22 december to 20 january</a>
-will return all Capricorns
-	</li>
+<li>
+In the fields 'born',  'died', and 'alive'  you can seach for a certain day (for example  
+<a OnClick="jQuery(&quot;input[name='geboorte_fuzzy_text']&quot;).attr('value', '22 april')">22 april</a>)
+or a complete date (for example <a OnClick="jQuery(&quot;input[name='geboorte_fuzzy_text']&quot;).attr('value', '22 april 1734')">22 april 1734</a> ).
+You can also only use numbers (
+ <a OnClick="jQuery(&quot;input[name='geboorte_fuzzy_text']&quot;).attr('value', '22 4 1734')">22 4 1734</a> = 22 april 1734). 
+<li>
+The fields can also be used to determine a time period.
+For example: <a OnClick="jQuery(&quot;input[name='geboorte_fuzzy_text']&quot;).attr('value', 'May 1945')">May 1945</a>, 
+ <a OnClick="jQuery(&quot;input[name='geboorte_fuzzy_text']&quot;).attr('value', 'after 1500')">after 1500</a> ,
+ <a OnClick="jQuery(&quot;input[name='geboorte_fuzzy_text']&quot;).attr('value', 'before 1650')">before 1650</a>,
+ or
+ <a OnClick="jQuery(&quot;input[name='geboorte_fuzzy_text']&quot;).attr('value', 'between 1750 and 1760')">between 1750 and 1760</a>. 
+<li>
+For those that are interesed in Astrology: a search for people born
+<a OnClick="jQuery(&quot;input[name='geboorte_fuzzy_text']&quot;).attr('value', 'between 22 december and 20 january')">between 22 december and 20 january</a> 
+results in a list of all Capricorns.
+<li>
+You can use the search fields 'born', 'died' and 'alive' in combination with other search fields as well.
+
+If, for example, you are search for writing women in the 19th Century, you could select 'born after 1770' and 'died before 1900', sex: 'female' and category: 'Literature'.
+
+<li>
+For selections of people who were alive during a certain period, you can use the field 'alive'. 
+For example
+<a OnClick="jQuery(&quot;input[name='levend_fuzzy_text']&quot;).attr('value', 'between 1940 and 1945')">between 1940 and 1945</a>.
 </ul>
+
 </span>
     </div>
  </td>
