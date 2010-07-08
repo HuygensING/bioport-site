@@ -42,15 +42,15 @@
                        class="external_link open_in_new_window"></a>
                 </div>
             </div>
-                   
+
             <div class="thumbs">
                 <tal:repeat repeat="ill2 python:illustraties[:]">
                     <a tal:attributes="onclick string:jQuery('#illustratie-image img').attr('src', '${ill2/cached_url}');;
-                                                      jQuery('#illustratie-caption').text('${ill2/caption}');;"
-                       href="#"
+                                                      jQuery('#illustratie-caption').text(${ill2/json_stripped_caption});;"
                     >
                         <img tal:attributes="src ill2/thumbnail_url;
-                                             alt string:illustratie bij deze biografie (${ill2/cached_url});" /> 
+                                             alt string:illustratie bij deze biografie (${ill2/cached_url});" 
+                             class="clickable"/> 
                     </a>
                 </tal:repeat>
             </div>

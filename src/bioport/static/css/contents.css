@@ -781,9 +781,14 @@
 }
 
 #illustratie-image {
-    height:300px;
+    min-height:300px;
 }
 
 #illustratie-image img {
-    max-height:260px;
+    max-height:245px !important;
 }
+
+.clickable {
+	cursor: pointer;
+}
+
