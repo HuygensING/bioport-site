@@ -774,3 +774,16 @@
     text-decoration:none;
     font-weight:bold;
 }
+
+.illustratie .thumbs img {
+    float:left;
+    margin:10px;
+}
+
+#illustratie-image {
+    height:300px;
+}
+
+#illustratie-image img {
+    max-height:260px;
+}
