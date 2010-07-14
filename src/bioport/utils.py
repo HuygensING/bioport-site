@@ -3,7 +3,7 @@ import hotshot.stats
 import tempfile
 
 
-def profile(log_file):
+def profile(sort='cumulative', lines=30, strip_dirs=False):
     """Profile some callable.
 
     This decorator uses the hotshot profiler to profile some callable (like
@@ -13,7 +13,7 @@ def profile(log_file):
 
     class Foo:
     
-        @profile
+        @profile()
         def bar(self):
             ...
     """
@@ -28,9 +28,10 @@ def profile(log_file):
                 prof.close()
             
             stats = hotshot.stats.load(file.name)
-            stats.strip_dirs()
-            stats.sort_stats('cumulative')
-            stats.print_stats(30)
+            if strip_dirs:
+                stats.strip_dirs()
+            stats.sort_stats(sort)
+            stats.print_stats(lines)
 
             return ret
         return _inner
