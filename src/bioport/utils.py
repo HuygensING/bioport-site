@@ -1,21 +1,33 @@
+#!/usr/bin/env python
+
 import hotshot
 import hotshot.stats
 import tempfile
 
 
-def profile(sort='cumulative', lines=30, strip_dirs=False):
-    """Profile some callable.
-
-    This decorator uses the hotshot profiler to profile some callable (like
-    a function or method) and prints the profile result on screen.
+def profile(sort=('time', 'calls'), lines=30, strip_dirs=False):
+    """A decorator which profiles a callable.
 
     Example usage:
 
-    class Foo:
-    
-        @profile()
-        def bar(self):
-            ...
+    >>> class Foo:
+    ...
+    ...     @profile()
+    ...     def bar(self):
+    ...          return "ciao"
+    ... 
+    >>> Foo().bar()
+             1 function calls in 0.000 CPU seconds
+
+       Ordered by: cumulative time
+
+       ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+            1    0.000    0.000    0.000    0.000 <stdin>:2(bar)
+            0    0.000             0.000          profile:0(profiler)
+
+
+    'ciao'
+    >>> 
     """
     def _outer(f):
         def _inner(*args, **kwargs):
@@ -30,7 +42,10 @@ def profile(sort='cumulative', lines=30, strip_dirs=False):
             stats = hotshot.stats.load(file.name)
             if strip_dirs:
                 stats.strip_dirs()
-            stats.sort_stats(sort)
+            if isinstance(sort, tuple):
+                stats.sort_stats(*sort)
+            else:
+                stats.sort_stats(sort)
             stats.print_stats(lines)
 
             return ret
