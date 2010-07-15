@@ -10,9 +10,9 @@
     	>
     <div class="column_right">
     
-        <!-- one picture -->
+        <!-- one or two pictures -->
         <div class="illustratie" 
-             tal:condition="python:len(illustraties) == 1" 
+             tal:condition="python:len(illustraties) <= 2" 
              tal:repeat="ill python:illustraties[:]"
         >
             <a tal:attributes="href ill/link_url">
@@ -28,7 +28,7 @@
 
         <!-- more pictures -->
         <div class="illustratie" 
-             tal:condition="python:len(illustraties) > 1" 
+             tal:condition="python:len(illustraties) >= 3" 
              tal:define="ill python:illustraties[0]"
         >
             <div id="illustratie-image">
