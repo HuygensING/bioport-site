@@ -29,9 +29,8 @@
         <!-- more pictures -->
         <div class="illustratie" 
              tal:condition="python:len(illustraties) >= 3" 
-             tal:define="ill python:illustraties[0]"
         >
-            <div id="illustratie-image">
+            <div id="illustratie-image" tal:define="ill python:illustraties[0]">
                 <a tal:attributes="href ill/link_url">
                     <img tal:attributes="src python:ill.thumbnail_url(180, 250);
                                          alt string:illustratie bij deze biografie (${ill/cached_url});" /> 
