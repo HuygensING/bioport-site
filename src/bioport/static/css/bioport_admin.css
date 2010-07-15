@@ -437,5 +437,12 @@ input[name="funeral_y"]
 .autocomplete strong {
     color:#995500;
 }
+input[name="personname"] {
+    width:306px !important;
+}
+
+input[name="name_new"] {
+    width:223px !important;
+}
 
 
