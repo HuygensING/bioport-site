@@ -16,7 +16,7 @@
              tal:repeat="ill python:illustraties[:]"
         >
             <a tal:attributes="href ill/link_url">
-                <img tal:attributes="src ill/cached_url;
+                <img tal:attributes="src python:ill.thumbnail_url(180, 250);
                                      alt string:illustratie bij deze biografie (${ill/cached_url});" /> 
             </a>
             <div class="caption" tal:condition="ill/caption">
@@ -33,7 +33,7 @@
         >
             <div id="illustratie-image">
                 <a tal:attributes="href ill/link_url">
-                    <img tal:attributes="src ill/cached_url;
+                    <img tal:attributes="src python:ill.thumbnail_url(180, 250);
                                          alt string:illustratie bij deze biografie (${ill/cached_url});" /> 
                 </a>
                 <div class="caption" tal:condition="ill/caption">

@@ -625,8 +625,6 @@
 
 		#Persoon .illustratie img {
 			border: solid 1px white;
-			max-height:400px;
-			max-width:200px;
 		}
 
 		#Persoon .illustratie .caption {
@@ -785,7 +783,7 @@
 }
 
 #illustratie-image img {
-    max-height:245px !important;
+/*    max-height:245px !important; */
 }
 
 .clickable {
