@@ -15,6 +15,8 @@
              tal:condition="python:len(illustraties) <= 2" 
              tal:repeat="ill python:illustraties[:]"
         >
+
+            <b tal:content="ill/cached_url" />
             <a tal:attributes="href ill/link_url">
                 <img tal:attributes="src python:ill.thumbnail_url(180, 250);
                                      alt string:illustratie bij deze biografie (${ill/cached_url});" /> 
