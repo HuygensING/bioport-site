@@ -15,10 +15,9 @@
              tal:condition="python:len(illustraties) <= 2" 
              tal:repeat="ill python:illustraties[:]"
         >
-
             <a tal:attributes="href ill/link_url">
                 <img tal:attributes="src ill/image_medium_url;
-                                     alt string:illustratie bij deze biografie (${ill/cached_url});" /> 
+                                     alt string:illustratie bij deze biografie;" /> 
             </a>
             <div class="caption" tal:condition="ill/caption">
                 <span tal:replace="ill/caption"></span>
@@ -34,7 +33,7 @@
             <div id="illustratie-image" tal:define="ill python:illustraties[0]">
                 <a tal:attributes="href ill/link_url">
                     <img tal:attributes="src ill/image_medium_url;
-                                         alt string:illustratie bij deze biografie (${ill/cached_url});" /> 
+                                         alt string:illustratie bij deze biografie;" /> 
                 </a>
                 <div class="caption" tal:condition="ill/caption">
                     <span id="illustratie-caption" tal:content="ill/caption"></span>
@@ -45,11 +44,11 @@
 
             <div class="thumbs">
                 <tal:repeat repeat="ill2 python:illustraties[:]">
-                    <a tal:attributes="onclick string:jQuery('#illustratie-image img').attr('src', '${ill2/cached_url}');;
+                    <a tal:attributes="onclick string:jQuery('#illustratie-image img').attr('src', '${ill2/image_medium_url}');;
                                                       jQuery('#illustratie-caption').text(${ill2/json_stripped_caption});;"
                     >
                         <img tal:attributes="src ill2/image_small_url;
-                                             alt string:illustratie bij deze biografie (${ill2/cached_url});" 
+                                             alt string:illustratie bij deze biografie (${ill2/image_small_url});" 
                              class="clickable"/> 
                     </a>
                 </tal:repeat>
