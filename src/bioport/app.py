@@ -694,7 +694,7 @@ class Images_XML(grok.View, RepositoryView):
                 continue
             illustration = illustrations[0]
             result += '<image src="%s" title="%s" url="%s/%s" />\n' % (
-                           illustration.cached_url, 
+                           illustration.image_url, 
 #                           urllib.quote(unicode( person.name()).encode('utf8')), 
                            html2unicode(unicode(person.name())),
                            self.url('persoon'),
