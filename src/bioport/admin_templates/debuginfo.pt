@@ -101,7 +101,7 @@
             <th>illustraties</th>	
             <td>
                 <div tal:repeat="ill bio/get_illustrations">
-                    local : <a tal:attributes="href ill/cached_url" tal:content="ill/cached_url" /><br />
+                    local : <a tal:attributes="href ill/image_url" tal:content="ill/image_url" /><br />
                     original: <a tal:attributes="href ill/_url" tal:content="ill/_url" />
                 </div>
                 <form>
