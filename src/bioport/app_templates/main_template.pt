@@ -43,8 +43,13 @@
 <script  type="text/javascript" tal:content="string:
     /* load sidebar on doc ready */
     $(document).ready(function() {
-        if ($('#pBirthdays').is('div'))
-            refreshElem('pBirthdays','${view/application_url}/birthdays_box');;
+        if ($('#pBirthdays').is('div')) {
+            if (! window.pBirthdays_loaded) {
+                refreshElem('pBirthdays','${view/application_url}/birthdays_box');;
+                /* But only once */
+                window.pBirthdays_loaded = true;;
+            }
+        }
     });;">
 </script>
 
