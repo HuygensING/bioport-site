@@ -773,6 +773,7 @@ class Persoon(app.Persoon, grok.EditForm, RepositoryView):
         url = self.url(data={"bioport_id":id, "msg":self.msg})
         self.redirect(url)
 
+    @grok.action('remove name', name='remove_name') 
     def remove_name(self):
         #add the namen van de "merged biographies" als we dat nog niet hebben gedaan
         if not self.bioport_biography.get_namen():
@@ -786,6 +787,10 @@ class Persoon(app.Persoon, grok.EditForm, RepositoryView):
             self.bioport_biography.remove_name(idx)
             self.save_biography()
             self.msg = 'naam verwijderd'
+
+        id = self.request.get("bioport_id")
+        url = self.url(data={"bioport_id":id, "msg":self.msg})
+        self.redirect(url)
 
     @grok.action('download_illustration')
     def download_illustration(self, **data): 
