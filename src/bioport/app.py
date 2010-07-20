@@ -671,15 +671,17 @@ class Agenda(grok.View, RepositoryView):
 
 class English(grok.View, RepositoryView):
     pass
+
 class FAQ(grok.View, RepositoryView):
     pass
+
 class Images_XML(grok.View, RepositoryView):
     grok.name('images.xml')
     def render(self):
         self.request.response.setHeader('Content-Type', 'text/xml')
         return self.render_response()
 
-    @ram.cache(lambda *args: time() // (60 * 60) + random.randint(1,10))
+#    @ram.cache(lambda *args: time() // (60 * 60) + random.randint(1,10))
     def render_response(self):
         
         persons = self.repository().get_persons(has_illustrations=True, order_by='random', size=20)
@@ -693,8 +695,10 @@ class Images_XML(grok.View, RepositoryView):
                 #but it can happen ...
                 continue
             illustration = illustrations[0]
+            if not illustration.has_image():
+                continue
             result += '<image src="%s" title="%s" url="%s/%s" />\n' % (
-                           illustration.image_url, 
+                           illustration.image_home_url, 
 #                           urllib.quote(unicode( person.name()).encode('utf8')), 
                            html2unicode(unicode(person.name())),
                            self.url('persoon'),
