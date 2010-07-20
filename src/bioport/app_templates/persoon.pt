@@ -6,13 +6,13 @@
     <title metal:fill-slot="head_title"
         tal:content="structure python:view.biography.title()" ></title> 
     <div metal:fill-slot="content"
-    	tal:define="illustraties  python:view.biography.get_illustrations()"
+    	tal:define="illustraties  python:[x for x in view.biography.get_illustrations() if x.has_image()]"
     	>
     <div class="column_right">
     
         <!-- one or two pictures -->
         <div class="illustratie" 
-             tal:condition="python:len(illustraties) <= 2" 
+             tal:condition="python:len(illustraties) in (1, 2)" 
              tal:repeat="ill python:illustraties[:]"
         >
             <a tal:attributes="href ill/link_url">

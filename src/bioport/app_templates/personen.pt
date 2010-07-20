@@ -79,15 +79,17 @@
 	
 	<div class="persoon" metal:define-macro="render_person"
 	   tal:attributes="OnClick string:window.location.href='persoon/${person/bioport_id}'">
-	    <span 
-	       class="illustration"
-	        tal:condition="person/has_illustrations" >
-	        <img 
- 	       tal:define="illustrations python:person.get_merged_biography().get_illustrations()" 
- 	       tal:condition="illustrations"
-	        tal:attributes="src python:illustrations[0].image_small_url;
-	                        alt person/name" />
-        </span>
+
+	    <tal:block tal:condition="person/has_illustrations">
+            <span tal:define="illustrations python:person.get_merged_biography().get_illustrations()" 
+                  tal:condition="python:bool(illustrations) and illustrations[0].has_image()"
+                  class="illustration"
+            >
+    	        <img tal:attributes="src python:illustrations[0].image_small_url;
+      	                           alt person/name" />
+            </span>                                    
+        </tal:block>
+
 		<a 
 		tal:content="structure python:person.db_name()" 
 	    tal:attributes="href python:'%s/%s' % (view.url('persoon'), person.get_bioport_id())" />
