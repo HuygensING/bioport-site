@@ -681,7 +681,7 @@ class Images_XML(grok.View, RepositoryView):
         self.request.response.setHeader('Content-Type', 'text/xml')
         return self.render_response()
 
-#    @ram.cache(lambda *args: time() // (60 * 60) + random.randint(1,10))
+    @ram.cache(lambda *args: time() // (60 * 60) + random.randint(1,10))
     def render_response(self):
         
         persons = self.repository().get_persons(has_illustrations=True, order_by='random', size=20)
