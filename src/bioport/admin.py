@@ -768,8 +768,11 @@ class Persoon(app.Persoon, grok.EditForm, RepositoryView):
             self.msg = 'added a name'
         else:
             self.msg = 'geen naam ingevuld'
-    
-    @grok.action('verwijder', name='remove_name')
+
+        id = self.request.get("bioport_id")
+        url = self.url(data={"bioport_id":id, "msg":self.msg})
+        self.redirect(url)
+
     def remove_name(self):
         #add the namen van de "merged biographies" als we dat nog niet hebben gedaan
         if not self.bioport_biography.get_namen():
@@ -783,6 +786,7 @@ class Persoon(app.Persoon, grok.EditForm, RepositoryView):
             self.bioport_biography.remove_name(idx)
             self.save_biography()
             self.msg = 'naam verwijderd'
+
     @grok.action('download_illustration')
     def download_illustration(self, **data): 
         self.msg = ''
