@@ -4,19 +4,9 @@
 <div metal:fill-slot="content">
     <h1>Welkom <span tal:replace="python:view.request.principal.title" /></h1>
 <p>
-U kunt de volgende dingen doen:
-<h2>Personen identificeren</h2>
 <ul>
-
-	<li><a href="persoonidentify">Personen identificeren</a> door in de database naar personen te zoeken
-	<li>Personen identifieren met behulp vaan de lijst met (volgens de computer) de <a href="mostsimilar">meest op elkaar lijkende personen</a></li>
-	<li>De lijst met <a href="deferred">moeilijke gevallen</a> bekijken</li>
-	<li>De lijst met <a href="identified">geidentificeerde personen</a> bekijken</li>
-	<li>De lijst met <a href="dbnl_ids">dubbele DBNL ids</a> bekijken</li>
-</ul>
-<h2>Personen bewerken</h2>
-<ul>
-	<li><a href="persons">Personen bewerken</a>
+<li><a href="sources">sources</a></li>
+<li><a href="sources">sources</a></li>
 </ul>
 </div>
 </html>

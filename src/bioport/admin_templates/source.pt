@@ -7,7 +7,7 @@
 
 <pre class="message" tal:condition="view/message |  nothing" tal:content="view/message" />
 <h1>Bewerk bron <em tal:content="source/id" /></h1>
-(<a tal:attributes="href python:view.url(context, 'persons', {'source_id':source.id})"><span tal:replace="python:view.repository().count_biographies(source=source)" /> biografie&euml;n</a>)
+(<a tal:attributes="href python:view.url('../simple_list', data={'src':source.id})"><span tal:replace="python:view.repository().count_biographies(source=source)" /> items</a>)
 <br/><br/>
 <form tal:attributes="action view/url" method="get">
 <input type="hidden" name="source_id" tal:attributes="value source/id" />
@@ -25,33 +25,6 @@
         <th>description</th>
         <td><textarea name="description" tal:content="source/description" style="width:50em" ></textarea></td>
     </tr>
-    <tr>
-        <th>quality</th>
-        <td>Net iets beter dan:
-            <select name="quality">
-                
-                <option 
-                    tal:repeat="option python:view.repository().get_sources(order_by='quality', desc=True)"
-                    tal:define="source_quality python:source.get_value('quality') or 0;"
-                    tal:attributes="
-                        value python:not option.quality and 1 or option.quality +1 ;
-                        selected python:option.quality == source.quality - 1" 
-                    tal:content="option/id" />
-                <option value="0" tal:attributes="selected python:not source.quality">slechtste kwaliteit van allemaal</option>
-            </select>
-    </tr>
-    <tr>
-    <th>status of newly created persons</th> 
-    <td>
-       <select name="default_status" id="status" accesskey="s">
-               <option></option> 
-               <option tal:repeat="option python:view.repository().get_status_values()"
-                   tal:attributes="value python:option[0];
-                       selected python:str(option[0])==str(source.default_status)"
-                       tal:content="python:option[1]"></option>
-           </select>
-    </td>
-    </tr>
      <tr>
         <td />
         <td>
@@ -60,8 +33,7 @@
     </tr>
 </table>
        <span tal:replace="structure python:view.actions.byname['form.actions.download_data'].render()" />
-       <span tal:replace="structure python:view.actions.byname['form.actions.download_illustrations'].render()" />
-       <span tal:replace="structure python:view.actions.byname['form.actions.delete_biographies'].render()" />
+       <span tal:replace="structure python:view.actions.byname['form.actions.delete_items'].render()" />
        <span tal:replace="structure python:view.actions.byname['form.actions.refresh_similarity_cache'].render()" />
 
 </form>
