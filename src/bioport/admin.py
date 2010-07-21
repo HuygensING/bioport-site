@@ -257,19 +257,7 @@ class Source(grok.EditForm,RepositoryView):
     @grok.action('Download biographies', name='download_data')    
     def download_data(self, **data):
         source = self.source
-        
-        import logging 
-        import zLOG
-        from StringIO import StringIO
-        f = StringIO()    
-        handler = logging.StreamHandler(f)
-        handler.setLevel(zLOG.INFO)
-        logger = logging.getLogger('BioPort')
-        logger.addHandler(handler)
         self.repository().download_biographies(source=source)
-        f.seek(0)
-        self.message = f.read()
-        handler.close()
          
     @grok.action('Delete biographies', name='delete_biographies')    
     def delete_biographies(self, **data):
