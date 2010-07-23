@@ -9,7 +9,7 @@
 <h1>Bewerk bron <em tal:content="source/id" /></h1>
 (<a tal:attributes="href python:view.url('../simple_list', data={'src':source.id})"><span tal:replace="python:view.repository().count_biographies(source=source)" /> items</a>)
 <br/><br/>
-<form tal:attributes="action view/url" method="get">
+<form tal:attributes="action view/url" method="post">
 <input type="hidden" name="source_id" tal:attributes="value source/id" />
 <table>
     <tr>

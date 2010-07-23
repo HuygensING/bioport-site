@@ -89,7 +89,7 @@ class Edit(grok.EditForm,RepositoryView):
     def edit_admin(self, **data):
         self.applyData(self.context, **data)
         repository = self.repository()
-        repository.db.metadata.create_all()
+        #repository.db.metadata.create_all()
         
 #        self.redirect(self.url(self))
     
