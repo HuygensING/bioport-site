@@ -33,7 +33,7 @@
     </tr>
 </table>
        <span tal:replace="structure python:view.actions.byname['form.actions.download_data'].render()" />
-       <span tal:replace="structure python:view.actions.byname['form.actions.delete_items'].render()" />
+       <span tal:replace="structure python:view.actions.byname['form.actions.delete_biographies'].render()" />
        <span tal:replace="structure python:view.actions.byname['form.actions.refresh_similarity_cache'].render()" />
 
 </form>
