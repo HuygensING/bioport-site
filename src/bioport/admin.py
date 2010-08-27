@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+import os
 import app
 import grok
 from app import Batcher, RepositoryView
@@ -268,6 +269,16 @@ class Source(grok.EditForm,RepositoryView):
     def refresh_similarity_cache(self, **data): 
         self.repository().db.fill_similarity_cache(refresh=True, source_id=self.source.id)
         
+    @grok.action('Delete this source', name='delete_this_source')
+    def delete_this_source(self, **data): 
+        source_id = self.request.get('source_id')
+        self.repository().delete_source(bioport_repository.source.Source(source_id, '', ''))
+        parent = os.path.dirname(self.url())
+        url = os.path.join(parent, 'sources')
+        url += "?msg=Removed source with id %s" % source_id
+        return self.redirect(url)
+
+
 class Sources(grok.View,RepositoryView):
     
     grok.require('bioport.Manage')

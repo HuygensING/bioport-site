@@ -1,7 +1,6 @@
 <html metal:use-macro="context/@@admin_template/macros/master">
 <div metal:fill-slot="content">
 
-    <div class="message" tal:condition="request/msg | nothing" tal:content="request/msg" />
     <h1>Bronnen</h1>
     <table class="gcodetable">
     <tr><th>Id</th><th>URL</th><th>Actions</th></tr>
