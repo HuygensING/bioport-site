@@ -250,25 +250,21 @@ class Source(grok.EditForm,RepositoryView):
         source = self.source
         self.repository().download_biographies(source, limit=int(self.context.LIMIT))
     
+    @grok.action('Download biographies', name='download_biographies')    
+    def download_biographies(self, **data):
+        source = self.source
+        self.repository().download_biographies(source=source)
+
     @grok.action('Download Illustrations', name='download_illustrations')    
     def download_illustrations(self, **data): 
         source = self.source
         self.repository().download_illustrations(source, limit=int(self.context.LIMIT))
         
-    @grok.action('Download biographies', name='download_data')    
-    def download_data(self, **data):
-        source = self.source
-        self.repository().download_biographies(source=source)
-         
     @grok.action('Delete biographies', name='delete_biographies')    
     def delete_biographies(self, **data):
         source = self.source
         self.repository().delete_biographies(source)              
     
-    @grok.action('Refresh similarity table', name='refresh_similarity_cache')
-    def refresh_similarity_cache(self, **data): 
-        self.repository().db.fill_similarity_cache(refresh=True, source_id=self.source.id)
-        
     @grok.action('Delete this source', name='delete_this_source')
     def delete_this_source(self, **data): 
         source_id = self.request.get('source_id')
@@ -277,6 +273,10 @@ class Source(grok.EditForm,RepositoryView):
         url = os.path.join(parent, 'sources')
         url += "?msg=Removed source with id %s" % source_id
         return self.redirect(url)
+
+    @grok.action('Refresh similarity table', name='refresh_similarity_cache')
+    def refresh_similarity_cache(self, **data): 
+        self.repository().db.fill_similarity_cache(refresh=True, source_id=self.source.id)
 
 
 class Sources(grok.View,RepositoryView):
