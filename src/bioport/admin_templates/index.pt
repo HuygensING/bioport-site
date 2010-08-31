@@ -3,10 +3,20 @@
 
 <div metal:fill-slot="content">
     <h1>Welkom <span tal:replace="python:view.request.principal.title" /></h1>
-<p>
-<ul>
-<li><a href="sources">sources</a></li>
-<li><a href="sources">sources</a></li>
-</ul>
+
+
+            <ul metal:define-macro="admin_navigation">
+                <li><a tal:attributes="href python:view.application_url()" accesskey="1">Home</a></li>
+                <li><a tal:attributes="href python:view.url(view.__parent__)" accesskey="2">Admin Home</a></li>
+                <li><a tal:attributes="href python:view.url('persoonidentify')" accesskey="3">Identificeer personen</a></li>
+                <li><a tal:attributes="href python:view.url('mostsimilar')" accesskey="4">Meest gelijkende personen</a></li>
+                <li><a tal:attributes="href python:view.url('identified')" accesskey="5">Ge&iuml;dentificeerde personen</a></li>
+                <li><a tal:attributes="href python:view.url('persons')" accesskey="6">Bewerk personen</a></li>
+                <li><a tal:attributes="href python:view.url('sources')" accesskey="7">Bronnen</a></li>
+                <li><a tal:attributes="href python:view.url('edit')" accesskey="8">Geavanceerd</a></li>
+                <li><a tal:attributes="href python:view.url('uitleg')" accesskey="9">Uitleg</a></li>
+            </ul>
+
+
 </div>
 </html>
