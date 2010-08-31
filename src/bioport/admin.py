@@ -253,8 +253,7 @@ class Source(grok.EditForm,RepositoryView):
             source.default_status = default_status
     
         self.repository().save_source(source)
-        msg = 'Changed source %s' % source.id
-        print msg
+        self._redirect_with_msg('Settings saved')
             
     @grok.action('Update', name='update_source')    
     def update_source(self, **data):
@@ -265,14 +264,14 @@ class Source(grok.EditForm,RepositoryView):
     def download_biographies(self, **data):
         source = self.source
         total, skipped = self.repository().download_biographies(source=source)
-        msg = "Biographies downloaded successfully (total=%s, skipped=%s)." % (total, skipped)
+        msg = "Biographies downloaded successfully (total=%s, skipped=%s)" % (total, skipped)
         self._redirect_with_msg(msg)
 
     @grok.action('Download Illustrations', name='download_illustrations')    
     def download_illustrations(self, **data): 
         source = self.source
         total, skipped = self.repository().download_illustrations(source, limit=int(self.context.LIMIT), overwrite=False)
-        msg = "Illustrations downloaded successfully (total=%s, skipped=%s)." % (total, skipped)
+        msg = "Illustrations downloaded successfully (total=%s, skipped=%s)" % (total, skipped)
         self._redirect_with_msg(msg)
         
     @grok.action('Delete biographies', name='delete_biographies')    
@@ -287,14 +286,14 @@ class Source(grok.EditForm,RepositoryView):
         source_id = self.request.get('source_id')
         self.repository().delete_source(bioport_repository.source.Source(source_id, '', ''))
         parent = os.path.dirname(self.url())
-        msg = "Removed source with id %s" % source_id
+        msg = "Removed source with id' %s'" % source_id
         url = os.path.join(parent, 'sources')
         return self._redirect_with_msg(msg)
 
     @grok.action('Refresh similarity table', name='refresh_similarity_cache')
     def refresh_similarity_cache(self, **data): 
         self.repository().db.fill_similarity_cache(refresh=True, source_id=self.source.id)
-        self._redirect_with_msg("Similarity table refreshed.")
+        self._redirect_with_msg("Similarity table refreshed")
 
 
 
