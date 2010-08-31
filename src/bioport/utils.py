@@ -63,13 +63,13 @@ if pstats is not None:
 import urllib
 import urlparse
 
-def url_fix(s, charset='utf-8'):
+def normalize_url(s, charset='utf-8'):
     """Sometimes you get an URL by a user that just isn't a real
     URL because it contains unsafe characters like ' ' and so on.  This
     function can fix some of the problems in a similar way browsers
     handle data entered by the user:
 
-    >>> url_fix(u'http://de.wikipedia.org/wiki/Elf (Begriffsklärung)')
+    >>> normalize_url(u'http://de.wikipedia.org/wiki/Elf (Begriffsklärung)')
     'http://de.wikipedia.org/wiki/Elf%20%28Begriffskl%C3%A4rung%29'
 
     :param charset: The target charset for the URL if the url was

@@ -17,6 +17,9 @@ from zope.session.interfaces import ISession
 
 import bioport_repository
 from bioport_repository.repository import Repository
+
+from bioport.utils import normalize_url
+
     
 class IAdminSettings(Interface):           
     SVN_REPOSITORY = schema.TextLine(title=u'URL of svn repository', required=False)
@@ -222,6 +225,14 @@ class Persons(app.Personen,RepositoryView):
 class Source(grok.EditForm,RepositoryView):
     grok.require('bioport.Edit')
 
+    def _redirect_with_msg(self, msg, base_url=None):
+        if base_url is None:
+            base_url = self.url()
+        source_id = self.request.get('source_id')
+        url = "%(base_url)s?source_id=%(source_id)s&msg=%(msg)s" % locals()
+        url = normalize_url(url)
+        return self.redirect(url)
+
     def update(self, source_id=None):
         repository = self.repository()
         self.source =repository.get_source(source_id) 
@@ -253,30 +264,38 @@ class Source(grok.EditForm,RepositoryView):
     @grok.action('Download biographies', name='download_biographies')    
     def download_biographies(self, **data):
         source = self.source
-        self.repository().download_biographies(source=source)
+        total, skipped = self.repository().download_biographies(source=source)
+        msg = "Biographies downloaded successfully (total=%s, skipped=%s)." % (total, skipped)
+        self._redirect_with_msg(msg)
 
     @grok.action('Download Illustrations', name='download_illustrations')    
     def download_illustrations(self, **data): 
         source = self.source
-        self.repository().download_illustrations(source, limit=int(self.context.LIMIT))
+        total, skipped = self.repository().download_illustrations(source, limit=int(self.context.LIMIT), overwrite=False)
+        msg = "Illustrations downloaded successfully (total=%s, skipped=%s)." % (total, skipped)
+        self._redirect_with_msg(msg)
         
     @grok.action('Delete biographies', name='delete_biographies')    
     def delete_biographies(self, **data):
         source = self.source
-        self.repository().delete_biographies(source)              
+        self.repository().delete_biographies(source)  
+        msg = "Biographies deleted successfully"
+        self._redirect_with_msg(msg)
     
     @grok.action('Delete this source', name='delete_this_source')
     def delete_this_source(self, **data): 
         source_id = self.request.get('source_id')
         self.repository().delete_source(bioport_repository.source.Source(source_id, '', ''))
         parent = os.path.dirname(self.url())
+        msg = "Removed source with id %s" % source_id
         url = os.path.join(parent, 'sources')
-        url += "?msg=Removed source with id %s" % source_id
-        return self.redirect(url)
+        return self._redirect_with_msg(msg)
 
     @grok.action('Refresh similarity table', name='refresh_similarity_cache')
     def refresh_similarity_cache(self, **data): 
         self.repository().db.fill_similarity_cache(refresh=True, source_id=self.source.id)
+        self._redirect_with_msg("Similarity table refreshed.")
+
 
 
 class Sources(grok.View,RepositoryView):
