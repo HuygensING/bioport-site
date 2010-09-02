@@ -18,7 +18,7 @@ from zope.session.interfaces import ISession
 import bioport_repository
 from bioport_repository.repository import Repository
 
-from bioport.utils import normalize_url
+from gerbrandyutils import normalize_url
 
     
 class IAdminSettings(Interface):           
