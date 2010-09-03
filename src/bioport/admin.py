@@ -20,8 +20,8 @@ from bioport_repository.repository import Repository
 
 from gerbrandyutils import normalize_url
 
-    
-class IAdminSettings(Interface):           
+
+class IAdminSettings(Interface):
     SVN_REPOSITORY = schema.TextLine(title=u'URL of svn repository', required=False)
     SVN_REPOSITORY_LOCAL_COPY = schema.TextLine(title=u'path to local copy of svn repository', required=False)
    
@@ -34,10 +34,14 @@ class IAdminSettings(Interface):
     CONTACT_DESTINATION_ADDRESS = schema.TextLine(title=u'''Emails sent by the site will be sent to this email address''', required=False)
 
 
-class Admin(grok.Container  ):
+class IHomePageSettings(Interface):
+    dutch_home_html = schema.Text(title=u'Dutch html for the homepage')
+    english_home_html = schema.Text(title=u'English html for the homepage')
+
+class Admin(grok.Container):
 
     grok.require('bioport.Edit')
-    grok.implements(IAdminSettings)
+    grok.implements(IAdminSettings, IHomePageSettings)
     grok.template('admin_index')
     
     SVN_REPOSITORY = None
@@ -48,7 +52,7 @@ class Admin(grok.Container  ):
     IMAGES_CACHE_URL = None
     EMAIL_FROM_ADDRESS = 'test@example.com'
     CONTACT_DESTINATION_ADDRESS = 'destination@example.com'
-
+    dutch_home_html = english_home_html = 'Biografisch Portaal van Netherlands'
     @forever.memoize
     def repository(self, user):
         return Repository(
@@ -999,6 +1003,20 @@ class Locations(grok.View,RepositoryView):
         batch.grand_total = len(ls)
         return batch
     
+
+
+
+class EditHomePage(grok.EditForm,RepositoryView):
+    grok.require('bioport.Manage')
+    grok.template('edit_home_page')
+    grok.context(Admin)
+    form_fields = grok.Fields(IHomePageSettings)
+    
+    @grok.action(u"Save homepage", name="edit_homepage")
+    def edit_homepage(self, **data):
+        self.applyData(self.context, **data)
+
+
 class ChangeLocation(Locations):    
     grok.require('bioport.Edit')
     def update(self, **kw):

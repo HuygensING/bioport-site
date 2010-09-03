@@ -52,16 +52,7 @@
         </script>
         <h1 i18n:translate="">Welkom</h1>
 
-        <p class="intropar" i18n:translate="home_bold_paragraph">
-       Dit is de site van het Biografisch Portaal van Nederland. Hier vindt u oude en nieuwe informatie over kopstukken en andere opzienbarende figuren uit de Nederlandse geschiedenis, van het vroegste verleden tot nu. 
-        </p>    
-        <p i18n:translate="home_plain_paragraph">      
-   Het Biografisch Portaal is een samenwerkingsproject van wetenschappelijke en culturele instellingen van Nederland. 
-   De site toont 'work in progress': de verzameling van levensbeschrijvingen wordt steeds aangevuld met nieuwe informatie 
-   en beeldmateriaal. 
-   Ook aan de doorzoekbaarheid wordt nog gewerkt. 
-   Onder <a href="./about/collecties">Collecties</a> vindt u de meest recente toevoegingen aan het project.
-           </p>    
+        <p tal:content="view/get_homepage_html">AAAA</p>    
         
         <div class="searchcontainer freeform">
             <h3 i18n:translate="Zoeken">Zoeken</h3>

@@ -147,7 +147,13 @@ class BioportNotFound(grok.View, RepositoryView):
         self.request.response.setStatus(404)
 
 class Index(grok.View, RepositoryView):
-    pass
+    def get_homepage_html(self):
+        adapter = IUserPreferredLanguages(self.request)
+        language = adapter.getPreferredLanguages()[0]
+        if language == 'en':
+            return self.context['admin'].english_home_html
+        else:
+            return self.context['admin'].dutch_home_html
 
 class Popup_Template(grok.View):
     
