@@ -35,7 +35,9 @@ setup(name='bioport',
                         'FormEncode',
                         # Add extra requirements here
                         'collective.monkeypatcher',
-                        'bioport_repository'
+                        'bioport_repository',
+                        'names',
+                        'gerbrandyutils',
                         ],
       entry_points = """
       [console_scripts]
