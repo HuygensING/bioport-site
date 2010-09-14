@@ -292,7 +292,7 @@ class Source(grok.EditForm,RepositoryView):
         parent = os.path.dirname(self.url())
         msg = "Removed source with id' %s'" % source_id
         url = os.path.join(parent, 'sources')
-        return self._redirect_with_msg(msg)
+        return self._redirect_with_msg(msg, url)
 
     @grok.action('Refresh similarity table', name='refresh_similarity_cache')
     def refresh_similarity_cache(self, **data): 
