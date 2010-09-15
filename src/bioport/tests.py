@@ -12,7 +12,7 @@ from zope.testbrowser.testing import Browser
 from bioport_repository.source import Source 
 
 
-DB_CONNECTION =  'mysql://root@localhost/bioport_test'
+DB_CONNECTION =  'mysql://jge:MilanO8@localhost/bioport_test'
 
 ftesting_zcml = os.path.join(
     os.path.dirname(bioport.__file__), 'ftesting.zcml')

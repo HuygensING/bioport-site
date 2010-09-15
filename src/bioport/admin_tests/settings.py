@@ -1,1 +1,2 @@
-DB_CONNECTION =  'mysql://root@localhost/bioport_test'
+from bioport.tests import DB_CONNECTION
+
