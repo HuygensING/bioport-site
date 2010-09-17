@@ -133,6 +133,7 @@ class SimpleSampleFunctionalTest(FunctionalTestCase):
         
     def test_most_similar_workflow(self): 
         pass
+        
     def test_edit_workflow(self):
         """ test creating a bioport instance into Zope """
         browser = Browser('http://localhost/app/admin')
@@ -239,3 +240,19 @@ class SimpleSampleFunctionalTest(FunctionalTestCase):
         #changes in, e.g., birth events, should turn up in the master list
         browser = Browser('http://localhost/app/admin/persons')
         #XXX but the next test might fail if we do not have one of the first persons...
+        
+        
+        
+def test_suite():
+    test_suite = unittest.TestSuite()
+    tests = [AdminPanelFunctionalTest,
+             SimpleSampleFunctionalTest,
+            ]
+    for test in tests:
+        test_suite.addTest(unittest.makeSuite(test))
+    return test_suite
+
+if __name__ == "__main__":
+    unittest.main(defaultTest='test_suite')    
+
+
