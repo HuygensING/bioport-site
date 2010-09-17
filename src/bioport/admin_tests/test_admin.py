@@ -18,8 +18,6 @@ from zope.publisher.browser import TestRequest
 import bioport_repository
 
 
-
-
 class SimpleSampleTest(unittest.TestCase):
     "Test the Sample application"
 

@@ -8,10 +8,11 @@ from bioport.app import Bioport
 from zope.testbrowser.testing import Browser
 import os
 import re
-from settings import DB_CONNECTION
+from bioport.tests import DB_CONNECTION
 from bioport.tests import FunctionalTestCase
 from zope.app.testing.functional import FunctionalTestCase as baseFunctionalTestCase
 from bioport.tests import FunctionalLayer
+
 
 class AdminPanelFunctionalTest(baseFunctionalTestCase):
     layer = FunctionalLayer
