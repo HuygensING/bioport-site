@@ -58,6 +58,17 @@ class AppTest(FunctionalTestCase):
             self.assertRaises(NotFound, browser.open, url)
 
 
-if __name__ == '__main__':
-    unittest.main()
+def test_suite():
+    test_suite = unittest.TestSuite()
+    tests = [GoogleSitemapTest,
+             PersoonXmlTest,
+             AppTest,
+            ]
+    for test in tests:
+        test_suite.addTest(unittest.makeSuite(test))
+    return test_suite
+
+if __name__ == "__main__":
+    unittest.main(defaultTest='test_suite')    
+
 
