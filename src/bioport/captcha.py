@@ -1,7 +1,7 @@
 import captchaimage
 import cStringIO
 import grok
-import Image
+from PIL import Image
 import os
 from bioport.app import Bioport
 from bioport.crypt import decrypt
