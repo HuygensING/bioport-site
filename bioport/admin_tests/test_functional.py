@@ -8,7 +8,7 @@ from bioport.app import Bioport
 from zope.testbrowser.testing import Browser
 import os
 import re
-from bioport.tests import DB_CONNECTION
+from bioport.tests import DSN
 from bioport.tests import FunctionalTestCase
 from zope.app.testing.functional import FunctionalTestCase as baseFunctionalTestCase
 from bioport.tests import FunctionalLayer
@@ -31,7 +31,7 @@ class AdminPanelFunctionalTest(baseFunctionalTestCase):
 #        link.click()
         browser.open(self.base_url + '/admin/edit')
         form = browser.getForm(index=0)
-        form.getControl(name='form.DB_CONNECTION').value = DB_CONNECTION
+        form.getControl(name='form.DB_CONNECTION').value = DSN
         form.getControl(name='form.LIMIT').value = '20'
         form.submit('Edit')
         

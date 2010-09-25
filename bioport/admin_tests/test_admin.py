@@ -13,11 +13,10 @@ sys.path.append('..')
 sys.path.append('../..')
 from bioport.admin import Sources, Source, Edit
 from bioport.app import Bioport
-from bioport.tests import DB_CONNECTION
+from bioport.tests import DSN
 from zope.publisher.browser import TestRequest
 import bioport_repository
-
-
+from bioport_repository.tests.config import DSN
 class SimpleSampleTest(unittest.TestCase):
     "Test the Sample application"
 
@@ -27,7 +26,7 @@ class SimpleSampleTest(unittest.TestCase):
         admin = grokapp['admin']
 #        admin.SVN_REPOSITORY = None-
 #        admin.SVN_REPOSITORY_LOCAL_COPY = None
-        admin.DB_CONNECTION = DB_CONNECTION 
+        admin.DB_CONNECTION = DSN
         self.app = grokapp
         self.admin = admin
         self.repo = repo = self.admin.repository(user=None)
