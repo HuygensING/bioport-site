@@ -15,7 +15,16 @@ from bioport_repository.tests.config import DSN
 
 ftesting_zcml = os.path.join(
     os.path.dirname(bioport.__file__), 'ftesting.zcml')
-FunctionalLayer = ZCMLLayer(ftesting_zcml, __name__, 'FunctionalLayer',
+
+class MyLayer(ZCMLLayer):
+    def setUp(self):
+        """ Prevent zope.sendmail to start its thread during tests, or this will
+        confuse the coverage analyzer"""
+        from zope.sendmail import zcml
+        zcml.queuedDelivery = lambda *args, **kwargs : None
+        ZCMLLayer.setUp(self)
+
+FunctionalLayer = MyLayer(ftesting_zcml, __name__, 'FunctionalLayer',
                             allow_teardown=True)
 
 test_suite = z3c.testsetup.register_all_tests('bioport')
