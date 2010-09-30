@@ -241,6 +241,7 @@ class Personen(grok.View,RepositoryView, Batcher):
             'search_soundex',
             'size',
             'source_id',
+            'source_id2',
             'start',
             'status',
             'sterfjaar_min', 
@@ -251,9 +252,7 @@ class Personen(grok.View,RepositoryView, Batcher):
              ]:
             if k in self.request.keys():
                 qry[k] = self.request[k]
-#            if qry.get('search_name'):
-#               qry['search_soundex']= qry['search_name'] 
-#               del qry['search_name'] 
+                
         repository = self.repository()
         current_language = IUserPreferredLanguages(self.request).getPreferredLanguages()[0]
         try:

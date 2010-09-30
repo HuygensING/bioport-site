@@ -62,7 +62,7 @@ class Admin(grok.Container):
             images_cache_local=self.IMAGES_CACHE_LOCAL,
             images_cache_url=self.IMAGES_CACHE_URL,
             user=user,
-            ZOPE_SESSIONS=False, #use z3c.saconfig package
+#            ZOPE_SESSIONS=False, #use z3c.saconfig package
         ) 
 
     def __getstate__(self):
