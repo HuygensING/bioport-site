@@ -56,6 +56,11 @@ input[type=text] {
     width:183px;
 }
 
+input[type=checkbox] {  
+    width:auto !important;
+}
+
+
 #content_box h1 {
 /*    color:#4F8FB7; */
 }

@@ -247,6 +247,7 @@ class Personen(grok.View,RepositoryView, Batcher):
             'sterfjaar_min', 
             'sterfjaar_max',
             'sterfplaats',
+            'has_contradictions',
 #        start=None,
 #        size=None,
              ]:
@@ -268,13 +269,17 @@ class Personen(grok.View,RepositoryView, Batcher):
             if levend_fuzzy_text:
                 levend_query = get_search_query(levend_fuzzy_text, current_language)
                 qry.update(en_to_nl_for_field(levend_query, 'levend'))
+            has_contradictions = self.request.form.get('has_contradictions', None)
+            if has_contradictions == 'on':
+                qry['has_contradictions'] = True
+            else:
+                qry['has_contradictions'] = False
         except ValueError:
             url = self.url('zoek') # XXX change me to 'zoek' when done
             dict_of_strings = dict([(k,v.encode('utf8')) 
                                     for k, v in self.request.form.items()])
             url += '?' + urlencode(dict_of_strings)
             self.request.response.redirect(url)
-
         persons = repository.get_persons_sequence(**qry)
         try:
             batch = Batch(persons,  start=self.start, size=self.size)
