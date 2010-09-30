@@ -64,13 +64,12 @@ select {
 			        tal:content="python:source.id" />
 	        </select>
 	        <select 
-	        tal:condition="nothing"
-	            name="source_id" id="source_id" 
+	            name="source_id2" id="source_id2" 
 	           >
 		        <option>
 		        <option tal:repeat="source python:[s for s in view.get_sources() if s.id != 'bioport']" 
 			        tal:attributes="value source/id;
-				        selected python:source.id == request.get('source_id') and request.source_id[1]"
+				        selected python:source.id == request.get('source_id2')"
 			        tal:content="python:source.id" />
 	        </select>
 
