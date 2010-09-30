@@ -67,11 +67,11 @@ form {
   <td>
   <div id="actions">
       <h1>Actions</h1>
-  
+
       <span class="actionButtons" tal:condition="view/availableActions">
         <span tal:repeat="action view/actions">
-            <input    tal:replace="structure action/render" 
-        	tal:condition="python:action.__name__ != 'form.actions.edit_settings'">
+            <input tal:replace="structure action/render" 
+               	tal:condition="python:action.__name__ != 'form.actions.edit_settings'">
                <br />
          </span>
       </span>

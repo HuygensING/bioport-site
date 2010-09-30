@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import os
+import time	
 import app
 import grok
 from app import Batcher, RepositoryView
@@ -93,14 +94,31 @@ class Edit(grok.EditForm,RepositoryView):
     grok.context(Admin)
     form_fields = grok.Fields(IAdminSettings)
     
+    def _redirect_with_msg(self, msg, base_url=None):
+        if base_url is None:
+            base_url = self.url()
+        source_id = self.request.get('source_id')
+        url = "%(base_url)s?source_id=%(source_id)s&msg=%(msg)s" % locals()
+        url = normalize_url(url)
+        return self.redirect(url)
+
+    @grok.action('Find biography contradictions')
+    def find_biography_contradictions(self, **data): 
+        started = time.time()
+        total = self.repository().db.count_persons()
+        processed = self.repository().db.find_biography_contradictions()
+        elapsed_time = time.time() - started
+        msg = "Found %s contradictions out of %s persons in %0.3f secs" % \
+              (processed, total, elapsed_time)
+        self._redirect_with_msg(msg)
+
     @grok.action(u"Edit Admin settings", name="edit_settings")
     def edit_admin(self, **data):
         self.applyData(self.context, **data)
         repository = self.repository()
         #repository.db.metadata.create_all()
-        
-#        self.redirect(self.url(self))
-    
+        #self.redirect(self.url(self))
+   
     @grok.action('Fill the similarity Cache', name='fill_similarity_cache') 
     def fill_similarity_cache(self, **data):
         self.repository().db.fill_similarity_cache()
@@ -109,7 +127,6 @@ class Edit(grok.EditForm,RepositoryView):
     def refresh_similarity_cache(self, **data): 
         self.repository().db.fill_similarity_cache(refresh=True, source_id=data.get('source_id'))
 
-        
     @grok.action('Refresh similarity for blnp')
     def refresh_similarity_cache_blnp(self, **data): 
         self.repository().db.fill_similarity_cache(refresh=True, source_id='blnp')
@@ -194,6 +211,8 @@ class Edit(grok.EditForm,RepositoryView):
     def add_biodes(self, **data):
         from biodes import BioDes
         self.__parent__.__parent__['biodes'] = BioDes()
+        
+        
         
 class Display(grok.DisplayForm):
     grok.require('bioport.Edit')
