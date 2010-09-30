@@ -5,6 +5,7 @@
     tal:define="
     	merged_bio view/merged_biography;
     	bioport_bio view/bioport_biography; 
+        contradictions view/get_contradictions;
     	" 
     >
     
@@ -607,6 +608,27 @@ img {
 </form>
 </td>
 <td>
+
+
+<div id="contradictions" 
+     tal:condition="contradictions">
+    <div class="title">
+        <img tal:attributes="src python:view.application_url() + '/@@/bioport/images/warning-icon.png'" />
+        <h3>Some contradictory biographies were found</h3>
+    </div>
+    <div class="visualClear"> </div>
+    <ul>
+        <tal:repeat repeat="con contradictions">
+            <li>
+                <b tal:content="con/type">title</b><b>:</b>
+                <tal:repeat repeat="value con/values">
+                    <span tal:content="value">value</span>
+                </tal:repeat>
+            </li>
+        </tal:repeat>
+    </ul>
+</div>
+
 <div id="right_column">
 	<tal:block repeat="bio view/person/get_biographies" >
 		<div class="right_column_content"
@@ -633,6 +655,8 @@ img {
 </td>
 </tr>
 </table>
+
+
 
 
 <h1>Uitleg</h1> 

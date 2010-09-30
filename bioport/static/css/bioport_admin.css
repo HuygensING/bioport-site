@@ -451,3 +451,30 @@ input[name="name_new"] {
 }
 
 
+
+#contradictions {
+    -moz-border-radius:10px 10px 10px 10px;
+    border-radius:10px 10px 10px 10px;
+    background:none repeat scroll 0 0 #E0C551;
+    border:1px solid black;
+    margin-bottom:10px !important;
+    padding:5px !important;
+}
+
+#contradictions .title img {
+    float:left;
+}
+
+#contradictions .title h3 {
+    margin:0px;
+    padding-top:7px;
+    padding-bottom:7px;
+    padding-left:40px;
+}
+
+#contradictions .title {
+}
+
+#contradictions ul {
+    list-style-image:auto;
+}

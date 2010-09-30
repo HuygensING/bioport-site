@@ -474,6 +474,7 @@ class DBNL_Ids(MostSimilar, Batcher):
         self.get_persons_with_identical_dbnl_ids= ls
         self.grand_total = grand_total
    
+   
 class Persoon(app.Persoon, grok.EditForm, RepositoryView):
     """This should really be an "Edit" view on a "Person" Model
     
@@ -512,11 +513,15 @@ class Persoon(app.Persoon, grok.EditForm, RepositoryView):
             self.history_counter = self.session_get('history_counter', 1) + 1
         self.session_set('history_counter', self.history_counter)
         
+    def get_contradictions(self):
+        return self.person.get_biography_contradictions()       
+        
     def session_get(self, k, default=None): 
         return ISession(self.request)['bioport'].get(k, default)
     
     def session_set(self, k, v):
         ISession(self.request)['bioport'][k] = v
+        
     def title(self):
         n = self.person.naam()
         if n:
