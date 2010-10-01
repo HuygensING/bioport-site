@@ -420,13 +420,12 @@ class MostSimilar(grok.Form,RepositoryView, Batcher):
         persons = [bioport_repository.person.Person(id, repository=repo) for id in bioport_ids]
         p1, p2 = persons
         repo.antiidentify(p1, p2)
-        
+
         self.bioport_ids = bioport_ids
         self.persons = persons
-        msg = 'Anti-Identified <a href="../persoon?bioport_id=%s">%s</a> and <a href="../persoon?bioport_id=%s">%s</a>' \       
-               % (bioport_ids[0], persons[0].get_bioport_id(), bioport_ids[1], 
-                  persons[1].get_bioport_id())
-        
+        msg = 'Anti-Identified <a href="../persoon?bioport_id=%s">%s</a> and <a href="../persoon?bioport_id=%s">%s</a>' % (
+                bioport_ids[0], persons[0].get_bioport_id(), bioport_ids[1], persons[1].get_bioport_id())
+
         #redirect the user to where wer were
         data = self.request.form
         data['msg'] =  msg
