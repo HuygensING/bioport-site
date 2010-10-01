@@ -81,13 +81,14 @@ select {
 		               selected python:str(status[0]) == request.get('status')"
 		           tal:content="python:status[1]">..</option>
 	        </select>
-	        <br /><br />
+	        <br />
 	        <!--
+	        <br />
 	        XXX
         	<input type="checkbox" name="has_contradictions" id="has_contradictions" tal:attributes="checked request/has_contradictions | nothing" />
 	        <span>Contradictory biographies only</span>
-        	-->
 	        <br />
+        	-->
 
 	        
 
