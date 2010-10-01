@@ -402,7 +402,18 @@ class MostSimilar(grok.Form,RepositoryView, Batcher):
         if contradictions:      
             #import pdb; pdb.set_trace()
             person_href = '<a href="./persoon?bioport_id=%s">%s</a>' % (new_person.id, new_person.name())
-            warning_msg = "contradictory biograhies found for %s.<br />" % person_href
+            warning_msg = "Contradictory biograhies found for %s.<br />" % person_href
+            warning_msg += "<ul>"
+            for contr in contradictions:
+                warning_msg += "<li>"
+                warning_msg += contr.type + ": "
+                warning_msg += '<span style="font-weight:normal">'
+                warning_msg += ', '.join('%s (<i style="font-weight:normal">%s</i>)' %(x, y) for x, y in contr.values)
+                warning_msg += "<br />"
+                warning_msg += '</span>'
+                warning_msg += "</li>"
+            warning_msg += "</ul>"
+            warning_msg += 'Click <a href="./persoon?bioport_id=%s">here</a> to edit.' % new_person.id
 
         #redirect the user to where we were
         data = self.request.form
