@@ -488,5 +488,6 @@ input[name="name_new"] {
 }
 
 #contradictions ul {
-    list-style-image:auto;
+    list-style-image:none !important;
+    padding-left:17px;
 }

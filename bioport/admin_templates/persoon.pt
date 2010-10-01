@@ -621,7 +621,7 @@ img {
         <tal:repeat repeat="con contradictions">
             <li>
                 <b tal:content="con/type">title</b><b>:</b>
-                <span tal:content="python: ', '.join(con.values)">value</span>
+                <span tal:content="structure python:', '.join('%s (<i>%s</i>)' %(x, y) for x, y in con.values)">values</span>
             </li>
         </tal:repeat>
     </ul>
