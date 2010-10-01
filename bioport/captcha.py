@@ -43,7 +43,7 @@ class CaptchaWidget(TextWidget):
                 # No error in the previous statement means that the user has already
                 # submitted a succesful captcha. No need to return a new one.
                 new_captcha_needed = False
-            except:
+            except CaptchaError:
                 pass
         if new_captcha_needed:
             solution = get_random_sequence()
