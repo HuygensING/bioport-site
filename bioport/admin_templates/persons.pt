@@ -85,8 +85,8 @@ select {
 	        <!--
 	        XXX
         	<input type="checkbox" name="has_contradictions" id="has_contradictions" tal:attributes="checked request/has_contradictions | nothing" />
-        	-->
 	        <span>Contradictory biographies only</span>
+        	-->
 	        <br />
 
 	        
