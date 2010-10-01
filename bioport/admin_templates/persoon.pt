@@ -609,8 +609,7 @@ img {
 </td>
 <td>
 
-<!--
-XXX
+
 <div id="contradictions" 
      tal:condition="contradictions">
     <div class="title">
@@ -622,14 +621,11 @@ XXX
         <tal:repeat repeat="con contradictions">
             <li>
                 <b tal:content="con/type">title</b><b>:</b>
-                <tal:repeat repeat="value con/values">
-                    <span tal:content="value">value</span>
-                </tal:repeat>
+                <span tal:content="python: ', '.join(con.values)">value</span>
             </li>
         </tal:repeat>
     </ul>
 </div>
--->
 
 <div id="right_column">
 	<tal:block repeat="bio view/person/get_biographies" >
@@ -657,8 +653,6 @@ XXX
 </td>
 </tr>
 </table>
-
-
 
 
 <h1>Uitleg</h1> 

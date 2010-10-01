@@ -389,15 +389,26 @@ class MostSimilar(grok.Form,RepositoryView, Batcher):
         repo = self.repository()
         persons = [bioport_repository.person.Person(id, repository=repo) for id in bioport_ids]
         assert len(persons) == 2
-        repo.identify(persons[0], persons[1])
+        new_person = repo.identify(persons[0], persons[1])
         
-        self.bioport_ids = bioport_ids
-        msg = 'Identified <a href="./persoon?bioport_id=%s">%s</a> and <a href="./persoon?bioport_id=%s">%s</a>' % (
-                     bioport_ids[0],  bioport_ids[0], bioport_ids[1],  bioport_ids[1])
-        
-        #redirect the user to where wer were
+        self.bioport_ids = bioport_ids        
+        id1 = '<a href="./persoon?bioport_id=%s">%s</a>' % (bioport_ids[0], bioport_ids[0])
+        id2 = '<a href="./persoon?bioport_id=%s">%s</a>' % (bioport_ids[1], bioport_ids[1])
+        msg = 'identified %s and %s. ' %(id1, id2)
+       
+        # check for contradictions and construct a message for the browser
+        contradictions = new_person.get_biography_contradictions()      
+        warning_msg = ''
+        if contradictions:      
+            #import pdb; pdb.set_trace()
+            person_href = '<a href="./persoon?bioport_id=%s">%s</a>' % (new_person.id, new_person.name())
+            warning_msg = "contradictory biograhies found for %s.<br />" % person_href
+
+        #redirect the user to where we were
         data = self.request.form
         data['msg'] =  msg
+        if warning_msg:
+            data['warning_msg'] = warning_msg
         if data.has_key('bioport_ids'):
             del data['bioport_ids']
         self.goback(data = data)
@@ -412,8 +423,9 @@ class MostSimilar(grok.Form,RepositoryView, Batcher):
         
         self.bioport_ids = bioport_ids
         self.persons = persons
-        msg = 'Anti-Identified <a href="../persoon?bioport_id=%s">%s</a> and <a href="../persoon?bioport_id=%s">%s</a>' % (
-                     bioport_ids[0], persons[0].get_bioport_id(), bioport_ids[1], persons[1].get_bioport_id())
+        msg = 'Anti-Identified <a href="../persoon?bioport_id=%s">%s</a> and <a href="../persoon?bioport_id=%s">%s</a>' \       
+               % (bioport_ids[0], persons[0].get_bioport_id(), bioport_ids[1], 
+                  persons[1].get_bioport_id())
         
         #redirect the user to where wer were
         data = self.request.form

@@ -58,6 +58,9 @@
 		    <div id="messagebox" tal:condition="view/msg | request/msg  |nothing" >
 		        <span tal:content="structure view/msg | request/msg" />
 		    </div>
+		    <div id="warningbox" tal:condition="view/warning_msg | request/warning_msg  |nothing" >
+		        <span tal:content="structure view/warning_msg | request/warning_msg" />
+		    </div>
         <div tal:omit-tag="" metal:define-slot="content">
         body content goes here
         </div>

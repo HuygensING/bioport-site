@@ -419,6 +419,18 @@ input[name="funeral_y"]
     background-position:12px 8px;
 }
 
+#warningbox {
+    background:#DEC34A;
+    padding:10px !important;
+    padding-left:40px !important;
+    margin-bottom:10px !important;
+    font-weight:bold;
+    -moz-border-radius:10px 10px 10px 10px;
+    border-radius:10px 10px 10px 10px;
+    background: url("../images/warning-icon-20x20.png") no-repeat scroll 0 0 #DEC34A;
+    background-position:12px 8px;
+}
+
 .autocomplete {
     background:none repeat scroll 0 0 #FFFFFF;
     border:1px solid #999999;
