@@ -431,6 +431,11 @@ input[name="funeral_y"]
     background-position:12px 8px;
 }
 
+#warningbox ul {
+    padding-left:15px;
+    list-style-image:none !important;
+}
+
 .autocomplete {
     background:none repeat scroll 0 0 #FFFFFF;
     border:1px solid #999999;
