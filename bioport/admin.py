@@ -4,6 +4,7 @@ import os
 import time	
 import app
 import grok
+import logging
 from app import Batcher, RepositoryView
 
 from common import format_date, format_dates, format_number
@@ -169,11 +170,12 @@ class Edit(grok.EditForm,RepositoryView):
 #    def identify_vdaa_etc(self, **args):
 #        from bioport_repository.tmp.update_vdaa_and_nnbw_doubles import identify_doubles
 #        identify_doubles(repo =self.repository())
-#    
-    @grok.action('update persons')
+
+    @grok.action('update persons')        
     def update_persons(self, **args):
-        self.repository().db.update_persons()
-        
+        total = self.repository().db.update_persons()
+        self._redirect_with_msg("%s persons updated." % total)
+
 #    @grok.action('Fix identification error')
 #    def fix_identification_error(self, **data):
 #        #reload nnbw/10908
