@@ -35,6 +35,7 @@ select {
 </style>
 
 <h1>Persons</h1>
+
 <div metal:define-macro="alfabet">
 	<span tal:repeat="letter string:abcdefghijklmnopqrstuvwxyz"
 	    tal:attributes="class python:letter == request.get('beginletter') and 'alfabet selected' or 'alfabet'"
@@ -83,9 +84,13 @@ select {
 	        </select>
 	        <br />
 	        <br />
-        	<input type="checkbox" name="has_contradictions" id="has_contradictions" tal:attributes="checked request/has_contradictions | nothing" />
-	        <span>Contradictory biographies only</span>
-	        <br />
+
+            <tal:block tal:condition="python:'/admin/persons' in view.url()">
+            	<input type="checkbox" name="has_contradictions" id="has_contradictions"
+            	       tal:attributes="checked request/has_contradictions | nothing" />
+	            <span>Contradictory biographies only</span>
+	            <br />
+            </tal:block>
 	        
 
 <span tal:condition="nothing">
