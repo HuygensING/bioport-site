@@ -419,7 +419,7 @@ class MostSimilar(grok.Form,RepositoryView, Batcher):
                 warning_msg += '</span>'
                 warning_msg += "</li>"
             warning_msg += "</ul>"
-            warning_msg += 'Click <a href="./persoon?bioport_id=%s">here</a> to edit.' % new_person.id
+            warning_msg += 'Click <a accesskey="b" href="./persoon?bioport_id=%s">here</a> to edit.' % new_person.id
 
         #redirect the user to where we were
         data = self.request.form
