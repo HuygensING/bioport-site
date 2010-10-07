@@ -40,6 +40,7 @@ class IHomePageSettings(Interface):
     dutch_home_html = schema.Text(title=u'Dutch html for the homepage')
     english_home_html = schema.Text(title=u'English html for the homepage')
 
+
 class Admin(grok.Container):
 
     grok.require('bioport.Edit')
@@ -55,6 +56,7 @@ class Admin(grok.Container):
     EMAIL_FROM_ADDRESS = 'test@example.com'
     CONTACT_DESTINATION_ADDRESS = 'destination@example.com'
     dutch_home_html = english_home_html = 'Biografisch Portaal van Netherlands'
+    
     @forever.memoize
     def repository(self, user):
         return Repository(
@@ -65,7 +67,7 @@ class Admin(grok.Container):
             images_cache_url=self.IMAGES_CACHE_URL,
             user=user,
 #            ZOPE_SESSIONS=False, #use z3c.saconfig package
-        ) 
+            ) 
 
     def __getstate__(self):
         #we cannot (And dont want to) pickle the repository -- like this we exclude it
@@ -74,7 +76,6 @@ class Admin(grok.Container):
         except KeyError:
             pass
         return self.__dict__
-
     
     def format_date(self, s):
         return format_date(s)
@@ -90,6 +91,7 @@ class Admin(grok.Container):
     
 
 class Edit(grok.EditForm,RepositoryView):
+
     grok.require('bioport.Manage')
     grok.template('edit')
     grok.context(Admin)
@@ -131,12 +133,11 @@ class Edit(grok.EditForm,RepositoryView):
     @grok.action('Refresh similarity for blnp')
     def refresh_similarity_cache_blnp(self, **data): 
         self.repository().db.fill_similarity_cache(refresh=True, source_id='blnp')
-##       
+
 #    @grok.action('Refresh the similar persons cache')
 #    def fill_most_similar_persons_cache(self, **data):
 #        self.repository().db.fill_most_similar_persons_cache(refresh=True)
-##        self.redirect(self.url(self))
-#        
+#        self.redirect(self.url(self))
         
     @grok.action('Create non-existing tables')
     def reset_database(self, **data):
@@ -153,8 +154,20 @@ class Edit(grok.EditForm,RepositoryView):
         self.repository().db._update_category_table()
 #        self.redirect(self.url(self))
 
-    
+    @grok.action('update persons')        
+    def update_persons(self, **args):
+        total = self.repository().db.update_persons()
+        self._redirect_with_msg("%s persons updated." % total)
         
+    @grok.action('recompute_soundexes')
+    def tmp_update_soundexes(self, **data):
+        self.repository().db.tmp_update_soundexes()
+        
+    @grok.action('add_biodes')
+    def add_biodes(self, **data):
+        from biodes import BioDes
+        self.__parent__.__parent__['biodes'] = BioDes()
+       
 #    @grok.action('Set state of edited persons to bewerkte(JG: DELETE THIS BUTTON WHEN DONE)')
 #    def set_state_to_bewerkt(self, **data):
 #        from bioport_repository.upgrade import upgrade_persons
@@ -171,11 +184,6 @@ class Edit(grok.EditForm,RepositoryView):
 #        from bioport_repository.tmp.update_vdaa_and_nnbw_doubles import identify_doubles
 #        identify_doubles(repo =self.repository())
 
-    @grok.action('update persons')        
-    def update_persons(self, **args):
-        total = self.repository().db.update_persons()
-        self._redirect_with_msg("%s persons updated." % total)
-
 #    @grok.action('Fix identification error')
 #    def fix_identification_error(self, **data):
 #        #reload nnbw/10908
@@ -188,7 +196,6 @@ class Edit(grok.EditForm,RepositoryView):
 #            bio.from_url(biourl)
 #            repo.add_biography(bio)        
             
-
 #    @grok.action('tmp_fixup_category_doublures ')
 #    def tmp_fixup_category_doublures(self, **data):
 #        self.repository().db.tmp_fixup_category_doublures()
@@ -203,17 +210,7 @@ class Edit(grok.EditForm,RepositoryView):
         
 #    @grok.action('give blnps a categorie')
 #    def tmp_give_blnps_a_category(self, **data):
-#        self.repository().db.tmp_give_blnps_a_category()
-
-    @grok.action('recompute_soundexes')
-    def tmp_update_soundexes(self, **data):
-        self.repository().db.tmp_update_soundexes()
-        
-    @grok.action('add_biodes')
-    def add_biodes(self, **data):
-        from biodes import BioDes
-        self.__parent__.__parent__['biodes'] = BioDes()
-        
+#        self.repository().db.tmp_give_blnps_a_category()      
         
         
 class Display(grok.DisplayForm):
@@ -221,10 +218,13 @@ class Display(grok.DisplayForm):
     grok.context(Admin)
     form_fields = grok.Fields(IAdminSettings)
  
+
 class Index(grok.View):
     grok.require('bioport.Edit')
     
+
 class Biographies(grok.View, RepositoryView):
+
     grok.require('bioport.Edit')
     grok.context(Admin)
     
@@ -234,7 +234,7 @@ class Biographies(grok.View, RepositoryView):
 
 class Biography(grok.View):
     grok.require('bioport.Edit')
-    pass
+
 
 class Persons(app.Personen,RepositoryView):
     grok.require('bioport.Edit')
@@ -295,7 +295,8 @@ class Source(grok.EditForm,RepositoryView):
     @grok.action('Download Illustrations', name='download_illustrations')    
     def download_illustrations(self, **data): 
         source = self.source
-        total, skipped = self.repository().download_illustrations(source, limit=int(self.context.LIMIT), overwrite=False)
+        total, skipped = self.repository().download_illustrations(source, 
+                                limit=int(self.context.LIMIT), overwrite=False)
         msg = "Illustrations downloaded successfully (total=%s, skipped=%s)" % (total, skipped)
         self._redirect_with_msg(msg)
         
@@ -317,9 +318,9 @@ class Source(grok.EditForm,RepositoryView):
 
     @grok.action('Refresh similarity table', name='refresh_similarity_cache')
     def refresh_similarity_cache(self, **data): 
-        self.repository().db.fill_similarity_cache(refresh=True, source_id=self.source.id)
+        self.repository().db.fill_similarity_cache(refresh=True, 
+                                                   source_id=self.source.id)
         self._redirect_with_msg("Similarity table refreshed")
-
 
 
 class Sources(grok.View,RepositoryView):
@@ -343,16 +344,20 @@ class Sources(grok.View,RepositoryView):
         return msg
     
     def add_source(self, source_id, url, description=None):
-        source = self.repository().add_source(bioport_repository.source.Source(source_id, url, description))
+        src = bioport_repository.source.Source(source_id, url, description)
+        self.repository().add_source(src)
         
 
 class MostSimilar(grok.Form,RepositoryView, Batcher):
+
     grok.require('bioport.Edit')
 
     def update(self):
         self.start = int(self.request.get('start', 0))
         self.size = int(self.request.get('size', 20))
-        self.similar_to = self.request.get('bioport_id') or self.request.get('similar_to', None) or getattr(self, 'similar_to', None)
+        self.similar_to = self.request.get('bioport_id') or \
+                          self.request.get('similar_to', None) or \
+                          getattr(self, 'similar_to', None)
         self.redirect_to = None
         self.most_similar_persons = self.repository().get_most_similar_persons(
            start=self.start, 
@@ -402,7 +407,6 @@ class MostSimilar(grok.Form,RepositoryView, Batcher):
         contradictions = new_person.get_biography_contradictions()      
         warning_msg = ''
         if contradictions:      
-            #import pdb; pdb.set_trace()
             person_href = '<a href="./persoon?bioport_id=%s">%s</a>' % (new_person.id, new_person.name())
             warning_msg = "Contradictory biograhies found for %s.<br />" % person_href
             warning_msg += "<ul>"
@@ -444,7 +448,6 @@ class MostSimilar(grok.Form,RepositoryView, Batcher):
         data['msg'] =  msg
 #        request.form.set('msg', msg)
         self.goback(data = data)
-        
    
     @grok.action('Moeilijk geval', name='deferidentification')
     def deferidentification(self):
@@ -487,29 +490,33 @@ class MostSimilar(grok.Form,RepositoryView, Batcher):
             batch = Batch(ls, start=self.start, size=self.size)
             self.persons = batch 
             self.persons.grand_total = len(ls)
+
             
 class DBNL_Ids(MostSimilar, Batcher):
+
     def update(self):
         self.start = int(self.request.get('start', 0))
         self.size = int(self.request.get('size', 20))
         self.source = self.request.get('source')
         self.redirect_to = None
-        ls, grand_total = self.repository().db.get_persons_with_identical_dbnl_ids(start=self.start, size=self.size, source=self.source)
+        fun = self.repository().db.get_persons_with_identical_dbnl_ids
+        ls, grand_total = fun(start=self.start, size=self.size, source=self.source)
         self.get_persons_with_identical_dbnl_ids= ls
         self.grand_total = grand_total
    
    
 class Persoon(app.Persoon, grok.EditForm, RepositoryView):
-    """This should really be an "Edit" view on a "Person" Model
-    
-    But I am in an incredible hurry and have no time to learn :-("""
-   
+    """
+    XXX
+    This should really be an "Edit" view on a "Person" Model   
+    But I am in an incredible hurry and have no time to learn :-(
+    """
   
     grok.require('bioport.Edit')
     def update(self, **args):
         self.bioport_id = self.bioport_id or self.request.get('bioport_id')
         if not self.bioport_id:
-            #XXX make a userfrienlider error
+            # XXX make a userfrienlider error
             assert 0, 'need bioport_id in the request'
         repository = self.repository() 
         self.person = self.get_person(bioport_id=self.bioport_id)  
@@ -521,8 +528,9 @@ class Persoon(app.Persoon, grok.EditForm, RepositoryView):
                 
         assert self.person, 'NO PERSON FOUND WITH THIS ID %s' % self.bioport_id
         
-        #XXX note that the following line creates a bioport biography if it did not exist yet (and saves it)
-        #XXX this might be too much ofa  side effect for only viewing the page...
+        # XXX note that the following line creates a bioport biography if it 
+        # did not exist yet (and saves it)
+        # XXX this might be too much ofa  side effect for only viewing the page...
         self.bioport_biography =  repository.get_bioport_biography(self.person) 
         self.merged_biography  = self.person.get_merged_biography()
 
@@ -592,8 +600,10 @@ class Persoon(app.Persoon, grok.EditForm, RepositoryView):
             return biography.get_value(k, '')
         
     def status_value(self, event_id, attr):
-        """return 'bioport' if the value is added by the editors of the biographical portal
-        return 'merged' if the value comes from the merged_biography"""
+        """return 'bioport' if the value is added by the editors of the 
+        biographical portal return 'merged' if the value comes from the 
+        merged_biography.
+        """
         bioport_event = self.get_event(event_id, biography=self.bioport_biography)
         if bioport_event is None:
             bioport_event = self.get_state(event_id)
@@ -604,6 +614,7 @@ class Persoon(app.Persoon, grok.EditForm, RepositoryView):
             return 'merged'
             
     def validate_event(self, action, data):
+        # XXX ???
         pass
     
     def _get_date_from_request(self, prefix):
@@ -619,21 +630,23 @@ class Persoon(app.Persoon, grok.EditForm, RepositoryView):
         notAfter = self._get_date_from_request('%s_notAfter' % type)
         date_text = self.request.get('%s_text' % type)
         place = self.request.get('%s_place' % type)
-        self.bioport_biography.add_or_update_event(type, when=when, date_text=date_text, notBefore=notBefore, notAfter=notAfter, place=place)
+        self.bioport_biography.add_or_update_event(type, when=when, 
+                                       date_text=date_text, notBefore=notBefore, 
+                                       notAfter=notAfter, place=place)
         
     def _save_state(self, type):
         frm = self._get_date_from_request(prefix='state_%s_from' % type)
         to = self._get_date_from_request(prefix='state_%s_to' % type)
         text = self.request.get('state_%s_text' % type)
         place = self.request.get('state_%s_place' % type)
-        self.bioport_biography.add_or_update_state(type, frm=frm, to=to, text=text,place=place)
+        self.bioport_biography.add_or_update_state(type, frm=frm, to=to, 
+                                                   text=text, place=place)
         
     @grok.action('bewaar rubriek', name="save_category")
     def save_category(self):
         self._set_category()
         self.save_biography()
         self.msg = 'rubriek bewaard' 
-    
     
     def _set_category(self):
         category_ids = self.request.get('category_id', [])
@@ -657,39 +670,6 @@ class Persoon(app.Persoon, grok.EditForm, RepositoryView):
         
         self.categories = self.get_states(type='category')
         
-#    @grok.action('bewaar beroep', name="save_occupation")
-#    def save_occupation(self):
-#        self._set_occupation()
-#        self.save_biography()
-#        self.msg = 'beroep bewaard' 
-#    
-#    
-#    def _set_occupation(self):
-#        occupation_ids = self.request.get('occupation_id', [])
-#        to_delete = []
-#        if type(occupation_ids) != type([]):
-#            occupation_ids = [occupation_ids]
-#        for idx in range(len(occupation_ids)):
-#            occupation_id = occupation_ids[idx] 
-#            if occupation_id:
-#                name = self.repository().get_occupation(occupation_id).name  
-#                self.bioport_biography.add_or_update_state(type='occupation', idno=occupation_id, text=name, idx=idx)
-#            else:
-#                to_delete.append(idx) 
-#                
-#        to_delete.reverse()
-#        for idx in to_delete:
-#            self.bioport_biography.remove_state(type='occupation', idx=idx)
-#            
-#        new_occupation_ids = self.request.get('new_occupation_id')
-#        if type(new_occupation_ids) != type([]):
-#            new_occupation_ids = [new_occupation_ids]
-#        new_occupation_ids = [s for s in new_occupation_ids if s ]
-#        for new_occupation_id in new_occupation_ids:
-#            name = self.repository().get_occupation(new_occupation_id).name 
-#            self.bioport_biography.add_state(type='occupation', idno=new_occupation_id, text=name)
-    
-
     def save_biography(self):
         if not self.person.status:
             self.person.status = 2 #set status to bewerkt
@@ -713,7 +693,6 @@ class Persoon(app.Persoon, grok.EditForm, RepositoryView):
         self._set_event('birth')
         self.save_biography()
         self.msg = 'geboortedatum bewaard'
-        
            
     @grok.action('bewaar dood', name='save_event_death')
     def save_event_death(self):
@@ -732,7 +711,6 @@ class Persoon(app.Persoon, grok.EditForm, RepositoryView):
         self._set_event('funeral')
         self.save_biography()
         self.msg = 'begraafdatum veranderd'
-            
          
     @grok.action('verander naam', name='change_name')  
     def change_name(self):
@@ -756,8 +734,6 @@ class Persoon(app.Persoon, grok.EditForm, RepositoryView):
             status = int(status)
         self.person.status = status 
         self.repository().save_person(self.person)
-    
-
         
     @grok.action('bewaar opmerkingen', name='save_remarks')
     def save_remarks(self): 
@@ -781,7 +757,6 @@ class Persoon(app.Persoon, grok.EditForm, RepositoryView):
                 snippet = self.request.get(k)
                 self.bioport_biography.set_snippet(bio_id, snippet)
                 
-        
     @grok.action('bewaar alle veranderingen', name='save_everything')  
     def save_everything(self):
         self._save_snippet()
@@ -803,8 +778,6 @@ class Persoon(app.Persoon, grok.EditForm, RepositoryView):
         names = self.request.get('personname')
         if isinstance(names, (str, unicode)):
             names = [names]
-            
-            
         x = 0
         for fullname in names:
             nameobj = Naam(volledige_naam=fullname)
@@ -874,14 +847,48 @@ class Persoon(app.Persoon, grok.EditForm, RepositoryView):
         id = self.person.bioport_id
         self.repository().db.fill_similarity_cache(person=self.person, refresh=True)
         self.person = self.repository().get_person(bioport_id = id)
+        
+#    @grok.action('bewaar beroep', name="save_occupation")
+#    def save_occupation(self):
+#        self._set_occupation()
+#        self.save_biography()
+#        self.msg = 'beroep bewaard' 
+    
+#    def _set_occupation(self):
+#        occupation_ids = self.request.get('occupation_id', [])
+#        to_delete = []
+#        if type(occupation_ids) != type([]):
+#            occupation_ids = [occupation_ids]
+#        for idx in range(len(occupation_ids)):
+#            occupation_id = occupation_ids[idx] 
+#            if occupation_id:
+#                name = self.repository().get_occupation(occupation_id).name  
+#                self.bioport_biography.add_or_update_state(type='occupation', 
+#                                    idno=occupation_id, text=name, idx=idx)
+#            else:
+#                to_delete.append(idx) 
+#                
+#        to_delete.reverse()
+#        for idx in to_delete:
+#            self.bioport_biography.remove_state(type='occupation', idx=idx)
+#            
+#        new_occupation_ids = self.request.get('new_occupation_id')
+#        if type(new_occupation_ids) != type([]):
+#            new_occupation_ids = [new_occupation_ids]
+#        new_occupation_ids = [s for s in new_occupation_ids if s ]
+#        for new_occupation_id in new_occupation_ids:
+#            name = self.repository().get_occupation(new_occupation_id).name 
+#            self.bioport_biography.add_state(type='occupation', idno=new_occupation_id, text=name)
 
 
 class Debuginfo(Persoon):
     pass
         
+
 class PersoonIdentify(MostSimilar, Persons, Persoon):
     
     grok.require('bioport.Edit')
+    
     def update(self, **args):
         self.bioport_ids = self.request.get('bioport_ids', [])
         if type(self.bioport_ids) != type([]):
@@ -894,7 +901,9 @@ class PersoonIdentify(MostSimilar, Persons, Persoon):
         
         MostSimilar.update(self, **args)
         self.redirect_to = None
-        if len(self.bioport_ids) == 1 and not self.request.get('search_name') and not self.request.get('bioport_id'):
+        if len(self.bioport_ids) == 1 and \
+        not self.request.get('search_name') and \
+        not self.request.get('bioport_id'):
             return self._get_similar_persons()
         
         persons = self.persons = self.get_persons()
@@ -909,9 +918,10 @@ class PersoonIdentify(MostSimilar, Persons, Persoon):
         return batch
 
 
-
 class IdentifyMoreInfo(MostSimilar, Persons, Persoon,RepositoryView):
+
     grok.require('bioport.Edit')
+    
     def update(self, bioport_ids=[]):
         repo = self.repository()
         persons = [bioport_repository.person.Person(id, repository=repo) for id in bioport_ids]
@@ -920,6 +930,7 @@ class IdentifyMoreInfo(MostSimilar, Persons, Persoon,RepositoryView):
         self.start = int(self.request.get('start', 0))
         self.size = None
         self.redirect_to = None
+
     def goback(self,  data = None):
         most_similar_persons = self.repository().get_most_similar_persons(start=self.start, size=5)
         score, p1, p2= most_similar_persons[0]
@@ -929,6 +940,7 @@ class IdentifyMoreInfo(MostSimilar, Persons, Persoon,RepositoryView):
        
 
 class ChangeName(Persoon, grok.EditForm,RepositoryView): 
+
     grok.require('bioport.Edit')
     
     def update(self, **args):
@@ -955,10 +967,8 @@ class ChangeName(Persoon, grok.EditForm,RepositoryView):
     @grok.action('bewaar veranderingen', name='save_changes') 
     def save_changes(self):
         bio = self.bioport_biography
-        
         parts = ['prepositie', 'voornaam', 'intrapositie', 'geslachtsnaam', 'postpositie']
-        args = dict([(k, self.request.get(k)) for k in parts])
-        
+        args = dict([(k, self.request.get(k)) for k in parts])       
         volledige_naam = self.request.get('volledige_naam')
             
         #als de volledige naam niet is veranderd, maar een van de oude velden wel
@@ -967,31 +977,35 @@ class ChangeName(Persoon, grok.EditForm,RepositoryView):
             volledige_naam = ' '.join(parts)
         
         try:
-            self.naam = name = Naam(
-                volledige_naam = volledige_naam,
-                **args
-            )
+            self.naam = name = Naam(volledige_naam = volledige_naam, **args)
             repository = self.repository()
             bio._replace_name(name, self.idx)
             repository.save_biography(bio)
             self.msg = 'De veranderingen zijn bewaard'
         except Exception, error:
+            # XXX - evil!
             self.msg = unicode(error)
             self.msg += ' Uw veranderingen zijn niet bewaard'
        
  
 class AntiIdentified(grok.View, RepositoryView, Batcher):
+
     grok.require('bioport.Edit')
 
     def update(self):
         Batcher.update(self)
+
     def get_antiidentified(self):
         ls = self.repository().get_antiidentified()
         batch = Batch(ls, start=self.start, size=self.size)
         batch.grand_total = len(batch.sequence) 
         return batch 
+        
+
 class Identified(grok.View, RepositoryView, Batcher):
+
     grok.require('bioport.Edit')
+
     def update(self):
         Batcher.update(self)
     
@@ -1017,7 +1031,9 @@ class Identified(grok.View, RepositoryView, Batcher):
         batch.grand_total = len(ls)
         return batch  
 
+
 class Deferred(MostSimilar ):  
+
     grok.require('bioport.Edit')
     
     def update(self, **args):
@@ -1030,14 +1046,11 @@ class Deferred(MostSimilar ):
         batch.grand_total = len(ls)
         return batch  
     
-class Uitleg(grok.View): 
-    pass
-   
-class Uitleg_Zoek(grok.View):        
-    pass   
-    
+
 class Locations(grok.View,RepositoryView):     
+
     grok.require('bioport.Edit')
+
     def update(self, **kw):
         self.start = int(self.request.get('start', 0))
         self.size = int(self.request.get('size', 30))
@@ -1050,8 +1063,6 @@ class Locations(grok.View,RepositoryView):
         batch = Batch(ls, start=self.start, size=self.size)
         batch.grand_total = len(ls)
         return batch
-    
-
 
 
 class EditHomePage(grok.EditForm,RepositoryView):
@@ -1066,17 +1077,22 @@ class EditHomePage(grok.EditForm,RepositoryView):
 
 
 class ChangeLocation(Locations):    
+
     grok.require('bioport.Edit')
+
     def update(self, **kw):
         Locations.update(self)
         self.location = self.request.get('place_id')
 
+
 class Identify(grok.View):
     grok.require('bioport.Edit')
-    pass
+
 
 class UnIdentify(grok.View, RepositoryView):
+
     grok.require('bioport.Edit')
+
     def update(self):
         bioport_id = self.bioport_id = self.request.get('bioport_id')
         person = self.repository().get_person(bioport_id)
@@ -1085,8 +1101,20 @@ class UnIdentify(grok.View, RepositoryView):
         else:
             self.persons = []
     
+
 class Log(grok.View,RepositoryView):
+
     grok.require('bioport.Edit')
+
     def get_log_messages(self):
         return self.repository().get_log_messages()
+  
     
+class Uitleg(grok.View): 
+    pass
+   
+
+class Uitleg_Zoek(grok.View):        
+    pass   
+
+
