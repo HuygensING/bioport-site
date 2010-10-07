@@ -394,21 +394,21 @@ class MostSimilar(grok.Form,RepositoryView, Batcher):
     def identify(self):
         bioport_ids = self.request.get('bioport_ids')
         repo = self.repository()
-        persons = [bioport_repository.person.Person(id, repository=repo) for id in bioport_ids]
+        persons = [self.get_person(id) for id in bioport_ids]
         assert len(persons) == 2
         new_person = repo.identify(persons[0], persons[1])
         
         self.bioport_ids = bioport_ids        
-        id1 = '<a href="./persoon?bioport_id=%s">%s</a>' % (bioport_ids[0], bioport_ids[0])
-        id2 = '<a href="./persoon?bioport_id=%s">%s</a>' % (bioport_ids[1], bioport_ids[1])
-        msg = 'identified %s and %s. ' %(id1, id2)
+        person1_href = '<a href="./persoon?bioport_id=%s">%s</a>' % (bioport_ids[0], bioport_ids[0])
+        person2_href = '<a href="./persoon?bioport_id=%s">%s</a>' % (bioport_ids[1], bioport_ids[1])
+        new_person_href = '<a href="./persoon?bioport_id=%s">%s</a>' % (new_person.id, new_person.name())
        
         # check for contradictions and construct a message for the browser
         contradictions = new_person.get_biography_contradictions()      
         warning_msg = ''
+        # XXX - this should be translated in dutch
         if contradictions:      
-            person_href = '<a href="./persoon?bioport_id=%s">%s</a>' % (new_person.id, new_person.name())
-            warning_msg = "Contradictory biograhies found for %s.<br />" % person_href
+            warning_msg = "Contradictory biograhies found for %s.<br />" % new_person_href
             warning_msg += "<ul>"
             for contr in contradictions:
                 warning_msg += "<li>"
@@ -420,10 +420,25 @@ class MostSimilar(grok.Form,RepositoryView, Batcher):
                 warning_msg += "</li>"
             warning_msg += "</ul>"
             warning_msg += 'Click <a accesskey="b" href="./persoon?bioport_id=%s">here</a> to edit.' % new_person.id
+            
+        # XXX - this should be translated in dutch
+        if persons[0].status != persons[1].status:
+            st_dict = dict(self.repository().get_status_values())
+            status_1 = st_dict[persons[0].status]
+            status_2 = st_dict[persons[1].status]
+            status_new = st_dict[new_person.status]
+            warning_msg2 = '%s and %s had different statuses (<i>%s</i> and <i>%s</i>). ' \
+                         % (person1_href, person2_href, status_1, status_2)
+            warning_msg2 += "New person status is <i>%s</i> " % status_new
+            warning_msg2 += '(<a accesskey="b" href="./persoon?bioport_id=%s">edit</a>).'
+            if warning_msg:
+                warning_msg = [warning_msg, warning_msg2]
+            else:
+                warning_msg = warning_msg2
 
         #redirect the user to where we were
         data = self.request.form
-        data['msg'] =  msg
+        data['msg'] = 'identified %s and %s. ' % (person1_href, person2_href)
         if warning_msg:
             data['warning_msg'] = warning_msg
         if data.has_key('bioport_ids'):
