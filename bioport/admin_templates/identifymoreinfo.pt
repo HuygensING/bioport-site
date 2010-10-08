@@ -28,6 +28,26 @@
 	<th>Sterfdatum</th>
 	<td tal:repeat="p view/persons" tal:content="python:context.format_date(p.get_value('sterfdatum'))" />
 </tr>
+
+
+<tr>
+	<th>Contradictions</th>
+	<td tal:repeat="p view/persons">
+	    <tal:block define="cons python:p.get_biography_contradictions()" condition="cons">
+	        <ul>
+	            <tal:block repeat="con cons">
+                    <li>
+                        <b tal:content="con/type">title</b><b>:</b>
+                        <span tal:content="structure python:', '.join('%s (<i>%s</i>)' %(x, y) for x, y in con.values)">values</span>
+                    </li>
+                </tal:block>
+            </ul>
+        </tal:block>
+	</td>
+</tr>
+
+
+
 <tr>
 	<th>Naamsvarianten</th>
 	<td tal:repeat="p view/persons">
