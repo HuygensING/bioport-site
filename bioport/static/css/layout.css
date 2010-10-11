@@ -181,5 +181,36 @@
 }
 
 
+/* other ------------------------------------------------*/
+
+.adminSection {
+}
+
+.adminEditLink {
+    padding:3px !important;
+    padding-left:40px !important;
+    margin-bottom:10px !important;
+    font-weight:bold;
+    -moz-border-radius:10px 10px 10px 10px;
+    border-radius:10px 10px 10px 10px;
+    background: url("../images/edit-icon.png") no-repeat scroll 0 0 #CCC;
+    background-position:12px 6px;
+    font-size:1.0em;
+    font-weight:bold;   
+}
+
+
+.adminDebugLink {
+    padding:3px !important;
+    padding-left:40px !important;
+    margin-bottom:10px !important;
+    font-weight:bold;
+    -moz-border-radius:10px 10px 10px 10px;
+    border-radius:10px 10px 10px 10px;
+    background: url("../images/debug-icon.gif") no-repeat scroll 0 0 #CCC;
+    background-position:11px 2px;
+    font-size:1.0em;
+    font-weight:bold;   
+}
 
 

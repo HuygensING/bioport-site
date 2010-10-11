@@ -8,6 +8,7 @@
     <div metal:fill-slot="content"
     	tal:define="illustraties  python:[x for x in view.biography.get_illustrations() if x.has_image()]"
     	>
+    	
     <div class="column_right">
     
         <!-- one or two pictures -->
@@ -167,6 +168,7 @@
 			     class="external_link open_in_new_window"
                     tal:content="python:biography.get_source().description"></a>
     	</span>
+    	   	
     	<div class="snippet"
     		tal:define="snippet  python:(view.bioport_biography and view.bioport_biography.get_snippet(biography.id)) or biography.snippet"
             tal:condition="snippet">
@@ -175,6 +177,7 @@
                 class="external_link open_in_new_window" i18n:translate="">meer...</a>
            </div>
         </div>
+        
     </div>
     </div>
     <div class="levensbeschrijvingen"
@@ -184,12 +187,23 @@
     <div metal:use-macro="template/macros/link2bio" />
     </div>
     </div>
+
+    <div class="adminSection" tal:condition="view/is_admin" tal:define="person_id view/person/id">
+        <div class="adminEditLink" >
+            <a tal:attributes="href python:view.application_url() + '/admin/persoon?bioport_id=%s' % person_id">edit person</a>
+        </div>
+        <div class="adminDebugLink" >
+            <a tal:attributes="href python:view.application_url() + '/admin/debuginfo?bioport_id=%s' % person_id">debug</a>
+        </div>
+    </div>
+
     <div class="belowbios" tal:condition="nothing"
          tal:content="structure provider:belowbios" />
     <div tal:condition="nothing">
     <!--  XXX TODO -->
         <a class="backbutton" onClick="alert('terug naar de zoekresultaten (indien van toepassing). Moet nog geimplementeerd.')">terug naar de zoekresultaten</a>
     </div>    
+    
     
 </div>
 </div>

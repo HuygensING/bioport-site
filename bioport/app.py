@@ -115,6 +115,7 @@ class Bioport(grok.Application, grok.Container):
     SVN_REPOSITORY_LOCAL_COPY = None
     DB_CONNECTION = None
     debug=False
+
     def __init__(self, db_connection=None):
         super(Bioport,self).__init__() #cargoculting from ingforms 
         from admin import Admin
@@ -133,12 +134,12 @@ class Bioport(grok.Application, grok.Container):
         return format_number(s)
 
 
-
-
 class BioportNotFound(grok.View, RepositoryView):
+
     grok.context(INotFound)
     grok.name("index.html")
     static = None
+
     def __init__(self, notfound_exception, request):
         " Put the context back to the last found element "
         self.notfound_exception = notfound_exception
@@ -147,6 +148,7 @@ class BioportNotFound(grok.View, RepositoryView):
         self.request.response.setStatus(404)
 
 class Index(grok.View, RepositoryView):
+
     def get_homepage_html(self):
         adapter = IUserPreferredLanguages(self.request)
         language = adapter.getPreferredLanguages()[0]
@@ -154,6 +156,8 @@ class Index(grok.View, RepositoryView):
             return self.context['admin'].english_home_html
         else:
             return self.context['admin'].dutch_home_html
+            
+
 
 class Popup_Template(grok.View):
     
@@ -163,6 +167,7 @@ class Popup_Template(grok.View):
 class Main_Template(grok.View, RepositoryView):
     #make the main template avaible for everything
     grok.context(zope.interface.Interface)
+
 
 class Admin_Template(grok.View):
     #make the main template avaible for everything
@@ -510,6 +515,7 @@ class Persoon(BioPortIdTraverser, grok.View, RepositoryView):
                             return False
                 result.append(StateWrapper(el))
         return result
+        
     def get_state(self, type, biography=None):
         states = self.get_states(type, biography)
         if states:
@@ -527,6 +533,11 @@ class Persoon(BioPortIdTraverser, grok.View, RepositoryView):
         
     def maanden(self):
         return maanden
+        
+    def is_admin(self):
+        from zope.security import checkPermission
+        return checkPermission('bioport.Manage', self.context)
+        
 
 #class Zoek(grok.View, RepositoryView):
 #    pass

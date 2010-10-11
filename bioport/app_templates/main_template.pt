@@ -102,13 +102,13 @@
         <div id="layFoot">
         
             <hr class="textOnly"/>
-            <span tal:omit-tag="" tal:repeat="item python:view.menu_items()">
-            
+            <span tal:omit-tag="" tal:repeat="item python:view.menu_items()">           
                 <span tal:omit-tag="" tal:condition="python:not repeat['item'].start">|</span>
                 <a tal:attributes="href python:item[0]" tal:content="python:item[1]"></a> 
             </span>
 
         </div>
+        
 
     </div>
 
