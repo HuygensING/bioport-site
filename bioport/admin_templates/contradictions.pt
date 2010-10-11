@@ -1,0 +1,122 @@
+<!--
+XXX
+
+THIS IS NOT USED! KEEPING IT JUST IN CASE.
+
+XXX
+-->
+
+<html metal:use-macro="context/@@admin_template/macros/master">
+<div metal:fill-slot="content" 
+     tal:define="batch view/get_persons;
+                 status_values view/get_status_values;">
+
+<link rel="places_url"
+      href="http://localhost:8094/bioport/zoek_places_admin" />
+
+<script tal:attributes="src static/js/autocomplete/jquery.autocomplete-min.js" type="text/javascript"></script>
+
+<script>
+var initialize_places = function() {
+    var enable_comboboxes = function(data) {
+        jQuery('#any_place').autocomplete({lookup:data});
+    }
+    var places_url = jQuery("link[rel='places_url']").attr('href');
+    jQuery.getJSON(places_url, enable_comboboxes);
+}
+
+jQuery(function() {
+    initialize_places();
+});
+</script>
+
+<style>
+input {
+    width:183px;
+    margin-right:15px;
+}
+
+select {
+    width:189px;
+    margin-right:15px;
+}
+</style>
+
+<h1>Contradictions</h1>
+
+<div id="navigation-table">
+    <div metal:use-macro="context/@@sitemacros/macros/aantal_resultaten" />
+    <div metal:use-macro="context/@@sitemacros/macros/batch_navigation" />
+</div>
+
+<table class="gcodetable">
+<tr>
+    <th style="width:50%">Naam</th>
+    <th>Status</th>
+    <th>Bron</th>
+    <th>Bewerkt</th>
+    <th tal:condition="nothing">laatst bewerkt</th>
+    <th tal:condition="nothing">verant- woordelijk</th>
+    <th tal:condition="nothing">status</th>
+</tr>
+<tr tal:repeat="person python:batch">
+	<td >
+		<a 
+	tal:content="structure python:person.naam() and person.naam().guess_normal_form() or 'Geen naam gevonden (?)'" 
+    tal:attributes="href python:view.url(context.__parent__, 'persoon', data={'bioport_id':person.get_bioport_id()})" />
+    
+    <span tal:replace="python:context.format_dates(person.get_merged_biography().geboortedatum(), person.get_merged_biography().sterfdatum())" />
+	</td>
+	<td>
+        <a tal:content="python:person.status and view.get_status_values(person.status)"	
+            tal:attributes="onClick string:jQuery('#status_${person/bioport_id}').show();;jQuery('#status_${person/bioport_id}').focus();;jQuery(this).hide()" />
+        <select name="status" id="status"
+            style="display:None;" 
+         tal:attributes="
+            id string:status_${person/bioport_id};
+            onChange string:jQuery.ajax({
+		       type: 'POST',
+		       url: 'persoon',
+		       data: {
+		          'form.actions.save_status':'ok',
+		          'bioport_id':${person/bioport_id},
+		          'status':this.value,
+		          'no_render':true },
+		       timeout : 2000 ,
+		       success: function(msg){
+               /*  alert( 'changed status'  + msg);;*/
+		       },
+		       error: function(request,error){
+                  if (error=='timeout') {
+                      alert('de veranderingen konden (waarschijnlijk) niet worden bewaard doordat het te lang duurde.')
+                  } else {
+                     alert('er is een fout opgetreden: '+ error )
+                  }
+		       }
+	     });;
+	    " >
+		    <option></option>
+		    <option tal:repeat="status status_values" 
+		       tal:attributes="value python:status[0];
+		           selected python:status[0] == person.status;"
+		       tal:content="python:status[1]">..</option>
+		</select>
+	</td>
+	<td>
+	   <span tal:repeat="source python:person.get_sources()">
+	   <Span
+	       tal:condition="python:source.id != 'bioport'"
+	       tal:content="source/id" />
+	   </span>
+	</td>
+	<td tal:condition="person/get_bioport_id">
+	    <a tal:attributes="href python:view.url(context,'persoon', data={'bioport_id':person.get_bioport_id()})"
+	       accesskey="b">
+	    	<span class="accesskey">b</span>ewerk gegevens
+	     </a>
+	</td>
+</tr>
+<ul>
+</div>
+</html>
+
