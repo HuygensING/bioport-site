@@ -41,7 +41,7 @@ class AdminPanelFunctionalTest(baseFunctionalTestCase):
         source_url = 'file://%s' % os.path.join(this_dir, 'data/knaw/list.xml')
         browser.open('http://localhost/app/admin/sources') 
         form = browser.getForm(index=0)
-        form.getControl(name='source_id').value = 'knaw_test'
+        form.getControl(name='source_id').value = u'knaw_test'
         form.getControl(name='url').value = source_url
         try:
             form.submit()

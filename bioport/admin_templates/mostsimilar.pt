@@ -23,7 +23,7 @@ Zie ook de lijsten met
         <th>Naam</th>
         <th>Naam</th>
         <th>Score</th>
-        <th>Links</th>
+        <th>Actions</th>
     </tr>
 
 	<div tal:repeat="x view/most_similar_persons"

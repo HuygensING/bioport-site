@@ -39,7 +39,7 @@ select {
 <div metal:define-macro="alfabet">
 	<span tal:repeat="letter string:abcdefghijklmnopqrstuvwxyz"
 	    tal:attributes="class python:letter == request.get('beginletter') and 'alfabet selected' or 'alfabet'"
-	    ><a tal:attributes="href python:view.url(view, data={'beginletter':letter, 'source_id':request.get('source_id', ''), 'status':request.get('status', '')})" ><span tal:replace="letter/upper" /></a></span>
+	    ><a tal:attributes="href python:view.url(view, data={'beginletter':letter, 'source_id':request.get('source_id', ''), 'source_id2':request.get('source_id2'), 'status':request.get('status', '')})" ><span tal:replace="letter/upper" /></a></span>
 </div>
 <br/>
 <p>
@@ -82,7 +82,7 @@ select {
 		               selected python:str(status[0]) == request.get('status')"
 		           tal:content="python:status[1]">..</option>
 	        </select>
-	        <br />
+	       <br />
 	        <br />
 
             <tal:block tal:condition="python:'/admin/persons' in view.url()">

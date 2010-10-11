@@ -609,7 +609,7 @@ img {
 </td>
 <td>
 
-
+<!-- 
 <div id="contradictions" 
      tal:condition="contradictions">
     <div class="title">
@@ -626,6 +626,7 @@ img {
         </tal:repeat>
     </ul>
 </div>
+ -->
 
 <div id="right_column">
 	<tal:block repeat="bio view/person/get_biographies" >
