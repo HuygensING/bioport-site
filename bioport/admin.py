@@ -945,11 +945,11 @@ class IdentifyMoreInfo(MostSimilar, Persons, Persoon,RepositoryView):
         self.start = int(self.request.get('start', 0))
         self.size = None
         self.redirect_to = None
-
-    def goback(self,  data = None):
+        
+    def goback(self,  data = {}):
         most_similar_persons = self.repository().get_most_similar_persons(start=self.start, size=5)
         score, p1, p2= most_similar_persons[0]
-        data = {'bioport_ids':[p1.bioport_id, p2.bioport_id], 'start':self.start}
+        data.update({'bioport_ids':[p1.bioport_id, p2.bioport_id], 'start':self.start})
         redirect_url = self.url(data=data)
         self.redirect(redirect_url) 
        
