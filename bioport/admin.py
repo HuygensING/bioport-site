@@ -693,6 +693,7 @@ class Persoon(app.Persoon, grok.EditForm, RepositoryView):
 #        self.repository().save_person(self.person)
         self.repository().save_biography(self.bioport_biography)
         #we need to reload merged_biography because changes are not automatically picked up
+        self.person = self.repository().get_person(self.bioport_id)
         self.merged_biography  = self.person.get_merged_biography()
 
     @grok.action('bewaar geslacht', name="save_sex")
