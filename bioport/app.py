@@ -37,8 +37,11 @@ class RepositoryView:
     def get_person(self,bioport_id):
         return self.repository().get_person(bioport_id)
     
-    def get_status_values(self, k=None):
-        return self.repository().get_status_values(k)
+    def get_status_value(self, k, default=None):
+        return self.repository().get_status_value(k, default)
+    
+    def get_status_values(self):
+        return self.repository().get_status_values()
     
     @ram.cache(lambda *args: time() // (60 * 60))
     def count_persons(self):

@@ -169,13 +169,11 @@ class SimpleSampleFunctionalTest(FunctionalTestCase):
         form = browser.getForm(index=0)
         form.getControl(name='death_y').value='2222'
         form.getControl(name='death_m').value=['2']
-#        form.getControl(name='death_d').value=['1']
         form.getControl(name='death_d').value='1'
         form.getControl(name='form.actions.save_everything').click()
         form = browser.getForm(index=0)
         self.assertEqual(form.getControl(name='death_y').value,'2222')
         self.assertEqual(form.getControl(name='death_m').value,['2'])
-#        self.assertEqual(form.getControl(name='death_d').value,['1'])
         self.assertEqual(form.getControl(name='death_d').value,'1')
         browser.open(public_url)
         assert re.findall('1 februari 2222', browser.contents, re.DOTALL), browser.contents

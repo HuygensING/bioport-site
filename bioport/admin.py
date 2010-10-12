@@ -369,6 +369,8 @@ class MostSimilar(grok.Form,RepositoryView, Batcher):
            )
         
     def goback(self,  data = None):
+        #do not repeat the form actions
+        #XXX this is a hack - we should really only have POST request changing the data (in that case, whatever is left her ein the request is harmless)
         for k in data.keys():
             if k.startswith('form'):
                 del data[k]
@@ -423,14 +425,14 @@ class MostSimilar(grok.Form,RepositoryView, Batcher):
             
         # XXX - this should be translated in dutch
         if persons[0].status != persons[1].status:
-            st_dict = dict(self.repository().get_status_values())
-            status_1 = st_dict[persons[0].status]
-            status_2 = st_dict[persons[1].status]
-            status_new = st_dict[new_person.status]
+            get_status = self.repository().get_status_value
+            status_1 = get_status(persons[0].status, '--')
+            status_2 = get_status(persons[1].status, '--')
+            status_new = get_status(new_person.status, '')
             warning_msg2 = '%s and %s had different statuses (<i>%s</i> and <i>%s</i>). ' \
                          % (person1_href, person2_href, status_1, status_2)
             warning_msg2 += "New person status is <i>%s</i> " % status_new
-            warning_msg2 += '(<a accesskey="b" href="./persoon?bioport_id=%s">edit</a>).'
+            warning_msg2 += '(<a accesskey="b" href="./persoon?bioport_id=%s">edit</a>).' % new_person.get_bioport_id()
             if warning_msg:
                 warning_msg = [warning_msg, warning_msg2]
             else:
@@ -690,7 +692,6 @@ class Persoon(app.Persoon, grok.EditForm, RepositoryView):
             self.person.status = 2 #set status to bewerkt
 #        self.repository().save_person(self.person)
         self.repository().save_biography(self.bioport_biography)
-        self.person.refresh()
         #we need to reload merged_biography because changes are not automatically picked up
         self.merged_biography  = self.person.get_merged_biography()
 
@@ -947,6 +948,10 @@ class IdentifyMoreInfo(MostSimilar, Persons, Persoon,RepositoryView):
         self.redirect_to = None
         
     def goback(self,  data = {}):
+        #XXX this is a hack - we should really only have POST request changing the data (in that case, whatever is left her ein the request is harmless)
+        for k in data.keys():
+            if k.startswith('form'):
+                del data[k]
         most_similar_persons = self.repository().get_most_similar_persons(start=self.start, size=5)
         score, p1, p2= most_similar_persons[0]
         data.update({'bioport_ids':[p1.bioport_id, p2.bioport_id], 'start':self.start})

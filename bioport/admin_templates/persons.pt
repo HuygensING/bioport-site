@@ -132,7 +132,7 @@ levensjaren niet ingevuld <input type="checkbox" />
     <span tal:replace="python:context.format_dates(person.get_merged_biography().geboortedatum(), person.get_merged_biography().sterfdatum())" />
 	</td>
 	<td>
-        <a tal:content="python:person.status and view.get_status_values(person.status)"	
+        <a tal:content="python:person.status and view.get_status_value(person.status)"	
             tal:attributes="onClick string:jQuery('#status_${person/bioport_id}').show();;jQuery('#status_${person/bioport_id}').focus();;jQuery(this).hide()" />
         <select name="status" id="status"
             style="display:None;" 

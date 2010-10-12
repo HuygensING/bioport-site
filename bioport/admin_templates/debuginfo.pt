@@ -14,7 +14,7 @@
     <table id="person-form-table">
         <tr tal:condition="python:bio.get_source().id == 'bioport'">
             <th>status</th>
-	        <td tal:content="python:view.person.status and view.repository().get_status_values(view.person.status)" ></td>
+	        <td tal:content="python:view.person.status and view.repository().get_status_value(view.person.status)" ></td>
         </tr>
         <tr>
             <th>id</th>

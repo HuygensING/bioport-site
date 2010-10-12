@@ -27,7 +27,7 @@
     <span metal:use-macro="context/@@sitemacros/macros/link_to_person" />
     </td>
     <td>
-     <span tal:replace="python:person.status and view.get_status_values(person.status)"  />
+     <span tal:replace="python:person.status and view.get_status_value(person.status)"  />
     </td>
 <td tal:content="python:', '.join([src.id for src in person.get_sources()])" />
 <td>
