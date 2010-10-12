@@ -404,7 +404,7 @@ class MostSimilar(grok.Form,RepositoryView, Batcher):
         person1_href = '<a href="./persoon?bioport_id=%s">%s</a>' % (bioport_ids[0], bioport_ids[0])
         person2_href = '<a href="./persoon?bioport_id=%s">%s</a>' % (bioport_ids[1], bioport_ids[1])
         new_person_href = '<a href="./persoon?bioport_id=%s">%s</a>' % (new_person.id, new_person.name())
-       
+        
         # check for contradictions and construct a message for the browser
         contradictions = new_person.get_biography_contradictions()      
         warning_msg = ''
@@ -422,6 +422,11 @@ class MostSimilar(grok.Form,RepositoryView, Batcher):
                 warning_msg += "</li>"
             warning_msg += "</ul>"
             warning_msg += 'Click <a accesskey="b" href="./persoon?bioport_id=%s">here</a> to edit.' % new_person.id
+            # XXX - something I'm really ashamed of; needed because otherwise
+            # grok raises an encoding error when visualizing the page. 
+            # When a character != ASCII is encountered is replaced by "?"
+            # Hopefully someday I'll understand unicode and avoid this crap.
+            warning_msg = warning_msg.encode("ascii", "replace")
             
         # XXX - this should be translated in dutch
         if persons[0].status != persons[1].status:
@@ -437,6 +442,11 @@ class MostSimilar(grok.Form,RepositoryView, Batcher):
                 warning_msg = [warning_msg, warning_msg2]
             else:
                 warning_msg = warning_msg2
+            # XXX - something I'm really ashamed of; needed because otherwise
+            # grok raises an encoding error when visualizing the page. 
+            # When a character != ASCII is encountered is replaced by "?"
+            # Hopefully someday I'll understand unicode and avoid this crap.
+            warning_msg2 = warning_msg.encode("ascii", "replace")
 
         #redirect the user to where we were
         data = self.request.form
