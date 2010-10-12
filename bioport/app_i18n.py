@@ -2,7 +2,8 @@ import grok
 from app import Bioport
 from interfaces import IBioport
 from interfaces import IEnglishRequest
-from zope.app.publisher.browser import IUserPreferredLanguages
+#from zope.app.publisher.browser import IUserPreferredLanguages  # before python 2.6 upgrade
+from zope.i18n.interfaces import IUserPreferredLanguages
 from zope.component import adapts
 from zope.interface import alsoProvides
 from zope.interface import implements

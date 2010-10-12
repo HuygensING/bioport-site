@@ -17,6 +17,7 @@ ftesting_zcml = os.path.join(
     os.path.dirname(bioport.__file__), 'ftesting.zcml')
 
 class MyLayer(ZCMLLayer):
+
     def setUp(self):
         """ Prevent zope.sendmail to start its thread during tests, or this will
         confuse the coverage analyzer"""
@@ -36,7 +37,7 @@ class FunctionalTestCase(baseFunctionalTestCase):
  
     def setUp(self):
         # XXX this setup should be in the layer
-        super(FunctionalTestCase, self).setUp()
+        baseFunctionalTestCase.setUp(self)
         #set up
         root = self.getRootFolder()
         self.app = app = root['app'] = bioport.app.Bioport()
@@ -54,7 +55,9 @@ class FunctionalTestCase(baseFunctionalTestCase):
         url = 'file://%s' % os.path.join(this_dir, 'admin_tests/data/knaw/list.xml')
         repository.add_source(Source(u'knaw_test',url,'test'))
         repository.download_biographies(source=repository.get_source(u'knaw_test'))
+        
     def tearDown(self):
+        baseFunctionalTestCase.tearDown(self)
         self.repo.db.metadata.drop_all()
 
 

@@ -14,7 +14,7 @@ We assume european dates: day/month/year
 
 :Test-Layer: python
 """
-from bioport.tests import FunctionalTestCase
+
 import unittest
 import re
 

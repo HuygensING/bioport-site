@@ -15,9 +15,10 @@ from bioport.tests import FunctionalLayer
 
 
 class AdminPanelFunctionalTest(baseFunctionalTestCase):
+
     layer = FunctionalLayer
+    
     def test_admin_panel(self):
-        super(AdminPanelFunctionalTest, self).setUp()
         #set up
         root = self.getRootFolder()
         self.app = app = root['app'] = Bioport()
