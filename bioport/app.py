@@ -14,8 +14,10 @@ from time import time
 from z3c.batching.batch import Batch
 from bioport import BioportMessageFactory as _
 from zope.i18n import translate
-# from zope.app.publisher.browser import IUserPreferredLanguages  # before python2.6 upgrade
-from zope.i18n.interfaces import IUserPreferredLanguages
+try:
+    from zope.i18n.interfaces import IUserPreferredLanguages  # after python 2.6 upgrade
+except ImportError:
+    from zope.app.publisher.browser import IUserPreferredLanguages  # before python 2.6 upgrade
 from urllib import urlencode
 import types
 from fuzzy_search import get_search_query
