@@ -1097,7 +1097,7 @@ class Locations(grok.View,RepositoryView):
 
 
 class EditHomePage(grok.EditForm,RepositoryView):
-    grok.require('bioport.Manage')
+    grok.require('bioport.Edit')
     grok.template('edit_home_page')
     grok.context(Admin)
     form_fields = grok.Fields(IHomePageSettings)
