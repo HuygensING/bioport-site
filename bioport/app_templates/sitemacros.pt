@@ -37,9 +37,10 @@
             tal:content="string:laatste ${last_batch/__len__}" />
     </div>
     
-    <div tal:omit-tag="" metal:define-macro="size_select">
+    <div tal:omit-tag="" metal:define-macro="size_select"
+        tal:define="url python:view.url(view, data={'source_id':request.get('source_id', ''), 'source_id2':request.get('source_id2'), 'status':request.get('status', '')})">
     | toon
-    <select tal:attributes="onChange string:document.location.href='${view/url}?start=${view/start}&size=' +  this.value;;return false;;">
+    <select tal:attributes="onChange string:document.location.href='${url}?start=${view/start}&size=' +  this.value;;return false;;">
         <option tal:repeat="i python:[1, 10, 20, 40, 60, 100]" tal:content="i" tal:attributes="value i; selected python:i == view.size" /> 
     </select>
     per pagina

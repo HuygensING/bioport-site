@@ -75,6 +75,21 @@ form {
                <br />
          </span>
       </span>
+     <hr> 
+      <!--  generate similarity cache  -->
+      
+      <form>
+      <br>
+        source: <select name="source_id">
+        <option value="">all sources</option>
+            <option tal:repeat="source view/get_sources" tal:attributes="value source/id" tal:content="source/id" /></select> 
+         <br>   
+	    delete existing data <input type="checkbox" name="refresh" >
+         <br>   
+	    <input   tal:replace="structure python:view.actions['form.actions.refresh_similarity_cache'].render()" />
+            
+      </form>
+     <hr> 
   </div>
   </td>
   </tr>

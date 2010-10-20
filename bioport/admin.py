@@ -122,22 +122,14 @@ class Edit(grok.EditForm,RepositoryView):
         #repository.db.metadata.create_all()
         #self.redirect(self.url(self))
    
-    @grok.action('Fill the similarity Cache', name='fill_similarity_cache') 
-    def fill_similarity_cache(self, **data):
-        self.repository().db.fill_similarity_cache()
+#    @grok.action('Fill the similarity Cache', name='fill_similarity_cache') 
+#    def fill_similarity_cache(self, **data):
+#        self.repository().db.fill_similarity_cache()
         
-    @grok.action('Refresh the similarity cache [I.E. EMPTYING IT FIRST]')
+    @grok.action('Refresh the similarity cache', name='refresh_similarity_cache')
     def refresh_similarity_cache(self, **data): 
-        self.repository().db.fill_similarity_cache(refresh=True, source_id=data.get('source_id'))
+        self.repository().db.fill_similarity_cache(refresh=self.request.get('refresh') and True or False, source_id=self.request.get('source_id', None))
 
-    @grok.action('Refresh similarity for blnp')
-    def refresh_similarity_cache_blnp(self, **data): 
-        self.repository().db.fill_similarity_cache(refresh=True, source_id='blnp')
-
-#    @grok.action('Refresh the similar persons cache')
-#    def fill_most_similar_persons_cache(self, **data):
-#        self.repository().db.fill_most_similar_persons_cache(refresh=True)
-#        self.redirect(self.url(self))
         
     @grok.action('Create non-existing tables')
     def reset_database(self, **data):

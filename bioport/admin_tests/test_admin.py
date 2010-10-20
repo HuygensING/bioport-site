@@ -13,7 +13,6 @@ sys.path.append('..')
 sys.path.append('../..')
 from bioport.admin import Sources, Source, Edit
 from bioport.app import Bioport
-from bioport.tests import DSN
 from zope.publisher.browser import TestRequest
 import bioport_repository
 from bioport_repository.tests.config import DSN
