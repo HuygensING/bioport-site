@@ -14,16 +14,16 @@ from zope.app.testing.functional import FunctionalTestCase as baseFunctionalTest
 from bioport.tests import FunctionalLayer
 
 
-class AdminPanelFunctionalTest(baseFunctionalTestCase):
+class AdminPanelFunctionalTest(FunctionalTestCase):
 
     layer = FunctionalLayer
     
     def test_admin_panel(self):
         #set up
         root = self.getRootFolder()
-        self.app = app = root['app'] = Bioport()
+        self.app = app = root['app'] 
         
-        #define the db connection
+         #define the db connection
         self.base_url = 'http://localhost/app'
         browser = Browser()
         browser.handleErrors = False #show some information when an arror occurs
