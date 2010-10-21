@@ -481,7 +481,7 @@ class Persoon(BioPortIdTraverser, grok.View, RepositoryView):
 
             # we construct a convenient object
             class EventWrapper:
-                def __init__(self, el):
+                def __init__(self, el, _before, _after):
                     self.when = el.get('when')
                     self.when_ymd = to_ymd(self.when) 
                     self.when_formatted = format_date(self.when)
@@ -497,12 +497,13 @@ class Persoon(BioPortIdTraverser, grok.View, RepositoryView):
                     self.type = el.get('type')
                     start = self.notBefore_formatted
                     stop = self.notAfter_formatted
+
                     if start and stop:
-                        self.when_formatted = "tussen %s en %s" %(start, stop)
+                        self.when_formatted = "%(_before)s %(start)s %(_after)s %(stop)s" % locals()
                     elif start:
-                        self.when_formatted = "na " + start
+                        self.when_formatted = "%(_before)s %(start)s" % locals()
                     elif stop:
-                        self.when_formatted = "voor " + stop   
+                        self.when_formatted = "%(_after)s %(stop)s" % locals()
                     # ...else, stick with single formatted date
 
                 def __str__(self):
@@ -514,7 +515,10 @@ class Persoon(BioPortIdTraverser, grok.View, RepositoryView):
                         string.append("%s=%s" %(attr, value))
                     return '; '.join(string)
 
-            return EventWrapper(event_el)
+            current_lang = IUserPreferredLanguages(self.request).getPreferredLanguages()[0]
+            _from = translate(_(u'before'), target_language=current_lang)
+            _to = translate(_(u'after'), target_language=current_lang)
+            return EventWrapper(event_el, _from, _to)
         else:
             return None      
     
