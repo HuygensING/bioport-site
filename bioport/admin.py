@@ -154,7 +154,19 @@ class Edit(grok.EditForm,RepositoryView):
     @grok.action('recompute_soundexes')
     def tmp_update_soundexes(self, **data):
         self.repository().db.tmp_update_soundexes()
-        
+    @grok.action('add category kunstatnaars to all rkdartists')
+    def tmp_add_category_to_rkdartists(self, **data):
+        repo = self.repository()
+        persons = repo.get_persons(source_id='rkdartists')
+        logging.info('add categoery 3 to rkdartsts')
+        i = 0
+        for p in persons:
+            i += 1
+            logging.info('progress: %s/%s' % (i, len(persons)))
+            bioport_bio = p.get_bioport_biography()
+            bioport_bio.set_category(bioport_bio.get_category_ids() + [3])  
+            repo.save_biography(bioport_bio)
+            
     @grok.action('add_biodes')
     def add_biodes(self, **data):
         from biodes import BioDes
