@@ -33,6 +33,7 @@ class EnglishAbsoluteURL(AbsoluteURL):
     "This ensures that english requests will provide english urls"
     adapts(IBioport, IEnglishRequest)
     implements(IAbsoluteURL)
+    
     def __call__(self):
         return super(EnglishAbsoluteURL, self).__call__() + '/en'
-    __str__ = __call__
+
