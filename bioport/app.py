@@ -475,9 +475,11 @@ class Persoon(BioPortIdTraverser, grok.View, RepositoryView):
     def get_event(self, type, biography=None):
         if not biography:
             biography = self.merged_biography
+        
         event_el = biography.get_event(type)
         if event_el is not None:
-            #we construct a convenient object
+
+            # we construct a convenient object
             class EventWrapper:
                 def __init__(self, el):
                     self.when = el.get('when')
@@ -493,6 +495,25 @@ class Persoon(BioPortIdTraverser, grok.View, RepositoryView):
                     self.place =  el.find('place') is not None and el.find('place').text or ''
                     self.place_id = el.get('place_id')
                     self.type = el.get('type')
+                    start = self.notBefore_formatted
+                    stop = self.notAfter_formatted
+                    if start and stop:
+                        self.when_formatted = "tussen %s en %s" %(start, stop)
+                    elif start:
+                        self.when_formatted = "na " + start
+                    elif stop:
+                        self.when_formatted = "voor " + stop   
+                    # ...else, stick with single formatted date
+
+                def __str__(self):
+                    string = []
+                    for attr in dir(self):
+                        if attr.startswith('_'):
+                            continue
+                        value = getattr(self, attr)
+                        string.append("%s=%s" %(attr, value))
+                    return '; '.join(string)
+
             return EventWrapper(event_el)
         else:
             return None      
