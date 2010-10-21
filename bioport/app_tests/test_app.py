@@ -10,7 +10,7 @@ from bioport.tests import FunctionalTestCase
 from bioport.tests import messages
 from lxml.etree import fromstring
 from zope.publisher.interfaces import NotFound
-
+from zope.testbrowser.testing import Browser
 
 class GoogleSitemapTest(FunctionalTestCase):
 
@@ -57,6 +57,16 @@ class AppTest(FunctionalTestCase):
             url = self.base_url + '/persoon/something/' + p_id
             self.assertRaises(NotFound, browser.open, url)
 
+
+class EnglishUrlTest(FunctionalTestCase):
+    def setUp(self):
+        super(EnglishUrlTest, self).setUp()
+        self.browser = Browser()
+        self.browser.handleErrors = False
+    def test_english_home(self):
+        self.browser.open('http://localhost/app/en')
+    def test_english_zoek(self):
+        self.browser.open('http://localhost/app/zoek')
 
 def test_suite():
     test_suite = unittest.TestSuite()
