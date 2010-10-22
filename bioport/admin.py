@@ -20,7 +20,7 @@ from zope.session.interfaces import ISession
 import bioport_repository
 from bioport_repository.repository import Repository
 
-from gerbrandyutils import normalize_url
+from gerbrandyutils import normalize_url, run_in_thread
 
 
 class IAdminSettings(Interface):
@@ -125,11 +125,17 @@ class Edit(grok.EditForm,RepositoryView):
 #    @grok.action('Fill the similarity Cache', name='fill_similarity_cache') 
 #    def fill_similarity_cache(self, **data):
 #        self.repository().db.fill_similarity_cache()
-        
+    
     @grok.action('Refresh the similarity cache', name='refresh_similarity_cache')
     def refresh_similarity_cache(self, **data): 
-        self.repository().db.fill_similarity_cache(refresh=self.request.get('refresh') and True or False, source_id=self.request.get('source_id', None))
-
+        refresh = bool(self.request.get('refresh'))
+        sid = self.request.get('source_id', None)
+        
+        @run_in_thread        
+        def run():
+            self.repository().db.fill_similarity_cache(refresh=refresh, source_id=sid)
+        run()
+        self._redirect_with_msg('action started')
         
     @grok.action('Create non-existing tables')
     def reset_database(self, **data):
