@@ -481,7 +481,7 @@ class Persoon(BioPortIdTraverser, grok.View, RepositoryView):
 
             # we construct a convenient object
             class EventWrapper:
-                def __init__(self, el, _before, _after):
+                def __init__(self, el, _between, _and, _after, _before):
                     self.when = el.get('when')
                     self.when_ymd = to_ymd(self.when) 
                     self.when_formatted = format_date(self.when)
@@ -499,11 +499,11 @@ class Persoon(BioPortIdTraverser, grok.View, RepositoryView):
                     stop = self.notAfter_formatted
 
                     if start and stop:
-                        self.when_formatted = "%(_before)s %(start)s %(_after)s %(stop)s" % locals()
+                        self.when_formatted = "%(_between)s %(start)s %(_and)s %(stop)s" % locals()
                     elif start:
-                        self.when_formatted = "%(_before)s %(start)s" % locals()
+                        self.when_formatted = "%(_after)s %(start)s" % locals()
                     elif stop:
-                        self.when_formatted = "%(_after)s %(stop)s" % locals()
+                        self.when_formatted = "%(_before)s %(stop)s" % locals()
                     # ...else, stick with single formatted date
 
                 def __str__(self):
@@ -516,9 +516,11 @@ class Persoon(BioPortIdTraverser, grok.View, RepositoryView):
                     return '; '.join(string)
 
             current_lang = IUserPreferredLanguages(self.request).getPreferredLanguages()[0]
-            _from = translate(_(u'before'), target_language=current_lang)
-            _to = translate(_(u'after'), target_language=current_lang)
-            return EventWrapper(event_el, _from, _to)
+            _between = translate(_(u'between'), target_language=current_lang)
+            _and = translate(_(u'and'), target_language=current_lang)
+            _after = translate(_(u'after'), target_language=current_lang)
+            _before = translate(_(u'before'), target_language=current_lang)
+            return EventWrapper(event_el, _between, _and, _after, _before)
         else:
             return None      
     
