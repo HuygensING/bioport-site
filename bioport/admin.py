@@ -131,7 +131,8 @@ class Edit(grok.EditForm,RepositoryView):
         refresh = bool(self.request.get('refresh'))
         sid = self.request.get('source_id', None)
         
-        @run_in_thread        
+        # XXX - messes up everything       
+#        @run_in_thread        
         def run():
             self.repository().db.fill_similarity_cache(refresh=refresh, source_id=sid)
         run()
