@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 import os
-import time	
+import time    
 import app
 import grok
 import logging
@@ -138,19 +138,19 @@ class Edit(grok.EditForm,RepositoryView):
         run()
         self._redirect_with_msg('action started')
         
-    @grok.action('Create non-existing tables')
-    def reset_database(self, **data):
-        self.repository().db.metadata.create_all()
+#    @grok.action('Create non-existing tables')
+#    def reset_database(self, **data):
+#        self.repository().db.metadata.create_all()
         
         
-    @grok.action('Fill geolocations table')
-    def fill_geolocations_table(self, **data): 
-        self.repository().db._update_geolocations_table()
+#    @grok.action('Fill geolocations table')
+#    def fill_geolocations_table(self, **data): 
+#        self.repository().db._update_geolocations_table()
 #        self.redirect(self.url(self))
         
-    @grok.action('Fill categories table')
-    def fill_categories_table(self, **data): 
-        self.repository().db._update_category_table()
+#   @grok.action('Fill categories table')
+#   def fill_categories_table(self, **data): 
+#        self.repository().db._update_category_table()
 #        self.redirect(self.url(self))
 
     @grok.action('update persons')        
@@ -173,11 +173,24 @@ class Edit(grok.EditForm,RepositoryView):
             bioport_bio = p.get_bioport_biography()
             bioport_bio.set_category(bioport_bio.get_category_ids() + [3])  
             repo.save_biography(bioport_bio)
-            
-    @grok.action('add_biodes')
-    def add_biodes(self, **data):
-        from biodes import BioDes
-        self.__parent__.__parent__['biodes'] = BioDes()
+
+    @grok.action('identify all similarity pairs of rkdartists with a score of 1.0')            
+    def tmp_identify_rkdartists(self):
+        logging.info('identifying rkdartists with a similarity score of 1.0')
+        i = 0
+        ls = self.repository().get_most_similar_persons(source_id='rkdartists')
+        for (score, p1, p2) in ls:
+            i += 1
+            if score == 1.0:
+                logging.info('identifying %s and %s [%s] (%s/%s)' (p1, p2, score, i, len(ls)))
+                self.repository().identify(p1, p2)
+            else:
+                logging.info('done')
+                return
+#    @grok.action('add_biodes')
+#    def add_biodes(self, **data):
+#        from biodes import BioDes
+#        self.__parent__.__parent__['biodes'] = BioDes()
        
 #    @grok.action('Set state of edited persons to bewerkte(JG: DELETE THIS BUTTON WHEN DONE)')
 #    def set_state_to_bewerkt(self, **data):
@@ -820,7 +833,7 @@ class Persoon(app.Persoon, grok.EditForm, RepositoryView):
         for fullname in names:
             nameobj = Naam(volledige_naam=fullname)
             if self.bioport_biography.get_namen():
-	            self.bioport_biography._replace_name(nameobj, x)
+                self.bioport_biography._replace_name(nameobj, x)
             else:
                 self.bioport_biography._add_a_name(nameobj)
             x += 1
@@ -1158,5 +1171,4 @@ class Uitleg(grok.View):
 
 class Uitleg_Zoek(grok.View):        
     pass   
-
 

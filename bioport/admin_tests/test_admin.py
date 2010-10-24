@@ -51,12 +51,6 @@ class SimpleSampleTest(unittest.TestCase):
     
     def test_persoon(self):
         request = TestRequest()
-        
-    def test_edit(self):
-        request = TestRequest()
-        edit = Edit(self.admin, request)
-        edit.reset_database
-        
 
 def test_suite():
     test_suite = unittest.TestSuite()
