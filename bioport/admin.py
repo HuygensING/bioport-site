@@ -457,15 +457,15 @@ class MostSimilar(grok.Form,RepositoryView, Batcher):
                          % (person1_href, person2_href, status_1, status_2)
             warning_msg2 += "New person status is <i>%s</i> " % status_new
             warning_msg2 += '(<a accesskey="b" href="./persoon?bioport_id=%s">edit</a>).' % new_person.get_bioport_id()
-            if warning_msg:
-                warning_msg = [warning_msg, warning_msg2]
-            else:
-                warning_msg = warning_msg2
             # XXX - something I'm really ashamed of; needed because otherwise
             # grok raises an encoding error when visualizing the page. 
             # When a character != ASCII is encountered is replaced by "?"
             # Hopefully someday I'll understand unicode and avoid this crap.
-            warning_msg2 = warning_msg.encode("ascii", "replace")
+            warning_msg2 = warning_msg2.encode("ascii", "replace")
+            if warning_msg:
+                warning_msg = [warning_msg, warning_msg2]
+            else:
+                warning_msg = warning_msg2
 
         #redirect the user to where we were
         data = self.request.form
