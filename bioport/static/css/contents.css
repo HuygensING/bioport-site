@@ -262,7 +262,7 @@
             font-size : .9em; 
         }
 		#layContent form input[type=text] {
-			width: 20em;
+			width: 16em !important;
 		}
 
 		#layContent form textarea {
