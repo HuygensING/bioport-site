@@ -182,7 +182,7 @@ class Edit(grok.EditForm,RepositoryView):
         for (score, p1, p2) in ls:
             i += 1
             if score == 1.0:
-                logging.info('identifying %s and %s [%s] (%s/%s)' (p1, p2, score, i, len(ls)))
+                logging.info('identifying %s and %s [%s] (%s/%s)' % (p1, p2, score, i, len(ls)))
                 self.repository().identify(p1, p2)
             else:
                 logging.info('done')
