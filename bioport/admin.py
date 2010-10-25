@@ -178,7 +178,7 @@ class Edit(grok.EditForm,RepositoryView):
     def tmp_identify_rkdartists(self):
         logging.info('identifying all pairs with a similarity score of 1.0')
         i = 0
-        ls = self.repository().get_most_similar_persons(size=None)
+        ls = self.repository().get_most_similar_persons(size=1000)
         for (score, p1, p2) in ls:
             i += 1
             if score == 1.0:
