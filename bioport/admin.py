@@ -174,11 +174,11 @@ class Edit(grok.EditForm,RepositoryView):
             bioport_bio.set_category(bioport_bio.get_category_ids() + [3])  
             repo.save_biography(bioport_bio)
 
-    @grok.action('identify all similarity pairs of rkdartists with a score of 1.0')            
+    @grok.action('identify all similarity pairs with a score score of 1.0')            
     def tmp_identify_rkdartists(self):
-        logging.info('identifying rkdartists with a similarity score of 1.0')
+        logging.info('identifying all pairs with a similarity score of 1.0')
         i = 0
-        ls = self.repository().get_most_similar_persons(source_id='rkdartists')
+        ls = self.repository().get_most_similar_persons(size=None)
         for (score, p1, p2) in ls:
             i += 1
             if score == 1.0:
