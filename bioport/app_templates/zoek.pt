@@ -145,6 +145,8 @@ For example
 <tr><td colspan="2" id="born_help_text">
    </td></tr>
 <tr>
+
+    <!-- death date field -->
     <th i18n:translate="died">gestorven</th>
     <td>
         <input type="text" size="20" name="sterf_fuzzy_text" 

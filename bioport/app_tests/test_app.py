@@ -59,14 +59,18 @@ class AppTest(FunctionalTestCase):
 
 
 class EnglishUrlTest(FunctionalTestCase):
+
     def setUp(self):
         super(EnglishUrlTest, self).setUp()
         self.browser = Browser()
         self.browser.handleErrors = False
+        
     def test_english_home(self):
         self.browser.open('http://localhost/app/en')
+        
     def test_english_zoek(self):
         self.browser.open('http://localhost/app/zoek')
+      
 
 def test_suite():
     test_suite = unittest.TestSuite()

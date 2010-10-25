@@ -54,6 +54,25 @@ select {
                 <input type="tekst" value="" name="any_place" id="any_place" autocomplete="off">
             </span>
             <br /><br />
+            
+            <!-- birth date field -->
+            <span i18n:translate="born">geboren:</span>
+            <span i18n:translate="born_help_text_example" class="help_text">
+                (e.g. <a OnClick="jQuery(&quot;input[name='geboorte_fuzzy_text']&quot;).attr('value', 'may 1650 to september 1665')">may 1650 to september 1655</a>)&nbsp;
+            </span>
+            <input type="text" size="20" name="geboorte_fuzzy_text" 
+                tal:attributes="value python:request.get('geboorte_fuzzy_text')" />
+            
+            <!-- death date field -->
+            <span i18n:translate="died">gestorven:</span>          
+            <span i18n:translate="died_help_text_example" class="help_text">
+                (e.g. <a OnClick="jQuery(&quot;input[name='sterf_fuzzy_text']&quot;).attr('value', 'before 1914')">before 1914</a>)&nbsp;
+            </span>
+            <input type="text" size="20" name="sterf_fuzzy_text" 
+                tal:attributes="value python:request.get('sterf_fuzzy_text')" />
+            <br /><br />
+                
+            <!-- bron -->
 	        <label accesskey="r" for="source_id">b<span class="accesskey">r</span>on:</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 	        <select 
 	            name="source_id" id="source_id" 
@@ -131,7 +150,7 @@ levensjaren niet ingevuld <input type="checkbox" />
     
     <span tal:replace="python:context.format_dates(person.get_merged_biography().geboortedatum(), person.get_merged_biography().sterfdatum())" />
 	</td>
-	<td>
+	<td>&nbsp;
         <a tal:content="python:person.status and view.get_status_value(person.status)"	
             tal:attributes="onClick string:jQuery('#status_${person/bioport_id}').show();;jQuery('#status_${person/bioport_id}').focus();;jQuery(this).hide()" />
         <select name="status" id="status"
