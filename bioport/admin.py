@@ -130,13 +130,8 @@ class Edit(grok.EditForm,RepositoryView):
     def refresh_similarity_cache(self, **data): 
         refresh = bool(self.request.get('refresh'))
         sid = self.request.get('source_id', None)
-        
-        # XXX - messes up everything       
-#        @run_in_thread        
-        def run():
-            self.repository().db.fill_similarity_cache(refresh=refresh, source_id=sid)
-        run()
-        self._redirect_with_msg('action started')
+        self.repository().db.fill_similarity_cache(refresh=refresh, source_id=sid)
+        self._redirect_with_msg('finished')
         
 #    @grok.action('Create non-existing tables')
 #    def reset_database(self, **data):
