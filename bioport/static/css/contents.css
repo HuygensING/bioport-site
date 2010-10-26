@@ -639,7 +639,7 @@
 
 			#Persoon .illustratie .geenplaatje:before {
 				padding-top: 3em;
-				content: "afbeelding niet beschikbaar"; 
+				content: "geen afbeelding beschikbaar"; 
 			}
 
 
