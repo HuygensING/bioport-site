@@ -281,6 +281,9 @@ class Source(grok.EditForm,RepositoryView):
         repository = self.repository()
         self.source =repository.get_source(source_id) 
         
+    def format_time(self, t):
+        return Sources.format_time(t)
+        
     @grok.action('Save settings', name='save_settings')    
     def save_settings(self,**args):
         source = self.source
@@ -366,7 +369,8 @@ class Sources(grok.View,RepositoryView):
         src = bioport_repository.source.Source(source_id, url, description)
         self.repository().add_source(src)
         
-    def format_time(self, t):
+    @staticmethod
+    def format_time(t):
         if t is None:
             return None
         return time.strftime("%Y-%m-%d %H:%M", time.localtime(float(t)))

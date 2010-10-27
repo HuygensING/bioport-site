@@ -10,6 +10,7 @@
 (<a tal:attributes="href python:view.url('persons', data={'source_id':source.id})"><span tal:replace="python:view.repository().count_biographies(source=source)" /> items</a>)
 <br/><br/>
 <form tal:attributes="action view/url" method="post">
+<h2>Source details</h2>
 <input type="hidden" name="source_id" tal:attributes="value source/id" />
 <table>
     <tr>
@@ -25,6 +26,16 @@
         <th>description</th>
         <td><textarea name="description" tal:content="source/description" style="width:50em" ></textarea></td>
     </tr>
+    <tr>
+        <th>last import</th>
+        <td><span name="description" style="width:50em" 
+                  tal:content="python:view.format_time(source.last_bios_update) or 'N/A'">
+            </span>
+        </td>
+    </tr>
+
+    
+    
      <tr>
         <td />
         <td>
@@ -32,6 +43,10 @@
        </td>
     </tr>
 </table>
+
+<h2>Actions</h2>
+<i>Note: these are time consuming tasks and the browser session can timeout.</i>
+<br /><br />
        <span tal:replace="structure python:view.actions.byname['form.actions.download_biographies'].render()" />
        <span tal:replace="structure python:view.actions.byname['form.actions.download_illustrations'].render()" />
        <span tal:replace="structure python:view.actions.byname['form.actions.delete_biographies'].render()" />
