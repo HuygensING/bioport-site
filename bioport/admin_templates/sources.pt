@@ -3,7 +3,7 @@
 
     <h1>Bronnen</h1>
     <table class="gcodetable">
-    <tr><th>Id</th><th>URL</th><th>Actions</th></tr>
+    <tr><th>Id</th><th>URL</th><th>Last import</th><th>Actions</th></tr>
     <div tal:repeat="source python:view.repository().get_sources()" tal:omit-tag="">
         <tr>
             <td>
@@ -17,6 +17,9 @@
                 <div tal:replace="source/description | nothing" />
             </em>
            </td>
+            <td>
+                <span tal:content="python: view.format_time(source.last_bios_update)">last import time</span>
+            </td>          
             <td>
     <ul>
 <li tal:condition="nothing">    <a tal:attributes="href string:${view/url}?action=update_source&source_id=${source/id}">download biographies</a>

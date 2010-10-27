@@ -366,6 +366,11 @@ class Sources(grok.View,RepositoryView):
         src = bioport_repository.source.Source(source_id, url, description)
         self.repository().add_source(src)
         
+    def format_time(self, t):
+        if t is None:
+            return None
+        return time.strftime("%Y-%m-%d %H:%M", time.localtime(float(t)))
+        
 
 class MostSimilar(grok.Form,RepositoryView, Batcher):
 
