@@ -18,7 +18,7 @@
             </em>
            </td>
             <td>
-                <span tal:content="python: view.format_time(source.last_bios_update)">last import time</span>
+                <span tal:content="python: view.format_time(source.last_bios_update) or ''">last import time</span>
             </td>          
             <td>
     <ul>

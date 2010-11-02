@@ -373,7 +373,8 @@ class Sources(grok.View,RepositoryView):
     def format_time(t):
         if t is None:
             return None
-        return time.strftime("%Y-%m-%d %H:%M", time.localtime(float(t)))
+        t = float(t)
+        return time.strftime("%Y-%m-%d %H:%M", time.localtime(t))
         
 
 class MostSimilar(grok.Form,RepositoryView, Batcher):
