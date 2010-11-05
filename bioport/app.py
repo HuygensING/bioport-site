@@ -1,7 +1,10 @@
 import datetime
-import grok
 import os
 import random
+import time
+import types
+
+import grok
 import zope.interface
 from chameleon.zpt.template import PageTemplateFile
 from common import (format_date, format_dates, format_number, 
@@ -10,7 +13,6 @@ from interfaces import IBioport
 from names.common import to_ymd
 from plone.memoize import ram
 from plone.memoize.instance import memoize
-from time import time
 from z3c.batching.batch import Batch
 from bioport import BioportMessageFactory as _
 from zope.i18n import translate
@@ -19,13 +21,11 @@ try:
 except ImportError:
     from zope.app.publisher.browser import IUserPreferredLanguages  # before python 2.6 upgrade
 from urllib import urlencode
-import types
 from fuzzy_search import get_search_query
 from fuzzy_search import en_to_nl_for_field
 from fuzzy_search import make_description
 import simplejson
 from zope.publisher.interfaces import NotFound, INotFound
-
 
 
 class RepositoryView:
@@ -46,14 +46,14 @@ class RepositoryView:
     def get_status_values(self):
         return self.repository().get_status_values()
     
-    @ram.cache(lambda *args: time() // (60 * 60))
+    @ram.cache(lambda *args: time.time() // (60 * 60))
     def count_persons(self):
         #XXX cache this
         i = self.repository().db.count_persons()
         i = format_number(i)
         return i
     
-    @ram.cache(lambda *args: time() // (60 * 60))
+    @ram.cache(lambda *args: time.time() // (60 * 60))
     def count_biographies(self):
         try:
             return self.context._count_biographies
@@ -687,7 +687,7 @@ class Colofon(grok.View, RepositoryView):
     pass
 
 class Birthdays_Box(grok.View, RepositoryView):
-    @ram.cache(lambda *args: time() // (60 * 60 * 24))
+    @ram.cache(lambda *args: time.time() // (60 * 60 * 24))
     def get_persons(self):
         """get 3 persons whose birthdate is today"""
         #get the month and day of today
@@ -735,7 +735,7 @@ class Images_XML(grok.View, RepositoryView):
         self.request.response.setHeader('Content-Type', 'text/xml')
         return self.render_response()
 
-    @ram.cache(lambda *args: time() // (60 * 60) + random.randint(1,10))
+    @ram.cache(lambda *args: time.time() // (60 * 60) + random.randint(1,10))
     def render_response(self):
         
         persons = self.repository().get_persons(has_illustrations=True, order_by='random', size=20)
