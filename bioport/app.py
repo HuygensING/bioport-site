@@ -498,12 +498,15 @@ class Persoon(BioPortIdTraverser, grok.View, RepositoryView):
                     start = self.notBefore_formatted
                     stop = self.notAfter_formatted
 
-                    if start and stop:
-                        self.when_formatted = "%(_between)s %(start)s %(_and)s %(stop)s" % locals()
-                    elif start:
-                        self.when_formatted = "%(_after)s %(start)s" % locals()
-                    elif stop:
-                        self.when_formatted = "%(_before)s %(stop)s" % locals()
+                    if not self.date_text:
+                        if start and stop:
+                            self.when_formatted = "%(_between)s %(start)s %(_and)s %(stop)s" % locals()
+                        elif start:
+                            self.when_formatted = "%(_after)s %(start)s" % locals()
+                        elif stop:
+                            self.when_formatted = "%(_before)s %(stop)s" % locals()
+                    else:
+                        self.when_formatted = ''
                     # ...else, stick with single formatted date
 
                 def __str__(self):
