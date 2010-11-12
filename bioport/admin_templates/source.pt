@@ -26,6 +26,7 @@
         <th>description</th>
         <td><textarea name="description" tal:content="source/description" style="width:50em" ></textarea></td>
     </tr>
+    
     <tr>
         <th>last import</th>
         <td><span name="description" style="width:50em" 
@@ -34,15 +35,30 @@
         </td>
     </tr>
 
-    
-    
-     <tr>
-        <td />
+
+    <tr>
+        <th>quality</th>
         <td>
-       <span tal:replace="structure python:view.actions.byname['form.actions.save_settings'].render()" />
-       </td>
+            <i>Net iets beter dan:</i>
+            <select name="quality">
+                <option 
+                    tal:repeat="option python:view.repository().get_sources(order_by='quality', desc=True)"
+                    tal:define="source_quality python:source.get_value('quality') or 0;"
+                    tal:attributes="
+                        value python:not option.quality and 1 or option.quality +1 ;
+                        selected python:option.quality == source.quality - 1" 
+                    tal:content="option/id" />
+                <option value="0" tal:attributes="selected python:not source.quality">slechtste kwaliteit van allemaal</option>
+            </select>
+        </td>
     </tr>
+
+
 </table>
+
+<!-- save button -->
+<span tal:replace="structure python:view.actions.byname['form.actions.save_settings'].render()" />       
+<br /><br />
 
 <h2>Actions</h2>
 <i>Note: these are time consuming tasks and the browser session can timeout.</i>
