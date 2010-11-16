@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
 "POT-Creation-Date: Mon Jul  5 16:45:29 2010\n"
-"PO-Revision-Date: 2010-07-07 16:42+0100\n"
+"PO-Revision-Date: 2010-11-16 10:07+0100\n"
 "Last-Translator: jelle <jelle@gerbrandy.com>\n"
 "Language-Team: Italian\n"
 "MIME-Version: 1.0\n"
@@ -253,11 +253,11 @@ msgstr ""
 #: src/bioport/app_templates/main_template.pt:13
 #: src/bioport/app_templates/main_template.pt:59
 msgid "portal_title"
-msgstr "Dutch Biografic Portal"
+msgstr "Dutch Biography Portal"
 
 #: src/bioport/app_templates/main_template.pt:19
 msgid "meta_description"
-msgstr "Dutch Biografic Portal"
+msgstr "Dutch Biography Portal"
 
 #: src/bioport/app_templates/main_template.pt:24
 msgid "meta_keywords"
