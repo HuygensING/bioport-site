@@ -46,9 +46,8 @@
             $$('#photoframe-3').css('opacity',0.3);
             "> 
         </script>
-        <h1 i18n:translate="">Welkom</h1>
-
-        <p tal:content="structure view/get_homepage_html">AAAA</p>    
+        
+        <p tal:content="structure view/get_homepage_html">content of homepage goes here</p>    
         
         <div class="searchcontainer freeform">
             <h3 i18n:translate="Zoeken">Zoeken</h3>
