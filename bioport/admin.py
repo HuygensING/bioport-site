@@ -115,7 +115,7 @@ class Edit(grok.EditForm,RepositoryView):
               (processed, total, elapsed_time)
         self._redirect_with_msg(msg)
 
-    @grok.action(u"Edit Admin settings", name="edit_settings")
+    @grok.action(u"Save Settings", name="edit_settings")
     def edit_admin(self, **data):
         self.applyData(self.context, **data)
         repository = self.repository()
@@ -182,6 +182,9 @@ class Edit(grok.EditForm,RepositoryView):
             else:
                 logging.info('done')
                 return
+#    @grok.action('mark orphaned persons (those with no biographies attached')
+#    def mark_orphaned_persons(self):
+#        self.repository().mark_orphaned_persons()
 #    @grok.action('add_biodes')
 #    def add_biodes(self, **data):
 #        from biodes import BioDes

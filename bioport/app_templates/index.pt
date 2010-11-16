@@ -11,20 +11,16 @@
         </h3>
     
         <div class="sidebar gallery">
-    
             <div id="pBirthdays"></div>
-    
             <span class="sep"></span>
             <a class="more" tal:attributes="href python:view.url('birthdays')"
                i18n:translate="show_more">toon meer</a>
             <hr class="textOnly"/>
-            
         </div>
     
     </div>
 
     <div id="colcenter">
-
 
         <div id="photoframe">
             <div id="photoframe-1"></div>

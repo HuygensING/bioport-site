@@ -34,7 +34,7 @@ class AdminPanelFunctionalTest(FunctionalTestCase):
         form = browser.getForm(index=0)
         form.getControl(name='form.DB_CONNECTION').value = DSN
         form.getControl(name='form.LIMIT').value = '20'
-        form.submit('Edit')
+        form.submit('Save')
         
         self.app.repository(user=None).db.metadata.create_all()
         #add a source

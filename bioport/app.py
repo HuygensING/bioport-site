@@ -286,12 +286,14 @@ class Personen(grok.View,RepositoryView, Batcher):
             else:
                 qry['has_contradictions'] = False
         except ValueError:
-            url = self.url('zoek') # XXX change me to 'zoek' when done
+            url = self.url('zoek') # 
             dict_of_strings = dict([(k,v.encode('utf8')) 
                                     for k, v in self.request.form.items()])
             url += '?' + urlencode(dict_of_strings)
             self.request.response.redirect(url)
+            
         persons = repository.get_persons_sequence(**qry)
+        
         try:
             batch = Batch(persons,  start=self.start, size=self.size)
         except IndexError:
