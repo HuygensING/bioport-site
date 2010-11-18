@@ -54,27 +54,7 @@
         </div>
             </td>
         </tr>
-        <tr>
-    <th i18n:translate="">vrij zoeken in tekst</th>
-    <td>
-        <input type="text" name="search_term"
-            tal:attributes="value python:unicode(request.get('search_term', ''))" />
-	 	 <span i18n:translate="search_term_help_text_example" class="help_text">
-	 	  bijv.
-     <a OnClick="jQuery(&quot;input[name='search_term']&quot;).attr('value', 'vroedvrouw')">vroedvrouw</a> of
-     <a OnClick="jQuery(&quot;input[name='search_term']&quot;).attr('value', '*moord*')">*moord*</a>
-     </span>
-         <a class="tooltip_button toggle"
-            i18n:translate="tooltip_button_toggle"
-            Onclick="jQuery('#tip_search_term').toggle(200)" >[more...]</a>
-        <div class="tooltip" id="tip_search_term" i18n:translate="search_in_text_help">
-            U kunt vrij zoeken op woord(en) in de tekst van de biografieën.
-            <br/>
-            Daarmee zoekt u in de tekst van alle naslagwerken die in het portaal zijn opgenomen.
-            De kwaliteit daarvan is niet altijd even goed - in sommige gevallen
-            betreft het OCR tekst, en soms is niet de tekst van de gehele biografie opgenomen.
-        </div>
-</tr>
+     
 <tr>
     <th i18n:translate="born">geboren</th>
     <td>
@@ -271,6 +251,29 @@ For example
     </select>
     </td>
 </tr>
+   
+<tr>
+    <th i18n:translate="">vrij zoeken in tekst</th>
+    <td>
+        <input type="text" name="search_term"
+            tal:attributes="value python:unicode(request.get('search_term', ''))" />
+	 	 <span i18n:translate="search_term_help_text_example" class="help_text">
+	 	  bijv.
+     <a OnClick="jQuery(&quot;input[name='search_term']&quot;).attr('value', 'vroedvrouw')">vroedvrouw</a> of
+     <a OnClick="jQuery(&quot;input[name='search_term']&quot;).attr('value', '*moord*')">*moord*</a>
+     </span>
+         <a class="tooltip_button toggle"
+            i18n:translate="tooltip_button_toggle"
+            Onclick="jQuery('#tip_search_term').toggle(200)" >[more...]</a>
+        <div class="tooltip" id="tip_search_term" i18n:translate="search_in_text_help">
+            U kunt vrij zoeken op woord(en) in de tekst van de biografieën.
+            <br/>
+            Daarmee zoekt u in de tekst van alle naslagwerken die in het portaal zijn opgenomen.
+            De kwaliteit daarvan is niet altijd even goed - in sommige gevallen
+            betreft het OCR tekst, en soms is niet de tekst van de gehele biografie opgenomen.
+        </div>
+</tr>
+
 <tr>
     <td></td>
     <td>
