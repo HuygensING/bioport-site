@@ -1030,7 +1030,7 @@ class IdentifyMoreInfo(MostSimilar, Persons, Persoon,RepositoryView):
         self.bioport_ids = bioport_ids
         self.persons = persons
         self.start = int(self.request.get('start', 0))
-        self.size = None
+        self.size = 5
         self.similar_to = self.request.get('bioport_id') or \
                           self.request.get('similar_to', None) or \
                           getattr(self, 'similar_to', None)
