@@ -3,30 +3,22 @@ Do a Python test on the app.
 
 :Test-Layer: python
 """
-#!/home/jelle/projects_active/bioport/virtualenv_python2.4/bin/python
-
 import unittest
 import sys
 import os
 
-sys.path.append('..')
-sys.path.append('../..')
 from bioport.admin import Sources, Source, Edit
 from bioport.app import Bioport
 from zope.publisher.browser import TestRequest
 import bioport_repository
 from bioport_repository.tests.config import DSN
 
-
 class SimpleSampleTest(unittest.TestCase):
     "Test the Sample application"
 
     def setUp(self):
         grokapp = Bioport()
-        
         admin = grokapp['admin']
-#        admin.SVN_REPOSITORY = None-
-#        admin.SVN_REPOSITORY_LOCAL_COPY = None
         admin.DB_CONNECTION = DSN
         self.app = grokapp
         self.admin = admin

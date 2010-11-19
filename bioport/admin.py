@@ -156,7 +156,7 @@ class Edit(grok.EditForm,RepositoryView):
     def tmp_update_soundexes(self, **data):
         self.repository().db.tmp_update_soundexes()
         
-    @grok.action('add category kunstatnaars to all rkdartists')
+    @grok.action('add category kunstenaars to all rkdartists')
     def tmp_add_category_to_rkdartists(self, **data):
         repo = self.repository()
         persons = repo.get_persons(source_id='rkdartists')
@@ -170,7 +170,7 @@ class Edit(grok.EditForm,RepositoryView):
             repo.save_biography(bioport_bio)
 
         
-    @grok.action('add category kunstatnaars to all kunstenaars')
+    @grok.action('add category kunstenaars to all schilderkunst')
     def tmp_add_category_to_rkdartists(self, **data):
         repo = self.repository()
         persons = repo.get_persons(source_id='kunstenaars')
@@ -440,6 +440,9 @@ class MostSimilar(grok.Form,RepositoryView, Batcher):
         
     @grok.action('identificeer', name='identify')
     def identify(self):
+        """identify the two persons that are passed in the request parameter bioport_ids
+        
+        thenr redirect the user"""
         bioport_ids = self.request.get('bioport_ids')
         repo = self.repository()
         persons = [self.get_person(id) for id in bioport_ids]
@@ -564,7 +567,27 @@ class MostSimilar(grok.Form,RepositoryView, Batcher):
             self.persons = batch 
             self.persons.grand_total = len(ls)
 
+    def action_url(self, bioport_ids, action_id=None, url=None):
+        form_data = {
+            'bioport_ids':bioport_ids,
+            'start':self.start,
+            'size':self.size,
+            'redirect_to':self.redirect_to,
+            'source_id':self.request.get('source_id', ''),
+            'source_id2':self.request.get('source_id2', ''),
+            'status':self.request.get('status', ''),
+            'search_name':self.request.get('search_name', ''),
+            'any_place':self.request.get('any_place', ''),
             
+            
+        };
+        if action_id:
+            form_data[action_id] = 'submit'
+        if url:
+	        return self.url(url, data=form_data)
+        else:
+	        return self.url(data=form_data)
+        
 class DBNL_Ids(MostSimilar, Batcher):
 
     def update(self):
