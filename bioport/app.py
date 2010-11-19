@@ -16,6 +16,7 @@ from plone.memoize.instance import memoize
 from z3c.batching.batch import Batch
 from bioport import BioportMessageFactory as _
 from zope.i18n import translate
+from sqlalchemy.exc import OperationalError
 try:
     from zope.i18n.interfaces import IUserPreferredLanguages  # after python 2.6 upgrade
 except ImportError:
@@ -48,23 +49,23 @@ class RepositoryView:
     
     @ram.cache(lambda *args: time.time() // (60 * 60))
     def count_persons(self):
-        #XXX cache this
-        i = self.repository().db.count_persons()
-        i = format_number(i)
-        return i
+        try:
+	        i = self.repository().db.count_persons()
+	        i = format_number(i)
+	        return i
+        except OperationalError:
+            return 0 
     
     @ram.cache(lambda *args: time.time() // (60 * 60))
     def count_biographies(self):
         try:
-            return self.context._count_biographies
-        except AttributeError:
             i = self.repository().db.count_biographies()
             #XXX turned of caching, need to find some "update once a day" solution
             i = format_number(i)
             return i
-            self.context._count_biographies = format_number(i)
-        return self.context._count_biographies
-       
+        except OperationalError:
+            return 0
+            
     def menu_items(self):
         items = [
                 (self.application_url(), _('home')),

@@ -113,7 +113,8 @@ class Edit(grok.EditForm,RepositoryView):
         msg = "Found %s contradictions out of %s persons in %0.3f secs" % \
               (processed, total, elapsed_time)
         self._redirect_with_msg(msg)
-
+        
+        
     @grok.action(u"Save Settings", name="edit_settings")
     def edit_admin(self, **data):
         self.applyData(self.context, **data)
