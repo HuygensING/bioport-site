@@ -406,11 +406,16 @@ class MostSimilar(grok.Form,RepositoryView, Batcher):
                           self.request.get('similar_to', None) or \
                           getattr(self, 'similar_to', None)
         self.redirect_to = None
-        self.most_similar_persons = self.repository().get_most_similar_persons(
+    
+        self.most_similar_persons = self.get_most_similar_persons()
+        
+    def get_most_similar_persons(self):
+        return self.repository().get_most_similar_persons(
            start=self.start, 
            size=self.size, 
            bioport_id=self.similar_to,
            source_id=self.request.get('source_id'),
+           source_id2=self.request.get('source_id2'),
            search_name=self.request.get('search_name'),
            status=self.request.get('status'),
            )
@@ -1033,7 +1038,7 @@ class IdentifyMoreInfo(MostSimilar, Persons, Persoon,RepositoryView):
         for k in data.keys():
             if k.startswith('form'):
                 del data[k]
-        most_similar_persons = self.repository().get_most_similar_persons(start=self.start, size=5)
+        most_similar_persons = self.get_most_similar_persons()
         score, p1, p2= most_similar_persons[0]
         data.update({'bioport_ids':[p1.bioport_id, p2.bioport_id], 'start':self.start})
         redirect_url = self.url(data=data)
