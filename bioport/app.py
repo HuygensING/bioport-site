@@ -50,9 +50,9 @@ class RepositoryView:
     @ram.cache(lambda *args: time.time() // (60 * 60))
     def count_persons(self):
         try:
-	        i = self.repository().db.count_persons()
-	        i = format_number(i)
-	        return i
+            i = self.repository().db.count_persons()
+            i = format_number(i)
+            return i
         except OperationalError:
             return 0 
     
@@ -235,7 +235,7 @@ class Personen(grok.View,RepositoryView, Batcher):
     @memoize
     def get_persons(self, **args):
         """get Persons - with restrictions given by request"""
-        self.qry = qry = args
+        qry = {}
         #request.form has unicode keys - make strings
         for k in [
             'bioport_id', 
@@ -248,9 +248,12 @@ class Personen(grok.View,RepositoryView, Batcher):
 #        has_illustrations=None, #boolean: does this person have illustrations?
 #        is_identified=None,
             'order_by', 
+#            'search_family_name',
+#            'search_family_name_exact',
             'search_term',
-            'search_name',
-            'search_soundex',
+#            'search_name',
+#            'search_name_exact',
+#            'search_soundex',
             'size',
             'source_id',
             'source_id2',
@@ -265,40 +268,61 @@ class Personen(grok.View,RepositoryView, Batcher):
              ]:
             if k in self.request.keys():
                 qry[k] = self.request[k]
-                
-        repository = self.repository()
+        
         current_language = IUserPreferredLanguages(self.request).getPreferredLanguages()[0]
-        try:
-            geboorte_fuzzy_text = self.request.form.get('geboorte_fuzzy_text', None)
-            if geboorte_fuzzy_text:
-                geborte_query = get_search_query(geboorte_fuzzy_text, current_language)
-                qry.update(en_to_nl_for_field(geborte_query, 'geboorte'))
-            sterf_fuzzy_text = self.request.form.get('sterf_fuzzy_text', None)
-            if sterf_fuzzy_text:
-                sterf_query = get_search_query(sterf_fuzzy_text, current_language)
-                qry.update(en_to_nl_for_field(sterf_query, 'sterf'))
-            levend_fuzzy_text = self.request.form.get('levend_fuzzy_text', None)
-            if levend_fuzzy_text:
-                levend_query = get_search_query(levend_fuzzy_text, current_language)
-                qry.update(en_to_nl_for_field(levend_query, 'levend'))
-            has_contradictions = self.request.form.get('has_contradictions', None)
-            if has_contradictions == 'on':
-                qry['has_contradictions'] = True
-            else:
-                qry['has_contradictions'] = False
-        except ValueError:
-            url = self.url('zoek') # 
-            dict_of_strings = dict([(k,v.encode('utf8')) 
-                                    for k, v in self.request.form.items()])
-            url += '?' + urlencode(dict_of_strings)
-            self.request.response.redirect(url)
+       
+        request = self.request 
+        
+        search_name = request.form.get('search_name') 
+        if request.form.get('search_name_exact') and not search_name.startswith('"'):
+            #search for the exact phrase
+            search_name = '"%s"' % search_name
             
-        persons = repository.get_persons_sequence(**qry)
+        if search_name:
+            qry['search_name'] = search_name
+            
+        search_family_name = request.form.get('search_family_name')
+        if request.form.get('search_family_name_exact') and not search_family_name.startswith('"'):
+            #search for the exact phrase
+            search_name = '"%s"' % search_family_name
+            
+        if search_family_name:
+            qry['search_name'] = search_family_name
+            qry['search_family_name_only'] = True 
+            
+        geboorte_fuzzy_text = self.request.form.get('geboorte_fuzzy_text', None)
+        if geboorte_fuzzy_text:
+            geborte_query = get_search_query(geboorte_fuzzy_text, current_language)
+            qry.update(en_to_nl_for_field(geborte_query, 'geboorte'))
+        sterf_fuzzy_text = self.request.form.get('sterf_fuzzy_text', None)
+        if sterf_fuzzy_text:
+            sterf_query = get_search_query(sterf_fuzzy_text, current_language)
+            qry.update(en_to_nl_for_field(sterf_query, 'sterf'))
+        levend_fuzzy_text = self.request.form.get('levend_fuzzy_text', None)
+        if levend_fuzzy_text:
+            levend_query = get_search_query(levend_fuzzy_text, current_language)
+            qry.update(en_to_nl_for_field(levend_query, 'levend'))
+            
+        has_contradictions = self.request.form.get('has_contradictions', None)
+        if has_contradictions == 'on':
+            qry['has_contradictions'] = True
+        else:
+            qry['has_contradictions'] = False
+            
+#        except ValueError: 
+#            url = self.url('zoek') # 
+#            dict_of_strings = dict([(k,v.encode('utf8')) 
+#                                    for k, v in self.request.form.items()])
+#            url += '?' + urlencode(dict_of_strings)
+#            self.request.response.redirect(url)
+#            
+        persons = self.repository().get_persons_sequence(**qry)
         
         try:
             batch = Batch(persons,  start=self.start, size=self.size)
         except IndexError:
             batch = Batch(persons,size= self.size)
+            
         batch.grand_total = len(persons)
         self.batch = batch
         return batch
@@ -466,8 +490,9 @@ class Persoon(BioPortIdTraverser, grok.View, RepositoryView):
     def update(self, **args):
         self.bioport_id = self.bioport_id or self.request.get('bioport_id')
         redirects_to = self.repository().redirects_to(self.bioport_id)
-        if redirects_to:
-            self.bioport_id = redirects_to
+        if redirects_to != self.bioport_id:
+            #this is an 'old'bioport_id that has been identified with the bioport_id at redirects_to
+            self.redirect(self.url(self) + '/'+ redirects_to)
         if not self.bioport_id:
             self.bioport_id = random.choice(self.repository().get_bioport_ids())
             self.redirect(self.url(self) + '/'+ self.bioport_id)
@@ -626,6 +651,9 @@ class Zoek(grok.View, RepositoryView):
     def get_alive_description(self):
         return get_alive_description(self.request)
 
+class Zoek_New(Zoek):
+    """temporary form for staging new functionality"""
+    pass
 
 class Zoek_places(grok.View, RepositoryView):
     """The JSON used in the search form of the main site.
@@ -948,4 +976,3 @@ class ErrorHandler(grok.View, RepositoryView):
 
 #    def update(self):
 #        self.request.response.setStatus(404)
-

@@ -70,13 +70,21 @@ class EnglishUrlTest(FunctionalTestCase):
         
     def test_english_zoek(self):
         self.browser.open('http://localhost/app/zoek')
-      
-
+#      
+#class SearchTest(FunctionalTestCase):
+#    def setUp(self):
+#        self.browser = Browser()
+#        self.browser.handleErrors = False
+#    
+#    def test_search_form(self):
+#        self.browser.open('http://localhost/app/zoek')
+        
 def test_suite():
     test_suite = unittest.TestSuite()
     tests = [GoogleSitemapTest,
              PersoonXmlTest,
              AppTest,
+             SearchTest,
             ]
     for test in tests:
         test_suite.addTest(unittest.makeSuite(test))

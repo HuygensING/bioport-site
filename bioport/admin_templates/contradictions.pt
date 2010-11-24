@@ -1,9 +1,7 @@
 <!--
-XXX
 
 THIS IS NOT USED! KEEPING IT JUST IN CASE.
 
-XXX
 -->
 
 <html metal:use-macro="context/@@admin_template/macros/master">

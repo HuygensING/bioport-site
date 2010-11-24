@@ -83,7 +83,7 @@ Zie ook de lijsten met
             <li tal:condition="python:not view.url().endswith('identifymoreinfo')">
                 <a 
                         tal:attributes="
-	                     href python:view.action_url(bioport_ids=bioport_ids, url='identifymoreinfo');
+	                     href python:view.action_url(bioport_ids=bioport_ids, action_id='identifymoreinfo');
                        "
                     accesskey="m"><span class="accesskey">m</span>eer informatie </a>
             </li>

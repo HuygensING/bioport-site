@@ -128,9 +128,20 @@ class SimpleSampleFunctionalTest(FunctionalTestCase):
         
         
         #identify the two
-        browser.getLink(id='identify').click()
+        link = browser.getLink(id='identify')
+        link_url = link.url
+        bioport_id1, bioport_id2 = link.url.split('bioport_ids=')[1:]
+        bioport_id1 = bioport_id1[:bioport_id1.find('&')]
+        bioport_id2 = bioport_id2[:bioport_id2.find('&')]
+        link.click()
         
-        #now the two items names are identifed (but how to check?)
+        #now the two items names are identifed
+        #if we go to the first url, it should redirect us to the second url
+        self.assertNotEqual(bioport_id1, bioport_id2)
+        browser1 = Browser('http://localhost/app/persoon/%s' % bioport_id1)
+        browser2 = Browser('http://localhost/app/persoon/%s' % bioport_id2)
+        #one of the two pages should have redirected to the other - both will now have the same url
+        self.assertEqual(browser1.url , browser2.url)
         
     def test_most_similar_workflow(self): 
         pass
@@ -253,5 +264,4 @@ def test_suite():
 
 if __name__ == "__main__":
     unittest.main(defaultTest='test_suite')    
-
 

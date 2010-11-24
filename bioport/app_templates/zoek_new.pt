@@ -1,0 +1,334 @@
+<html metal:use-macro="context/@@main_template/macros/master">
+    <title metal:fill-slot="head_title" i18n:translate="">Zoek</title>
+    <div metal:fill-slot="content">
+<div id="colright" metal:use-macro="context/@@index/macros/birthdays_box">
+</div>
+<div id="colcenter">
+<h1 i18n:translate="">Zoeken</h1>
+<form tal:attributes="action python:view.url('personen')"
+    metal:define-macro="search_form">
+
+        <script tal:attributes="src static/js/autocomplete/jquery.autocomplete-min.js" type="text/javascript"></script>
+        <script type="text/javascript">
+        jQuery(function() {
+            initialize_zoek_form();
+        });
+        </script>
+
+
+<table tal:define="zoek_view nocall: context/@@zoek;
+                   born_date_description zoek_view/get_born_description;
+                   died_date_description zoek_view/get_died_description;
+                   alive_date_description zoek_view/get_alive_description;">
+<tr>
+    <th i18n:translate="search_by_family_name">zoek op achternaam</th>
+    <td>
+        <input type="text" name="search_family_name"
+            tal:attributes="value python:unicode(request.get('search_family_name', ''))"
+             />
+        zoek exact <input type="checkbox" name="search_family_name_exact"><br>
+ 	 <span i18n:translate="search_name_help_text_example" class="help_text">
+ 	  e.g.
+     <a OnClick="jQuery(&quot;input[name='search_name']&quot;).attr('value', 'huygens')">huygens</a> or
+     <a OnClick="jQuery(&quot;input[name='search_name']&quot;).attr('value', 'aalb*')">aalb*</a>.
+    </span>
+        <a class="tooltip_button toggle"
+            i18n:translate="tooltip_button_toggle"
+            Onclick="jQuery('#tip_search_name').toggle(200)">[more...]</a>
+       <div class="tooltip" id="tip_search_name" i18n:translate="search_by_name_help">
+            Typ de naam of een gedeelte van de naam.
+           <br />
+            De zoekfunctie houdt rekening met spellingsvarianten (zoeken op
+     <a OnClick="jQuery(&quot;input[name='search_name']&quot;).attr('value', 'uil')">uil</a>
+            en
+     <a OnClick="jQuery(&quot;input[name='search_name']&quot;).attr('value', 'uyl')">uyl</a>
+            geeft hetzelfde resultaat).
+            Vindt u dat vervelend, gebruik dan dubbele aanhalingstekens om letterlijk
+     <a OnClick="jQuery(&quot;input[name='search_name']&quot;).attr('value', '&quot;uijl&quot;')">"uijl"</a>
+            te vinden.
+           <br />
+            Gebruik wildcards (? voor één teken, * voor één of
+    meer tekens) om spellingsvarianten te vinden: met
+     <a OnClick="jQuery(&quot;input[name='search_name']&quot;).attr('value', 'seven*')">seven*</a>
+     vindt u alle namen die met 'seven' beginnen.
+        </div>
+            </td>
+        </tr>
+ <tr>
+    <th i18n:translate="search_by_name">zoek op naam</th>
+    <td>
+        <input type="text" name="search_name"
+            tal:attributes="value python:unicode(request.get('search_name', ''))"
+             />
+
+        zoek exact <input type="checkbox" name="search_name_exact"><br>
+ 	 <span i18n:translate="search_name_help_text_example" class="help_text">
+ 	  e.g.
+     <a OnClick="jQuery(&quot;input[name='search_name']&quot;).attr('value', 'huygens')">huygens</a> or
+     <a OnClick="jQuery(&quot;input[name='search_name']&quot;).attr('value', 'aalb*')">aalb*</a>.
+    </span>
+        <a class="tooltip_button toggle"
+            i18n:translate="tooltip_button_toggle"
+            Onclick="jQuery('#tip_search_name').toggle(200)">[more...]</a>
+       <div class="tooltip" id="tip_search_name" i18n:translate="search_by_name_help">
+            Typ de naam of een gedeelte van de naam.
+           <br />
+            De zoekfunctie houdt rekening met spellingsvarianten (zoeken op
+     <a OnClick="jQuery(&quot;input[name='search_name']&quot;).attr('value', 'uil')">uil</a>
+            en
+     <a OnClick="jQuery(&quot;input[name='search_name']&quot;).attr('value', 'uyl')">uyl</a>
+            geeft hetzelfde resultaat).
+            Vindt u dat vervelend, gebruik dan dubbele aanhalingstekens om letterlijk
+     <a OnClick="jQuery(&quot;input[name='search_name']&quot;).attr('value', '&quot;uijl&quot;')">"uijl"</a>
+            te vinden.
+           <br />
+            Gebruik wildcards (? voor één teken, * voor één of
+    meer tekens) om spellingsvarianten te vinden: met
+     <a OnClick="jQuery(&quot;input[name='search_name']&quot;).attr('value', 'seven*')">seven*</a>
+     vindt u alle namen die met 'seven' beginnen.
+        </div>
+            </td>
+        </tr>
+     
+<tr>
+    <th i18n:translate="born">geboren</th>
+    <td>
+        <input type="text" size="20" name="geboorte_fuzzy_text"
+            tal:attributes="value python:request.get('geboorte_fuzzy_text')" />
+
+<span tal:condition="born_date_description" id="born_feedback_text">
+    <span tal:content="born_date_description">
+        From october to march
+    </span>
+</span>
+	 <span i18n:translate="born_help_text_example" class="help_text">
+        e.g. <a OnClick="jQuery(&quot;input[name='geboorte_fuzzy_text']&quot;).attr('value', 'may 1650 to september 1665')">may 1650 to september 1655</a>.
+    </span>
+       <a class="tooltip_button toggle"
+            i18n:translate="tooltip_button_toggle"
+            Onclick="jQuery('#tip_birth').toggle(200)">[more...]</a>
+        <div id="tip_birth" class="tooltip">
+        <span i18n:translate="born_died_help_text"
+            metal:define-macro="born_died_help_text">
+<ul>
+<li>
+In the fields 'born',  'died', and 'alive'  you can seach for a certain day (for example
+<a OnClick="jQuery(&quot;input[name='geboorte_fuzzy_text']&quot;).attr('value', '22 april')">22 april</a>)
+or a complete date (for example <a OnClick="jQuery(&quot;input[name='geboorte_fuzzy_text']&quot;).attr('value', '22 april 1734')">22 april 1734</a> ).
+You can also only use numbers (
+ <a OnClick="jQuery(&quot;input[name='geboorte_fuzzy_text']&quot;).attr('value', '22 4 1734')">22 4 1734</a> = 22 april 1734).
+<li>
+The fields can also be used to determine a time period.
+For example: <a OnClick="jQuery(&quot;input[name='geboorte_fuzzy_text']&quot;).attr('value', 'May 1945')">May 1945</a>,
+ <a OnClick="jQuery(&quot;input[name='geboorte_fuzzy_text']&quot;).attr('value', 'after 1500')">after 1500</a> ,
+ <a OnClick="jQuery(&quot;input[name='geboorte_fuzzy_text']&quot;).attr('value', 'before 1650')">before 1650</a>,
+ or
+ <a OnClick="jQuery(&quot;input[name='geboorte_fuzzy_text']&quot;).attr('value', 'between 1750 and 1760')">between 1750 and 1760</a>.
+<li>
+For those that are interesed in Astrology: a search for people born
+<a OnClick="jQuery(&quot;input[name='geboorte_fuzzy_text']&quot;).attr('value', 'between 22 december and 20 january')">between 22 december and 20 january</a>
+results in a list of all Capricorns.
+<li>
+You can use the search fields 'born', 'died' and 'alive' in combination with other search fields as well.
+
+If, for example, you are search for writing women in the 19th Century, you could select 'born after 1770' and 'died before 1900', sex: 'female' and category: 'Literature'.
+
+<li>
+For selections of people who were alive during a certain period, you can use the field 'alive'.
+For example
+<a OnClick="jQuery(&quot;input[name='levend_fuzzy_text']&quot;).attr('value', 'between 1940 and 1945')">between 1940 and 1945</a>.
+</ul>
+
+</span>
+    </div>
+ </td>
+</tr>
+<tr>
+
+    <th i18n:translate="place_of_birth">geboorteplaats</th>
+    <td>
+        <span id="geboorteplaats_field">
+            <input type="text" size="20" name="geboorteplaats"
+                tal:attributes="value python:unicode(request.get('geboorteplaats', ''))" />
+        </span>
+	 <span i18n:translate="geboorteplaats_help_text_example" class="help_text">
+        e.g. <a OnClick="jQuery(&quot;input[name='geboorteplaats']&quot;).attr('value', 'Zaamslag')">Zaamslag</a>.
+    </span>
+    </td>
+</tr>
+
+<tr><td colspan="2" id="born_help_text">
+   </td></tr>
+<tr>
+
+    <!-- death date field -->
+    <th i18n:translate="died">gestorven</th>
+    <td>
+        <input type="text" size="20" name="sterf_fuzzy_text"
+            tal:attributes="value python:request.get('sterf_fuzzy_text')" />
+	 <span i18n:translate="died_help_text_example" class="help_text">
+        e.g. <a OnClick="jQuery(&quot;input[name='sterf_fuzzy_text']&quot;).attr('value', 'before 1914')">before 1914</a>.
+    </span>
+       <a class="tooltip_button toggle"
+            i18n:translate="tooltip_button_toggle"
+            Onclick="jQuery('#tip_death').toggle(200)">[more...]</a>
+
+        <div id="tip_death" class="tooltip">
+        <span
+            metal:use-macro="context/@@zoek/macros/born_died_help_text">
+            </span>
+        </div>
+     </td>
+</tr>
+<tr tal:condition="died_date_description">
+	<td colspan="2" id="died_feedback_text">
+    <span tal:content="died_date_description">
+        From october to march
+    </span>
+</td></tr>
+
+<tr>
+    <th i18n:translate="place_of_death">sterfplaats</th>
+    <td>
+       <span id="sterfplaats_field">
+            <input type="text" size="20" name="sterfplaats"
+                tal:attributes="value python:unicode(request.get('sterfplaats', ''))" />
+        </span>
+	 <span i18n:translate="sterfplaats_help_text_example" class="help_text">
+        e.g. <a OnClick="jQuery(&quot;input[name='sterfplaats']&quot;).attr('value', 'Den Helder')">Den Helder</a>.
+    </span>
+     </td>
+
+</tr>
+
+<tr>
+    <th i18n:translate="alive">leefde</th>
+    <td>
+        <input type="text" size="20" name="levend_fuzzy_text"
+            tal:attributes="value python:request.get('levend_fuzzy_text')" />
+		 <span i18n:translate="alive_help_text_example" class="help_text">
+	        e.g. <a OnClick="jQuery(&quot;input[name='levend_fuzzy_text']&quot;).attr('value', '1795 to 1813')">1795 to 1813</a>.
+	    </span>
+       <a class="tooltip_button toggle"
+            i18n:translate="tooltip_button_toggle"
+            Onclick="jQuery('#tip_alive').toggle(200)">[more...]</a>
+
+        <div id="tip_alive" class="tooltip">
+        <span
+            metal:use-macro="context/@@zoek/macros/born_died_help_text">
+            </span>
+        </div>
+      </td>
+</tr>
+
+<tr tal:condition="alive_date_description"><td colspan="2" id="alive_feedback_text">
+    <span tal:content="alive_date_description">
+        From 1940 to 1945
+    </span>
+</td></tr>
+
+
+
+<tr>
+    <th i18n:translate="gender">sekse</th>
+    <td>
+        <select name="geslacht">
+            <option />
+            <option value="1" i18n:translate=""
+                    tal:attributes="selected python:request.get('geslacht')=='1'">
+                    man
+            </option>
+            <option value="2" i18n:translate=""
+                    tal:attributes="selected python:request.get('geslacht')=='2'">
+                vrouw
+            </option>
+        </select>
+    </td>
+</tr>
+<tr>
+    <th i18n:translate="category">rubriek</th>
+    <td>
+        <select name="category">
+            <option />
+            <option tal:repeat="category python:view.repository().db.get_categories()"
+                tal:attributes="value category/id;
+                    selected python:str(category.id) == request.get('category');
+                "
+                tal:content="python:category.name"
+                i18n:translate="" />
+        </select>
+        <a class="tooltip_button toggle"
+            Onclick="jQuery('#tip_category').toggle(200)">[?]</a>
+        <div id="tip_category" class="tooltip" i18n:translate="category_help_text">
+            De ‘reden van roem’ van mensen in een biografisch naslagwerk is zeer divers,
+            en mensen kunnen bovendien om meer dan één reden beroemd zijn.
+            Voorlopig gebruiken we een grofmazig rubriekensysteem om hen in te delen in diverse levenssferen.
+           <br />
+           Voor meer informatie, zie <a href="faq#category" i18n:translate="FAQs" i18n:name="faq">de veelgestelde vragen</a>.
+        </div>
+    </td>
+</tr>
+<tr>
+    <th i18n:translate="source">bron</th>
+    <td>
+    <select name="source_id" style="width:20em">
+    <option></option>
+    <span tal:omit-tag=""
+         tal:repeat="source view/get_sources">
+     <option
+        tal:condition="python:source.id != 'bioport'"
+        tal:attributes="value source/id;
+            selected python:source.id == request.get('source_id');
+            "
+        tal:content="source/description"
+            />
+         </span>
+    </select>
+    </td>
+</tr>
+   
+<tr>
+    <th i18n:translate="">vrij zoeken in tekst</th>
+    <td>
+        <input type="text" name="search_term"
+            tal:attributes="value python:unicode(request.get('search_term', ''))" />
+	 	 <span i18n:translate="search_term_help_text_example" class="help_text">
+	 	  bijv.
+     <a OnClick="jQuery(&quot;input[name='search_term']&quot;).attr('value', 'vroedvrouw')">vroedvrouw</a> of
+     <a OnClick="jQuery(&quot;input[name='search_term']&quot;).attr('value', '*moord*')">*moord*</a>
+     </span>
+         <a class="tooltip_button toggle"
+            i18n:translate="tooltip_button_toggle"
+            Onclick="jQuery('#tip_search_term').toggle(200)" >[more...]</a>
+        <div class="tooltip" id="tip_search_term" i18n:translate="search_in_text_help">
+            U kunt vrij zoeken op woord(en) in de tekst van de biografieën.
+            <br/>
+            Daarmee zoekt u in de tekst van alle naslagwerken die in het portaal zijn opgenomen.
+            De kwaliteit daarvan is niet altijd even goed - in sommige gevallen
+            betreft het OCR tekst, en soms is niet de tekst van de gehele biografie opgenomen.
+        </div>
+</tr>
+
+<tr>
+    <td></td>
+    <td>
+        <input type="submit" value=" zoek " i18n:attributes="value" />
+        <input type="submit" value=" wis " OnClick="jQuery('form').clearForm();return false;"
+         i18n:attributes="value" />
+    </td>
+</tr>
+</table>
+<h2>
+Disclaimer
+</h2>
+<p metal:define-macro="disclaimer_tekst" i18n:translate="disclaimer_text">
+NB. Alle personen die in het Biografisch Portaal staan, zijn vindbaar op naam.
+Voor de overige zoekmogelijkheden geldt de waarschuwing dat de de resultaten onvolledig zijn,
+ omdat persoonsgegevens (nog) niet bij alle personen zijn ingevuld.
+Er wordt hard aan gewerkt om de leemtes op te vullen.
+</p>
+
+</form>
+</div>
+</div>
+</html>

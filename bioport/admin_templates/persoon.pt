@@ -640,7 +640,10 @@ img {
         >
 			<a style="color:black" href="#"><h1 tal:attributes="onclick onclick"
                 tal:content="python:bio.get_source().id"></h1></a>
-			<div tal:content="structure tekst"></div>
+             
+            <p><b><span tal:repeat="name bio/get_names" tal:content="string:$name."></span></b> </p>
+              
+			<p tal:content="structure tekst"></p>
 			<div>
              <p>
 			 <a tal:attributes="

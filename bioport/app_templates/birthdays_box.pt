@@ -1,15 +1,20 @@
             <span tal:omit-tag=""
-                 tal:repeat="person view/get_persons">
+                 tal:repeat="person view/get_persons"
+                 >
+              <span tal:omit-tag=""
+                 tal:define="name python:person.name().guess_normal_form()">
                     
             <a tal:attributes="href python:view.url('persoon') + '/' +  person.bioport_id">
             <div class="image"
                 tal:define="illustrations python:person.get_merged_biography().get_illustrations();
                     illustration python:illustrations and illustrations[0]"
                 tal:condition="illustration">
-                <img tal:attributes="src illustration/image_small_url"  alt="person/naam" />
+                <img tal:attributes="src illustration/image_small_url;  
+	                alt name" />
             </div>
-	            <div class="subscript"><span tal:replace="structure person/name" ></span> 
+	            <div class="subscript"><span tal:replace="name" ></span> 
 	               <span tal:replace="python:context.format_dates(person.get_value('geboortedatum'), person.get_value('sterfdatum'), show_year_only=True)"></span>
                </div>
                 </a>
+            </span>
             </span>
