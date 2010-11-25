@@ -721,16 +721,21 @@ class Colofon(grok.View, RepositoryView):
     pass
 
 class Birthdays_Box(grok.View, RepositoryView):
+    
+    
     @ram.cache(lambda *args: time.time() // (60 * 60 * 24))
     def get_persons(self):
         """get 3 persons whose birthdate is today"""
         #get the month and day of today
         today = datetime.date.today().strftime('-%m-%d')
-        #query the database for persons born on this date
+        #query the database for persons born on this date that have an illustration
         persons = self.repository().get_persons(where_clause='geboortedatum like "____%s"' % today, has_illustrations=True, hide_foreigners=True)
+        
+        persons = [p for p in persons if [ill for ill in p.get_merged_biography().get_illustrations() if ill.has_image()]]
         if len(persons) < 3:
             #if we have less then 3 people, we cheat a bit and take someone who died today
             persons += self.repository().get_persons(where_clause='sterfdatum like "____%s"' % today, has_illustrations=True, hide_foreigners=True)
+            persons = [p for p in persons if [ill for ill in p.get_merged_biography().get_illustrations() if ill.has_image()]]
              
         return persons[:3]
 

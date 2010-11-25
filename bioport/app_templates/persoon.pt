@@ -27,7 +27,7 @@
             </div>
         </div>
 
-        <!-- more pictures -->
+        <!-- other pictures -->
         <div class="illustratie" 
              tal:condition="python:len(illustraties) >= 3" 
         >
