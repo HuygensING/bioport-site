@@ -584,8 +584,6 @@ class MostSimilar(grok.Form,RepositoryView, Batcher):
             'status':self.request.get('status', ''),
             'search_name':self.request.get('search_name', ''),
             'any_place':self.request.get('any_place', ''),
-            
-            
         };
         if action_id:
             form_data[action_id] = 'submit'
