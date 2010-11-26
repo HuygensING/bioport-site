@@ -327,7 +327,9 @@ class Personen(grok.View,RepositoryView, Batcher):
         self.batch = batch
         return batch
 
-        
+    def print_dates_of_person(self, person):
+        date1, date2 = person.get_dates_for_overview()
+        return format_dates(date1, date2)
     def search_description(self):
         """return a description for the user of the search parameters in the request"""
 #        beginletter=None,
