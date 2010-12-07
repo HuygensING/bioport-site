@@ -287,7 +287,7 @@ class Personen(grok.View,RepositoryView, Batcher):
         search_family_name = request.form.get('search_family_name')
         if request.form.get('search_family_name_exact') and not search_family_name.startswith('"'):
             #search for the exact phrase
-            search_name = '"%s"' % search_family_name
+            search_family_name = '"%s"' % search_family_name
             
         if search_family_name:
             qry['search_name'] = search_family_name
