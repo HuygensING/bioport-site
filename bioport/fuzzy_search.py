@@ -1,8 +1,8 @@
 """
 Inspired by http://adbonline.anu.edu.au/help-advsearch.htm#abd
 This module converts human-written sentences expressing dates or date ranges
-into distionaries that represent the query, that can be further
-elaburated and fed to BioPortRepository.
+into dictionaries that represent the query, that can be further
+elaborated and fed to BioPortRepository.
 Output fields (all integer types):
     year_min 
     year_max

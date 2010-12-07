@@ -50,6 +50,14 @@ class PersoonXmlTest(FunctionalTestCase):
 
 class AppTest(FunctionalTestCase):
 
+    def test_some_pages(self):
+        browser = self.browser
+        browser.open(self.base_url)
+        browser.open(self.base_url + '/birthdays')
+        browser.open(self.base_url + '/birthdays_box')
+        browser.open(self.base_url + '/zoek')
+        browser.open(self.base_url + '/personen')
+        
     def test_raise_404(self):
         browser = self.browser
         bioport_ids = self.app.repository(user=None).get_bioport_ids()

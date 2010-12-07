@@ -56,7 +56,7 @@ select {
             <br /><br />
             
             <!-- birth date field -->
-            <span i18n:translate="born">geboren:</span>
+            <span i18n:translate="born">geboren</span>
             <span i18n:translate="born_help_text_example" class="help_text">
                 (e.g. <a OnClick="jQuery(&quot;input[name='geboorte_fuzzy_text']&quot;).attr('value', 'may 1650 to september 1665')">may 1650 to september 1655</a>)&nbsp;
             </span>

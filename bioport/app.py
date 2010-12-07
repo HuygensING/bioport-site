@@ -97,6 +97,9 @@ class RepositoryView:
         else:
             month = maanden[today.month-1]
             return '%s %s' % (today.day, month)
+    def print_dates_of_person(self, person):
+        date1, date2 = person.get_dates_for_overview()
+        return format_dates(date1, date2)    
     
 class Batcher: 
     def update(self, **kw):
@@ -327,9 +330,7 @@ class Personen(grok.View,RepositoryView, Batcher):
         self.batch = batch
         return batch
 
-    def print_dates_of_person(self, person):
-        date1, date2 = person.get_dates_for_overview()
-        return format_dates(date1, date2)
+
     def search_description(self):
         """return a description for the user of the search parameters in the request"""
 #        beginletter=None,
@@ -398,6 +399,11 @@ class Personen(grok.View,RepositoryView, Batcher):
             whose_name_is_like = translate(_(u'whose_name_is_like'),target_language=current_language)
             result += ' ' + whose_name_is_like
             result += ' <em>%s</em>' % request.get('search_name')
+            
+        if request.get('search_family_name'):
+            whose_family_name_is_like = translate(_(u'whose_family_name_is_like'),target_language=current_language)
+            result += ' ' + whose_family_name_is_like
+            result += ' <em>%s</em>' % request.get('search_family_name')
             
         if request.get('search_term'):
             result += u' met het woord <em>%s</em> in de tekst' % request.get('search_term')
@@ -753,7 +759,7 @@ class Birthdays(grok.View, RepositoryView):
         #get the month and day of today
         today = datetime.date.today().strftime('-%m-%d')
         #query the database for persons born on this date
-        persons = self.repository().get_persons(where_clause='sterfdatum like "____%s"' % today)
+        persons = self.repository().get_persons(where_clause='sterfdatum_min like "____%s" and sterfdatum_min = sterfdatum_max' % today)
         return persons
     
 

@@ -21,20 +21,59 @@
                    died_date_description zoek_view/get_died_description;
                    alive_date_description zoek_view/get_alive_description;">
 <tr>
-    <th i18n:translate="">zoeken op naam</th>
+    <th i18n:translate="search_by_family_name">zoek op achternaam</th>
+    <td>
+        <input type="text" name="search_family_name"
+            tal:attributes="value python:unicode(request.get('search_family_name', ''))"
+             />
+     <span i18n:translate="search_family_name_help_text_example" class="help_text">
+      e.g.
+     <a OnClick="jQuery(&quot;input[name='search_family_name']&quot;).attr('value', 'huygens')">huygens</a> or
+     <a OnClick="jQuery(&quot;input[name='search_family_name']&quot;).attr('value', 'aalb*')">aalb*</a>.
+    </span>
+        <a class="tooltip_button toggle"
+            i18n:translate="tooltip_button_toggle"
+            Onclick="jQuery('#tip_search_family_name').toggle(200)">[more...]</a>
+        <br>
+       <span i18n:translate="exact_search">zoek exact</span> 
+       <input type="checkbox" name="search_family_name_exact">
+       <div class="tooltip" id="tip_search_family_name" i18n:translate="search_by_family_name_help">
+            Typ de naam of een gedeelte van de naam.
+           <br />
+            De zoekfunctie houdt rekening met spellingsvarianten (zoeken op
+     <a OnClick="jQuery(&quot;input[name='search_name']&quot;).attr('value', 'uil')">uil</a>
+            en
+     <a OnClick="jQuery(&quot;input[name='search_name']&quot;).attr('value', 'uyl')">uyl</a>
+            geeft hetzelfde resultaat).
+            Vindt u dat vervelend, gebruik dan dubbele aanhalingstekens om letterlijk
+     <a OnClick="jQuery(&quot;input[name='search_name']&quot;).attr('value', '&quot;uijl&quot;')">"uijl"</a>
+            te vinden.
+           <br />
+            Gebruik wildcards (? voor één teken, * voor één of
+    meer tekens) om spellingsvarianten te vinden: met
+     <a OnClick="jQuery(&quot;input[name='search_name']&quot;).attr('value', 'seven*')">seven*</a>
+     vindt u alle namen die met 'seven' beginnen.
+        </div>
+            </td>
+        </tr>
+ <tr>
+    <th i18n:translate="search_by_name">zoek op naam</th>
     <td>
         <input type="text" name="search_name"
             tal:attributes="value python:unicode(request.get('search_name', ''))"
              />
 
- 	 <span i18n:translate="search_name_help_text_example" class="help_text">
- 	  e.g.
+     <span i18n:translate="search_name_help_text_example" class="help_text">
+      e.g.
      <a OnClick="jQuery(&quot;input[name='search_name']&quot;).attr('value', 'huygens')">huygens</a> or
      <a OnClick="jQuery(&quot;input[name='search_name']&quot;).attr('value', 'aalb*')">aalb*</a>.
     </span>
         <a class="tooltip_button toggle"
             i18n:translate="tooltip_button_toggle"
             Onclick="jQuery('#tip_search_name').toggle(200)">[more...]</a>
+        <br>
+       <span i18n:translate="exact_search">zoek exact</span> 
+        <input type="checkbox" name="search_name_exact">
        <div class="tooltip" id="tip_search_name" i18n:translate="search_by_name_help">
             Typ de naam of een gedeelte van de naam.
            <br />
@@ -66,7 +105,7 @@
         From october to march
     </span>
 </span>
-	 <span i18n:translate="born_help_text_example" class="help_text">
+     <span i18n:translate="born_help_text_example" class="help_text">
         e.g. <a OnClick="jQuery(&quot;input[name='geboorte_fuzzy_text']&quot;).attr('value', 'may 1650 to september 1665')">may 1650 to september 1655</a>.
     </span>
        <a class="tooltip_button toggle"
@@ -116,7 +155,7 @@ For example
             <input type="text" size="20" name="geboorteplaats"
                 tal:attributes="value python:unicode(request.get('geboorteplaats', ''))" />
         </span>
-	 <span i18n:translate="geboorteplaats_help_text_example" class="help_text">
+     <span i18n:translate="geboorteplaats_help_text_example" class="help_text">
         e.g. <a OnClick="jQuery(&quot;input[name='geboorteplaats']&quot;).attr('value', 'Zaamslag')">Zaamslag</a>.
     </span>
     </td>
@@ -131,7 +170,7 @@ For example
     <td>
         <input type="text" size="20" name="sterf_fuzzy_text"
             tal:attributes="value python:request.get('sterf_fuzzy_text')" />
-	 <span i18n:translate="died_help_text_example" class="help_text">
+     <span i18n:translate="died_help_text_example" class="help_text">
         e.g. <a OnClick="jQuery(&quot;input[name='sterf_fuzzy_text']&quot;).attr('value', 'before 1914')">before 1914</a>.
     </span>
        <a class="tooltip_button toggle"
@@ -146,7 +185,7 @@ For example
      </td>
 </tr>
 <tr tal:condition="died_date_description">
-	<td colspan="2" id="died_feedback_text">
+    <td colspan="2" id="died_feedback_text">
     <span tal:content="died_date_description">
         From october to march
     </span>
@@ -159,7 +198,7 @@ For example
             <input type="text" size="20" name="sterfplaats"
                 tal:attributes="value python:unicode(request.get('sterfplaats', ''))" />
         </span>
-	 <span i18n:translate="sterfplaats_help_text_example" class="help_text">
+     <span i18n:translate="sterfplaats_help_text_example" class="help_text">
         e.g. <a OnClick="jQuery(&quot;input[name='sterfplaats']&quot;).attr('value', 'Den Helder')">Den Helder</a>.
     </span>
      </td>
@@ -171,9 +210,9 @@ For example
     <td>
         <input type="text" size="20" name="levend_fuzzy_text"
             tal:attributes="value python:request.get('levend_fuzzy_text')" />
-		 <span i18n:translate="alive_help_text_example" class="help_text">
-	        e.g. <a OnClick="jQuery(&quot;input[name='levend_fuzzy_text']&quot;).attr('value', '1795 to 1813')">1795 to 1813</a>.
-	    </span>
+         <span i18n:translate="alive_help_text_example" class="help_text">
+            e.g. <a OnClick="jQuery(&quot;input[name='levend_fuzzy_text']&quot;).attr('value', '1795 to 1813')">1795 to 1813</a>.
+        </span>
        <a class="tooltip_button toggle"
             i18n:translate="tooltip_button_toggle"
             Onclick="jQuery('#tip_alive').toggle(200)">[more...]</a>
@@ -257,8 +296,8 @@ For example
     <td>
         <input type="text" name="search_term"
             tal:attributes="value python:unicode(request.get('search_term', ''))" />
-	 	 <span i18n:translate="search_term_help_text_example" class="help_text">
-	 	  bijv.
+         <span i18n:translate="search_term_help_text_example" class="help_text">
+          bijv.
      <a OnClick="jQuery(&quot;input[name='search_term']&quot;).attr('value', 'vroedvrouw')">vroedvrouw</a> of
      <a OnClick="jQuery(&quot;input[name='search_term']&quot;).attr('value', '*moord*')">*moord*</a>
      </span>
