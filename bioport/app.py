@@ -611,8 +611,6 @@ class Persoon(BioPortIdTraverser, grok.View, RepositoryView):
         return checkPermission('bioport.Manage', self.context)
         
 
-#class Zoek(grok.View, RepositoryView):
-#    pass
 
 def get_born_description(request):
     """ Inspect the request and build a natural language description 
@@ -998,10 +996,5 @@ class PeopleWhoLivedMoreThanHundredYears(grok.View, RepositoryView):
 
 #    def update(self):
 #        self.request.response.setStatus(404)
-x = ''
-class MemoryStressTest(grok.View):
-    def render(self):
-        global x 
-        x = 10^6 * 'x'
         
         
