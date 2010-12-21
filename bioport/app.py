@@ -955,7 +955,16 @@ class ErrorHandler(grok.View, RepositoryView):
             import traceback
             return traceback.format_exc()
 
-
+class PeopleWhoLivedMoreThanHundredYears(grok.View, RepositoryView):
+    def render(self):
+        db = self.repository().db
+        from bioport_repository.db_definitions import PersonRecord
+        query = db.get_session().query(PersonRecord).filter(PersonRecord.sterfdatum_min - PersonRecord.geboortedatum_max > 100)
+        result = ''
+        for person in query.all():
+           result = '%s (leefde tenminste %s jaar)' % (person.get_bioport_id(), person.sterfdatum_min - person.geboortedatum_max)
+        import ipdb;ipdb.set_trace()
+        return result 
 #from zope.publisher.interfaces import INotFound
 #from zope.location import LocationProxy
 
@@ -989,3 +998,10 @@ class ErrorHandler(grok.View, RepositoryView):
 
 #    def update(self):
 #        self.request.response.setStatus(404)
+x = ''
+class MemoryStressTest(grok.View):
+    def render(self):
+        global x 
+        x = 10^6 * 'x'
+        
+        

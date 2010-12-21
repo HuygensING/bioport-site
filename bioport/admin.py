@@ -1084,16 +1084,12 @@ class ChangeName(Persoon, grok.EditForm,RepositoryView):
         if volledige_naam in ' '.join(parts):
             volledige_naam = ' '.join(parts)
         
-        try:
-            self.naam = name = Naam(volledige_naam = volledige_naam, **args)
-            repository = self.repository()
-            bio._replace_name(name, self.idx)
-            repository.save_biography(bio)
-            self.msg = 'De veranderingen zijn bewaard'
-        except Exception, error:
-            # XXX - evil!
-            self.msg = unicode(error)
-            self.msg += ' Uw veranderingen zijn niet bewaard'
+        import ipdb;ipdb.set_trace()
+        self.naam = name = Naam(volledige_naam = volledige_naam, **args)
+        repository = self.repository()
+        bio._replace_name(name, self.idx)
+        repository.save_biography(bio)
+        self.msg = 'De veranderingen zijn bewaard'
        
  
 class AntiIdentified(grok.View, RepositoryView, Batcher):
