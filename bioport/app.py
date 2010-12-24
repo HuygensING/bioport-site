@@ -961,7 +961,6 @@ class PeopleWhoLivedMoreThanHundredYears(grok.View, RepositoryView):
         result = ''
         for person in query.all():
            result = '%s (leefde tenminste %s jaar)' % (person.get_bioport_id(), person.sterfdatum_min - person.geboortedatum_max)
-        import ipdb;ipdb.set_trace()
         return result 
 #from zope.publisher.interfaces import INotFound
 #from zope.location import LocationProxy
