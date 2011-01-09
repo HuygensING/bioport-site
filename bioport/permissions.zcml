@@ -137,9 +137,19 @@
                  password="herman123"
                  />   
       <grant role="bioport.Editor" principal="bioport.herman" />
+
+ 
+<!-- Rens -->
+       <principal id="bioport.rens"
+                 title="Rens"
+                 login="rens"
+                 password_manager="Plain Text"
+                 password="rens123"
+                 />   
+      <grant role="bioport.Editor" principal="bioport.rens" />
  
 <!-- Koen van Wijk       -->
-       <principal id="bioport.koen"
+ <principal id="bioport.koen"
                  title="Koen"
                  login="koen"
                  password_manager="Plain Text"
