@@ -57,7 +57,7 @@
             </td>
         </tr>
  <tr>
-    <th i18n:translate="search_by_name">zoek op naam</th>
+    <th i18n:translate="search_by_name">zoek op de volledige naam</th>
     <td>
         <input type="text" name="search_name"
             tal:attributes="value python:unicode(request.get('search_name', ''))"
