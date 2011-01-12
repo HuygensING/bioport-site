@@ -81,7 +81,9 @@ form {
      <hr> 
       <!--  generate similarity cache  -->
  </form>     
+    
       <form tal:on-error="string:xxx">
+      <b>Most similar listing:</b>
       <br>
         source: <select name="source_id">
         <option value="">all sources</option>

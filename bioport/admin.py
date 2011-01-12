@@ -159,29 +159,26 @@ class Edit(grok.EditForm,RepositoryView):
         
     @grok.action('add category kunstenaars to all rkdartists')
     def tmp_add_category_to_rkdartists(self, **data):
-        repo = self.repository()
-        persons = repo.get_persons(source_id='rkdartists')
-        logging.info('add categoery 3 to rkdartsts')
-        i = 0
-        for p in persons:
-            i += 1
-            logging.info('progress: %s/%s' % (i, len(persons)))
-            bioport_bio = p.get_bioport_biography()
-            bioport_bio.set_category(bioport_bio.get_category_ids() + [3])  
-            repo.save_biography(bioport_bio)
-
+        source_id = 'rkdartists'
+        category_id = 3
+        self._add_category_to_source(source_id, category_id)
         
     @grok.action('add category kunstenaars to all schilderkunst')
     def tmp_add_category_to_rkdartists(self, **data):
+        source_id = 'schilderkunst'
+        category_id = 3
+        self._add_category_to_source(source_id, category_id)
+        
+    def _add_category_to_source(self, source_id, category_id):
         repo = self.repository()
-        persons = repo.get_persons(source_id='kunstenaars')
-        logging.info('add categoery 3 to rkdartsts')
+        persons = repo.get_persons(source_id=source_id)
+        logging.info('add category %s to %s' % (category_id, source_id))
         i = 0
         for p in persons:
             i += 1
             logging.info('progress: %s/%s' % (i, len(persons)))
             bioport_bio = p.get_bioport_biography()
-            bioport_bio.set_category(bioport_bio.get_category_ids() + [3])  
+            bioport_bio.set_category(bioport_bio.get_category_ids() + [category_id])  
             repo.save_biography(bioport_bio)
 
     @grok.action('identify all similarity pairs with a score score of 1.0')            
@@ -418,6 +415,7 @@ class MostSimilar(grok.Form,RepositoryView, Batcher):
            source_id2=self.request.get('source_id2'),
            search_name=self.request.get('search_name'),
            status=self.request.get('status'),
+           sex=self.request.get('geslacht'), 
            )
         
     def goback(self,  data = None):

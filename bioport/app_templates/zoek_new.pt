@@ -34,7 +34,7 @@
         <a class="tooltip_button toggle"
             i18n:translate="tooltip_button_toggle"
             Onclick="jQuery('#tip_search_name').toggle(200)">[more...]</a>
-            <br></br>
+            <br>
         zoek exact <input type="checkbox" name="search_family_name_exact">
        <div class="tooltip" id="tip_search_name" i18n:translate="search_by_name_help">
             Typ de naam of een gedeelte van de naam.

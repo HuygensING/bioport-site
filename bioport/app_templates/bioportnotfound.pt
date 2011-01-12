@@ -1,6 +1,6 @@
 <html metal:use-macro="context/@@main_template/macros/master">
 <div metal:fill-slot="content">
-<h1 i18n:translate="">We’re sorry, but that page doesn’t exist</h1>
+<h1 i18n:translate="">We are sorry, but that page does not exist</h1>
 <p i18n:translate="">
 Please double check the web address or use the search function on this page to find what you are looking for.
 </p>

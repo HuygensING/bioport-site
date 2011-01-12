@@ -93,5 +93,6 @@ Zie ook de lijsten met
     </div>
 </table>
 
+<div metal:use-macro="context/@@sitemacros/macros/sql_query_navigation" />
 </div>
 </html>

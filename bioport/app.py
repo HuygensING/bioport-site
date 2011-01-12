@@ -355,6 +355,7 @@ class Personen(grok.View,RepositoryView, Batcher):
 #        size=None,
 #        status=None,
 #        where_clause=None,
+#        bioport_id
         current_language = IUserPreferredLanguages(self.request).getPreferredLanguages()[0]
         _between = translate(_(u'between'),target_language=current_language)
         _and = translate(_(u'and'), target_language=current_language)
@@ -419,6 +420,9 @@ class Personen(grok.View,RepositoryView, Batcher):
                 translate(_("of_the_category"), target_language=current_language), #uit de rubriek
                              category_name)
         
+        if request.get('bioport_id'):
+            result += ' %s <em>%s</em>' % (translate(_("with_bioport_id"), target_language=current_language), request.get('bioport_id'))
+            
         #NB: in the template, we show the alphabet only if the search description is emtpy
         #uncommenting the following lines messes up this logic    
 #        if request.get('beginletter'):
