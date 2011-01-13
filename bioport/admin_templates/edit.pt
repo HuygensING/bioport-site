@@ -81,6 +81,28 @@ form {
      <hr> 
       <!--  generate similarity cache  -->
  </form>     
+    <form>
+    <b> assign category to source<b>
+    <br>
+        source: <select name="source_id">
+        <option value=""></option>
+            <option tal:repeat="source view/get_sources" tal:attributes="value source/id" tal:content="source/id" />
+        </select> 
+        <br>    
+        category
+        <select name="category">
+            <option />
+            <option tal:repeat="category python:view.repository().db.get_categories()"
+                tal:attributes="value category/id;
+                    selected python:str(category.id) == request.get('category');
+                "
+                tal:content="python:category.name"
+                i18n:translate="" />
+        </select>
+        <br>
+ 	    <input   tal:replace="structure python:view.actions['form.actions.assign_category_to_source'].render()" />
+         
+    </form> 
     
       <form tal:on-error="string:xxx">
       <b>Most similar listing:</b>

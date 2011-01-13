@@ -129,10 +129,16 @@ class Edit(grok.EditForm,RepositoryView):
     @grok.action('Refresh the similarity cache', name='refresh_similarity_cache')
     def refresh_similarity_cache(self, **data): 
         refresh = bool(self.request.get('refresh'))
-        sid = self.request.get('source_id', None)
+        sid = self.request.get('source_id')
         self.repository().db.fill_similarity_cache(refresh=refresh, source_id=sid)
         self._redirect_with_msg('finished')
-        
+    @grok.action('Assign category to name', name='assign_category_to_source')
+    def assign_category_to_source(self, **data):
+        source_id = self.request.get('source_id')
+        category_id = self.request.get('category')
+        if source_id and category_id:
+	        self._add_category_to_source(source_id=source_id, category_id=category_id)
+        self._redirect_with_msg('added category %s to source %s' % (category_id, source_id))
 #    @grok.action('Create non-existing tables')
 #    def reset_database(self, **data):
 #        self.repository().db.metadata.create_all()
