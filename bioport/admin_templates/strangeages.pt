@@ -1,0 +1,42 @@
+<html metal:use-macro="context/@@admin_template/macros/master">
+<div metal:fill-slot="content" >
+
+<div tal:define="results view/less_than_15">
+<h1>Less than 15 years old</h1>
+<table metal:define-macro="results">
+    <tr>
+    <th></th>
+        <th>link</th> 
+        <th>leeftijd</th>
+        <th>geboortejaar (min)</th>
+        <th>geboortejaar (max)</th>
+        <th>sterfjaar (min)</th>
+        <th>sterfjaar (max)</th>
+    </tr>
+	<tr tal:repeat="r results">
+	    <td tal:content="repeat/r/number" />
+		<td>
+            <a tal:content="python:r[0]"  tal:attributes="href python:'../persoon/%s' % r[0]"/>
+		
+		</td> 
+		<td tal:content="python:r[1]" />
+		<td tal:content="python:r[4]" />
+		<td tal:content="python:r[5]" />
+		<td tal:content="python:r[6]" />
+		<td tal:content="python:r[7]" />
+	</tr>
+</table>
+</div>
+
+<div tal:define="results view/more_than_100">
+<h1>More than 100 years old</h1>
+
+<table metal:use-macro="template/macros/results">
+</table>
+</div>
+
+
+
+</div>
+
+</html>
