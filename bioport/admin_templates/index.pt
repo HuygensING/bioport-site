@@ -11,6 +11,7 @@
                 <li><a tal:attributes="href python:view.url('persoonidentify')" accesskey="3">Identificeer personen</a></li>
                 <li><a tal:attributes="href python:view.url('mostsimilar')" accesskey="4">Meest gelijkende personen</a></li>
                 <li><a tal:attributes="href python:view.url('identified')" accesskey="5">Ge&iuml;dentificeerde personen</a></li>
+                <li><a tal:attributes="href python:view.url('strangeages')" >Strange Ages</a></li>
                 <li><a tal:attributes="href python:view.url('persons')" accesskey="6">Bewerk personen</a></li>
                 <li><a tal:attributes="href python:view.url('sources')" accesskey="7">Bronnen</a></li>
                 <li><a tal:attributes="href python:view.url('edit')" accesskey="8">Geavanceerd</a></li>
