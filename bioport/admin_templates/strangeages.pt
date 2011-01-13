@@ -17,7 +17,7 @@
 	    <td tal:content="repeat/r/number" />
 		<td>
             <a tal:content="python:r[0]"  tal:attributes="href python:'../persoon/%s' % r[0]"/>
-		
+	       <span tal:content="python:unicode(r[8], 'utf8')" />	
 		</td> 
 		<td tal:content="python:r[1]" />
 		<td tal:content="python:r[4]" />

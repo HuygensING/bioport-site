@@ -1227,7 +1227,11 @@ CONVERT(LEFT(p.`geboortedatum_min`, 4), SIGNED),
 CONVERT(LEFT(p.`sterfdatum_max`, 4), SIGNED),
 p.`geboortedatum_min` ,
  p.`geboortedatum_max`,
- p.`sterfdatum_min`, p.`sterfdatum_max` FROM person p 
+ p.`sterfdatum_min`, 
+ p.`sterfdatum_max` ,
+ p.naam
+ 
+ FROM person p 
 where CONVERT(LEFT(p.`sterfdatum_max`, 4), SIGNED) - CONVERT(LEFT(p.`geboortedatum_min`, 4), SIGNED) < 15
     """
         
@@ -1239,7 +1243,9 @@ CONVERT(LEFT(p.`geboortedatum_max`, 4), SIGNED),
 CONVERT(LEFT(p.`sterfdatum_min`, 4), SIGNED),
 p.`geboortedatum_max` ,
  p.`geboortedatum_max`,
- p.`sterfdatum_min`, p.`sterfdatum_max` FROM person p 
+ p.`sterfdatum_min`, p.`sterfdatum_max` ,
+ p.naam
+ FROM person p 
 where CONVERT(LEFT(p.`sterfdatum_min`, 4), SIGNED) - CONVERT(LEFT(p.`geboortedatum_max`, 4), SIGNED) > 100
 """
         self.more_than_100 = self.repository().db.get_session().execute(sql)
