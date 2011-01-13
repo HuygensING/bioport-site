@@ -162,19 +162,19 @@ class Edit(grok.EditForm,RepositoryView):
     @grok.action('recompute_soundexes')
     def update_soundexes(self, **data):
         self.repository().db.update_soundexes()
-        
-    @grok.action('add category kunstenaars to all rkdartists')
-    def tmp_add_category_to_rkdartists(self, **data):
-        source_id = 'rkdartists'
-        category_id = 3
-        self._add_category_to_source(source_id, category_id)
-        
-    @grok.action('add category kunstenaars to all schilderkunst')
-    def tmp_add_category_to_rkdartists(self, **data):
-        source_id = 'schilderkunst'
-        category_id = 3
-        self._add_category_to_source(source_id, category_id)
-        
+#        
+#    @grok.action('add category kunstenaars to all rkdartists')
+#    def tmp_add_category_to_rkdartists(self, **data):
+#        source_id = 'rkdartists'
+#        category_id = 3
+#        self._add_category_to_source(source_id, category_id)
+#        
+#    @grok.action('add category kunstenaars to all schilderkunst')
+#    def tmp_add_category_to_rkdartists(self, **data):
+#        source_id = 'schilderkunst'
+#        category_id = 3
+#        self._add_category_to_source(source_id, category_id)
+#        
     def _add_category_to_source(self, source_id, category_id):
         repo = self.repository()
         persons = repo.get_persons(source_id=source_id)
