@@ -154,8 +154,8 @@ class Edit(grok.EditForm,RepositoryView):
         self._redirect_with_msg("%s persons updated." % total)
         
     @grok.action('recompute_soundexes')
-    def tmp_update_soundexes(self, **data):
-        self.repository().db.tmp_update_soundexes()
+    def update_soundexes(self, **data):
+        self.repository().db.update_soundexes()
         
     @grok.action('add category kunstenaars to all rkdartists')
     def tmp_add_category_to_rkdartists(self, **data):
@@ -1218,3 +1218,28 @@ class Uitleg(grok.View):
 class Uitleg_Zoek(grok.View):        
     pass   
 
+
+class StrangeAges(grok.View, RepositoryView):
+    def update(self):
+        sql = """SELECT p.`bioport_id`,
+CONVERT(LEFT(p.`sterfdatum_max`, 4), SIGNED) - CONVERT(LEFT(p.`geboortedatum_min`, 4), SIGNED),
+CONVERT(LEFT(p.`geboortedatum_min`, 4), SIGNED),
+CONVERT(LEFT(p.`sterfdatum_max`, 4), SIGNED),
+p.`geboortedatum_min` ,
+ p.`geboortedatum_max`,
+ p.`sterfdatum_min`, p.`sterfdatum_max` FROM person p 
+where CONVERT(LEFT(p.`sterfdatum_max`, 4), SIGNED) - CONVERT(LEFT(p.`geboortedatum_min`, 4), SIGNED) < 15
+    """
+        
+        self.less_than_15 = self.repository().db.get_session().execute(sql)
+        
+        sql = """SELECT p.`bioport_id`,
+CONVERT(LEFT(p.`sterfdatum_min`, 4), SIGNED) - CONVERT(LEFT(p.`geboortedatum_max`, 4), SIGNED),
+CONVERT(LEFT(p.`geboortedatum_max`, 4), SIGNED),
+CONVERT(LEFT(p.`sterfdatum_min`, 4), SIGNED),
+p.`geboortedatum_max` ,
+ p.`geboortedatum_max`,
+ p.`sterfdatum_min`, p.`sterfdatum_max` FROM person p 
+where CONVERT(LEFT(p.`sterfdatum_min`, 4), SIGNED) - CONVERT(LEFT(p.`geboortedatum_max`, 4), SIGNED) > 100
+"""
+        self.more_than_100 = self.repository().db.get_session().execute(sql)

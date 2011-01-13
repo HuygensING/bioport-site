@@ -6,9 +6,12 @@
 <table tal:condition="view/selected_persons">
 <tr tal:repeat="person view/selected_persons">
     <td tal:content="person/bioport_id"> </td>
-    <td><a 
-        tal:attributes="href python:view.url('persoon', data={'bioport_id':person.bioport_id})"
-        tal:content="person/title"></a> </td>
+    <td>
+    <span metal:use-macro="context/@@sitemacros/macros/link_to_person" />
+    <span tal:repeat="name python:person.get_names()[1:]">
+	    <br><span tal:replace="name"></span>
+    </span>
+    </td>
     <td tal:define="other_persons python:[p.bioport_id for p in view.selected_persons if p != person]">
         [<a tal:attributes="href python:view.url(data ={'bioport_ids': other_persons, 'search_name':request.get('search_name', '')})">verwijder keuze</a>]</td>
 </tr>
@@ -112,6 +115,9 @@ Het vraagteken "?" staat voor een enkel karakter. Dus zoeken op "Ja?ob" vindt je
     </td>
     <td >
     <span metal:use-macro="context/@@sitemacros/macros/link_to_person" />
+    <span tal:repeat="name python:person.get_names()[1:]">
+	    <br><span tal:replace="name"></span>
+    </span>
     </td>
     <td>
        <span tal:repeat="source python:person.get_sources()">
