@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Tue Jan 11 17:18:05 2011\n"
+"POT-Creation-Date: Mon Jan 17 16:12:59 2011\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope3-dev@zope.org>\n"
@@ -46,14 +46,14 @@ msgstr ""
 #: bioport/app.py:373
 #: bioport/app_templates/zoek.pt:98
 #: bioport/app_templates/zoek_new.pt:95
-#: bioport/admin_templates/persons.pt:59
+#: bioport/admin_templates/persons.pt:60
 msgid "born"
 msgstr ""
 
 #: bioport/app.py:382
 #: bioport/app_templates/zoek.pt:169
 #: bioport/app_templates/zoek_new.pt:166
-#: bioport/admin_templates/persons.pt:67
+#: bioport/admin_templates/persons.pt:65
 msgid "died"
 msgstr ""
 
@@ -323,7 +323,6 @@ msgstr ""
 
 #: bioport/app_templates/zoek.pt:108
 #: bioport/app_templates/zoek_new.pt:105
-#: bioport/admin_templates/persons.pt:60
 #. Default: "e.g. <a onclick=\"jQuery(&quot;input[name='geboorte_fuzzy_text']&quot;).attr('value', 'may 1650 to september 1665')\">may 1650 to september 1655</a>."
 msgid "born_help_text_example"
 msgstr ""
@@ -348,7 +347,6 @@ msgstr ""
 
 #: bioport/app_templates/zoek.pt:173
 #: bioport/app_templates/zoek_new.pt:170
-#: bioport/admin_templates/persons.pt:68
 #. Default: "e.g. <a onclick=\"jQuery(&quot;input[name='sterf_fuzzy_text']&quot;).attr('value', 'before 1914')\">before 1914</a>."
 msgid "died_help_text_example"
 msgstr ""
@@ -378,6 +376,7 @@ msgstr ""
 
 #: bioport/app_templates/zoek.pt:237
 #: bioport/app_templates/zoek_new.pt:234
+#: bioport/admin_templates/persons.pt:70
 #. Default: "sekse"
 msgid "gender"
 msgstr ""
@@ -390,11 +389,13 @@ msgstr ""
 
 #: bioport/app_templates/zoek.pt:241
 #: bioport/app_templates/zoek_new.pt:238
+#: bioport/admin_templates/persons.pt:73
 msgid "man"
 msgstr ""
 
 #: bioport/app_templates/zoek.pt:245
 #: bioport/app_templates/zoek_new.pt:242
+#: bioport/admin_templates/persons.pt:77
 msgid "vrouw"
 msgstr ""
 
@@ -411,6 +412,7 @@ msgstr ""
 #: bioport/contact_templates/bare_edit_form.pt:31
 #: bioport/contact_templates/bare_edit_form.pt:37
 #: bioport/admin_templates/edit.pt:47
+#: bioport/admin_templates/edit.pt:95
 msgid "${DYNAMIC_CONTENT}"
 msgstr ""
 
