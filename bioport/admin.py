@@ -132,6 +132,7 @@ class Edit(grok.EditForm,RepositoryView):
         sid = self.request.get('source_id')
         self.repository().db.fill_similarity_cache(refresh=refresh, source_id=sid)
         self._redirect_with_msg('finished')
+        
     @grok.action('Assign category to name', name='assign_category_to_source')
     def assign_category_to_source(self, **data):
         source_id = self.request.get('source_id')
@@ -184,7 +185,8 @@ class Edit(grok.EditForm,RepositoryView):
             i += 1
             logging.info('progress: %s/%s' % (i, len(persons)))
             bioport_bio = p.get_bioport_biography()
-            bioport_bio.set_category(bioport_bio.get_category_ids() + [category_id])  
+#            bioport_bio.set_category(bioport_bio.get_category_ids() + [category_id])  
+            bioport_bio.set_category([category_id])  
             repo.save_biography(bioport_bio)
 
     @grok.action('identify all similarity pairs with a score score of 1.0')            
