@@ -523,8 +523,12 @@ class Persoon(BioPortIdTraverser, grok.View, RepositoryView):
             class EventWrapper:
                 def __init__(self, el, _between, _and, _after, _before):
                     self.when = el.get('when')
-                    self.when_ymd = to_ymd(self.when) 
-                    self.when_formatted = format_date(self.when)
+                    try:
+	                    self.when_ymd = to_ymd(self.when) 
+	                    self.when_formatted = format_date(self.when)
+                    except:
+                        self.when_formatted = self.when
+                        
                     self.notBefore = el.get('notBefore')
                     self.notBefore_ymd = to_ymd(self.notBefore) 
                     self.notBefore_formatted = format_date(self.notBefore)
