@@ -43,7 +43,13 @@
 			  $(this).click()
 		  }
 		});
-	
+
+    _changed_items = new Array();
+    
+	$('input[type!=submit],select,textarea').change(function(){
+		  _changed_items.push(this.name);	
+		  $('#changed_values').val( _changed_items.join())
+		 });
 });
 
 
@@ -554,7 +560,7 @@ img {
         <th><span class="accesskey">o</span>pmerkingen (voor en door bewerkers)</th>	
         <td>
             <textarea accesskey="o"
-            name="remarks" id="remarks" style="width:300px" tal:content="view/person/remarks"></textarea>
+            name="remarks_bioport_editor" id="remarks" style="width:300px" tal:content="view/get_remarks_bioport_editor"></textarea>
         <!--
         <td>
 	        <span tal:replace="structure python:view.actions.byname['form.actions.save_remarks'].render()" ></span>
@@ -597,18 +603,44 @@ img {
     <tr>
    	<th />
    	<td>
+   	<input type="hidden" name="changed_values" id="changed_values" />
    	<button accesskey="w" class="button" value="bewaar alle veranderingen" name="form.actions.save_everything" id="form.actions.save_everything">
    	    be<span class="accesskey">w</span>aar alle veranderingen</button>
    	
-        <span xtal:replace="structure python:view.actions.byname['form.actions.save_everything'].render()" class="default"  />
 	        <input type="reset" value="reset" />
 	</td> 
     </tr>
 </table>
 </form>
+    <p>
+        <a tal:attributes="href python:view.url('persoonidentify', data={'bioport_ids':view.bioport_id})"
+            accesskey="i">[<span class="accesskey">i</span>dentificeer deze persoon]</a>
+        <span tal:omit-tag=""
+            tal:condition="view/is_identified">
+	        
+	        <a tal:attributes="href python:view.url('unidentify', data={'bioport_id':view.bioport_id})">
+	           [on-identficeer deze persoon]
+           </a>
+        </span>
+        
+        <a tal:attributes="OnClick string:history.go(-${view/history_counter});;return false;;" href="">[terug]</a>
+        
+<a tal:attributes="href python:view.url('versions', data = {'bioport_id':view.bioport_id})">[undo changes]</a>
+    </p>
+<h1>History</h1>
+<table class="gcodetable">
+<div tal:define="versions view/get_versions" >
+    <tr tal:repeat="version versions">
+        <td tal:content="version/time"></td> 
+        <td tal:define="user python:view.getPrincipal(version.user)"
+            tal:content="python:user and user.title"> 
+        </td>
+        <td tal:content="version/comment"></td> 
+    </tr> 
+ </div>
+</table>
 </td>
 <td>
-
 <!-- 
 <div id="contradictions" 
      tal:condition="contradictions">
@@ -668,19 +700,6 @@ img {
     </p>
     <p>
     De gegevens zijn grijs als ze uit de bronnen-publikaties komen, zwart als ze zijn ingevoerd door de medewerkers van het biografisch portaal.
-    </p>
-    <p>
-        <a tal:attributes="href python:view.url('persoonidentify', data={'bioport_ids':view.bioport_id})"
-            accesskey="i"><span class="accesskey">i</span>dentificeer deze persoon</a>
-        <span tal:omit-tag=""
-            tal:condition="view/is_identified">
-	        |
-	        <a tal:attributes="href python:view.url('unidentify', data={'bioport_id':view.bioport_id})">
-	           on-identficeer deze persoon
-           </a>
-        </span>
-        |
-        <a tal:attributes="OnClick string:history.go(-${view/history_counter});;return false;;" href="">terug</a>
     </p>
 </div>
 

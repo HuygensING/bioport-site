@@ -16,6 +16,7 @@
                 <li><a tal:attributes="href python:view.url('sources')" accesskey="7">Bronnen</a></li>
                 <li><a tal:attributes="href python:view.url('edit')" accesskey="8">Geavanceerd</a></li>
                 <li><a tal:attributes="href python:view.url('uitleg')" accesskey="9">Uitleg</a></li>
+                <li><a tal:attributes="href python:view.url('versions')" accesskey="">Changes</a></li>
             </ul>
 
 

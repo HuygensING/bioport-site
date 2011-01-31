@@ -36,7 +36,8 @@ class AdminPanelFunctionalTest(FunctionalTestCase):
         form.getControl(name='form.LIMIT').value = '20'
         form.submit('Save')
         
-        self.app.repository(user=None).db.metadata.create_all()
+        repository = app.repository(user='unittest user')
+        repository.db.metadata.create_all()
         #add a source
         this_dir = os.path.dirname(__file__)
         source_url = 'file://%s' % os.path.join(this_dir, 'data/knaw/list.xml')
@@ -51,7 +52,6 @@ class AdminPanelFunctionalTest(FunctionalTestCase):
             #XXX we need to properly handle that error
             pass
         #download the biographies for this source
-        repository = app.repository(user=None)
         repository.download_biographies(source=repository.get_source(u'knaw_test'))
         
 
@@ -60,7 +60,7 @@ class SimpleSampleFunctionalTest(FunctionalTestCase):
     def test_if_pages_work(self):
         
         browser = self.browser
-        some_bioport_id = self.app.repository(user=None).get_bioport_ids()[2]
+        some_bioport_id = self.app.repository(user='unittest user').get_bioport_ids()[2]
         for url in [
             '',
             'personen',
@@ -211,6 +211,16 @@ class SimpleSampleFunctionalTest(FunctionalTestCase):
         form.getControl(name='form.actions.save_everything').click()
         browser.open(public_url)
         assert re.findall('vrouw', browser.contents, re.DOTALL)
+        
+        #remakrts bioport editor
+        browser.open(edit_url)
+        form = browser.getForm(index=0)
+        s = 'Given the existence as uttered forth in the public works of Puncher and Wattmann of a personal God quaquaquaqua'
+        form.getControl(name='remarks_bioport_editor').value=s
+        form.getControl(name='form.actions.save_everything').click()
+        browser.open(public_url)
+        self.assertEqual(form.getControl(name='remarks_bioport_editor').value, s)
+        assert re.findall('quaquaquaqua', browser.contents, re.DOTALL)
  
         #snippet
 #        browser.open(edit_url)

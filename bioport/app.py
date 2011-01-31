@@ -27,12 +27,14 @@ from fuzzy_search import en_to_nl_for_field
 from fuzzy_search import make_description
 import simplejson
 from zope.publisher.interfaces import NotFound, INotFound
+from zope.app.security.interfaces import IAuthentication, PrincipalLookupError
 
+from zope import component
 
 class RepositoryView:
     def repository(self):
         principal = self.request.principal
-        user = principal and principal.id
+        user = principal and principal.id or 'unknown'
         return self.context.repository(user=user)
     
     def get_sources(self):
@@ -101,6 +103,18 @@ class RepositoryView:
         date1, date2 = person.get_dates_for_overview()
         return format_dates(date1, date2)    
     
+    def getPrincipals(self):
+        
+        self._principal_registry = component.getUtility(IAuthentication)
+        principals = self._principal_registry.getPrincipals('')
+        return principals
+   
+    def getPrincipal(self, id): 
+        self._principal_registry = component.getUtility(IAuthentication)
+        try:
+            return self._principal_registry.getPrincipal(id)
+        except PrincipalLookupError:
+            return None    
 class Batcher: 
     def update(self, **kw):
         self.start = int(self.request.get('start', 0))
@@ -711,21 +725,21 @@ class Zoek_places_admin(grok.View, RepositoryView):
 
 
 
-class Auteurs(grok.View,RepositoryView, Batcher):
-    def update(self):
-        Batcher.update(self)
-    def get_auteurs(self, **args):
-
-        d = {}
-        #request.form has unicode keys - make strings
-        for k in self.request.form:
-            d[str(k)] = self.request.form[k]
-        
-        ls = self.repository().get_authors(**d) 
-        
-        batch = Batch(ls, start=self.start, size=self.size)
-        batch.grand_total = len(ls)
-        return batch
+#class Auteurs(grok.View,RepositoryView, Batcher):
+#    def update(self):
+#        Batcher.update(self)
+#    def get_auteurs(self, **args):
+#
+#        d = {}
+#        #request.form has unicode keys - make strings
+#        for k in self.request.form:
+#            d[str(k)] = self.request.form[k]
+#        
+#        ls = self.repository().get_authors(**d) 
+#        
+#        batch = Batch(ls, start=self.start, size=self.size)
+#        batch.grand_total = len(ls)
+#        return batch
 
 
 

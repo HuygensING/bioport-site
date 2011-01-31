@@ -85,8 +85,8 @@ class Admin(grok.Container):
     def format_number(self, s):
         return format_number(s)
 
-    def get_auteurs(self, **args):
-        return self.repository().get_authors()   
+#    def get_auteurs(self, **args):
+#        return self.repository().get_authors()   
     
 
 class Edit(grok.EditForm,RepositoryView):
@@ -138,13 +138,27 @@ class Edit(grok.EditForm,RepositoryView):
         source_id = self.request.get('source_id')
         category_id = self.request.get('category')
         if source_id and category_id:
-	        self._add_category_to_source(source_id=source_id, category_id=category_id)
+            self._add_category_to_source(source_id=source_id, category_id=category_id)
         self._redirect_with_msg('added category %s to source %s' % (category_id, source_id))
 #    @grok.action('Create non-existing tables')
 #    def reset_database(self, **data):
 #        self.repository().db.metadata.create_all()
         
         
+    @grok.action('Move remarks from person to biodes file', name='move_remarks')
+    def move_remarks(self, **data): 
+        repo = self.repository()
+        persons = repo.get_persons()
+        i = 0
+        for person in persons:
+            i += 1
+            print 'progress %s/%s' % (i, len(persons))
+            if person.remarks:
+                bioport_bio = person.get_bioport_biography()
+                bioport_bio.add_or_update_note(type='bioport_editor', text=person.remarks)
+                repo.save_biography(bioport_bio, '[administration] moved remarks from db to biodes')
+                print 'found and saved remarks [%s]' % person.get_bioport_id()
+
 #    @grok.action('Fill geolocations table')
 #    def fill_geolocations_table(self, **data): 
 #        self.repository().db._update_geolocations_table()
@@ -186,7 +200,7 @@ class Edit(grok.EditForm,RepositoryView):
             logging.info('progress: %s/%s' % (i, len(persons)))
             bioport_bio = p.get_bioport_biography()
             bioport_bio.set_category(bioport_bio.get_category_ids() + [category_id])  
-            repo.save_biography(bioport_bio)
+            repo.save_biography(bioport_bio, comment='added category %s' % category_id)
 
     @grok.action('identify all similarity pairs with a score score of 1.0')            
     def tmp_identify_rkdartists(self):
@@ -365,7 +379,7 @@ class Source(grok.EditForm,RepositoryView):
         self.repository().db.fill_similarity_cache(refresh=True, 
                                                    source_id=self.source.id)
         self._redirect_with_msg("Similarity table refreshed")
-
+                
 
 class Sources(grok.View,RepositoryView):
     
@@ -593,9 +607,9 @@ class MostSimilar(grok.Form,RepositoryView, Batcher):
         if action_id:
             form_data[action_id] = 'submit'
         if url:
-	        return self.url(url, data=form_data)
+            return self.url(url, data=form_data)
         else:
-	        return self.url(data=form_data)
+            return self.url(data=form_data)
         
 class DBNL_Ids(MostSimilar, Batcher):
 
@@ -619,6 +633,7 @@ class Persoon(app.Persoon, grok.EditForm, RepositoryView):
   
     grok.require('bioport.Edit')
     def update(self, **args):
+        
         self.bioport_id = self.bioport_id or self.request.get('bioport_id')
         if not self.bioport_id:
             # XXX make a userfrienlider error
@@ -703,6 +718,12 @@ class Persoon(app.Persoon, grok.EditForm, RepositoryView):
             return to_ymd(biography.get_value(k, ''))
         else:
             return biography.get_value(k, '')
+    
+    def get_versions(self, limit=5): 
+        return self.repository().get_versions(
+            bioport_id = self.bioport_id,
+            amount=limit,
+            )
         
     def status_value(self, event_id, attr):
         """return 'bioport' if the value is added by the editors of the 
@@ -740,6 +761,9 @@ class Persoon(app.Persoon, grok.EditForm, RepositoryView):
                                        notAfter=notAfter, place=place)
         
     def _save_state(self, type):
+        self._set_state(type)
+        
+    def _set_state(self, type):
         frm = self._get_date_from_request(prefix='state_%s_from' % type)
         to = self._get_date_from_request(prefix='state_%s_to' % type)
         text = self.request.get('state_%s_text' % type)
@@ -750,7 +774,6 @@ class Persoon(app.Persoon, grok.EditForm, RepositoryView):
     @grok.action('bewaar rubriek', name="save_category")
     def save_category(self):
         self._set_category()
-        self.save_biography()
         self.msg = 'rubriek bewaard' 
     
     def _set_category(self):
@@ -760,7 +783,6 @@ class Persoon(app.Persoon, grok.EditForm, RepositoryView):
         category_ids = [id for id in category_ids if id]
         self.bioport_biography.set_category(category_ids)
            
-        self.save_biography()
             
         new_category_ids = self.request.get('new_category_id')
         if type(new_category_ids) != type([]):
@@ -771,15 +793,14 @@ class Persoon(app.Persoon, grok.EditForm, RepositoryView):
             name = self.repository().get_category(new_category_id).name 
             self.bioport_biography.add_state(type='category', idno=new_category_id, text=name)
             
-        self.save_biography()
-        
         self.categories = self.get_states(type='category')
         
-    def save_biography(self):
+    def save_biography(self,comment=None):
         if not self.person.status:
             self.person.status = 2 #set status to bewerkt
-#        self.repository().save_person(self.person)
-        self.repository().save_biography(self.bioport_biography)
+        if not comment:
+            comment ='changed biography'
+        self.repository().save_biography(self.bioport_biography, comment=comment)
         #we need to reload merged_biography because changes are not automatically picked up
         self.person = self.repository().get_person(self.bioport_id)
         self.merged_biography  = self.person.get_merged_biography()
@@ -787,8 +808,8 @@ class Persoon(app.Persoon, grok.EditForm, RepositoryView):
     @grok.action('bewaar geslacht', name="save_sex")
     def save_sex(self):
         self._set_sex()
-        self.save_biography()
         self.msg = 'geslacht bewaard' 
+        self.save_biography(comment=self.msg)
         
     def _set_sex(self): 
         self.bioport_biography.set_value('geslacht', self.request.get('sex'))
@@ -796,26 +817,26 @@ class Persoon(app.Persoon, grok.EditForm, RepositoryView):
     @grok.action('bewaar geboorte', name="save_event_birth", validator=validate_event)
     def save_event_birth(self):
         self._set_event('birth')
-        self.save_biography()
         self.msg = 'geboortedatum bewaard'
+        self.save_biography(comment=self.msg)
            
     @grok.action('bewaar dood', name='save_event_death')
     def save_event_death(self):
         self._set_event('death')
-        self.save_biography()
         self.msg = 'sterfdatum bewaard'
+        self.save_biography(comment=self.msg)
         
     @grok.action('bewaar doop', name='save_event_baptism')
     def save_event_baptism(self):
         self._set_event('baptism')
-        self.save_biography()
         self.msg = 'doopdatum veranderd'
+        self.save_biography(comment=self.msg)
             
     @grok.action('bewaar begrafenis', name='save_event_funeral')
     def save_event_funeral(self):
         self._set_event('funeral')
-        self.save_biography()
         self.msg = 'begraafdatum veranderd'
+        self.save_biography(comment=self.msg)
          
     @grok.action('verander naam', name='change_name')  
     def change_name(self):
@@ -824,14 +845,14 @@ class Persoon(app.Persoon, grok.EditForm, RepositoryView):
     @grok.action('bewaar actief', name='save_state_floruit')
     def save_state_floruit(self): 
         self._save_state('floruit')
-        self.save_biography()
         self.msg = 'actief veranderd'
+        self.save_biography(comment=self.msg)
         
     @grok.action('bewaar status', name='save_status')
     def save_status(self): 
         self._set_status()
         self.msg = 'status veranderd'
-        self.save_biography()
+        self.save_biography(comment=self.msg)
     
     def _set_status(self):
         status = self.request.get('status')
@@ -842,20 +863,28 @@ class Persoon(app.Persoon, grok.EditForm, RepositoryView):
         
     @grok.action('bewaar opmerkingen', name='save_remarks')
     def save_remarks(self): 
-        self._save_remarks()
+        self._set_remarks()
+        self.save_biography(comment=self.msg)
         self.msg = 'opmerkingen bewaard'
     
-    def _save_remarks(self): 
-        self.person.remarks = self.request.get('remarks')
-        self.repository().save_person(self.person)
+    def _set_remarks(self): 
+        
+        text = self.request.get('remarks_bioport_editor')
+        self.bioport_biography.add_or_update_note(type='bioport_editor', text=text)
+         
+    def get_remarks_bioport_editor(self):
+        notes = self.bioport_biography.get_notes(type='bioport_editor')
+        if notes:
+            return notes[0].text
        
     @grok.action('bewaar snippet', name='save_snippet')
     def save_snippet(self): 
-        self._save_snippet()
-        self.save_biography()
+        self._set_snippet()
         self.msg = 'snippet bewaard'
+        self.save_biography(comment=self.msg)
+        
     
-    def _save_snippet(self): 
+    def _set_snippet(self): 
         for k in self.request.keys():
             if k.split('_')[0] == 'snippet':
                 bio_id = k.split('_')[1]
@@ -864,7 +893,7 @@ class Persoon(app.Persoon, grok.EditForm, RepositoryView):
                 
     @grok.action('bewaar alle veranderingen', name='save_everything')  
     def save_everything(self):
-        self._save_snippet()
+        self._set_snippet()
         self._set_event('birth')
         self._set_event('death')
         self._set_event('funeral')
@@ -872,14 +901,18 @@ class Persoon(app.Persoon, grok.EditForm, RepositoryView):
         self._set_sex()
 #        self._set_occupation()
         self._set_category()
-        self._save_state('floruit')
+        self._set_state('floruit')
         self._set_status()
-        self._save_remarks()
-        self._save_names()
-        self.save_biography()
-        self.msg = 'alle ingevulde waarden bewaard'
+        self._set_remarks()
+        self._set_names()
+        changed_values = self.request.get('changed_values', '').split(',')
+        changed_values = set(changed_values)
         
-    def _save_names(self):
+        self.msg = 'Changed the following fields: ' + ', '.join(changed_values)
+        self.save_biography(comment=self.msg)
+        
+        
+    def _set_names(self):
         names = self.request.get('personname')
         if isinstance(names, (str, unicode)):
             names = [names]
@@ -911,8 +944,8 @@ class Persoon(app.Persoon, grok.EditForm, RepositoryView):
                     self.bioport_biography._add_a_name(naam)
             
             self.bioport_biography._add_a_name(name)
-            self.save_biography()
-            self.msg = 'added a name'
+            self.msg = 'added a name' 
+            self.save_biography(comment=self.msg)
         else:
             self.msg = 'geen naam ingevuld'
 
@@ -932,8 +965,8 @@ class Persoon(app.Persoon, grok.EditForm, RepositoryView):
             self.msg = 'naam kon niet worden verwijderd: er is tenminste 1 naam nodig'
         else: 
             self.bioport_biography.remove_name(idx)
-            self.save_biography()
-            self.msg = 'naam verwijderd'
+            self.msg = 'removed name'
+            self.save_biography(comment=self.msg)
 
         id = self.request.get("bioport_id")
         url = self.url(data={"bioport_id":id, "msg":self.msg})
@@ -1065,11 +1098,11 @@ class ChangeName(Persoon, grok.EditForm,RepositoryView):
         self.person  = self.get_person(bioport_id=self.bioport_id)  
         self.bioport_biography  = self.repository().get_bioport_biography(self.person)
         
-        if not self.bioport_biography.get_namen():
-            for naam in self.person.get_merged_biography().get_names():
-                self.bioport_biography._add_a_name(naam)
-            self.save_biography()
-        
+#        if not self.bioport_biography.get_namen():
+#            for naam in self.person.get_merged_biography().get_names():
+#                self.bioport_biography._add_a_name(naam)
+#            self.save_biography()
+#        
         self.idx = self.request.get('idx')         
         if not self.idx or self.idx == u'new':
             self.naam = None
@@ -1090,9 +1123,8 @@ class ChangeName(Persoon, grok.EditForm,RepositoryView):
             volledige_naam = ' '.join(parts)
         
         self.naam = name = Naam(volledige_naam = volledige_naam, **args)
-        repository = self.repository()
         bio._replace_name(name, self.idx)
-        repository.save_biography(bio)
+        self.repository().save_biography(bio, comment='changed name')
         self.msg = 'De veranderingen zijn bewaard'
        
  

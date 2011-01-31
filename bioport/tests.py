@@ -48,7 +48,7 @@ class FunctionalTestCase(baseFunctionalTestCase):
         browser.handleErrors = False #show some information when an arror occurs
         app['admin'].DB_CONNECTION = DSN
         app['admin'].LIMIT = 20
-        self.repo = repository = app.repository(user=None)
+        self.repo = repository = app.repository(user='unittest user')
         self.repo.db.metadata.drop_all()
         repository.db.metadata.create_all()
         this_dir = os.path.dirname(bioport.__file__)

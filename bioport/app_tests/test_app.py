@@ -16,7 +16,7 @@ class GoogleSitemapTest(FunctionalTestCase):
 
     def test_google_sitemap(self):
         messages_before = len(messages)
-        bioport_ids = self.app.repository(user=None).get_bioport_ids()
+        bioport_ids = self.app.repository(user='unittest user').get_bioport_ids()
         browser = self.browser
         browser.open(self.base_url + '/sitemaps/')
         tree = fromstring(browser.contents)
@@ -33,7 +33,7 @@ class PersoonXmlTest(FunctionalTestCase):
 
     def test_xml_representation(self):
         browser = self.browser
-        bioport_ids = self.app.repository(user=None).get_bioport_ids()
+        bioport_ids = self.app.repository(user='unittest user').get_bioport_ids()
         for p_id in bioport_ids:
             url = self.base_url + '/persoon/xml/' + p_id
             browser.open(url)
@@ -43,7 +43,7 @@ class PersoonXmlTest(FunctionalTestCase):
         browser = self.browser
         url = self.base_url + '/personenxml/'
         browser.open(url)
-        bioport_ids = self.app.repository(user=None).get_bioport_ids()
+        bioport_ids = self.app.repository(user='unittest user').get_bioport_ids()
         for bioid in bioport_ids:
             self.failUnless('persoon/xml/' + bioid in browser.contents)
 
@@ -60,7 +60,7 @@ class AppTest(FunctionalTestCase):
         
     def test_raise_404(self):
         browser = self.browser
-        bioport_ids = self.app.repository(user=None).get_bioport_ids()
+        bioport_ids = self.app.repository(user='unittest user').get_bioport_ids()
         for p_id in bioport_ids:
             url = self.base_url + '/persoon/something/' + p_id
             self.assertRaises(NotFound, browser.open, url)

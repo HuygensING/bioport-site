@@ -1,0 +1,56 @@
+<html metal:use-macro="context/@@admin_template/macros/master">
+<div metal:fill-slot="content">
+
+<h1>Changes</h1>
+<form>
+user: 
+<select name="user">
+    <option></option>
+    <option tal:repeat="user view/getPrincipals" tal:attributes="value user/id" tal:content="user/title" />
+</select>
+bioport id: <input type="text" name="bioport_id" tal:attributes="value request/bioport_id | nothing">
+after: <input type="text" name="time_from" tal:attributes="value request/time_from | nothing">
+before: <input type="text" name="time_to" tal:attributes="value request/time_to | nothing">
+
+<input type="submit" value="search">
+
+</form>
+<input type="button" value="select all" id="select_all" onClick="jQuery('input[type=checkbox]').attr('checked', true);jQuery('#select_all').hide();jQuery('#deselect_all').show();">
+<input type="button" style="display:None" value="deselect all" id="deselect_all" onClick="jQuery('input[type=checkbox]').attr('checked', false);jQuery('#select_all').show();jQuery('#deselect_all').hide();">
+<form>
+<input   tal:replace="structure python:view.actions['form.actions.undo_selected_changes'].render()" />
+
+<table class="gcodetable">
+    <tr>
+        <th></th>
+        <th>biography</th> 
+        <th>time</th> 
+        <th>user</th> 
+        <th>comment</th> 
+    </tr>
+    
+    <tal:block define="versions view/versions">
+    <tr 
+   
+    tal:repeat="version versions"
+        metal:define-macro="version_tr">
+        <td>
+            <input type="checkbox" name="selected_versions" tal:attributes="value string:${version/document_id} ${version/version}" /> 
+        </td>
+        <td>
+                <a 
+    tal:content="structure python:version.biography.get_names() and version.biography.get_names()[0].get_volledige_naam()" 
+    tal:attributes="href python:view.url('persoon', data={'bioport_id':version.biography.get_bioport_id()})" />
+        </td>
+        <td tal:content="version/time"></td> 
+        <td tal:define="user python:view.getPrincipal(version.user)"
+            tal:content="python:user and user.title"> 
+        </td>
+        <td tal:content="version/comment"></td> 
+    </tr> 
+    </tal:block>
+</table>
+
+</form>
+</div>
+</html>

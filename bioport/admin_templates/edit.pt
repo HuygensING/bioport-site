@@ -70,12 +70,14 @@ form {
   <div id="actions">
   <form >
       <h1>Actions</h1>
-
       <span class="actionButtons" tal:condition="view/availableActions">
         <span tal:repeat="action view/actions">
-            <input tal:replace="structure action/render" 
-               	tal:condition="python:action.__name__ != 'form.actions.edit_settings'">
+        <span tal:omit-tag=""
+               	tal:condition="python:action.__name__ not in ['form.actions.edit_settings', 'form.actions.assign_category_to_source','form.actions.refresh_similarity_cache'] "
+        >
+            <input tal:replace="structure action/render" />
                <br />
+         </span>
          </span>
       </span>
      <hr> 

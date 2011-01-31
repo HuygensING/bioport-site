@@ -15,7 +15,7 @@ from bioport.crypt import decrypt
 class CommentFormTest(FunctionalTestCase):
     def est_comment_form(self):
         messages_before = len(messages)
-        some_bioport_id = self.app.repository(user=None).get_bioport_ids()[2]
+        some_bioport_id = self.app.repository(user='unittest user').get_bioport_ids()[2]
         browser = self.browser
         browser.open(self.base_url + '/persoon/' + str(some_bioport_id))
         browser.getControl(name='form.submitter').value = 'Me'

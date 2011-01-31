@@ -2,7 +2,7 @@
            i18n_domain="bioport">
 
 
-    <configure i18n_domain="bioport">
+      <configure i18n_domain="bioport">
       <role id="bioport.Editor" title="Bioport Editor" />
       <grant permission="bioport.Edit" role="bioport.Editor" />
       <grant permission="zope.View" role="bioport.Editor" />
