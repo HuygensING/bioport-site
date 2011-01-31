@@ -39,7 +39,7 @@ before: <input type="text" name="time_to" tal:attributes="value request/time_to 
         </td>
         <td>
                 <a 
-    tal:content="structure python:version.biography.get_names() and version.biography.get_names()[0].get_volledige_naam()" 
+    tal:content="structure python:version.biography.get_person().title()" 
     tal:attributes="href python:view.url('persoon', data={'bioport_id':version.biography.get_bioport_id()})" />
         </td>
         <td tal:content="version/time"></td> 
