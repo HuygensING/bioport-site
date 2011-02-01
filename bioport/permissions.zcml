@@ -70,15 +70,6 @@
       <grant role="bioport.Editor" principal="bioport.jeltje" />
       <grant role="bioport.Manager" principal="bioport.jeltje" />
  
-       <principal id="bioport.mandy"
-                 title="Mandy"
-                 login="mandy"
-                 password_manager="Plain Text"
-                 password="mandy123"
-                 />
-
-      <grant role="bioport.Editor" principal="bioport.mandy" />
-
       <principal id="bioport.richard"
                  title="Richard"
                  login="richard"
@@ -95,14 +86,6 @@
                  />   
       <grant role="bioport.Editor" principal="bioport.milo" />
       
-<!-- Fernie Maas      -->
-       <principal id="bioport.fernie"
-                 title="Fernie Maas"
-                 login="fernie"
-                 password_manager="Plain Text"
-                 password="fernie123"
-                 />   
-      <grant role="bioport.Editor" principal="bioport.fernie" />
 <!--  Bram van Dam       -->
        <principal id="bioport.bram"
                  title="Bram"
@@ -113,14 +96,6 @@
       <grant role="bioport.Editor" principal="bioport.bram" />
       <grant role="bioport.Manager" principal="bioport.bram" />
  
-<!-- Bianca Szytniewski       -->
-       <principal id="bioport.bianca"
-                 title="Bianca"
-                 login="bianca"
-                 password_manager="Plain Text"
-                 password="bianca123"
-                 />   
-      <grant role="bioport.Editor" principal="bioport.bianca" />
  
 <!-- Laurens Dokter       -->
        <principal id="bioport.laurens"
@@ -150,23 +125,6 @@
                  />   
       <grant role="bioport.Editor" principal="bioport.rens" />
  
-<!-- Koen van Wijk       -->
- <principal id="bioport.koen"
-                 title="Koen"
-                 login="koen"
-                 password_manager="Plain Text"
-                 password="koen123"
-                 />   
-      <grant role="bioport.Editor" principal="bioport.koen" />
- 
-<!-- Sifra Koopmans       -->
-       <principal id="bioport.sifra"
-                 title="Sifra"
-                 login="sifra"
-                 password_manager="Plain Text"
-                 password="sifra123"
-                 />   
-      <grant role="bioport.Editor" principal="bioport.sifra" />
  
 <!-- Flora Gutierrez Rojas       -->
        <principal id="bioport.flora"
@@ -177,6 +135,16 @@
                  />   
       <grant role="bioport.Editor" principal="bioport.flora" />
  
+<!-- Jan Bolten-->    
+       <principal id="bioport.janbolten"
+                 title="Jan Bolten"
+                 login="janbolten"
+                 password_manager="Plain Text"
+                 password="janbolten321"
+                 />   
+                 
+      <grant role="bioport.Editor" principal="bioport.janbolten" />
+  
 <!-- Manuel Gutierrez Rojas   -->    
        <principal id="bioport.manuel"
                  title="Manuel"
