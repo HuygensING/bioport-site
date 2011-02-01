@@ -122,9 +122,6 @@ class Edit(grok.EditForm,RepositoryView):
         #repository.db.metadata.create_all()
         #self.redirect(self.url(self))
    
-#    @grok.action('Fill the similarity Cache', name='fill_similarity_cache') 
-#    def fill_similarity_cache(self, **data):
-#        self.repository().db.fill_similarity_cache()
     
     @grok.action('Refresh the similarity cache', name='refresh_similarity_cache')
     def refresh_similarity_cache(self, **data): 
@@ -482,7 +479,7 @@ class MostSimilar(grok.Form,RepositoryView, Batcher):
         # check for contradictions and construct a message for the browser
         contradictions = new_person.get_biography_contradictions()      
         warning_msg = ''
-        # XXX - this should be translated in dutch
+        
         if contradictions:      
             warning_msg = "Contradictory biograhies found for %s.<br />" % new_person_href
             warning_msg += "<ul>"
@@ -502,7 +499,6 @@ class MostSimilar(grok.Form,RepositoryView, Batcher):
             # Hopefully someday I'll understand unicode and avoid this crap.
             warning_msg = warning_msg.encode("ascii", "replace")
             
-        # XXX - this should be translated in dutch
         if persons[0].status != persons[1].status:
             get_status = self.repository().get_status_value
             status_1 = get_status(persons[0].status, '--')

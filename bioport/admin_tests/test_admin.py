@@ -24,6 +24,7 @@ class SimpleSampleTest(unittest.TestCase):
         self.admin = admin
         self.repo = repo = self.admin.repository(user='unittest user')
         self.repo.db.metadata.drop_all()
+        repo.db.SIMILARITY_TRESHOLD = 0.0
         repo.db.metadata.create_all()
         url = os.path.join(os.path.dirname(bioport_repository.__file__), 
                          'tests', 'data','knaw', 'list.xml')

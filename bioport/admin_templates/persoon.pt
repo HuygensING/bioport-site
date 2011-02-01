@@ -615,17 +615,12 @@ img {
     <p>
         <a tal:attributes="href python:view.url('persoonidentify', data={'bioport_ids':view.bioport_id})"
             accesskey="i">[<span class="accesskey">i</span>dentificeer deze persoon]</a>
-        <span tal:omit-tag=""
-            tal:condition="view/is_identified">
-	        
-	        <a tal:attributes="href python:view.url('unidentify', data={'bioport_id':view.bioport_id})">
-	           [on-identficeer deze persoon]
-           </a>
-        </span>
         
-        <a tal:attributes="OnClick string:history.go(-${view/history_counter});;return false;;" href="">[terug]</a>
         
 <a tal:attributes="href python:view.url('versions', data = {'bioport_id':view.bioport_id})">[undo changes]</a>
+
+    <a tal:attributes="href python:view.url(context.__parent__, 'persoon', data={'bioport_id':view.bioport_id})">[pagina in portaal]</a>. 
+        <a tal:attributes="OnClick string:history.go(-${view/history_counter});;return false;;" href="">[terug]</a>
     </p>
 <h1>History</h1>
 <table class="gcodetable">
