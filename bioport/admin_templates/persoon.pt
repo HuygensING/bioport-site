@@ -416,7 +416,6 @@ img {
             jQuery('input[name=state_floruit_from_d]').focus();; 
             return false;">[toon]</a></td>
         <td tal:attributes="class python:not has_data and 'form_%s'  % state_id">
-	        <span tal:replace="structure python:view.actions.byname['form.actions.save_state_floruit'].render()" ></span>
  	   </td>
    	</tr>
    	<tr tal:attributes="class python:not has_data and 'form_%s' % state_id">
@@ -555,12 +554,23 @@ img {
         </td>
     </tr>
     <!--  /category --> 
-	   	<tr metal:use-macro="template/macros/separator" ></tr> 
+    <!--  remarks for end users -->
+   	<tr metal:use-macro="template/macros/separator" ></tr> 
+    	<tr>
+        <th><span class="accesskey">o</span>pmerkingen (zichtbaar op site)</th>	
+        <td>
+            <textarea accesskey="o"
+            rows="10" 
+            name="remarks" id="remarks" style="width:330px" tal:content="view/get_remarks"></textarea>
+   	</tr>
+	   
+    <!--  remarks by editors  -->
+   	<tr metal:use-macro="template/macros/separator" ></tr> 
    	<tr>
         <th><span class="accesskey">o</span>pmerkingen (voor en door bewerkers)</th>	
         <td>
             <textarea accesskey="o"
-            name="remarks_bioport_editor" id="remarks" style="width:300px" tal:content="view/get_remarks_bioport_editor"></textarea>
+            name="remarks_bioport_editor" id="remarks_bioport_editor" style="width:330px" tal:content="view/get_remarks_bioport_editor"></textarea>
         <!--
         <td>
 	        <span tal:replace="structure python:view.actions.byname['form.actions.save_remarks'].render()" ></span>

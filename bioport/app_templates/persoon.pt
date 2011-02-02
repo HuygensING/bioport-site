@@ -142,8 +142,17 @@
                 </ul>
 	        </td>
         </tr>
+        
+        <tr tal:define="notes python:view.bioport_biography.get_notes(type='public')"
+	        tal:condition="notes"
+            >
+            <th>opmerkingen</th>
+            <td tal:content="structure python:' '.join([n.text for n in notes])">
+            </td>
+             
+        </tr>
      </table>
-    <div class="levensbeschrijvingen"
+   <div class="levensbeschrijvingen"
         tal:define="bios view/get_biographies">
     <h2 i18n:translate="Biographies"
         tal:condition="bios">levensbeschrijving(en)</h2>

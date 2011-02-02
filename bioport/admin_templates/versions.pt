@@ -1,6 +1,16 @@
 <html metal:use-macro="context/@@admin_template/macros/master">
 <div metal:fill-slot="content">
+<script>
+select_newer_versions = function(th){
+	doc_id = th.value.split(' ')[0];
+    qry = 'input[type=checkbox][value^=' + doc_id + ']';
+    index = $(qry).index(th);
+    qry = qry + ':lt(' + index + ')';
+    $(qry).attr('checked', true);
 
+}
+
+</script>
 <h1>Changes</h1>
 <form>
 user: 
@@ -35,7 +45,9 @@ before: <input type="text" name="time_to" tal:attributes="value request/time_to 
     tal:repeat="version versions"
         metal:define-macro="version_tr">
         <td>
-            <input type="checkbox" name="selected_versions" tal:attributes="value string:${version/document_id} ${version/version}" /> 
+            <input type="checkbox" name="selected_versions" 
+                onChange="select_newer_versions(this);return false;"
+	            tal:attributes="value string:${version/document_id} ${version/version}" /> 
         </td>
         <td>
                 <a 

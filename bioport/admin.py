@@ -867,9 +867,17 @@ class Persoon(app.Persoon, grok.EditForm, RepositoryView):
         
         text = self.request.get('remarks_bioport_editor')
         self.bioport_biography.add_or_update_note(type='bioport_editor', text=text)
+        
+        text = self.request.get('remarks')
+        self.bioport_biography.add_or_update_note(type='public', text=text)
          
     def get_remarks_bioport_editor(self):
         notes = self.bioport_biography.get_notes(type='bioport_editor')
+        if notes:
+            return notes[0].text
+        
+    def get_remarks(self):
+        notes = self.bioport_biography.get_notes(type='public')
         if notes:
             return notes[0].text
        
@@ -1224,18 +1232,18 @@ class ChangeLocation(Locations):
 class Identify(grok.View):
     grok.require('bioport.Edit')
 
-
-class UnIdentify(grok.View, RepositoryView):
-
-    grok.require('bioport.Edit')
-
-    def update(self):
-        bioport_id = self.bioport_id = self.request.get('bioport_id')
-        person = self.repository().get_person(bioport_id)
-        if person:
-            self.persons = self.repository().unidentify(person)
-        else:
-            self.persons = []
+#
+#class UnIdentify(grok.View, RepositoryView):
+#
+#    grok.require('bioport.Edit')
+#
+#    def update(self):
+#        bioport_id = self.bioport_id = self.request.get('bioport_id')
+#        person = self.repository().get_person(bioport_id)
+#        if person:
+#            self.persons = self.repository().unidentify(person)
+#        else:
+#            self.persons = []
     
 
 class Log(grok.View,RepositoryView):

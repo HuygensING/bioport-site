@@ -218,9 +218,23 @@ class SimpleSampleFunctionalTest(FunctionalTestCase):
         s = 'Given the existence as uttered forth in the public works of Puncher and Wattmann of a personal God quaquaquaqua'
         form.getControl(name='remarks_bioport_editor').value=s
         form.getControl(name='form.actions.save_everything').click()
-        browser.open(public_url)
+        browser.open(edit_url)
+        form = browser.getForm(index=0)
         self.assertEqual(form.getControl(name='remarks_bioport_editor').value, s)
         assert re.findall('quaquaquaqua', browser.contents, re.DOTALL)
+        browser.open(public_url)
+        
+        s = "Questo e' il ballo del qua qua e di un papero che sa fare solo <a href='qua'>qua</a> qua qua piu qua qua qua"
+
+        browser.open(edit_url)
+        form = browser.getForm(index=0)
+        form.getControl(name='remarks').value=s
+        form.getControl(name='form.actions.save_everything').click()
+        browser.open(edit_url)
+        form = browser.getForm(index=0)
+        self.assertEqual(form.getControl(name='remarks').value, s)
+        browser.open(public_url)
+        assert re.findall("ballo del <a href='qua'>qua</a> qua qua", browser.contents, re.DOTALL), browser.contents
  
         #snippet
 #        browser.open(edit_url)
