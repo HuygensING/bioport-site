@@ -234,7 +234,7 @@ class SimpleSampleFunctionalTest(FunctionalTestCase):
         form = browser.getForm(index=0)
         self.assertEqual(form.getControl(name='remarks').value, s)
         browser.open(public_url)
-        assert re.findall("ballo del <a href='qua'>qua</a> qua qua", browser.contents, re.DOTALL), browser.contents
+        assert re.findall("sa fare solo <a href='qua'>qua</a> qua qua", browser.contents, re.DOTALL), browser.contents
  
         #snippet
 #        browser.open(edit_url)

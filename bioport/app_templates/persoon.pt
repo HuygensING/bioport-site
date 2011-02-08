@@ -147,7 +147,7 @@
 	        tal:condition="notes"
             >
             <th>opmerkingen</th>
-            <td tal:content="structure python:' '.join([n.text for n in notes])">
+            <td tal:content="structure python:' '.join([n.text for n in notes if n.text])">
             </td>
              
         </tr>
@@ -161,7 +161,6 @@
     <div
 	    metal:define-macro="link2bio"
         tal:define="url python:biography.get_value('url_biografie')"
-	    tal:attributes="OnClick string:window.open('${url}');;return false;;"
         class="biography_reference"
         >
         <tal:word i18n:translate="Biography"
