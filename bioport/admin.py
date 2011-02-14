@@ -664,7 +664,7 @@ class Persoon(app.Persoon, grok.EditForm, RepositoryView):
         if 'persoon' in http_referer or 'changename' in http_referer: 
             self.history_counter = self.session_get('history_counter', 1) + 1
         try:
-	        self.session_set('history_counter', self.history_counter)
+            self.session_set('history_counter', self.history_counter)
         except:
             pass
         
@@ -777,14 +777,14 @@ class Persoon(app.Persoon, grok.EditForm, RepositoryView):
             type = self.request.get('state_%s_type' % identifier)
         if add_new:
             self.bioport_biography.add_state(
-	           type=type, frm=frm, to=to, 
-	           text=text, place=place,
-	           )
+               type=type, frm=frm, to=to, 
+               text=text, place=place,
+               )
         else:
-	        self.bioport_biography.add_or_update_state(
-	           idx=index, type=type, frm=frm, to=to, 
-	           text=text, place=place,
-	           )
+            self.bioport_biography.add_or_update_state(
+               idx=index, type=type, frm=frm, to=to, 
+               text=text, place=place,
+               )
         
     def _set_relation(self, identifier, index=None, add_new=False):
         name = self.request.get('relation_%s_name' % identifier)
@@ -1063,7 +1063,7 @@ class Persoon(app.Persoon, grok.EditForm, RepositoryView):
     def remove_refenence(self):
         index = self.request.get('delete_reference_index')
         if index:
-	        self.bioport_biography.remove_reference(index=index) 
+            self.bioport_biography.remove_reference(index=index) 
             self.msg = 'removed reference'
             
     @grok.action('voeg toe', name='add_name') 
