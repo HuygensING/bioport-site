@@ -1018,7 +1018,8 @@ class PeopleWhoLivedMoreThanHundredYears(grok.View, RepositoryView):
 #        self.request.response.setStatus(404)
 
 class RelationWrapper:
-     def __init__(self, el_relation, el_person):
+     def __init__(self, index, el_relation, el_person):
+        self.index = index
         self.type = el_relation.get('name')
         self.name = el_person[0].text 
         self.el_relation = el_relation
@@ -1027,11 +1028,11 @@ class RelationWrapper:
         self.el_person_index = el_person.getparent().index(el_person)
 
 class ReferenceWrapper:
-    def __init__(self, el_reference):    
+    def __init__(self, index, el_reference):    
         self.text = el_reference.text
         self.url = el_reference.get('target')
         self.element = el_reference
-        self.index = el_reference.getparent().index(el_reference)
+        self.index = index
 
 class ReligionWrapper:
     def __init__(self, el):    

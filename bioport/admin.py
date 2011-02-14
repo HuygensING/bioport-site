@@ -805,7 +805,7 @@ class Persoon(app.Persoon, grok.EditForm, RepositoryView):
         if add_new:
             self.bioport_biography.add_reference(uri=url, text = text)
         else:
-            assert index
+            assert index != None
             self.bioport_biography.update_reference(
               index = index,
               uri = url,
@@ -879,7 +879,7 @@ class Persoon(app.Persoon, grok.EditForm, RepositoryView):
        return [RelationWrapper(el_relation=el_relation, el_person=el_person) for (el_relation, el_person) in self.bioport_biography.get_relations()]
 
     def get_references(self):    
-        return [ReferenceWrapper(el_reference) for el_reference in self.bioport_biography.get_references()]
+        return [ReferenceWrapper(index, el_reference) for (index, el_reference) in self.bioport_biography.get_references()]
     def get_relation_types(self): 
         """return identifier, text pairs for relation types"""
         possible_relations = ['partner', 'father', 'mother', 'parent', 'child', 'brother', 'sister']

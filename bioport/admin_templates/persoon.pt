@@ -113,22 +113,6 @@ img {
         <td class="bioport" tal:content="view/person/get_bioport_id" />
     </tr>
     
-    <tr metal:use-macro="template/macros/separator" ></tr> 
-    
-    <!--  STATUS -->
-    <tr>
-       <th><span class="accesskey">s</span>tatus</th>
-       <td>
-           <select name="status" id="status" accesskey="s">
-               <option></option> 
-               <option tal:repeat="option python:view.repository().get_status_values()"
-                   tal:attributes="value python:option[0];
-                       selected python:option[0]==view.person.status"
-                       tal:content="python:option[1]"></option>
-           </select>
-       </td>
-    </tr>
-    <!--  /STATUS -->
     
     <tr metal:define-macro="separator" class="separator" ><td colspan="3"><hr></td></tr>
     
@@ -537,71 +521,6 @@ img {
 </tal:block>
     
 <tal:block condition="nothing">
-    <!--  REFERENCES -->
-    <tr metal:use-macro="template/macros/separator" ></tr>  
-    <tr>
-    <th colspan="3">
-        Verwijzingen naar andere biografie&euml;n
-    </th></tr>
-    
-    <tal:block repeat="reference view/get_references">
-    <div 
-        tal:define="reference_id python:reference.index;">
-    <div tal:omit-tag=""
-        metal:define-macro="reference_form" 
-         >
-    <tr tal:attributes="name string:reference_${reference_id}_form">
-        <th class="sublabel">URL</th>
-        <td>
-        <input type="hidden" 
-            tal:attributes="
-                id string:reference_${reference_id}_delete; 
-                name string:reference_${reference_id}_delete; 
-                "
-            value="" />
-        <input tal:attributes="
-                name python:'reference_%s_url' % reference_id;
-                id python:'reference_%s_url' % reference_id;
-                value python:reference and reference.url;
-                "
-                style="width:300px">
-
- 
-        <a tal:condition="python:reference_id != 'new'"
-            tal:attributes="OnClick string:
-            jQuery('#reference_${reference_id}_delete').val('1');;
-            jQuery('*[name=reference_${reference_id}_form]').hide();;         
-            return false;;">[delete]</a>
-        </td>
-    </tr>
-    <tr>
-        <th class="sublabel">Beschrijving</th> 
-        <td>
-            <input tal:attributes="
-                name python:'reference_%s_text' % reference_id;
-                id python:'reference_%s_text' % reference_id;
-                value python:reference and reference.text;
-                "
-                style="width:300px">
-
-        </td>
-    </tr>
-    </div>
-    </div>
-    </tal:block>
-    <div tal:define="reference_id string:new;
-        reference nothing;" >
-    <div
-        metal:use-macro="template/macros/reference_form">
-        
-    </div>
-    </div>
-    
-    <!--  /REFERENCENS -->
-</tal:block>    
-    
-    
-<tal:block condition="nothing">
     <!--  STATES -->
     <tr metal:use-macro="template/macros/separator" ></tr>  
     <tr>
@@ -737,8 +656,9 @@ img {
 </div> 	
 	
 	<!--  RELIGION -->
+    <tr metal:use-macro="template/macros/separator" ></tr>  
     <tr>
-        <th>Religie</th> 
+        <th>religie</th> 
         <td>
             <select tal:attributes="name string:religion_id">
                 <option />
@@ -751,9 +671,9 @@ img {
         </td>
     
     </tr>	
-    <tr metal:use-macro="template/macros/separator" ></tr>  
 	<!--  \RELIGION -->
    	<!--  category -->
+    <tr metal:use-macro="template/macros/separator" ></tr>  
    	<tal:block repeat="state view/get_categories">
    	<tr>
    		<th><span tal:condition="repeat/state/start"><span class="accesskey">r</span>ubriek</span></th>
@@ -797,7 +717,79 @@ img {
         </td>
     </tr>
     <!--  /category --> 
-    <!--  remarks for end users -->
+    
+<!--  REFERENCES -->
+    <tr metal:use-macro="template/macros/separator" ></tr>  
+    
+    <tr>
+    <th colspan="3">
+        verwijzingen naar andere biografie&euml;n
+    </th></tr>
+    
+    <tal:block repeat="reference view/get_references">
+    <div tal:omit-tag=""
+        tal:define="reference_id python:reference and str(reference.index) or 'new';"
+        metal:define-macro="reference_form" 
+         >
+    <tr tal:attributes="name string:reference_${reference_id}_form">
+        <th class="sublabel">URL</th>
+        <td>
+            <input type="hidden" 
+                tal:attributes="
+                    id string:reference_${reference_id}_delete; 
+                    name string:reference_${reference_id}_delete; 
+                    "
+                value="" />
+            <input tal:attributes="
+                    name python:'reference_%s_url' % reference_id;
+                    id python:'reference_%s_url' % reference_id;
+                    value python:reference and reference.url;
+                    "
+                    style="width:300px">
+     
+            <a tal:condition="python:reference_id != 'new'"
+                tal:attributes="OnClick string:
+                jQuery('#reference_${reference_id}_delete').val('1');;
+                jQuery('*[name=reference_${reference_id}_form]').hide();;         
+                return false;;">[delete]</a>
+        </td>
+    </tr>
+    <tr tal:attributes="name string:reference_${reference_id}_form">
+        <th class="sublabel">Beschrijving</th> 
+        <td>
+            <input tal:attributes="
+                name python:'reference_%s_text' % reference_id;
+                id python:'reference_%s_text' % reference_id;
+                value python:reference and reference.text;
+                "
+                style="width:300px">
+        </td>
+    </tr>
+    </div>
+    </tal:block>
+    <div tal:define="reference nothing;" tal:omit-tag="">
+        <div  metal:use-macro="template/macros/reference_form"></div>
+    </div>
+<!--  /REFERENCES -->
+    
+        
+    <!--  STATUS -->
+    <tr metal:use-macro="template/macros/separator" ></tr> 
+    <tr>
+       <th><span class="accesskey">s</span>tatus</th>
+       <td>
+           <select name="status" id="status" accesskey="s">
+               <option></option> 
+               <option tal:repeat="option python:view.repository().get_status_values()"
+                   tal:attributes="value python:option[0];
+                       selected python:option[0]==view.person.status"
+                       tal:content="python:option[1]"></option>
+           </select>
+       </td>
+    </tr>
+    <!--  /STATUS -->
+    
+    <!--  REMARKS for end users -->
    	<tr metal:use-macro="template/macros/separator" ></tr> 
     	<tr>
         <th><span class="accesskey">o</span>pmerkingen (zichtbaar op site)</th>	
@@ -806,8 +798,9 @@ img {
             rows="10" 
             name="remarks" id="remarks" style="width:330px" tal:content="view/get_remarks"></textarea>
    	</tr>
+    <!--  /REMARKS for end users -->
 	   
-    <!--  remarks by editors  -->
+    <!--  REMARKS by editors  -->
    	<tr metal:use-macro="template/macros/separator" ></tr> 
    	<tr>
         <th><span class="accesskey">o</span>pmerkingen (voor en door bewerkers)</th>	
@@ -851,6 +844,7 @@ img {
 	   	</tr>
 	</div>
 	</div>
+    <!--  REMARKS by editors  -->
    	
 <tr metal:use-macro="template/macros/separator" ></tr> 
     <tr>
