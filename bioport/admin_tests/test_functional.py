@@ -275,10 +275,10 @@ class SimpleSampleFunctionalTest(FunctionalTestCase):
         browser = Browser('http://localhost/app/admin/persons')
         #XXX but the next test might fail if we do not have one of the first persons...
     
-    
+'''
+class NewFieldsTestCase(FunctionalTestCase):    
     def test_edit_religion(self):
         browser = self._open_edit_url()
-        edit_ur = browser.url
         #add a state
         browser.getControl(name='religion_id').value = ['1']
         browser.getControl(name='form.actions.save_everything').click()
@@ -488,11 +488,12 @@ class SimpleSampleFunctionalTest(FunctionalTestCase):
         
         self.assertEqual(browser.getControl(name='reference_%s_url' % identifier).value, 'http://url3')
         self.assertEqual(browser.getControl(name='reference_%s_text' % identifier).value , 'url3')
-        
+'''        
 def test_suite():
     test_suite = unittest.TestSuite()
     tests = [AdminPanelFunctionalTest,
              SimpleSampleFunctionalTest,
+#             NewFieldsTestCase,
             ]
     for test in tests:
         test_suite.addTest(unittest.makeSuite(test))

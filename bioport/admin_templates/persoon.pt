@@ -466,9 +466,10 @@ img {
     </tr>
   	</tal:block>
   	<!--  /floruit -->
-  	<tr metal:use-macro="template/macros/separator" ></tr>  
-  	
+
+<tal:block condition="nothing">
     <!--  RELATIONS -->
+  	<tr metal:use-macro="template/macros/separator" ></tr>  
     <tr>
     <th colspan="3">
         Relaties (vader, moeder, dochter, etc)
@@ -533,8 +534,9 @@ img {
     </div>
     
     <!--  /RELATIONS -->
+</tal:block>
     
-    
+<tal:block condition="nothing">
     <!--  REFERENCES -->
     <tr metal:use-macro="template/macros/separator" ></tr>  
     <tr>
@@ -596,9 +598,10 @@ img {
     </div>
     
     <!--  /REFERENCENS -->
+</tal:block>    
     
     
-        
+<tal:block condition="nothing">
     <!--  STATES -->
     <tr metal:use-macro="template/macros/separator" ></tr>  
     <tr>
@@ -676,13 +679,14 @@ img {
     </div>
     
     <!--  /STATES -->
+</tal:block>        
     
     
     
     
-  	<tr metal:use-macro="template/macros/separator" ></tr> 
 <div tal:condition="nothing">
-   	<!--  beroep -->
+  	<tr metal:use-macro="template/macros/separator" ></tr> 
+   	<!--  PROFESSION -->
    	<tal:block repeat="state view/occupations_with_id">
    	<tr tal:condition="state/idno" >
    		<th><span tal:condition="repeat/state/start"><span class="accesskey">b</span>eroepen</span></th>
@@ -729,7 +733,7 @@ img {
         <td>
         </td>
     </tr>
-    <!--  /beroep --> 
+    <!--  /PROFESSION --> 
 </div> 	
 	
 	<!--  RELIGION -->

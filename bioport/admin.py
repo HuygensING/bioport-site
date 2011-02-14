@@ -876,7 +876,7 @@ class Persoon(app.Persoon, grok.EditForm, RepositoryView):
             self.bioport_biography.remove_reference(index=index)
             
     def get_relations(self):
-        return [RelationWrapper(el_relation=el_relation, el_person=el_person) for (el_relation, el_person) in self.bioport_biography.get_relations()]
+       return [RelationWrapper(el_relation=el_relation, el_person=el_person) for (el_relation, el_person) in self.bioport_biography.get_relations()]
 
     def get_references(self):    
         return [ReferenceWrapper(el_reference) for el_reference in self.bioport_biography.get_references()]
