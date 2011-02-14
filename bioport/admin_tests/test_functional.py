@@ -274,8 +274,220 @@ class SimpleSampleFunctionalTest(FunctionalTestCase):
         #changes in, e.g., birth events, should turn up in the master list
         browser = Browser('http://localhost/app/admin/persons')
         #XXX but the next test might fail if we do not have one of the first persons...
+    
+    
+    def test_edit_religion(self):
+        browser = self._open_edit_url()
+        edit_ur = browser.url
+        #add a state
+        browser.getControl(name='religion_id').value = ['1']
+        browser.getControl(name='form.actions.save_everything').click()
+        self.assertEqual(browser.getControl(name='religion_id').value , ['1'])
+        browser.getControl(name='religion_id').value = ['']
+        browser.getControl(name='form.actions.save_everything').click()
+        self.assertEqual(browser.getControl(name='religion_id').value , [''])
+    
+    def _open_edit_url(self):  
+        browser = Browser('http://localhost/app/admin')
+        browser.handleErrors = False
+        link = browser.getLink('Bewerk personen')
+        link.click()
         
+        #click on one of the "bewerk" links
+        link = browser.getLink('bewerk gegevens', index=0)
+        link.click()
+        return browser
         
+    def test_edit_categories(self):    
+        browser = self._open_edit_url()
+        edit_url = browser.url
+        #add a state
+        browser.getControl(name='category_id', index=0).value = ['1']
+        browser.getControl(name='category_id', index=1).value = ['2']
+        browser.getControl(name='form.actions.save_everything').click()
+        
+        self.assertEqual(browser.getControl(name='category_id', index=0).value , ['1'])
+        self.assertEqual(browser.getControl(name='category_id', index=1).value , ['2'])
+        
+        browser.getControl(name='category_id', index=0).value = ['']
+        browser.getControl(name='form.actions.save_everything').click()
+        self.assertEqual(browser.getControl(name='category_id', index=0).value , ['2'])
+        self.assertEqual(browser.getControl(name='category_id', index=1).value , [''])
+        
+    def test_edit_states(self):
+        browser = self._open_edit_url()
+        edit_url = browser.url
+        
+        def get_identifiers():
+            ls = re.findall('name="state_.*?_text"', browser.contents)
+            ls = [s.split('_')[1] for s in ls]
+            ls = [s for s in ls if s.isdigit()]
+            ls = list(set(ls)) 
+            return ls
+   
+        #add a state
+        self.assertEqual(len(get_identifiers()), 0)
+        
+        browser.getControl(name='state_new_text').value = "Amor, ch'a nullo amato amar perdona"
+        browser.getControl(name='state_new_from_y').value = '1265'
+        browser.getControl(name='state_new_to_y').value = '1321'
+        browser.getControl(name='state_new_to_m').value = ['9']
+        browser.getControl(name='state_new_to_d').value = '14'
+        browser.getControl(name='form.actions.save_everything').click()
+        
+        #now we should have a new element in the form with our new state info
+        #try to get the index of the new state
+        #these are names of states
+        ls = get_identifiers() 
+        self.assertEqual(len(ls),  1)
+        index = ls[0]
+        self.assertEqual(browser.getControl(name='state_%s_from_y' % index).value, '1265')
+        self.assertEqual(browser.getControl(name='state_%s_text' % index).value, "Amor, ch'a nullo amato amar perdona") 
+        
+        #add a second state 
+        browser.getControl(name='state_new_text').value = 'A marriage'
+        browser.getControl(name='state_new_from_y').value = '1800'
+        browser.getControl(name='state_new_to_y').value = '1900'
+        browser.getControl(name='form.actions.save_everything').click()        
+       
+        #now we should have two states (identified by their indices) 
+        ls = get_identifiers() 
+        self.assertEqual(len(ls),  2)
+        index = ls[0]
+        
+        #delete an event
+        identifier = ls[0]
+        browser.getControl(name='state_%s_delete' % identifier).value = '1'
+        browser.getControl(name='form.actions.save_everything').click()        
+        
+        #now we should have one state again, now
+        ls = get_identifiers() 
+        self.assertEqual(len(ls), 1)
+        
+        #we can now edit this state, and should see the changes
+        identifier = ls[0]
+        browser.getControl(name='state_%s_text' % identifier).value = 'A'
+        browser.getControl(name='state_%s_from_y' % identifier).value = '1111'
+        browser.getControl(name='state_%s_to_y' % identifier ).value = '2222'
+        browser.getControl(name='state_%s_place' % identifier).value = 'B'
+        browser.getControl(name='form.actions.save_everything').click()       
+        self.assertEqual( browser.getControl(name='state_%s_text' % identifier).value , 'A')
+        self.assertEqual( browser.getControl(name='state_%s_from_y' % identifier).value , '1111')
+        self.assertEqual( browser.getControl(name='state_%s_to_y' % identifier).value , '2222')
+        self.assertEqual( browser.getControl(name='state_%s_place' % identifier).value , 'B')
+        
+    def test_edit_relations(self):
+        browser = Browser('http://localhost/app/admin')
+        browser.handleErrors = False
+        link = browser.getLink('Bewerk personen')
+        link.click()
+        
+        #click on one of the "bewerk" links
+        link = browser.getLink('bewerk gegevens', index=0)
+        link.click()
+        edit_url = browser.url
+   
+        #add a relation 
+        browser.open(edit_url)
+        browser.getControl(name='relation_new_name').value = "Your Momma is FAT!"
+        browser.getControl(name='relation_new_type').value = ['mother']
+        browser.getControl(name='form.actions.save_everything').click()
+        
+        def get_identifiers():
+            """helper function returns all identifiers of relations in the edit form"""
+            ls = re.findall('name="relation_.*?_name"', browser.contents)
+            ls = [s.split('_')[1] for s in ls]
+            ls = [s for s in ls if s.isdigit()]
+            ls = list(set(ls))
+            return ls
+        
+        #now we should have a new element in the form with our new relation info
+        assert len(get_identifiers()) == 1
+        identifier = get_identifiers()[0]
+        self.assertEqual(browser.getControl(name='relation_%s_name' % identifier).value, 'Your Momma is FAT!')
+        self.assertEqual(browser.getControl(name='relation_%s_type' % identifier).value , ['mother'])
+        
+        #add a second relation 
+        browser.getControl(name='relation_new_name').value = "Your Poppa is fat TOO!"
+        browser.getControl(name='relation_new_type').value = ['father']
+        browser.getControl(name='form.actions.save_everything').click()        
+       
+        #now we should have two states (identified by their indices) 
+        self.assertEqual(len(get_identifiers()), 2)
+        
+        #delete an event
+        identifier = get_identifiers()[0]
+        browser.getControl(name='relation_%s_delete' % identifier).value = '1'
+        browser.getControl(name='form.actions.save_everything').click()        
+        
+        #now we should have one relation again, now
+        self.assertEqual(len(get_identifiers()), 1)
+        
+        #we can now edit this relation, and should see the changes
+        identifier = get_identifiers()[0]
+        browser.getControl(name='relation_%s_name' % identifier).value = 'Ow, no, she be skinny'
+        browser.getControl(name='relation_%s_type' % identifier).value = ['sister']
+        browser.getControl(name='form.actions.save_everything').click()       
+        
+        identifier = get_identifiers()[0]
+        self.assertEqual(browser.getControl(name='relation_%s_name' % identifier).value, 'Ow, no, she be skinny')
+        self.assertEqual(browser.getControl(name='relation_%s_type' % identifier).value , ['sister'])
+        
+    def test_edit_references(self):
+        browser = Browser('http://localhost/app/admin')
+        browser.handleErrors = False
+        link = browser.getLink('Bewerk personen')
+        link.click()
+        
+        #click on one of the "bewerk" links
+        link = browser.getLink('bewerk gegevens', index=0)
+        link.click()
+        edit_url = browser.url
+   
+        #add a relation 
+        browser.open(edit_url)
+        browser.getControl(name='reference_new_url').value = "http://url1"
+        browser.getControl(name='reference_new_text').value = 'url1'
+        browser.getControl(name='form.actions.save_everything').click()
+        
+        def get_identifiers():
+            """helper function returns all identifiers of relations in the edit form"""
+            ls = re.findall('name="reference_.*?_url"', browser.contents)
+            ls = [s.split('_')[1] for s in ls]
+            ls = [s for s in ls if s.isdigit()]
+            ls = list(set(ls))
+            return ls
+        
+        #now we should have a new element in the form with our new relation info
+        assert len(get_identifiers()) == 1
+        identifier = get_identifiers()[0]
+        self.assertEqual(browser.getControl(name='reference_%s_url' % identifier).value, 'http://url1')
+        self.assertEqual(browser.getControl(name='reference_%s_text' % identifier).value , 'url1')
+        
+        #add a second reference 
+        browser.getControl(name='reference_new_url').value = "http://url2"
+        browser.getControl(name='reference_new_text').value = 'url2'
+        browser.getControl(name='form.actions.save_everything').click()        
+       
+        #now we should have two references (identified by their indices) 
+        self.assertEqual(len(get_identifiers()), 2)
+        
+        #delete a reference
+        identifier = get_identifiers()[0]
+        browser.getControl(name='reference_%s_delete' % identifier).value = '1'
+        browser.getControl(name='form.actions.save_everything').click()        
+        
+        #now we should have one reference again, now
+        self.assertEqual(len(get_identifiers()), 1)
+        
+        #we can now edit this reference, and should see the changes
+        identifier = get_identifiers()[0]
+        browser.getControl(name='reference_%s_url' % identifier).value = "http://url3"
+        browser.getControl(name='reference_%s_text' % identifier).value = 'url3'
+        browser.getControl(name='form.actions.save_everything').click()       
+        
+        self.assertEqual(browser.getControl(name='reference_%s_url' % identifier).value, 'http://url3')
+        self.assertEqual(browser.getControl(name='reference_%s_text' % identifier).value , 'url3')
         
 def test_suite():
     test_suite = unittest.TestSuite()
@@ -288,4 +500,3 @@ def test_suite():
 
 if __name__ == "__main__":
     unittest.main(defaultTest='test_suite')    
-

@@ -56,6 +56,10 @@ class FunctionalTestCase(baseFunctionalTestCase):
         repository.add_source(Source(u'knaw_test',url,'test'))
         repository.download_biographies(source=repository.get_source(u'knaw_test'))
         
+        #add some categories as well
+        repository.db.get_session().execute("insert into category (id, name) values (1, 'category1')")
+        repository.db.get_session().execute("insert into category (id, name) values (2, 'category2')")
+        
     def tearDown(self):
         baseFunctionalTestCase.tearDown(self)
         self.repo.db.metadata.drop_all()

@@ -26,7 +26,7 @@ Zie ook de lijsten met
         <th>Actions</th>
     </tr>
 
-    <div tal:repeat="x view/most_similar_persons"
+    <div tal:repeat="x view/get_most_similar_persons"
         tal:omit-tag="">
     <tr
         tal:define="

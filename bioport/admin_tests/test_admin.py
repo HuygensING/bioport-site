@@ -7,7 +7,7 @@ import unittest
 import sys
 import os
 
-from bioport.admin import Sources, Source, Edit
+from bioport.admin import Sources, Source, Edit, Persoon
 from bioport.app import Bioport
 from zope.publisher.browser import TestRequest
 import bioport_repository
@@ -28,9 +28,10 @@ class SimpleSampleTest(unittest.TestCase):
         repo.db.metadata.create_all()
         url = os.path.join(os.path.dirname(bioport_repository.__file__), 
                          'tests', 'data','knaw', 'list.xml')
-        src = bioport_repository.source.Source(id='knaw', url=url, repository=self.repo) 
-        repo.add_source(src)
-        
+        source = bioport_repository.source.Source(id='knaw', url=url, repository=self.repo) 
+        repo.add_source(source)
+        self.repo.download_biographies(source)
+               
     def tearDown(self):
         self.repo.db.metadata.drop_all()
         
@@ -43,8 +44,21 @@ class SimpleSampleTest(unittest.TestCase):
         sources.update(action='update_source', source_id='knaw')
     
     def test_persoon(self):
-        request = TestRequest()
-
+        bioport_id = self.repo.get_persons()[1].get_bioport_id()
+    
+        request = TestRequest(
+              bioport_id=bioport_id, 
+              state_new_text='testtext',
+              state_new_type='unknown',
+              )
+        persoon = Persoon(self.admin, request)
+        persoon.update()
+        self.assertEqual(len(persoon.get_states(type='test')), 0)
+        persoon._set_state(add_new=True, identifier='new', type='test')
+        persoon.save_biography()
+        self.assertEqual(len(persoon.get_states(type='test')), 1)
+        self.assertEqual(len(persoon.get_editable_states()), 1)
+        
 def test_suite():
     test_suite = unittest.TestSuite()
     tests = [SimpleSampleTest]
@@ -54,5 +68,4 @@ def test_suite():
 
 if __name__ == "__main__":
     unittest.main(defaultTest='test_suite')    
-
 

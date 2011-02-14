@@ -102,7 +102,7 @@ img {
 <table id="upper-table-container">
 <tr>
 <td width="300">
-<form action="." tal:attributes="action request/URL" method="get"
+<form action="." tal:attributes="action request/URL" method="POST"
       class="edit-form" >
       <input type="hidden" name="bioport_id" tal:attributes="value python:view.bioport_id" />
       <input type="hidden" name="history_counter" tal:attributes="value python:view.history_counter" />
@@ -112,7 +112,10 @@ img {
         <th>bioport identifier</th>
         <td class="bioport" tal:content="view/person/get_bioport_id" />
     </tr>
+    
     <tr metal:use-macro="template/macros/separator" ></tr> 
+    
+    <!--  STATUS -->
     <tr>
        <th><span class="accesskey">s</span>tatus</th>
        <td>
@@ -125,6 +128,8 @@ img {
            </select>
        </td>
     </tr>
+    <!--  /STATUS -->
+    
     <tr metal:define-macro="separator" class="separator" ><td colspan="3"><hr></td></tr>
     
     <tr tal:define="namen python:view.get_bioport_namen() or view.get_non_bioport_namen()"
@@ -173,7 +178,7 @@ img {
 		</td>
 	</tr>
 
-    <!-- geboortedatum -->
+    <!-- BIRTH -->
     <span tal:omit-tag=""
     	 tal:define="title string:geboorte;
     	 	event_type string:birth;
@@ -329,8 +334,8 @@ img {
     </tr>
      </div> 
    	</span>	 
-   	<!--  /geboorte -->
  
+    <!-- /BIRTH -->
  	
     <!-- plaats -->
    <tr tal:condition="nothing">
@@ -367,6 +372,15 @@ img {
         </td>
     </tr>
     <!--  plaats -->
+	    
+    <!--  doop --> 
+    <span tal:omit-tag="" 
+         tal:define="
+            title string:doop;
+            event_type string:baptism;">
+         <tr metal:use-macro="template/macros/event_form" />
+     </span>
+    <!--  /doop --> 
 	    	
     <!-- dood -->
    	<span tal:omit-tag=""
@@ -378,15 +392,6 @@ img {
 	 </span>
 	 <!-- /dood -->
 	
-
-    <!--  doop --> 
-   	<span tal:omit-tag="" 
-   		 tal:define="
-   		 	title string:doop;
-   		 	event_type string:baptism;">
-   		 <tr metal:use-macro="template/macros/event_form" />
-	 </span>
-    <!--  /doop -->	
     
     <!--  begrafenis --> 
    	<span tal:omit-tag=""
@@ -403,44 +408,48 @@ img {
   	     state_id string:floruit;
 	  	 state python:view.get_state(state_id);
 	  	 accesskey string:c;
-	  	 has_data python:state and (state.frm or state.to or state.text)">
+	  	 has_data python:state and (state.frm or state.to or state.text)"
+	  	 >
 	<tr tal:attributes="class string:separator" ><td colspan="3"><hr></td></tr>
    	<tr>
         <th>a<span class="accesskey">c</span>tief</th>	
         <td><a 
             tal:condition="not:has_data"
-            tal:attributes="accesskey accesskey"
-            href="" onClick="
-			$('.form_floruit').show();	
-            $(this).hide(); 
-            jQuery('input[name=state_floruit_from_d]').focus();; 
-            return false;">[toon]</a></td>
+            tal:attributes="
+                accesskey accesskey;
+                onClick python:'''$('.form_%(state_id)s').show();;  
+            $(this).hide();;
+            jQuery('input[name=state_$(state_id)s_from_d]').focus();; 
+            return false;;''' % {'state_id':state_id};
+            "
+            href="" 
+            >[toon]</a></td>
         <td tal:attributes="class python:not has_data and 'form_%s'  % state_id">
  	   </td>
    	</tr>
    	<tr tal:attributes="class python:not has_data and 'form_%s' % state_id">
    	    <th class="sublabel">van</th>
-        <td tal:attributes="class python:view.status_value('floruit', 'frm')"
+        <td tal:attributes="class python:view.status_value(state_id, 'frm')"
             tal:define="
-				prefix string:state_floruit_from;
+				prefix string:state_${state_id}_from;
 				ymd state/frm_ymd | nothing">
 				<span metal:use-macro="template/macros/date_widget"></span>
 		</td>
     </tr>
    	<tr tal:attributes="class python:not has_data and 'form_%s' % state_id">
    	    <th class="sublabel">tot</th>
-         <td tal:attributes="class python:view.status_value('floruit', 'to')"
+         <td tal:attributes="class python:view.status_value(state_id, 'to')"
             tal:define="
-				prefix string:state_floruit_to;
-				ymd state/to_ymd| nothing">
+				prefix string:state_${state_id}_to;
+				ymd state/to_ymd| nothing;">
 				<span metal:use-macro="template/macros/date_widget"></span>
 		</td>
     </tr>
     
    	<tr tal:attributes="class python:not has_data and 'form_%s' % state_id">
         <th class="sublabel">tekst</th>
-        <td tal:attributes="class python:view.status_value('floruit', 'text')">
-            <input tal:attributes="name python:'state_%s_text' % 'floruit';
+        <td tal:attributes="class python:view.status_value(state_id, 'text')">
+            <input tal:attributes="name python:'state_%s_text' % state_id;
                 value state/text | nothing;
                 " >
         </td>
@@ -449,7 +458,7 @@ img {
    	<tr id="active"
    	    tal:attributes="class python:not has_data and 'form_%s' % state_id">
         <th class="sublabel">plaats</th>
-         <td tal:attributes="class python:view.status_value('floruit', 'place')">
+         <td tal:attributes="class python:view.status_value(state_id, 'place')">
         	<input type="tekst"  
 	        	tal:attributes="name string:state_${state_id}_place;
 		        	value state/place | nothing" />
@@ -457,7 +466,220 @@ img {
     </tr>
   	</tal:block>
   	<!--  /floruit -->
-	  	
+  	<tr metal:use-macro="template/macros/separator" ></tr>  
+  	
+    <!--  RELATIONS -->
+    <tr>
+    <th colspan="3">
+        Relaties (vader, moeder, dochter, etc)
+    </th></tr>
+    
+    <tal:block repeat="relation view/get_relations">
+    <div 
+        tal:define="relation_id python:relation.el_relation_index;">
+    <div tal:omit-tag=""
+        metal:define-macro="relation_form" 
+	  	 >
+    <tr tal:attributes="name string:relation_${relation_id}_form">
+        <th class="sublabel">soort relatie</th>
+        <td>
+        <input type="hidden" 
+            tal:attributes="
+	            id string:relation_${relation_id}_delete; 
+	            name string:relation_${relation_id}_delete; 
+	            "
+            value="" />
+            <select tal:attributes="
+	            name python:'relation_%s_type' % relation_id;
+	            id python:'relation_%s_type' % relation_id;
+                "
+                style="width:300px">
+                <option></option>
+                <option tal:repeat="option view/get_relation_types"
+                    tal:attributes="value python:option[0];
+                        selected python:relation and option[0] == relation.type;
+                    " tal:content="python:option[1]">
+                </option> 
+            </select>
+
+        <a tal:condition="python:relation_id != 'new'"
+            tal:attributes="OnClick string:
+	        jQuery('#relation_${relation_id}_delete').val('1');;
+            jQuery('*[name=relation_${relation_id}_form]').hide();;	        
+	        return false;;">[delete]</a>
+        </td>
+    </tr>
+    <tr>
+        <td>naam van persoon</td> 
+        <td>
+            <input tal:attributes="
+	            name python:'relation_%s_name' % relation_id;
+	            id python:'relation_%s_name' % relation_id;
+                value python:relation and relation.name;
+                "
+                style="width:300px">
+
+        </td>
+    </tr>
+    </div>
+    </div>
+    </tal:block>
+    <div tal:define="relation_id string:new;
+        relation nothing;" >
+    <div
+        metal:use-macro="template/macros/relation_form">
+        
+    </div>
+    </div>
+    
+    <!--  /RELATIONS -->
+    
+    
+    <!--  REFERENCES -->
+    <tr metal:use-macro="template/macros/separator" ></tr>  
+    <tr>
+    <th colspan="3">
+        Verwijzingen naar andere biografie&euml;n
+    </th></tr>
+    
+    <tal:block repeat="reference view/get_references">
+    <div 
+        tal:define="reference_id python:reference.index;">
+    <div tal:omit-tag=""
+        metal:define-macro="reference_form" 
+         >
+    <tr tal:attributes="name string:reference_${reference_id}_form">
+        <th class="sublabel">URL</th>
+        <td>
+        <input type="hidden" 
+            tal:attributes="
+                id string:reference_${reference_id}_delete; 
+                name string:reference_${reference_id}_delete; 
+                "
+            value="" />
+        <input tal:attributes="
+                name python:'reference_%s_url' % reference_id;
+                id python:'reference_%s_url' % reference_id;
+                value python:reference and reference.url;
+                "
+                style="width:300px">
+
+ 
+        <a tal:condition="python:reference_id != 'new'"
+            tal:attributes="OnClick string:
+            jQuery('#reference_${reference_id}_delete').val('1');;
+            jQuery('*[name=reference_${reference_id}_form]').hide();;         
+            return false;;">[delete]</a>
+        </td>
+    </tr>
+    <tr>
+        <th class="sublabel">Beschrijving</th> 
+        <td>
+            <input tal:attributes="
+                name python:'reference_%s_text' % reference_id;
+                id python:'reference_%s_text' % reference_id;
+                value python:reference and reference.text;
+                "
+                style="width:300px">
+
+        </td>
+    </tr>
+    </div>
+    </div>
+    </tal:block>
+    <div tal:define="reference_id string:new;
+        reference nothing;" >
+    <div
+        metal:use-macro="template/macros/reference_form">
+        
+    </div>
+    </div>
+    
+    <!--  /REFERENCENS -->
+    
+    
+        
+    <!--  STATES -->
+    <tr metal:use-macro="template/macros/separator" ></tr>  
+    <tr>
+    <th colspan="3">
+        States (education, professions, functions)
+    </th></tr>
+    
+    <tal:block repeat="state view/get_editable_states">
+    <div  tal:define="state_id python:state.index;">
+    <div tal:omit-tag=""
+        metal:define-macro="state_form" 
+         >
+    <tr tal:attributes="name string:state_${state_id}_form">
+    
+        <th class="sublabel">beschrijving</th>
+        <td tal:attributes="class python:view.status_value(state_id, 'text')">
+        <input type="hidden" 
+            tal:attributes="
+                id string:state_${state_id}_delete; 
+                name string:state_${state_id}_delete; 
+                "
+            value="" />
+        <input type="hidden" tal:attributes="name string:state_${state_id}_type;
+            value state/type | string:'unspecified'"
+            /> 
+            <input tal:attributes="
+                name python:'state_%s_text' % state_id;
+                id python:'state_%s_text' % state_id;
+                value state/text | nothing;
+                "
+                style="width:300px">
+
+        <a tal:condition="python:state_id != 'new'"
+            tal:attributes="OnClick string:
+            jQuery('#state_${state_id}_delete').val('1');;
+            jQuery('*[name=state_${state_id}_form]').hide();;           
+            return false;;">[delete]</a>
+        </td>
+    </tr>
+    <tr tal:attributes="name string:state_${state_id}_form">
+        <th class="sublabel">van</th>
+        <td tal:attributes="class python:view.status_value(state_id, 'frm')"
+            tal:define="
+                prefix string:state_${state_id}_from;
+                ymd state/frm_ymd | nothing">
+                <span metal:use-macro="template/macros/date_widget"></span>
+        </td>
+    </tr>
+    <tr tal:attributes="name string:state_${state_id}_form">
+        <th class="sublabel">tot</th>
+         <td tal:attributes="class python:view.status_value(state_id, 'to')"
+            tal:define="
+                prefix string:state_${state_id}_to;
+                ymd state/to_ymd| nothing;">
+                <span metal:use-macro="template/macros/date_widget"></span>
+        </td>
+    </tr>
+    <tr tal:attributes="id string:state_${state_id}_place;"> 
+        <th class="sublabel">plaats</th>
+        <td colspan="2" tal:attributes="class python:view.status_value(state_id, 'place')">
+            <input id="birth_place" type="tekst"  
+                tal:attributes="name string:state_${state_id}_place;
+                    value state/place | nothing" />
+        </td>
+    </tr>
+ 
+    </div>
+    </div>
+    </tal:block>
+    <div tal:define="state_id string:new" >
+    <div
+        metal:use-macro="template/macros/state_form">
+        
+    </div>
+    </div>
+    
+    <!--  /STATES -->
+    
+    
+    
+    
   	<tr metal:use-macro="template/macros/separator" ></tr> 
 <div tal:condition="nothing">
    	<!--  beroep -->
@@ -470,7 +692,7 @@ img {
    				<option tal:repeat="occupation python:view.repository().get_occupations()" 
    					tal:content="occupation/name"
    					tal:attributes="value occupation/id;
-   					    selected python:state.idno == str(occupation.id)"></option>
+   					    selected python:state.get('idno') == str(occupation.id)"></option>
    			</select>	
    		</td>
         <td>
@@ -510,9 +732,26 @@ img {
     <!--  /beroep --> 
 </div> 	
 	
+	<!--  RELIGION -->
+    <tr>
+        <th>Religie</th> 
+        <td>
+            <select tal:attributes="name string:religion_id">
+                <option />
+                <option tal:repeat="option view/get_religion_values"
+                    tal:attributes="value python:option[0];
+                        selected python:view.get_religion() and (view.get_religion().idno == str(option[0]));
+                        "
+                    tal:content="python:option[1]"></option>
+            </select> 
+        </td>
+    
+    </tr>	
+    <tr metal:use-macro="template/macros/separator" ></tr>  
+	<!--  \RELIGION -->
    	<!--  category -->
-   	<tal:block repeat="state view/categories">
-   	<tr tal:condition="state/idno" >
+   	<tal:block repeat="state view/get_categories">
+   	<tr>
    		<th><span tal:condition="repeat/state/start"><span class="accesskey">r</span>ubriek</span></th>
    		<td>
    			<select tal:attributes="name string:category_id"  
@@ -528,9 +767,9 @@ img {
    	</tr>	
    	</tal:block>
    	<tr>
-        <th><span tal:condition="not:view/categories"><span class="accesskey">r</span>ubrieken</span></th>	
+        <th><span tal:condition="not:view/get_categories"><span class="accesskey">r</span>ubrieken</span></th>	
         <td>
-    			<select name="new_category_id" id="new_category_id" accesskey="r" 
+    			<select name="category_id" id="category_id" accesskey="r" 
 	    			 style="width:350px;">
    				<option></option>
    				<option tal:repeat="category python:view.repository().get_categories()" 
@@ -539,10 +778,10 @@ img {
    			</select>	
         </td>
    	</tr>
-   	    <tr tal:repeat="i python:range(len(view.categories), 2)">
+   	    <tr tal:repeat="i python:range(len(view.get_categories()), 2)">
         <th></th>   
         <td>
-                <select name="new_category_id"
+                <select name="category_id"
 	    			 style="width:350px;">
                 <option></option>
                 <option tal:repeat="category python:view.repository().get_categories()" 
@@ -631,6 +870,9 @@ img {
 
     <a tal:attributes="href python:view.url(context.__parent__, 'persoon', data={'bioport_id':view.bioport_id})">[pagina in portaal]</a>. 
         <a tal:attributes="OnClick string:history.go(-${view/history_counter});;return false;;" href="">[terug]</a>
+       </p>
+       <p>
+         <a tal:attributes="href python:view.url('unidentify', data={'bioport_id':view.bioport_id})">[on-identificeer (gebruik dit alleen voor identificaties die niet in onder "undo changes" zijn te vinden   ]</a> 
     </p>
 <h1>History</h1>
 <table class="gcodetable">

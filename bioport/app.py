@@ -48,6 +48,7 @@ class RepositoryView:
     
     def get_status_values(self):
         return self.repository().get_status_values()
+
     
     @ram.cache(lambda *args: time.time() // (60 * 60))
     def count_persons(self):
@@ -585,35 +586,33 @@ class Persoon(BioPortIdTraverser, grok.View, RepositoryView):
         else:
             return None      
     
-    def get_states(self,type, biography=None):
+    def get_states(self,type=None, biography=None):
         if not biography:
             biography = self.merged_biography
         result = []
         for el in  biography.get_states(type):
             if el is not None:
-                class StateWrapper:
-                    def __init__(self, el):
-                        self.frm = el.get('from')
-                        self.frm_ymd  = to_ymd(self.frm)
-                        self.to = el.get('to')
-                        self.to_ymd = to_ymd(self.to)
-                        self.type = type
-                        self.place = el.find('place') is not None and el.find('place').text or ''
-                        self.text = el.text
-                        self.idno = el.get('idno')
-                        self.element = el
-                    def has_content(self):
-                        if self.frm or self.to or self.text or self.place or self.idno:
-                            return True
-                        else:
-                            return False
-                result.append(StateWrapper(el))
+                result.append(StateWrapper(el, type=type))
         return result
         
     def get_state(self, type, biography=None):
         states = self.get_states(type, biography)
         if states:
             return states[0]
+
+    def get_religion_values(self):
+        return self.repository().get_religion_values()
+    
+    def get_religion(self):
+        el = self.bioport_biography.get_religion()
+        if el is not None:
+            return ReligionWrapper(el)
+    def get_categories(self):
+        return [StateWrapper(x) for x in self.bioport_biography.get_states(type='category')]
+
+    def get_editable_states(self): 
+        return [StateWrapper(state) for state in self.bioport_biography.get_states() 
+                if state.get('type') not in ['floruit', 'category', 'religion']]
     
     def get_biographies(self):
         bios = self.person.get_biographies()
@@ -1017,5 +1016,42 @@ class PeopleWhoLivedMoreThanHundredYears(grok.View, RepositoryView):
 
 #    def update(self):
 #        self.request.response.setStatus(404)
+
+class RelationWrapper:
+     def __init__(self, el_relation, el_person):
+        self.type = el_relation.get('name')
+        self.name = el_person[0].text 
+        self.el_relation = el_relation
+        self.el_relation_index = el_relation.getparent().index(el_relation)
+        self.el_person = el_person
+        self.el_person_index = el_person.getparent().index(el_person)
+
+class ReferenceWrapper:
+    def __init__(self, el_reference):    
+        self.text = el_reference.text
+        self.url = el_reference.get('target')
+        self.element = el_reference
+        self.index = el_reference.getparent().index(el_reference)
+
+class ReligionWrapper:
+    def __init__(self, el):    
+        self.idno = el.get('idno')
         
-        
+     
+class StateWrapper:
+    def __init__(self, el, type=None):
+        self.frm = el.get('from')
+        self.frm_ymd  = to_ymd(self.frm)
+        self.to = el.get('to')
+        self.to_ymd = to_ymd(self.to)
+        self.type = type or el.get('type')
+        self.place = el.find('place') is not None and el.find('place').text or ''
+        self.text = el.text
+        self.idno = el.get('idno')
+        self.element = el
+        self.index = el.getparent().index(el)
+    def has_content(self):
+        if self.frm or self.to or self.text or self.place or self.idno:
+            return True
+        else:
+            return False        

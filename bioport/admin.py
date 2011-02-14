@@ -5,7 +5,7 @@ import time
 import app
 import grok
 import logging
-from app import Batcher, RepositoryView
+from app import Batcher, RepositoryView,  RelationWrapper, ReferenceWrapper
 
 from common import format_date, format_dates, format_number
 from names.common import from_ymd, to_ymd
@@ -199,19 +199,19 @@ class Edit(grok.EditForm,RepositoryView):
             bioport_bio.set_category(bioport_bio.get_category_ids() + [category_id])  
             repo.save_biography(bioport_bio, comment='added category %s' % category_id)
 
-    @grok.action('identify all similarity pairs with a score score of 1.0')            
-    def tmp_identify_rkdartists(self):
-        logging.info('identifying all pairs with a similarity score of 1.0')
-        i = 0
-        ls = self.repository().get_most_similar_persons(size=1000)
-        for (score, p1, p2) in ls:
-            i += 1
-            if score == 1.0:
-                logging.info('identifying %s and %s [%s] (%s/%s)' % (p1, p2, score, i, len(ls)))
-                self.repository().identify(p1, p2)
-            else:
-                logging.info('done')
-                return
+#    @grok.action('identify all similarity pairs with a score score of 1.0')            
+#    def tmp_identify_rkdartists(self):
+#        logging.info('identifying all pairs with a similarity score of 1.0')
+#        i = 0
+#        ls = self.repository().get_most_similar_persons(size=1000)
+#        for (score, p1, p2) in ls:
+#            i += 1
+#            if score == 1.0:
+#                logging.info('identifying %s and %s [%s] (%s/%s)' % (p1, p2, score, i, len(ls)))
+#                self.repository().identify(p1, p2)
+#            else:
+#                logging.info('done')
+#                return
 #    @grok.action('mark orphaned persons (those with no biographies attached')
 #    def mark_orphaned_persons(self):
 #        self.repository().mark_orphaned_persons()
@@ -422,19 +422,22 @@ class MostSimilar(grok.Form,RepositoryView, Batcher):
                           getattr(self, 'similar_to', None)
         self.redirect_to = None
     
-        self.most_similar_persons = self.get_most_similar_persons()
         
     def get_most_similar_persons(self):
-        return self.repository().get_most_similar_persons(
-           start=self.start, 
-           size=self.size, 
-           bioport_id=self.similar_to,
-           source_id=self.request.get('source_id'),
-           source_id2=self.request.get('source_id2'),
-           search_name=self.request.get('search_name'),
-           status=self.request.get('status'),
-           sex=self.request.get('geslacht'), 
-           )
+        try:
+            return self._most_similar_persons
+        except:
+            self._most_similar_persons = self.repository().get_most_similar_persons(
+               start=self.start, 
+               size=self.size, 
+               bioport_id=self.similar_to,
+               source_id=self.request.get('source_id'),
+               source_id2=self.request.get('source_id2'),
+               search_name=self.request.get('search_name'),
+               status=self.request.get('status'),
+               sex=self.request.get('geslacht'), 
+               )
+            return self._most_similar_persons
         
     def goback(self,  data = None):
         #do not repeat the form actions
@@ -448,7 +451,7 @@ class MostSimilar(grok.Form,RepositoryView, Batcher):
         redirect_url = self.url(data=data)
         if self.redirect_to is not None:
             redirect_url = '?'.join([self.redirect_to, redirect_url.split('?')[1]])
-            
+        
         self.redirect(redirect_url) 
     
     def data(self, **args):
@@ -496,7 +499,7 @@ class MostSimilar(grok.Form,RepositoryView, Batcher):
             # XXX - something I'm really ashamed of; needed because otherwise
             # grok raises an encoding error when visualizing the page. 
             # When a character != ASCII is encountered is replaced by "?"
-            # Hopefully someday I'll understand unicode and avoid this crap.
+            # Hopefully someday I'll understand unicode and avoid this crap. <-- comment of giampaolo :-)
             warning_msg = warning_msg.encode("ascii", "replace")
             
         if persons[0].status != persons[1].status:
@@ -511,7 +514,7 @@ class MostSimilar(grok.Form,RepositoryView, Batcher):
             # XXX - something I'm really ashamed of; needed because otherwise
             # grok raises an encoding error when visualizing the page. 
             # When a character != ASCII is encountered is replaced by "?"
-            # Hopefully someday I'll understand unicode and avoid this crap.
+            # Hopefully someday I'll understand unicode and avoid this crap. <-- comment of giampaolo :-)
             warning_msg2 = warning_msg2.encode("ascii", "replace")
             if warning_msg:
                 warning_msg = [warning_msg, warning_msg2]
@@ -525,6 +528,7 @@ class MostSimilar(grok.Form,RepositoryView, Batcher):
             data['warning_msg'] = warning_msg
         if data.has_key('bioport_ids'):
             del data['bioport_ids']
+        print 'identified'
         self.goback(data = data)
         
     @grok.action('anti-identificeer', name='antiidentify')
@@ -659,7 +663,10 @@ class Persoon(app.Persoon, grok.EditForm, RepositoryView):
         http_referer = http_referer.split('/')
         if 'persoon' in http_referer or 'changename' in http_referer: 
             self.history_counter = self.session_get('history_counter', 1) + 1
-        self.session_set('history_counter', self.history_counter)
+        try:
+	        self.session_set('history_counter', self.history_counter)
+        except:
+            pass
         
     def get_contradictions(self):
         return self.person.get_biography_contradictions()       
@@ -757,22 +764,134 @@ class Persoon(app.Persoon, grok.EditForm, RepositoryView):
                                        notAfter=notAfter, place=place)
         
     def _save_state(self, type):
-        self._set_state(type)
+        self._set_state(type=type)
         
-    def _set_state(self, type):
-        frm = self._get_date_from_request(prefix='state_%s_from' % type)
-        to = self._get_date_from_request(prefix='state_%s_to' % type)
-        text = self.request.get('state_%s_text' % type)
-        place = self.request.get('state_%s_place' % type)
-        self.bioport_biography.add_or_update_state(type, frm=frm, to=to, 
-                                                   text=text, place=place)
+    def _set_state(self, identifier, index=None, type=None, add_new=False):
+        if index is None and type == None:
+            raise Exception('Either index or type of the state should be identified')
+        frm = self._get_date_from_request(prefix='state_%s_from' % identifier)
+        to = self._get_date_from_request(prefix='state_%s_to' % identifier)
+        text = self.request.get('state_%s_text' % identifier)
+        place = self.request.get('state_%s_place' % identifier)
+        if not type:
+            type = self.request.get('state_%s_type' % identifier)
+        if add_new:
+            self.bioport_biography.add_state(
+	           type=type, frm=frm, to=to, 
+	           text=text, place=place,
+	           )
+        else:
+	        self.bioport_biography.add_or_update_state(
+	           idx=index, type=type, frm=frm, to=to, 
+	           text=text, place=place,
+	           )
         
+    def _set_relation(self, identifier, index=None, add_new=False):
+        name = self.request.get('relation_%s_name' % identifier)
+        type = self.request.get('relation_%s_type' % identifier)
+        if add_new:
+            self.bioport_biography.add_relation(person=name, relation=type)
+        else:
+            assert index
+            self.bioport_biography.update_relation(
+              idx = index,
+              relation=type,
+              person=name,                                            
+              )
+            
+    def _set_reference(self, identifier, index=None, add_new=False):
+        url = self.request.get('reference_%s_url' % identifier)
+        text = self.request.get('reference_%s_text' % identifier)
+        if add_new:
+            self.bioport_biography.add_reference(uri=url, text = text)
+        else:
+            assert index
+            self.bioport_biography.update_reference(
+              index = index,
+              uri = url,
+              text = text,
+              )
+            
+    def _set_states(self): 
+        """set information for all states in the request"""
+        to_remove = [] #list of states to remove
+        
+        
+        for k in self.request.form.keys():
+            if k.startswith('state_') and k.endswith('text'):
+                identifier = k.split('_')[1]
+                if identifier == 'new' and self.request.get('state_%s_text' % identifier):
+                    self._set_state(identifier='new', type='unspecified', add_new=True)
+                elif identifier.isdigit():
+                    index=int(identifier)
+                    if self.request.get('state_%s_text' % identifier):
+                        self._set_state(identifier=identifier, index=index)
+                    if self.request.get('state_%s_delete' % identifier) == '1':
+                        to_remove.append(int(identifier))
+        #remove the states - this only works well if we remove the highest indices first
+        #(otherwise index values will be outdated)
+        to_remove.sort()
+        to_remove.reverse()
+        for idx in to_remove:
+            self.bioport_biography.remove_state(idx=idx)
+    
+    def _set_relations(self): 
+        to_remove = [] #list of states to remove
+        for k in self.request.form.keys():
+            if k.startswith('relation_') and k.endswith('name'):
+                identifier = k.split('_')[1]
+                if identifier == 'new' and self.request.get('relation_%s_name' % identifier):
+                    self._set_relation(identifier='new',  add_new=True)
+                elif identifier.isdigit():
+                    index=int(identifier)
+                    if self.request.get('relation_%s_name' % identifier):
+                        self._set_relation(identifier=identifier, index=index)
+                    if self.request.get('relation_%s_delete' % identifier) == '1':
+                        to_remove.append(int(identifier))
+        #remove the states - this only works well if we remove the highest indices first
+        #(otherwise index values will be outdated)
+        to_remove.sort()
+        to_remove.reverse()
+        for idx in to_remove:
+            self.bioport_biography.remove_relation(idx=idx)
+            
+    def _set_references(self): 
+        to_remove = [] #list of states to remove
+        for k in self.request.form.keys():
+            if k.startswith('reference_') and k.endswith('url'):
+                identifier = k.split('_')[1]
+                if identifier == 'new' and self.request.get('reference_%s_url' % identifier):
+                    self._set_reference(identifier='new',  add_new=True)
+                elif identifier.isdigit():
+                    index=int(identifier)
+                    if self.request.get('reference_%s_url' % identifier):
+                        self._set_reference(identifier=identifier, index=index)
+                    if self.request.get('reference_%s_delete' % identifier) == '1':
+                        to_remove.append(int(identifier))
+        #remove the states - this only works well if we remove the highest indices first
+        #(otherwise index values will be outdated)
+        to_remove.sort()
+        to_remove.reverse()
+        for index in to_remove:
+            self.bioport_biography.remove_reference(index=index)
+            
+    def get_relations(self):
+        return [RelationWrapper(el_relation=el_relation, el_person=el_person) for (el_relation, el_person) in self.bioport_biography.get_relations()]
+
+    def get_references(self):    
+        return [ReferenceWrapper(el_reference) for el_reference in self.bioport_biography.get_references()]
+    def get_relation_types(self): 
+        """return identifier, text pairs for relation types"""
+        possible_relations = ['partner', 'father', 'mother', 'parent', 'child', 'brother', 'sister']
+        return [(x, x) for x in possible_relations]
+    
     @grok.action('bewaar rubriek', name="save_category")
     def save_category(self):
         self._set_category()
         self.msg = 'rubriek bewaard' 
     
     def _set_category(self):
+        
         category_ids = self.request.get('category_id', [])
         if type(category_ids) != type([]):
             category_ids = [category_ids]
@@ -780,16 +899,15 @@ class Persoon(app.Persoon, grok.EditForm, RepositoryView):
         self.bioport_biography.set_category(category_ids)
            
             
-        new_category_ids = self.request.get('new_category_id')
-        if type(new_category_ids) != type([]):
-            new_category_ids = [new_category_ids]
-#        print 'new categories', new_category_ids 
-        new_category_ids = [s for s in new_category_ids if s ]
-        for new_category_id in new_category_ids:
-            name = self.repository().get_category(new_category_id).name 
-            self.bioport_biography.add_state(type='category', idno=new_category_id, text=name)
+#        new_category_ids = self.request.get('new_category_id')
+#        if type(new_category_ids) != type([]):
+#            new_category_ids = [new_category_ids]
+#            
+#        new_category_ids = [s for s in new_category_ids if s ]
+#        for new_category_id in new_category_ids:
+#            name = self.repository().get_category(new_category_id).name 
+#            self.bioport_biography.add_state(type='category', idno=new_category_id, text=name)
             
-        self.categories = self.get_states(type='category')
         
     def save_biography(self,comment=None):
         if not self.person.status:
@@ -895,9 +1013,16 @@ class Persoon(app.Persoon, grok.EditForm, RepositoryView):
                 snippet = self.request.get(k)
                 self.bioport_biography.set_snippet(bio_id, snippet)
                 
+    def _set_religion(self):
+        self.bioport_biography.set_religion(
+           idno = self.request.get('religion_id')     
+           )
+        
+        
     @grok.action('bewaar alle veranderingen', name='save_everything')  
     def save_everything(self):
         self._set_snippet()
+        self._set_states()
         self._set_event('birth')
         self._set_event('death')
         self._set_event('funeral')
@@ -905,7 +1030,10 @@ class Persoon(app.Persoon, grok.EditForm, RepositoryView):
         self._set_sex()
 #        self._set_occupation()
         self._set_category()
-        self._set_state('floruit')
+        self._set_relations()
+        self._set_references()
+        self._set_religion()
+        self._set_state(identifier='floruit', type='floruit')
         self._set_status()
         self._set_remarks()
         self._set_names()
@@ -914,7 +1042,6 @@ class Persoon(app.Persoon, grok.EditForm, RepositoryView):
         
         self.msg = 'Changed the following fields: ' + ', '.join(changed_values)
         self.save_biography(comment=self.msg)
-        
         
     def _set_names(self):
         names = self.request.get('personname')
@@ -1044,8 +1171,8 @@ class PersoonIdentify(MostSimilar, Persons, Persoon):
         MostSimilar.update(self, **args)
         self.redirect_to = None
         if len(self.bioport_ids) == 1 and \
-        not self.request.get('search_name') and \
-        not self.request.get('bioport_id'):
+            not self.request.get('search_name') and \
+            not self.request.get('bioport_id'):
             return self._get_similar_persons()
         
         persons = self.persons = self.get_persons()

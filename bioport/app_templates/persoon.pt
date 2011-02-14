@@ -142,14 +142,28 @@
                 </ul>
 	        </td>
         </tr>
-        
-        <tr tal:define="notes python:view.bioport_biography.get_notes(type='public')"
-	        tal:condition="notes"
+        <tr tal:repeat="state python:view.get_editable_states()">
+	        <th tal:condition="not:repeat/state/index">levensloop</th>
+	        <th tal:condition="repeat/state/index"></th>
+            <td>
+                <span 
+                    tal:define="dates python:view.context.format_dates(state.frm, state.to, parenthesis=False)"
+                        tal:content="string:${dates}:" 
+                        tal:condition="dates"
+                        />
+                <span tal:content="structure string:${state/text}" />
+                <span tal:condition="state/place" tal:content="structure string:<br />${state/place}" />
+            </td>
+        </tr>
+              
+        <tr tal:define="notes python:view.bioport_biography.get_notes(type='public');
+	       notes_content python:' '.join([n.text for n in notes if n.text]).strip();
+	       "
+	        tal:condition="notes_content"
             >
             <th>opmerkingen</th>
-            <td tal:content="structure python:' '.join([n.text for n in notes if n.text])">
+            <td tal:content="structure notes_content">
             </td>
-             
         </tr>
      </table>
    <div class="levensbeschrijvingen"
@@ -174,7 +188,7 @@
 			in  <a 
             tal:attributes="href url"
 			     class="external_link open_in_new_window"
-                    tal:content="python:biography.get_source().description"></a>
+                    tal:content="python:biography.get_source_description()"></a>
     	</span>
     	   	
     	<div class="snippet"
