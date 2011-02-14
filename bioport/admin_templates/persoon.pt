@@ -113,7 +113,7 @@ img {
         <td class="bioport" tal:content="view/person/get_bioport_id" />
     </tr>
     
-    
+<!--  NAMES --> 
     <tr metal:define-macro="separator" class="separator" ><td colspan="3"><hr></td></tr>
     
     <tr tal:define="namen python:view.get_bioport_namen() or view.get_non_bioport_namen()"
@@ -146,6 +146,7 @@ img {
             <span tal:replace="structure python:view.actions.byname['form.actions.add_name'].render()" ></span> 
 		</td>
 	</tr>
+<!--  NAMES --> 
    	<tr metal:use-macro="template/macros/separator" /> 	
 	<tr>
 		<th><span class="accesskey">g</span>eslacht</th>
@@ -747,12 +748,16 @@ img {
                     "
                     style="width:300px">
      
-            <a tal:condition="python:reference_id != 'new'"
+            <a tal:condition="python:reference_id != 'new' and False"
                 tal:attributes="OnClick string:
                 jQuery('#reference_${reference_id}_delete').val('1');;
                 jQuery('*[name=reference_${reference_id}_form]').hide();;         
                 return false;;">[delete]</a>
-        </td>
+            <a tal:condition="python:reference_id != 'new'"
+			   tal:attributes="href python:view.url(data={'form.actions.remove_reference':'', 'index':reference_id, 'bioport_id':view.bioport_id})" title="verwijder">
+                 <img tal:attributes="src python:view.application_url() + '/@@/bioport/images/delete-icon.png'" />
+			 </a>
+	        </td>
     </tr>
     <tr tal:attributes="name string:reference_${reference_id}_form">
         <th class="sublabel">Beschrijving</th> 
@@ -769,6 +774,9 @@ img {
     </tal:block>
     <div tal:define="reference nothing;" tal:omit-tag="">
         <div  metal:use-macro="template/macros/reference_form"></div>
+        <tr><td></td><td>
+        <span tal:replace="structure python:view.actions.byname['form.actions.add_reference'].render()" ></span> 
+       </td></tr>
     </div>
 <!--  /REFERENCES -->
     

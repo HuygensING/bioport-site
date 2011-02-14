@@ -802,7 +802,7 @@ class Persoon(app.Persoon, grok.EditForm, RepositoryView):
     def _set_reference(self, identifier, index=None, add_new=False):
         url = self.request.get('reference_%s_url' % identifier)
         text = self.request.get('reference_%s_text' % identifier)
-        if add_new:
+        if add_new and url and text:
             self.bioport_biography.add_reference(uri=url, text = text)
         else:
             assert index != None
@@ -1047,15 +1047,25 @@ class Persoon(app.Persoon, grok.EditForm, RepositoryView):
         names = self.request.get('personname')
         if isinstance(names, (str, unicode)):
             names = [names]
-        x = 0
-        for fullname in names:
-            nameobj = Naam(volledige_naam=fullname)
-            if self.bioport_biography.get_namen():
-                self.bioport_biography._replace_name(nameobj, x)
-            else:
-                self.bioport_biography._add_a_name(nameobj)
-            x += 1
+        name_new =  self.request.get('name_new')
+        if name_new:
+            names.append(name_new)
+        names = [Naam(volledige_naam=fullname) for fullname in names]
+        self.bioport_biography._replace_names(names)
 
+
+    @grok.action('voeg toe', name='add_reference') 
+    def add_reference(self):
+        self._set_reference(identifier='new', add_new=True)
+        self.msg = 'added reference'
+    
+    @grok.action('remove reference', name='remove_reference') 
+    def remove_refenence(self):
+        index = self.request.get('delete_reference_index')
+        if index:
+	        self.bioport_biography.remove_reference(index=index) 
+            self.msg = 'removed reference'
+            
     @grok.action('voeg toe', name='add_name') 
     def add_name(self):
         name_new =  self.request.get('name_new')

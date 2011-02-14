@@ -82,7 +82,30 @@ class SimpleSampleFunctionalTest(FunctionalTestCase):
                 raise
                 assert 0, 'error opening %s?%s' % (self.base_url + '/' + url, data.encode('utf8'))
                 
+    
+    def test_edit_names(self):
+        #we had an error when, after identifying, there are more names in the merged_biography than in the bioport_biography...
+        browser = Browser('http://localhost/app/admin/persons')
+        #get some bioport_ids
+        bioport_ids = re.findall('[0-9]{8}', browser.contents)
+        bioport_ids = list(set(bioport_ids))
+        bioport_ids.sort()
+        bioport_id1 = bioport_ids[0]
+        bioport_id2 = bioport_ids[1]
+        
+        #create a bioport biography for one of the persons
+        browser = Browser('http://localhost/app/admin/persoon?bioport_id=%s' % bioport_id1)
+        browser.getControl(name='personname', index=0).value = 'changed name0'
+        browser.getControl(name='name_new').value='new name1'
+        browser.getForm().getControl(name='form.actions.save_everything').click()
+        
+        self.assertEqual(browser.getControl(name='personname', index=0).value , 'changed name0')
+        self.assertEqual(browser.getControl(name='personname', index=1).value , 'new name1')
+        
+       
+        
     def test_personidentify_workflow(self):
+        
         browser = Browser('http://localhost/app/admin/persoonidentify')
         browser.handleErrors = False
         

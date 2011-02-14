@@ -182,7 +182,78 @@
       <grant role="bioport.Editor" principal="bioport.dieb" />
       <grant role="bioport.Manager" principal="bioport.dieb" />
 
-                 
+<!-- GUEST LOGINS -->
+       <principal id="bioport.gast1"
+                 title="Gast1"
+                 login="gast1"
+                 password_manager="Plain Text"
+                 password="gast1"
+                 />   
+      <grant role="bioport.Editor" principal="bioport.gast1" />
+      
+      <principal id="bioport.gast2"
+                 title="gast2"
+                 login="gast2"
+                 password_manager="Plain Text"
+                 password="gast2"
+                 />   
+      <grant role="bioport.Editor" principal="bioport.gast2" />
+      
+      <principal id="bioport.gast3"
+                 title="gast3"
+                 login="gast3"
+                 password_manager="Plain Text"
+                 password="gast3"
+                 />   
+      <grant role="bioport.Editor" principal="bioport.gast3" />
+      
+      <principal id="bioport.gast4"
+                 title="gast4"
+                 login="gast4"
+                 password_manager="Plain Text"
+                 password="gast4"
+                 />   
+      <grant role="bioport.Editor" principal="bioport.gast4" />
+      
+       <principal id="bioport.gast5"
+                 title="gast5"
+                 login="gast5"
+                 password_manager="Plain Text"
+                 password="gast5"
+                 />   
+      <grant role="bioport.Editor" principal="bioport.gast5" />
+        <principal id="bioport.gast6"
+                 title="gast6"
+                 login="gast6"
+                 password_manager="Plain Text"
+                 password="gast6"
+                 />   
+      <grant role="bioport.Editor" principal="bioport.gast6" />
+      
+      <principal id="bioport.gast7"
+                 title="gast7"
+                 login="gast7"
+                 password_manager="Plain Text"
+                 password="gast7"
+                 />   
+      <grant role="bioport.Editor" principal="bioport.gast7" />
+      
+      <principal id="bioport.gast8"
+                 title="gast8"
+                 login="gast8"
+                 password_manager="Plain Text"
+                 password="gast8"
+                 />   
+      <grant role="bioport.Editor" principal="bioport.gast8" />
+      
+      <principal id="bioport.gast9"
+                 title="gast9"
+                 login="gast9"
+                 password_manager="Plain Text"
+                 password="gast9"
+                 />   
+      <grant role="bioport.Editor" principal="bioport.gast9" />
+                      
    </configure>
 </configure>
 
