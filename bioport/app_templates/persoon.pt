@@ -200,6 +200,14 @@
            </div>
         </div>
         
+        
+    </div>
+    <div tal:repeat="reference  python:view.get_references()"
+        class="biography_reference">
+        <a  class="external_link open_in_new_window"
+            tal:attributes="href reference/url"
+            tal:content="reference/text" />
+             
     </div>
     </div>
     <div class="levensbeschrijvingen"

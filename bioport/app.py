@@ -585,6 +585,9 @@ class Persoon(BioPortIdTraverser, grok.View, RepositoryView):
             return EventWrapper(event_el, _between, _and, _after, _before)
         else:
             return None      
+
+    def get_references(self):    
+        return [ReferenceWrapper(index, el_reference) for (index, el_reference) in self.bioport_biography.get_references()]
     
     def get_states(self,type=None, biography=None):
         if not biography:

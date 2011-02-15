@@ -860,8 +860,7 @@ class Persoon(app.Persoon, grok.EditForm, RepositoryView):
     def get_relations(self):
        return [RelationWrapper(el_relation=el_relation, el_person=el_person) for (el_relation, el_person) in self.bioport_biography.get_relations()]
 
-    def get_references(self):    
-        return [ReferenceWrapper(index, el_reference) for (index, el_reference) in self.bioport_biography.get_references()]
+
     def get_relation_types(self): 
         """return identifier, text pairs for relation types"""
         possible_relations = ['partner', 'father', 'mother', 'parent', 'child', 'brother', 'sister']
