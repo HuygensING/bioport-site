@@ -1369,18 +1369,17 @@ class ChangeLocation(Locations):
 class Identify(grok.View):
     grok.require('bioport.Edit')
 
-#
-#class UnIdentify(grok.View, RepositoryView):
-#
-#    grok.require('bioport.Edit')
-#
-#    def update(self):
-#        bioport_id = self.bioport_id = self.request.get('bioport_id')
-#        person = self.repository().get_person(bioport_id)
-#        if person:
-#            self.persons = self.repository().unidentify(person)
-#        else:
-#            self.persons = []
+class UnIdentify(grok.View, RepositoryView):
+
+    grok.require('bioport.Edit')
+
+    def update(self):
+        bioport_id = self.bioport_id = self.request.get('bioport_id')
+        person = self.repository().get_person(bioport_id)
+        if person:
+            self.persons = self.repository().unidentify(person)
+        else:
+            self.persons = []
     
 
 class Log(grok.View,RepositoryView):

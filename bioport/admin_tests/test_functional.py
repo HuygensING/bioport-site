@@ -166,6 +166,13 @@ class SimpleSampleFunctionalTest(FunctionalTestCase):
         #one of the two pages should have redirected to the other - both will now have the same url
         self.assertEqual(browser1.url , browser2.url)
         
+        #open an edit page and unidentify
+        browser = Browser('http://localhost/app/admin/persoon?bioport_id=%s' % bioport_id2)
+        link = browser.getLink(url=re.compile('.*unidentify.*'))
+        link.click()
+        
+        
+        
     def test_most_similar_workflow(self): 
         pass
         
