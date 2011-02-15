@@ -735,12 +735,6 @@ img {
     <tr tal:attributes="name string:reference_${reference_id}_form">
         <th class="sublabel">URL</th>
         <td>
-            <input type="hidden" 
-                tal:attributes="
-                    id string:reference_${reference_id}_delete; 
-                    name string:reference_${reference_id}_delete; 
-                    "
-                value="" />
             <input tal:attributes="
                     name python:'reference_%s_url' % reference_id;
                     id python:'reference_%s_url' % reference_id;
@@ -754,7 +748,9 @@ img {
                 jQuery('*[name=reference_${reference_id}_form]').hide();;         
                 return false;;">[delete]</a>
             <a tal:condition="python:reference_id != 'new'"
-			   tal:attributes="href python:view.url(data={'form.actions.remove_reference':'', 'index':reference_id, 'bioport_id':view.bioport_id})" title="verwijder">
+			   tal:attributes="
+			     id string:reference_delete_${reference_id};
+			     href python:view.url(data={'form.actions.remove_reference':'', 'reference_index':reference_id, 'bioport_id':view.bioport_id})" title="verwijder">
                  <img tal:attributes="src python:view.application_url() + '/@@/bioport/images/delete-icon.png'" />
 			 </a>
 	        </td>

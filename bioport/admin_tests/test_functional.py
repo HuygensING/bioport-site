@@ -342,30 +342,54 @@ class NewFieldsTestCase(FunctionalTestCase):
         self.assertEqual(browser.getControl(name='reference_%s_url' % identifier).value, 'http://url1')
         self.assertEqual(browser.getControl(name='reference_%s_text' % identifier).value , 'url1')
         
-        #add a second reference 
+        #add a second reference, but this time clicking on the button 'add_reference'
         browser.getControl(name='reference_new_url').value = "http://url2"
         browser.getControl(name='reference_new_text').value = 'url2'
-        browser.getControl(name='form.actions.save_everything').click()        
+        browser.getControl(name='form.actions.add_reference').click()        
        
         #now we should have two references (identified by their indices) 
         self.assertEqual(len(get_identifiers()), 2)
+       
+        #add a third reference
+        browser.getControl(name='reference_new_url').value = "http://url3"
+        browser.getControl(name='reference_new_text').value = 'url3'
+        browser.getControl(name='form.actions.add_reference').click()        
+        
+        #now we should have three references (identified by their indices) 
+        self.assertEqual(len(get_identifiers()), 3)
+        
+        #edit the third reference
+        identifier = get_identifiers()[2]
+        browser.getControl(name='reference_%s_url' % identifier).value = "http://url4"
+        browser.getControl(name='reference_%s_text' % identifier).value = 'url4'
+        browser.getControl(name='form.actions.save_everything').click()       
+        
+        #see if changes stick
+        self.assertEqual(len(get_identifiers()), 3)
+        identifier = get_identifiers()[2]
+        
+        self.assertEqual(browser.getControl(name='reference_%s_url' % identifier).value, 'http://url4')
+        self.assertEqual(browser.getControl(name='reference_%s_text' % identifier).value , 'url4')
+        
         
         #delete a reference
         identifier = get_identifiers()[1]
-        browser.getControl(name='reference_%s_delete' % identifier).value = '1'
-        browser.getControl(name='form.actions.save_everything').click()        
-        
-        #now we should have one reference again, now
-        self.assertEqual(len(get_identifiers()), 1)
+        #XXX for some readon, the browser cannot find the link, while browser.contents seems to show that it is there
+#        browser.getLink(id='delete_reference_%s' % identifier).click()
+        bioport_id = re.findall('[0-9]{8}', browser.contents)[0]
+        browser.open('%s?reference_index=%s&form.actions.remove_reference=&bioport_id=%s' % (browser.url, identifier, bioport_id))        
+        #now we should have two reference again, now
+        self.assertEqual(len(get_identifiers()), 2)
         
         #we can now edit this reference, and should see the changes
         identifier = get_identifiers()[0]
-        browser.getControl(name='reference_%s_url' % identifier).value = "http://url3"
-        browser.getControl(name='reference_%s_text' % identifier).value = 'url3'
+        browser.getControl(name='reference_%s_url' % identifier).value = "http://url5"
+        browser.getControl(name='reference_%s_text' % identifier).value = 'url5'
         browser.getControl(name='form.actions.save_everything').click()       
         
-        self.assertEqual(browser.getControl(name='reference_%s_url' % identifier).value, 'http://url3')
-        self.assertEqual(browser.getControl(name='reference_%s_text' % identifier).value , 'url3')
+        self.assertEqual(browser.getControl(name='reference_%s_url' % identifier).value, 'http://url5')
+        self.assertEqual(browser.getControl(name='reference_%s_text' % identifier).value , 'url5')
+        
     def test_edit_religion(self):
         browser = self._open_edit_url()
         #add a state
