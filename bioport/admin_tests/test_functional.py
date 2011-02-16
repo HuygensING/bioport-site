@@ -172,11 +172,10 @@ class SimpleSampleFunctionalTest(FunctionalTestCase):
         link = browser.getLink('koppel', index=0)
         link.click()
         
-        
         #open an edit page and unidentify
-        browser = Browser('http://localhost/app/admin/persoon?bioport_id=%s' % bioport_id2)
-        link = browser.getLink(url=re.compile('.*unidentify.*'))
-        link.click()
+#        browser = Browser('http://localhost/app/admin/persoon?bioport_id=%s' % bioport_id2)
+#        link = browser.getLink(url=re.compile('.*unidentify.*'))
+#        link.click()
         
         
         

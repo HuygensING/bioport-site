@@ -793,6 +793,9 @@ img {
     </tr>
     <!--  /STATUS -->
     
+   	<tr metal:use-macro="template/macros/separator" ></tr> 
+    <tr metal:use-macro="template/macros/save_everything" ></tr>
+    
     <!--  REMARKS for end users -->
    	<tr metal:use-macro="template/macros/separator" ></tr> 
     	<tr>
@@ -850,11 +853,11 @@ img {
 	</div>
     <!--  REMARKS by editors  -->
    	
+   	<input type="hidden" name="changed_values" id="changed_values" />
 <tr metal:use-macro="template/macros/separator" ></tr> 
-    <tr>
+	<tr metal:define-macro="save_everything">
    	<th />
    	<td>
-   	<input type="hidden" name="changed_values" id="changed_values" />
    	<button accesskey="w" class="button" value="bewaar alle veranderingen" name="form.actions.save_everything" id="form.actions.save_everything">
    	    be<span class="accesskey">w</span>aar alle veranderingen</button>
    	
@@ -873,7 +876,7 @@ img {
     <a tal:attributes="href python:view.url(context.__parent__, 'persoon', data={'bioport_id':view.bioport_id})">[pagina in portaal]</a>. 
         <a tal:attributes="OnClick string:history.go(-${view/history_counter});;return false;;" href="">[terug]</a>
        </p>
-       <p>
+       <p tal:condition="nothing">
          <a tal:attributes="href python:view.url('unidentify', data={'bioport_id':view.bioport_id})">[on-identificeer (gebruik dit alleen voor identificaties die niet in onder "undo changes" zijn te vinden   ]</a> 
     </p>
 <h1>History</h1>
