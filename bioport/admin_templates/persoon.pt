@@ -930,6 +930,13 @@ img {
 			 <a tal:attributes="
        href python:bio.get_value('url_biografie'); 
        target python:bio.get_source().id" >[link]</a>
+      
+      
+			 <a tal:attributes="href python:view.url(data={'form.actions.detach_biography':'', 'biography_id':bio.id, 'bioport_id':view.bioport_id})" title="detach biography">
+			     [koppel deze biografie los van deze persoon] 
+			 </a>
+       
+            
              </p>
 			</div>
 		</div>
@@ -940,22 +947,8 @@ img {
 </table>
 
 
-<h1>Uitleg</h1> 
 
-<div id="explanation">
-    <p>
-    De gegevens in het formulier zijn de gegevens zoals ze op het biografisch portaal worden 
-    <a tal:attributes="href python:view.url(context.__parent__, 'persoon', data={'bioport_id':view.bioport_id})">getoond</a>. 
-    </p>
-    <p>
-    De gegevens zijn grijs als ze uit de bronnen-publikaties komen, zwart als ze zijn ingevoerd door de medewerkers van het biografisch portaal.
-    </p>
-</div>
-
-<br/><br/>
-
-<h1>Debug information</h1>
-Click <a target="_blank" tal:attributes="href python:view.url('debuginfo') + '?bioport_id=' + request.get('bioport_id')">here</a> to see debug information.
+<a target="_blank" tal:attributes="href python:view.url('debuginfo') + '?bioport_id=' + view.bioport_id">[debug information]</a>
 
 </div>
 </html>

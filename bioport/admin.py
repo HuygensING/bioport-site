@@ -871,6 +871,18 @@ class Persoon(app.Persoon, grok.EditForm, RepositoryView):
         self._set_category()
         self.msg = 'rubriek bewaard' 
     
+    @grok.action('Detach Biography', name="detach_biography")
+    def detach_biography(self):    
+        biography_id = self.request.get('biography_id')
+        biography = self.repository().get_biography(local_id=biography_id)
+        new_person = self.repository().detach_biography(biography)
+        self.msg = 'Removed biography %s from this person' % biography
+        self.msg += '<br>New person for this biography can be found at <a href="%s/%s">%s</a>' % (self.url(self), new_person.bioport_id, new_person.bioport_id )
+        
+        id = self.request.get("bioport_id")
+        url = self.url(data={"bioport_id":id, "msg":self.msg})
+        self.redirect(url)
+        
     def _set_category(self):
         
         category_ids = self.request.get('category_id', [])

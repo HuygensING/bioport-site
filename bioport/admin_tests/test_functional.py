@@ -166,6 +166,13 @@ class SimpleSampleFunctionalTest(FunctionalTestCase):
         #one of the two pages should have redirected to the other - both will now have the same url
         self.assertEqual(browser1.url , browser2.url)
         
+        #open an edit page and detach a biography
+        browser = Browser('http://localhost/app/admin/persoon?bioport_id=%s' % bioport_id2)
+#        assert 0, browser.contents
+        link = browser.getLink('koppel', index=0)
+        link.click()
+        
+        
         #open an edit page and unidentify
         browser = Browser('http://localhost/app/admin/persoon?bioport_id=%s' % bioport_id2)
         link = browser.getLink(url=re.compile('.*unidentify.*'))
@@ -195,7 +202,7 @@ class SimpleSampleFunctionalTest(FunctionalTestCase):
         form.getControl(name='form.actions.save_everything').click()
        
         #go the the public view 
-        browser.getLink('getoond').click()
+        browser.getLink('in portaal').click()
         public_url = browser.url
 
        
