@@ -64,8 +64,6 @@
 	            <span class="textOnly" i18n:translate="portal_title" >Het Biografisch Portaal van Nederland</span></h2>
             <div id="stats" i18n:translate="count_persons_and_biographies" >
                 <span tal:replace="python:view.count_persons()" i18n:name="persons"/> personen<br/>
-                van 634 tot 2005
-                <br/>
                 in <span tal:replace="python: view.count_biographies()" i18n:name="biographies" /> biografieën
             </div>
             <hr class="textOnly"/>

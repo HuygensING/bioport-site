@@ -142,7 +142,8 @@
                 </ul>
 	        </td>
         </tr>
-        <tr tal:repeat="state python:view.get_editable_states()">
+        <tr tal:condition="nothing"
+            tal:repeat="state python:view.get_editable_states()">
 	        <th tal:condition="not:repeat/state/index">levensloop</th>
 	        <th tal:condition="repeat/state/index"></th>
             <td>
