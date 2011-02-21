@@ -203,14 +203,19 @@ class SimpleSampleFunctionalTest(FunctionalTestCase):
         #go the the public view 
         browser.getLink('in portaal').click()
         public_url = browser.url
-
        
         browser.open(edit_url)
         form = browser.getForm(index=0)
-        form.getControl(name='birth_y').value='1111'
+        form.getControl(name='birth_d').value='1'
+        form.getControl(name='birth_m').value=['2']
+        form.getControl(name='birth_y').value='3333'
         form.getControl(name='form.actions.save_everything', index=0).click()
+        form = browser.getForm(index=0)
+        self.assertEqual(form.getControl(name='birth_d').value,'1')
+        self.assertEqual(form.getControl(name='birth_m').value,['2'])
+        self.assertEqual(form.getControl(name='birth_y').value,'3333')
         browser.open(public_url)
-        assert re.findall('1111', browser.contents, re.DOTALL)
+        assert re.findall('3333', browser.contents, re.DOTALL)
         
         
         browser.open(edit_url)
@@ -237,8 +242,18 @@ class SimpleSampleFunctionalTest(FunctionalTestCase):
         form = browser.getForm(index=0)
         form.getControl(name='baptism_y').value='4444'
         form.getControl(name='form.actions.save_everything', index=0).click()
+        form = browser.getForm(index=0)
+        self.assertEqual(form.getControl(name='baptism_y').value,'4444')
+    
         browser.open(public_url)
         assert re.findall('4444', browser.contents, re.DOTALL)
+        
+        browser.open(edit_url)
+        form = browser.getForm(index=0)
+        form.getControl(name='baptism_y').value=''
+        form.getControl(name='form.actions.save_everything', index=0).click()
+        form = browser.getForm(index=0)
+        self.assertEqual(form.getControl(name='baptism_y').value,'')
         
         #geslacht
         browser.open(edit_url)

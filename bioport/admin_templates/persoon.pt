@@ -306,7 +306,6 @@ img {
 
     </tr>
 
-<!-- XXX -->   
     <tr tal:attributes="id string:${event_type}_place;
 	        class python:not has_data and 'form_%s' % event_type;
 	        "> 
