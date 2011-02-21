@@ -589,6 +589,9 @@ class Persoon(BioPortIdTraverser, grok.View, RepositoryView):
     def get_references(self):    
         return [ReferenceWrapper(index, el_reference) for (index, el_reference) in self.bioport_biography.get_references()]
     
+    def get_illustrations(self):    
+        return [IllustrationWrapper(index, el) for (index, el) in self.bioport_biography.get_figures()]
+    
     def get_states(self,type=None, biography=None):
         if not biography:
             biography = self.merged_biography
@@ -1035,6 +1038,14 @@ class ReferenceWrapper:
         self.text = el_reference.text
         self.url = el_reference.get('target')
         self.element = el_reference
+        self.index = index
+
+
+class IllustrationWrapper:
+    def __init__(self, index, el_illustration):    
+        self.text = el_illustration.text
+        self.url = el_illustration.get('target')
+        self.element = el_illustration
         self.index = index
 
 class ReligionWrapper:

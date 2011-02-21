@@ -1025,6 +1025,7 @@ class Persoon(app.Persoon, grok.EditForm, RepositoryView):
         self._set_category()
         self._set_relations()
         self._set_references()
+        self._set_illustrations()
         self._set_religion()
         self._set_state(identifier='floruit', type='floruit')
         self._set_status()
@@ -1045,9 +1046,8 @@ class Persoon(app.Persoon, grok.EditForm, RepositoryView):
             names.append(name_new)
         names = [Naam(volledige_naam=fullname) for fullname in names]
         self.bioport_biography._replace_names(names)
-
+        
     def _set_references(self): 
-#        to_remove = [] #list of states to remove
         references = []
         for k in self.request.form.keys():
             if k.startswith('reference_') and k.endswith('url'):
@@ -1055,24 +1055,24 @@ class Persoon(app.Persoon, grok.EditForm, RepositoryView):
                 url = self.request.get('reference_%s_url' % identifier)
                 text = self.request.get('reference_%s_text' % identifier)
                 if url and text:
-	                references.append((identifier, url, text))
+                    references.append((identifier, url, text))
         references.sort()
         references = [(url, text) for (id, url, text) in references]
         self.bioport_biography._replace_references(references)
-#                if identifier == 'new' and 
-#                    self._set_reference(identifier='new',  add_new=True)
-#                elif identifier.isdigit():
-#                    index=int(identifier)
-#                    if self.request.get('reference_%s_url' % identifier):
-#                        self._set_reference(identifier=identifier, index=index)
-#                    if self.request.get('reference_%s_delete' % identifier) == '1':
-#                        to_remove.append(int(identifier))
-        #remove the states - this only works well if we remove the highest indices first
-        #(otherwise index values will be outdated)
-#        to_remove.sort()
-#        to_remove.reverse()
-#        for index in to_remove:
-#            self.bioport_biography.remove_reference(index=index)
+
+    def _set_illustrations(self): 
+#        to_remove = [] #list of states to remove
+        illustrations = []
+        for k in self.request.form.keys():
+            if k.startswith('illustration_') and k.endswith('url'):
+                identifier = k.split('_')[1]
+                url = self.request.get('illustration_%s_url' % identifier)
+                text = self.request.get('illustration_%s_text' % identifier)
+                if url and text:
+	                illustrations.append((identifier, url, text))
+        illustrations.sort()
+        illustrations = [(url, text) for (id, url, text) in illustrations]
+        self.bioport_biography._replace_figures(illustrations)
 
     @grok.action('voeg toe', name='add_reference') 
     def add_reference(self):
@@ -1091,6 +1091,25 @@ class Persoon(app.Persoon, grok.EditForm, RepositoryView):
             index = int(index)
             self.bioport_biography.remove_reference(index=index) 
             self.msg = 'removed reference' 
+            self.save_biography(comment=self.msg)
+            
+    @grok.action('voeg toe', name='add_illustration') 
+    def add_illustration(self):
+        identifier = 'new'
+        url = self.request.get('illustration_%s_url' % identifier)
+        text = self.request.get('illustration_%s_text' % identifier)
+        if url and text:
+	        self.bioport_biography.add_illustration(uri=url, text = text)
+	        self.msg = 'added illustration'
+	        self.save_biography(comment=self.msg)
+    
+    @grok.action('remove illustration', name='remove_illustration') 
+    def remove_illustration(self):
+        index = self.request.get('illustration_index')
+        if index and index.isdigit():
+            index = int(index)
+            self.bioport_biography.remove_illustration(index=index) 
+            self.msg = 'removed illustrationreference' 
             self.save_biography(comment=self.msg)
             
     @grok.action('voeg toe', name='add_name') 
