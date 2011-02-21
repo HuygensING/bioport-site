@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Mon Jan 17 16:11:42 2011\n"
+"POT-Creation-Date: Mon Feb 21 12:37:06 2011\n"
 "PO-Revision-Date: 2011-01-11 17:43+0100\n"
 "Last-Translator: jelle <jelle@gerbrandy.com>\n"
 "Language-Team: Italian\n"
@@ -24,118 +24,118 @@ msgstr ""
 "Generated-By: zope/app/locales/extract.py\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: bioport/app.py:360 bioport/app.py:562
+#: bioport/app.py:375 bioport/app.py:581
 msgid "between"
 msgstr "tussen"
 
-#: bioport/app.py:361 bioport/app.py:563
+#: bioport/app.py:376 bioport/app.py:582
 msgid "and"
 msgstr "en"
 
-#: bioport/app.py:362 bioport/app.py:564
+#: bioport/app.py:377 bioport/app.py:583
 msgid "after"
 msgstr "na"
 
-#: bioport/app.py:363 bioport/app.py:565
+#: bioport/app.py:378 bioport/app.py:584
 msgid "before"
 msgstr "voor"
 
-#: bioport/app.py:373 bioport/app_templates/zoek.pt:98
+#: bioport/app.py:388 bioport/app_templates/zoek.pt:98
 #: bioport/app_templates/zoek_new.pt:95 bioport/admin_templates/persons.pt:60
 msgid "born"
 msgstr "geboren"
 
-#: bioport/app.py:382 bioport/app_templates/zoek.pt:169
+#: bioport/app.py:397 bioport/app_templates/zoek.pt:169
 #: bioport/app_templates/zoek_new.pt:166 bioport/admin_templates/persons.pt:65
 msgid "died"
 msgstr "gestorven"
 
-#: bioport/app.py:389 bioport/app_templates/zoek.pt:209
+#: bioport/app.py:404 bioport/app_templates/zoek.pt:209
 #: bioport/app_templates/zoek_new.pt:206
 msgid "alive"
 msgstr "levend"
 
-#: bioport/app.py:395
+#: bioport/app.py:410
 msgid "from"
 msgstr "uit"
 
-#: bioport/app.py:400
+#: bioport/app.py:415
 msgid "whose_name_is_like"
 msgstr "wier naam lijkt op "
 
-#: bioport/app.py:405
+#: bioport/app.py:420
 msgid "whose_family_name_is_like"
 msgstr "wier familienaam lijkt op "
 
-#: bioport/app.py:420
+#: bioport/app.py:435
 msgid "of_the_category"
 msgstr "uit de rubriek"
 
-#: bioport/app.py:424
+#: bioport/app.py:439
 msgid "with_bioport_id"
 msgstr "met bioport id"
 
-#: bioport/app.py:431
+#: bioport/app.py:446
 msgid "men"
 msgstr "mannen"
 
-#: bioport/app.py:433
+#: bioport/app.py:448
 msgid "women"
 msgstr "vrouwen"
 
-#: bioport/app.py:435
+#: bioport/app.py:450
 msgid "persons"
 msgstr "personen"
 
-#: bioport/app.py:440
+#: bioport/app.py:455
 msgid "you_searched_for"
 msgstr "U zocht naar"
 
-#: bioport/app.py:628
+#: bioport/app.py:651
 msgid "Unable to parse birth date. Please rephrase it"
 msgstr ""
 
-#: bioport/app.py:640
+#: bioport/app.py:663
 msgid "Unable to parse death date. Please rephrase it."
 msgstr ""
 
-#: bioport/app.py:652
+#: bioport/app.py:675
 msgid "Unable to parse alive date. Please rephrase it."
 msgstr ""
 
-#: bioport/app.py:71
+#: bioport/app.py:74
 msgid "home"
 msgstr ""
 
-#: bioport/app.py:72
+#: bioport/app.py:75
 msgid "zoeken"
 msgstr ""
 
-#: bioport/app.py:74
+#: bioport/app.py:77
 msgid "bladeren"
 msgstr ""
 
-#: bioport/app.py:75
+#: bioport/app.py:78
 msgid "project"
 msgstr ""
 
-#: bioport/app.py:81
+#: bioport/app.py:84
 msgid "blog"
 msgstr ""
 
-#: bioport/app.py:82
+#: bioport/app.py:85
 msgid "agenda"
 msgstr ""
 
-#: bioport/app.py:85
+#: bioport/app.py:88
 msgid "links"
 msgstr ""
 
-#: bioport/app.py:86
+#: bioport/app.py:89
 msgid "vragen"
 msgstr ""
 
-#: bioport/app.py:87
+#: bioport/app.py:90
 msgid "contact"
 msgstr ""
 
@@ -210,14 +210,12 @@ msgstr "biografie portaal biografieën Nederland"
 msgid "language_name"
 msgstr "dutch"
 
-#. Default: "${persons} personen<br /> van 634 tot 2005 <br /> in ${biographies} biografie\303\253n"
-#: bioport/app_templates/main_template.pt:69
+#. Default: "${persons} personen<br /> in ${biographies} biografie\303\253n"
+#: bioport/app_templates/main_template.pt:67
 msgid "count_persons_and_biographies"
-msgstr ""
-"${persons} personen<br /> van 634 tot 2005 <br /> in ${biographies} "
-"biografieën"
+msgstr "${persons} personen<br /> in ${biographies} biografieën"
 
-#: bioport/app_templates/main_template.pt:75
+#: bioport/app_templates/main_template.pt:73
 msgid "Contents"
 msgstr "Inhoud"
 
@@ -293,26 +291,26 @@ msgid "categories"
 msgstr "rubriek(en)"
 
 #. Default: "levensbeschrijving(en)"
-#: bioport/app_templates/persoon.pt:148
+#: bioport/app_templates/persoon.pt:172
 msgid "Biographies"
 msgstr "levensbeschrijving(en)"
 
 #. Default: "Biografie"
-#: bioport/app_templates/persoon.pt:158
+#: bioport/app_templates/persoon.pt:181
 msgid "Biography"
 msgstr "Biografie"
 
 #. Default: "door"
-#: bioport/app_templates/persoon.pt:161
+#: bioport/app_templates/persoon.pt:184
 msgid "by"
 msgstr "door"
 
-#: bioport/app_templates/persoon.pt:176
+#: bioport/app_templates/persoon.pt:199
 msgid "meer..."
 msgstr ""
 
 #. Default: "Portret(ten)"
-#: bioport/app_templates/persoon.pt:185
+#: bioport/app_templates/persoon.pt:216
 msgid "Portraits"
 msgstr ""
 
@@ -437,7 +435,7 @@ msgstr "rubriek"
 #: bioport/contact_templates/bare_edit_form.pt:12
 #: bioport/contact_templates/bare_edit_form.pt:31
 #: bioport/contact_templates/bare_edit_form.pt:37
-#: bioport/admin_templates/edit.pt:47 bioport/admin_templates/edit.pt:95
+#: bioport/admin_templates/edit.pt:47 bioport/admin_templates/edit.pt:97
 msgid "${DYNAMIC_CONTENT}"
 msgstr ""
 
