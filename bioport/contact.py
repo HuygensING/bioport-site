@@ -34,6 +34,7 @@ class ContactForm(grok.AddForm, RepositoryView):
     @grok.action('Submit')
     def submit(self, **kwargs):
         "Process input and send email"
+#        subject = kwargs.get('subject') or 'reactie biografisch portaal van %s' % kwargs['name'] 
         subject = 'reactie biografisch portaal van %s' % kwargs['name'] 
         email_from = self.context['admin'].EMAIL_FROM_ADDRESS
         email_to = self.context['admin'].CONTACT_DESTINATION_ADDRESS

@@ -54,7 +54,7 @@ select {
                 <input type="tekst" value="" name="any_place" id="any_place" autocomplete="off">
             </span>
             <span>bioport id: <input type="tekst" name="bioport_id" tal:attributes="value python:request.get('bioport_id')" /></span>
-            <br /><br />
+            <br />
             
             <!-- birth date field -->
             <span i18n:translate="born">geboren</span>
@@ -79,7 +79,7 @@ select {
                 vrouw
             </option>
         </select>
-            <br /><br />
+        <br>
                 
             <!-- bron -->
 	        <label accesskey="r" for="source_id">b<span class="accesskey">r</span>on:</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -111,7 +111,16 @@ select {
 		           tal:content="python:status[1]">..</option>
 	        </select>
 	       <br />
-	        <br />
+	       <label for="category">
+	           rubriek 
+	       </label>
+	       <select name="category">
+	       <option></option>
+	           <option tal:repeat="category python:view.repository().get_categories()" 
+	               tal:attributes="value category/id; 
+		               selected python:str(category.id) == request.get('category')"
+	               tal:content="category/name" /> 
+	       </select>
 
             <tal:block tal:condition="python:'/admin/persons' in view.url()">
             	<input type="checkbox" name="has_contradictions" id="has_contradictions"
