@@ -34,16 +34,21 @@ class ContactForm(grok.AddForm, RepositoryView):
     @grok.action('Submit')
     def submit(self, **kwargs):
         "Process input and send email"
-#        subject = kwargs.get('subject') or 'reactie biografisch portaal van %s' % kwargs['name'] 
-        subject = 'reactie biografisch portaal van %s' % kwargs['name'] 
+        default_subject = 'reactie biografisch portaal van %s' % kwargs['name'] 
+        subject = self.request.form.get('subject') or default_subject
+#        subject = 'reactie biografisch portaal van %s' % kwargs['name'] 
         email_from = self.context['admin'].EMAIL_FROM_ADDRESS
         email_to = self.context['admin'].CONTACT_DESTINATION_ADDRESS
-        send_email(kwargs['sender'], email_to, subject, kwargs['text']) 
+        content = '%s\n---------\n\n%s' % (kwargs['text'], default_subject) 
+        if self.request.form.get('subject'):
+            content += '\n%s' % self.request.get('subject')
+        send_email(kwargs['sender'], email_to, subject, content)
         self.redirect(self.application_url() + '/contactok')
 
 
 class Contact(grok.View, RepositoryView):
     pass
+
 
 class ContactOk(grok.View, RepositoryView):
     pass
@@ -56,4 +61,3 @@ def send_email(sender, recipient, subject, body):
     msg["Subject"] = email.Header.Header(subject, 'latin-1')
     mailer = getUtility(IMailDelivery, 'bioport.mailer')
     mailer.send(sender, [recipient], msg.as_string())
-

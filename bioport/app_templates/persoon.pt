@@ -234,7 +234,10 @@
     <!--  XXX TODO -->
         <a class="backbutton" onClick="alert('terug naar de zoekresultaten (indien van toepassing). Moet nog geimplementeerd.')">terug naar de zoekresultaten</a>
     </div>    
-    
+   
+   <div>
+   <a tal:attributes="href python:view.url('contact', data={'subject':'reactie op biografie %s van %s' % (view.bioport_id,view.biography.title())})">opmerkingen of vragen over deze persoon?</a>
+   </div> 
     
 </div>
 </div>
