@@ -19,7 +19,7 @@
       </li>
     </ul>
   </div>
-    <input type="text" name="subject" tal:attributes="value request/subject | nothing" />
+    <input type="hidden" name="subject" tal:attributes="value request/subject | nothing" />
   <table class="form-fields">
     <tbody>
       <tal:block repeat="widget view/widgets">
