@@ -17,6 +17,7 @@ geboortedatum en -plaats, sterfdatum en -plaats, religieuze denominatie e.d. –
 elke individuele BP-persoonspagina. Ook kunt u ons wijzen op relevante literatuur, portretten
 en persoonlijke links. Correcties en aanvullingen op de BP-persoonspagina’s nemen we alleen
 over als ze zijn onderbouwd met verwijzingen naar betrouwbare bronnen.
+</p>
 <tal:block tal:replace="structure path:context/@@contactform" />
 
 </div>
