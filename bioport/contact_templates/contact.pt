@@ -9,14 +9,8 @@
 
 
 <p i18n:translate="contact_page_text">
-Wij ontvangen graag correcties en aanvullingen. Daaraan zitten wel beperkingen, want – de
-naam zegt het al – we zijn een portaal, een toegang tot andere bronnen: we kunnen daarom
-uitsluitend correcties en aanvullingen aanbrengen in onze eigen ‘biografische kerngegevens’,
-NIET in de biografieën waar we naar doorlinken. Met die opsomming van kerngegevens –
-geboortedatum en -plaats, sterfdatum en -plaats, religieuze denominatie e.d. – opent steeds
-elke individuele BP-persoonspagina. Ook kunt u ons wijzen op relevante literatuur, portretten
-en persoonlijke links. Correcties en aanvullingen op de BP-persoonspagina’s nemen we alleen
-over als ze zijn onderbouwd met verwijzingen naar betrouwbare bronnen.
+Wij ontvangen graag opmerkingen en reacties. Ook staan wij open voor correcties op de data. Daaraan zitten wel beperkingen, want – de naam zegt het al – we zijn een portaal: we kunnen alleen correcties aanbrengen in de ‘biografische kerngegevens’. Correcties worden alleen doorgevoerd als ze zijn onderbouwd met verwijzingen naar betrouwbare bronnen. Met klem verzoeken we u om geduld te hebben. De functionaliteit voor het verwerken van aanvullingen en correcties is nog in ontwikkeling.
+
 </p>
 <tal:block tal:replace="structure path:context/@@contactform" />
 
