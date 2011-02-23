@@ -103,6 +103,7 @@ img {
 <tr>
 <td width="300">
 <form action="." tal:attributes="action request/URL" method="POST"
+    enctype="multipart/form-data"
       class="edit-form" >
       <input type="hidden" name="bioport_id" tal:attributes="value python:view.bioport_id" />
       <input type="hidden" name="history_counter" tal:attributes="value python:view.history_counter" />
@@ -775,13 +776,12 @@ img {
     </div>
 <!--  /REFERENCES -->
     
-<tal:block condition="nothing">
 <!--  ILLUSTRATIONS -->
     <tr metal:use-macro="template/macros/separator" ></tr>  
     
     <tr>
     <th colspan="3">
-        verwijzingen naar andere biografie&euml;n
+        illustraties
     </th></tr>
     
     <tal:block repeat="illustration view/get_illustrations">
@@ -789,7 +789,8 @@ img {
         tal:define="illustration_id python:illustration and str(illustration.index) or 'new';"
         metal:define-macro="illustration_form" 
          >
-    <tr tal:attributes="name string:illustration_${illustration_id}_form">
+    <tr tal:attributes="name string:illustration_${illustration_id}_form"
+        tal:condition="nothing">
         <th class="sublabel">URL</th>
         <td>
             <input tal:attributes="
@@ -799,31 +800,42 @@ img {
                     "
                     style="width:300px">
      
-            <a tal:condition="python:illustration_id != 'new' and False"
-                tal:attributes="OnClick string:
-                jQuery('#illustration_${illustration_id}_delete').val('1');;
-                jQuery('*[name=illustration_${illustration_id}_form]').hide();;         
-                return false;;">[delete]</a>
-            <a tal:condition="python:illustration_id != 'new'"
-               tal:attributes="
-                 id string:illustration_delete_${illustration_id};
-                 href python:view.url(data={'form.actions.remove_illustration':'', 'illustration_index':illustration_id, 'bioport_id':view.bioport_id})" title="verwijder">
-                 <img tal:attributes="src python:view.application_url() + '/@@/bioport/images/delete-icon.png'" />
-             </a>
-            </td>
+           </td>
     </tr>
-    <tr tal:attributes="name string:illustration_${illustration_id}_form">
-        <th class="sublabel">Beschrijving</th> 
+    <tr tal:condition="not:illustration">
+        <th class="sublabel">  Voeg toe: </th> 
+        <td>
+        <input type="file" name="illustration_file" tal:condition="not:illustration">
+        </td>
+     </tr>
+        
+     <tr tal:attributes="name string:illustration_${illustration_id}_form">
+        <th class="sublabel" >Beschrijving</th> 
+       
         <td>
             <input tal:attributes="
+                name python:'illustration_%s_url' % illustration_id;
+                id python:'illustration_%s_url' % illustration_id;
+                value python:illustration and illustration.url;
+                "
+                type="hidden"
+                >
+             <input tal:attributes="
                 name python:'illustration_%s_text' % illustration_id;
                 id python:'illustration_%s_text' % illustration_id;
                 value python:illustration and illustration.text;
                 "
                 style="width:300px">
+         <a tal:condition="illustration"
+               tal:attributes="
+                 id string:illustration_delete_${illustration_id};
+                 href python:view.url(data={'form.actions.remove_illustration':'', 'illustration_index':illustration_id, 'bioport_id':view.bioport_id})" title="verwijder">
+                 <img tal:attributes="src python:view.application_url() + '/@@/bioport/images/delete-icon.png'" />
+             </a>
         </td>
     </tr>
-    </div>
+    
+   </div>
     </tal:block>
     <div tal:define="illustration nothing;" tal:omit-tag="">
         <div  metal:use-macro="template/macros/illustration_form"></div>
@@ -832,7 +844,6 @@ img {
        </td></tr>
     </div>
 <!--  /ILLUSTRATIONS -->
-</tal:block>      
        
     <!--  STATUS -->
     <tr metal:use-macro="template/macros/separator" ></tr> 

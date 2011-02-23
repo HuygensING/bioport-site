@@ -1042,10 +1042,13 @@ class ReferenceWrapper:
 
 
 class IllustrationWrapper:
-    def __init__(self, index, el_illustration):    
-        self.text = el_illustration.text
-        self.url = el_illustration.get('target')
-        self.element = el_illustration
+    def __init__(self, index, el_figure):    
+        head = ''
+        if el_figure.find('head') is not None:
+            head = el_figure.find('head').text
+        self.url = el_figure.find('graphic').get('url')
+        self.text = head
+        self.element = el_figure
         self.index = index
 
 class ReligionWrapper:

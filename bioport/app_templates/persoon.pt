@@ -22,7 +22,9 @@
             </a>
             <div class="caption" tal:condition="ill/caption">
                 <span tal:replace="ill/caption"></span>
-                <a tal:attributes="href ill/link_url"
+                <a 
+                tal:condition="ill/link_url"
+                    tal:attributes="href ill/link_url"
                    class="external_link open_in_new_window"></a>
             </div>
         </div>
@@ -39,6 +41,7 @@
                 <div class="caption" tal:condition="ill/caption">
                     <span id="illustratie-caption" tal:content="ill/caption"></span>
                     <a tal:attributes="href ill/link_url"
+	                tal:condition="ill/link_url"
                        class="external_link open_in_new_window"></a>
                 </div>
             </div>

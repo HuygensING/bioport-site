@@ -13,6 +13,7 @@ from bioport.tests import FunctionalTestCase
 from zope.app.testing.functional import FunctionalTestCase as baseFunctionalTestCase
 from bioport.tests import FunctionalLayer
 
+this_dir = os.path.dirname(__file__)
 
 class AdminPanelFunctionalTest(FunctionalTestCase):
 
@@ -364,11 +365,11 @@ class NewFieldsTestCase(FunctionalTestCase):
         self.assertEqual(browser.getControl(name='reference_%s_text' % identifier).value , 'url1')
         
         #add a second reference, but this time clicking on the button 'add_reference'
-        browser.getControl(name='reference_new_url').value = "http://url2"
+        browser.getControl(name='reference_new_url').value = "file://url2"
         browser.getControl(name='reference_new_text').value = 'url2'
         browser.getControl(name='form.actions.add_reference').click()        
        
-        #now we should have two references (identified by their indices) 
+        #now we should have one references 
         self.assertEqual(len(get_identifiers()), 2)
        
         #add a third reference
@@ -413,13 +414,13 @@ class NewFieldsTestCase(FunctionalTestCase):
         
  
     
-    def XXX_test_edit_illustrations(self):
+    def test_edit_illustrations(self):
         browser = self._open_edit_url()
         edit_url = browser.url
    
         def get_identifiers():
             """helper function returns all identifiers of relations in the edit form"""
-            ls = re.findall('name="illustration_.*?_url"', browser.contents)
+            ls = re.findall('name="illustration_.*?_text"', browser.contents)
             ls = [s.split('_')[1] for s in ls]
             ls = [s for s in ls if s.isdigit()]
             ls = list(set(ls))
@@ -427,43 +428,49 @@ class NewFieldsTestCase(FunctionalTestCase):
         
         #add a illustration 
         browser.open(edit_url)
-        browser.getControl(name='illustration_new_url').value = "http://url1"
+#        browser.getControl(name='illustration_new_url').value = "http://url1"
         browser.getControl(name='illustration_new_text').value = 'url1'
         browser.getControl(name='form.actions.save_everything', index=0).click()
         
         #now we should have a new element in the form with our new relation info
-        assert len(get_identifiers()) == 1
-        identifier = get_identifiers()[0]
-        self.assertEqual(browser.getControl(name='illustration_%s_url' % identifier).value, 'http://url1')
-        self.assertEqual(browser.getControl(name='illustration_%s_text' % identifier).value , 'url1')
-        
+#        assert len(get_identifiers()) == 1
+#        identifier = get_identifiers()[0]
+#        self.assertEqual(browser.getControl(name='illustration_%s_url' % identifier).value, 'http://url1')
+#        self.assertEqual(browser.getControl(name='illustration_%s_text' % identifier).value , 'url1')
+#        
         #add a second illustration, but this time clicking on the button 'add_illustration'
-        browser.getControl(name='illustration_new_url').value = "http://url2"
-        browser.getControl(name='illustration_new_text').value = 'url2'
+        img = os.path.join(this_dir, 'data', 'example.gif')
+#        browser.getControl(name='illustration_new_url').value = "file://%s" % img
+
+        ctrl = browser.getControl(name='illustration_file')
+        ctrl.add_file(open(img),'text/plain', img)
+        
+        browser.getControl(name='illustration_new_text').value = 'example.gif'
         browser.getControl(name='form.actions.add_illustration').click()        
        
         #now we should have two illustrations (identified by their indices) 
-        self.assertEqual(len(get_identifiers()), 2)
+        self.assertEqual(len(get_identifiers()), 1)
        
-        #add a third illustration
-        browser.getControl(name='illustration_new_url').value = "http://url3"
+        #add a second illustration
+        img = os.path.join(this_dir, 'data', 'example.gif')
+        ctrl = browser.getControl(name='illustration_file')
+        ctrl.add_file(open(img),'text/plain', img)
         browser.getControl(name='illustration_new_text').value = 'url3'
         browser.getControl(name='form.actions.add_illustration').click()        
         
-        #now we should have three s (identified by their indices) 
-        self.assertEqual(len(get_identifiers()), 3)
+        #now we should have three s 
+        self.assertEqual(len(get_identifiers()), 2)
         
-        #edit the third illustration
-        identifier = get_identifiers()[2]
-        browser.getControl(name='illustration_%s_url' % identifier).value = "http://url4"
+        #edit the second illustration
+        identifier = get_identifiers()[1]
         browser.getControl(name='illustration_%s_text' % identifier).value = 'url4'
         browser.getControl(name='form.actions.save_everything', index=0).click()       
         
         #see if changes stick
-        self.assertEqual(len(get_identifiers()), 3)
-        identifier = get_identifiers()[2]
+        self.assertEqual(len(get_identifiers()), 2)
+        identifier = get_identifiers()[1]
         
-        self.assertEqual(browser.getControl(name='illustration_%s_url' % identifier).value, 'http://url4')
+#        self.assertEqual(browser.getControl(name='illustration_%s_url' % identifier).value, 'http://url4')
         self.assertEqual(browser.getControl(name='illustration_%s_text' % identifier).value , 'url4')
         
         
@@ -473,16 +480,16 @@ class NewFieldsTestCase(FunctionalTestCase):
 #        browser.getLink(id='delete_illustration_%s' % identifier).click()
         bioport_id = re.findall('[0-9]{8}', browser.contents)[0]
         browser.open('%s?illustration_index=%s&form.actions.remove_illustration=&bioport_id=%s' % (browser.url, identifier, bioport_id))        
-        #now we should have two illustration again, now
-        self.assertEqual(len(get_identifiers()), 2)
+        #now we should have one illustration again, now
+        self.assertEqual(len(get_identifiers()), 1)
         
         #we can now edit this illustration, and should see the changes
         identifier = get_identifiers()[0]
-        browser.getControl(name='illustration_%s_url' % identifier).value = "http://url5"
+#        browser.getControl(name='illustration_%s_url' % identifier).value = "http://url5"
         browser.getControl(name='illustration_%s_text' % identifier).value = 'url5'
         browser.getControl(name='form.actions.save_everything', index=0).click()       
         
-        self.assertEqual(browser.getControl(name='illustration_%s_url' % identifier).value, 'http://url5')
+#        self.assertEqual(browser.getControl(name='illustration_%s_url' % identifier).value, 'http://url5')
         self.assertEqual(browser.getControl(name='illustration_%s_text' % identifier).value , 'url5')
         
     def test_edit_religion(self):

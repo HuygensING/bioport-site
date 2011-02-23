@@ -4,9 +4,10 @@ import os
 import time    
 import app
 import grok
+import tempfile
 import logging
 from app import Batcher, RepositoryView,  RelationWrapper, ReferenceWrapper
-
+from bioport_repository.illustration import Illustration, CantDownloadImage
 from common import format_date, format_dates, format_number
 from names.common import from_ymd, to_ymd
 from names.name import Naam
@@ -16,6 +17,7 @@ from z3c.batching.batch import Batch
 from zope import schema
 from zope.interface import Interface
 from zope.session.interfaces import ISession
+from urllib2 import URLError
 
 import bioport_repository
 from bioport_repository.repository import Repository
@@ -1064,12 +1066,13 @@ class Persoon(app.Persoon, grok.EditForm, RepositoryView):
 #        to_remove = [] #list of states to remove
         illustrations = []
         for k in self.request.form.keys():
-            if k.startswith('illustration_') and k.endswith('url'):
+            if k.startswith('illustration_') and k.endswith('text'):
                 identifier = k.split('_')[1]
-                url = self.request.get('illustration_%s_url' % identifier)
-                text = self.request.get('illustration_%s_text' % identifier)
-                if url and text:
-	                illustrations.append((identifier, url, text))
+                if identifier != 'new': #we only want to add illustratiosn with the 'add' button, because of everything that can go wrong with downloading and such
+                    url = self.request.get('illustration_%s_url' % identifier)
+                    text = self.request.get('illustration_%s_text' % identifier)
+                    if url and text:
+                        illustrations.append((identifier, url, text))
         illustrations.sort()
         illustrations = [(url, text) for (id, url, text) in illustrations]
         self.bioport_biography._replace_figures(illustrations)
@@ -1080,9 +1083,9 @@ class Persoon(app.Persoon, grok.EditForm, RepositoryView):
         url = self.request.get('reference_%s_url' % identifier)
         text = self.request.get('reference_%s_text' % identifier)
         if url and text:
-	        self.bioport_biography.add_reference(uri=url, text = text)
-	        self.msg = 'added reference'
-	        self.save_biography(comment=self.msg)
+            self.bioport_biography.add_reference(uri=url, text = text)
+            self.msg = 'added reference'
+            self.save_biography(comment=self.msg)
     
     @grok.action('remove reference', name='remove_reference') 
     def remove_refenence(self):
@@ -1096,19 +1099,68 @@ class Persoon(app.Persoon, grok.EditForm, RepositoryView):
     @grok.action('voeg toe', name='add_illustration') 
     def add_illustration(self):
         identifier = 'new'
-        url = self.request.get('illustration_%s_url' % identifier)
+#        url = self.request.get('illustration_%s_url' % identifier)
         text = self.request.get('illustration_%s_text' % identifier)
+        illustration_file = self.request.get('illustration_file')
+        if not text:
+            self.msg = 'U heeft geen beschrijving van de illustratie ingevuld'
+            return
+        
+        if illustration_file:
+            tmpdir = tempfile.mkdtemp()
+            tmpfile = os.path.join(tmpdir, os.path.split(illustration_file.filename)[1])
+            fh = open(tmpfile, 'w')
+            fh.write(illustration_file.read())
+            fh.close()
+            url = 'file://%s' % tmpfile
+        else:
+            self.msg = 'U heeft geen bestand geselecteerd'
+            return
+        
         if url and text:
-	        self.bioport_biography.add_illustration(uri=url, text = text)
-	        self.msg = 'added illustration'
-	        self.save_biography(comment=self.msg)
+            #downlaod the illustation
+            try:
+                self._download_illustration(url)
+                self.bioport_biography.add_figure(uri=url, text = text)
+                self.msg = 'added illustration'
+                self.save_biography(comment=self.msg)
+            except URLError, error:
+                msg = 'Helaas lukte het niet een plaatje te downloaden van %s' % url
+                self.msg = msg
+            except CantDownloadImage:
+                msg = 'Dit is geen geschikt plaatje'
+                self.msg = msg
+            finally:
+                #cleanup our temporaryfile
+                os.remove(tmpfile)
+                os.removedirs(tmpdir)
+        
     
+    def _download_illustration(self,url):
+        prefix = 'bioport'
+        images_cache_local = self.repository().images_cache_local
+        images_cache_url = self.repository().images_cache_url
+        if (not url.startswith('http://')) and (not url.startswith('file://')):
+            #this is a relative url
+            url = '/'.join((os.path.dirname(self.source_url), url))
+            if not url.startswith('file://'):
+                url = 'file://' + url
+                
+        illustration = Illustration(
+            url=url, 
+            images_cache_local=images_cache_local,
+            images_cache_url=images_cache_url, 
+            prefix=prefix,
+            )
+                 
+        illustration.download()
+        return illustration
     @grok.action('remove illustration', name='remove_illustration') 
     def remove_illustration(self):
         index = self.request.get('illustration_index')
         if index and index.isdigit():
             index = int(index)
-            self.bioport_biography.remove_illustration(index=index) 
+            self.bioport_biography.remove_figure(index=index) 
             self.msg = 'removed illustrationreference' 
             self.save_biography(comment=self.msg)
             
