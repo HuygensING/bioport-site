@@ -9,8 +9,6 @@
 
 
 <p i18n:translate="contact_page_text">
-Wij ontvangen graag opmerkingen en reacties. Ook staan wij open voor correcties op de data. Daaraan zitten wel beperkingen, want – de naam zegt het al – we zijn een portaal: we kunnen alleen correcties aanbrengen in de ‘biografische kerngegevens’. Correcties worden alleen doorgevoerd als ze zijn onderbouwd met verwijzingen naar betrouwbare bronnen. Met klem verzoeken we u om geduld te hebben. De functionaliteit voor het verwerken van aanvullingen en correcties is nog in ontwikkeling.
-
 </p>
 <tal:block tal:replace="structure path:context/@@contactform" />
 

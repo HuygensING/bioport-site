@@ -126,6 +126,15 @@
       <grant role="bioport.Editor" principal="bioport.rens" />
  
  
+<!-- Eppo -->
+       <principal id="bioport.eppo"
+                 title="Eppo"
+                 login="eppo"
+                 password_manager="Plain Text"
+                 password="eppo123"
+                 />   
+      <grant role="bioport.Editor" principal="bioport.eppo" />
+ 
 <!-- Flora Gutierrez Rojas       -->
        <principal id="bioport.flora"
                  title="Flora"
