@@ -324,8 +324,8 @@ class Personen(grok.View,RepositoryView, Batcher):
         has_contradictions = self.request.form.get('has_contradictions', None)
         if has_contradictions == 'on':
             qry['has_contradictions'] = True
-        else:
-            qry['has_contradictions'] = False
+#        else:
+#            qry['has_contradictions'] = False
             
 #        except ValueError: 
 #            url = self.url('zoek') # 
@@ -334,6 +334,9 @@ class Personen(grok.View,RepositoryView, Batcher):
 #            url += '?' + urlencode(dict_of_strings)
 #            self.request.response.redirect(url)
 #            
+        #DEFAULT  (XXX this is a hack around a bug with large resultsets)
+        if not qry:
+            qry['beginletter'] = 'a' 
         persons = self.repository().get_persons_sequence(**qry)
         
         try:
