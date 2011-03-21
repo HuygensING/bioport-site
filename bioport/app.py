@@ -335,8 +335,9 @@ class Personen(grok.View,RepositoryView, Batcher):
 #            self.request.response.redirect(url)
 #            
         #DEFAULT  (XXX this is a hack around a bug with large resultsets)
-        if not qry:
-            qry['beginletter'] = 'a' 
+#XXX
+#        if not qry:
+#            qry['beginletter'] = 'a' 
         persons = self.repository().get_persons_sequence(**qry)
         
         try:
