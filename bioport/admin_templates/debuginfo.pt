@@ -3,11 +3,13 @@
 
 <div id="debug-info">
     <div tal:repeat="bio view/person/get_biographies">
-    <h2>Bron: 
+    <tt>
+    <h2>
+        <span tal:replace="bio/id" /> 
 	    <a tal:attributes="
 	       href python:bio.get_value('url_biografie'); 
 	       target python:bio.get_source().id" >
-		    <span tal:replace="python:bio.get_source().id"></span> - <span tal:replace="python:bio.get_source().description"></span>
+		    <span tal:replace="python:bio.get_source().id"></span>
 	    </a>
     </h2>
 
@@ -16,6 +18,7 @@
             <th>status</th>
 	        <td tal:content="python:view.person.status and view.repository().get_status_value(view.person.status)" ></td>
         </tr>
+        <div tal:condition="nothing">
         <tr>
             <th>id</th>
 	        <td><span tal:content="python:bio.get_value('local_id')" ></span>
@@ -121,6 +124,7 @@
             <th>opmerkingen</th>
             <td tal:content="python:view.person.remarks" ></td>
         </tr>
+        </div>
 	    <tr tal:condition="python:bio.record.timestamp">
 		    <th>laatst veranderd</th>
 		    <td tal:content="python:bio.record.timestamp" ></td>
@@ -130,6 +134,7 @@
             <td><pre tal:content="bio/to_string" /></td>
 	    </tr>
 	    </table>
+    </tt>
     </div>
 
     <form action="." tal:attributes="action request/URL" method="get">
