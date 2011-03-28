@@ -124,7 +124,7 @@ form {
      <b>identify automatically all pairs with:</b>
      <form>
      minimal score:
-        <input type="text" style="width:50pt" value="1.0" />
+        <input type="text" style="width:50pt" tal:attributes="value view/request/min_score | string:1.0" name="min_score" />
 	    <input   tal:replace="structure python:view.actions['form.actions.automatically_identify'].render()" />
      </form>
   </div>
