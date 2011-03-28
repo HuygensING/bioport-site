@@ -146,6 +146,7 @@ class Edit(grok.EditForm,RepositoryView):
         min_score = self.request.get('min_score', 1.0)
         min_score = float(min_score)
         self.repository().identify_persons(source_id=None, min_score=min_score)
+        self._redirect_with_msg('identified similiarty pairs with score >= %s' % min_score)
         
     @grok.action('Move remarks from person to biodes file', name='move_remarks')
     def move_remarks(self, **data): 

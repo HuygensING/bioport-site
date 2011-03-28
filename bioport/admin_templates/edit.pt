@@ -126,7 +126,6 @@ form {
      minimal score:
         <input type="text" style="width:50pt" value="1.0" />
 	    <input   tal:replace="structure python:view.actions['form.actions.automatically_identify'].render()" />
-     
      </form>
   </div>
   </td>
