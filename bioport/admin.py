@@ -116,14 +116,12 @@ class Edit(grok.EditForm,RepositoryView):
               (processed, total, elapsed_time)
         self._redirect_with_msg(msg)
         
-        
     @grok.action(u"Save Settings", name="edit_settings")
     def edit_admin(self, **data):
         self.applyData(self.context, **data)
         repository = self.repository()
         #repository.db.metadata.create_all()
         #self.redirect(self.url(self))
-   
     
     @grok.action('Refresh the similarity cache', name='refresh_similarity_cache')
     def refresh_similarity_cache(self, **data): 
@@ -143,6 +141,11 @@ class Edit(grok.EditForm,RepositoryView):
 #    def reset_database(self, **data):
 #        self.repository().db.metadata.create_all()
         
+    @grok.action('Automatically Identify', name='automatically_identify')
+    def automatically_identify(self, **data):
+        min_score = self.request.get('min_score', 1.0)
+        min_score = float(min_score)
+        self.repository().identify_persons(source_id=None, min_score=min_score)
         
     @grok.action('Move remarks from person to biodes file', name='move_remarks')
     def move_remarks(self, **data): 

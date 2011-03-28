@@ -687,10 +687,10 @@ class Zoek(grok.View, RepositoryView):
         return get_died_description(self.request)
     def get_alive_description(self):
         return get_alive_description(self.request)
-
-class Zoek_New(Zoek):
-    """temporary form for staging new functionality"""
-    pass
+#
+#class Zoek_New(Zoek):
+#    """temporary form for staging new functionality"""
+#    pass
 
 class Zoek_places(grok.View, RepositoryView):
     """The JSON used in the search form of the main site.
