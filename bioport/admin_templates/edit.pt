@@ -112,6 +112,7 @@ form {
         source: <select name="source_id">
         <option value="">all sources</option>
             <option tal:repeat="source view/get_sources" tal:attributes="value source/id" tal:content="source/id" /></select> 
+          start at <input type="text" name="start" style="width:50pt"/> [some integer]
          <br>   
 	    delete existing data <input type="checkbox" name="refresh" >
          <br>   
