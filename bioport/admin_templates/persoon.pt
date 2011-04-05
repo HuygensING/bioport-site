@@ -1001,8 +1001,6 @@ img {
 			 <a tal:attributes="
        href python:bio.get_value('url_biografie'); 
        target python:bio.get_source().id" >[link]</a>
-      
-      
 			 <a tal:attributes="href python:view.url(data={'form.actions.detach_biography':'', 'biography_id':bio.id, 'bioport_id':view.bioport_id})" title="detach biography">
 			     [koppel deze biografie los van deze persoon] 
 			 </a>

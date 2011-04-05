@@ -18,6 +18,7 @@ class Versions(grok.EditForm, RepositoryView):
             time_from = self.request.get('time_from'),
             time_to = self.request.get("time_to"),
             bioport_id = self.request.get("bioport_id"),
+            amount=self.request.get('amount'),
             )
 
     @grok.action('Undo selected changes', name='undo_selected_changes')
