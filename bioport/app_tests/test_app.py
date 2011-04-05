@@ -79,14 +79,16 @@ class EnglishUrlTest(FunctionalTestCase):
     def test_english_zoek(self):
         self.browser.open('http://localhost/app/zoek')
 #      
-#class SearchTest(FunctionalTestCase):
-#    def setUp(self):
-#        self.browser = Browser()
-#        self.browser.handleErrors = False
-#    
-#    def test_search_form(self):
-#        self.browser.open('http://localhost/app/zoek')
+class SearchTest(FunctionalTestCase):
+    
+    def test_search_form(self):
+        browser = self.browser
+        browser.open('http://localhost/app/zoek')
         
+        form = browser.getForm(index=1)
+        form.getControl(name='geboorte_fuzzy_text').value = u'na 1800'
+        form.submit()
+
 def test_suite():
     test_suite = unittest.TestSuite()
     tests = [GoogleSitemapTest,

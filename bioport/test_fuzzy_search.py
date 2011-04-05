@@ -1,6 +1,6 @@
 
 import unittest
-from bioport.fuzzy_search import get_search_query, make_description
+from fuzzy_search import get_search_query, make_description
 
 class FuzzySearchTest(unittest.TestCase):
     def run_test(self, query_text, expected_query):
@@ -65,7 +65,6 @@ class FuzzySearchTest(unittest.TestCase):
         expected_result = {'year_min': 1978}
         self.run_test(' after 1978 ', expected_result)
         self.run_test(' na 1978 ', expected_result)
-        self.run_test(' na 1970', expected_result)
 
     def test_single_year(self):
         expected_result = {'year_min': 1920, 'year_max': 1920}
