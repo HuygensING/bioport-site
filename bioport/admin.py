@@ -1220,7 +1220,7 @@ class Persoon(app.Persoon, grok.EditForm, RepositoryView):
         self.msg = ''
         for illustration in self.merged_biography.get_illustrations():
             illustration.download()
-            self.msg += 'downloaded %s\n' % illustration
+            self.msg += u'downloaded %s\n' % illustration
         
     @grok.action('recompute similarities for this person', name="compute_similarity")
     def compute_similarity(self, **data):

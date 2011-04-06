@@ -265,6 +265,7 @@ class Personen(grok.View,RepositoryView, Batcher):
             'geslacht',
 #        has_illustrations=None, #boolean: does this person have illustrations?
 #        is_identified=None,
+            'hide_invisible',
             'order_by', 
 #            'search_family_name',
 #            'search_family_name_exact',
@@ -286,6 +287,8 @@ class Personen(grok.View,RepositoryView, Batcher):
              ]:
             if k in self.request.keys():
                 qry[k] = self.request[k]
+            if k in args:
+                qry[k] = args[k]
         
         current_language = IUserPreferredLanguages(self.request).getPreferredLanguages()[0]
        
