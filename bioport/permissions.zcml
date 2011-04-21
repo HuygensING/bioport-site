@@ -59,6 +59,18 @@
                  />
 
       <grant role="bioport.Editor" principal="bioport.annemarie" />
+     
+     
+ <!-- FERNIE -->
+      
+      <principal id="bioport.fernie"
+                 title="Fernie"
+                 login="fernie"
+                 password_manager="Plain Text"
+                 password="fernie123"
+                 />
+
+      <grant role="bioport.Editor" principal="bioport.fernie" />
 
              
        <principal id="bioport.jeltje"
@@ -96,6 +108,16 @@
       <grant role="bioport.Editor" principal="bioport.bram" />
       <grant role="bioport.Manager" principal="bioport.bram" />
  
+      
+<!--  Rik Hoekstra       -->
+       <principal id="bioport.rik"
+                 title="Rik"
+                 login="rik"
+                 password_manager="Plain Text"
+                 password="rik123"
+                 />   
+      <grant role="bioport.Editor" principal="bioport.rik" />
+      <grant role="bioport.Manager" principal="bioport.rik" />
  
 <!-- Laurens Dokter       -->
        <principal id="bioport.laurens"
@@ -182,7 +204,7 @@
       <grant role="bioport.Editor" principal="bioport.ineke" />
       
  
-<!-- Anna HAas -->
+<!-- Anna Haas -->
        <principal id="bioport.anna"
                  title="Anna"
                  login="anna"
