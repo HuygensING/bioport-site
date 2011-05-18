@@ -2,7 +2,7 @@
 
 import os
 import time    
-import app
+from bioport import app, personen
 import grok
 import tempfile
 import logging
@@ -294,7 +294,7 @@ class Biography(grok.View):
     grok.require('bioport.Edit')
 
 
-class Persons(app.Personen,RepositoryView):
+class Persons(personen.Personen,RepositoryView):
     grok.require('bioport.Edit')
     @grok.action('zoek', name="search_persons")
 
@@ -302,7 +302,7 @@ class Persons(app.Personen,RepositoryView):
         self.persons = self.get_persons()
 
     def get_persons(self):
-        return app.Personen.get_persons(self, hide_invisible=False)
+        return personen.Personen.get_persons(self, hide_invisible=False)
 
         
 class Source(grok.EditForm,RepositoryView):

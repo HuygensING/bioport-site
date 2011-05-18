@@ -39,14 +39,20 @@ class PersoonXmlTest(FunctionalTestCase):
             browser.open(url)
             self.assertEqual(browser.headers.type, 'text/xml')
 
-    def test_xml_index(self):
+    def test_biodes_index(self):
         browser = self.browser
-        url = self.base_url + '/personenxml/'
+        url = self.base_url + '/personen/biodes'
         browser.open(url)
+        browser.open(url + '?detail=list')
         bioport_ids = self.app.repository(user='unittest user').get_bioport_ids()
         for bioid in bioport_ids:
             self.failUnless('persoon/xml/' + bioid in browser.contents)
-
+    
+    def test_json_index(self):
+        browser = self.browser
+        url = self.base_url + '/personen/json'
+        browser.open(url )
+ 
 
 class AppTest(FunctionalTestCase):
 

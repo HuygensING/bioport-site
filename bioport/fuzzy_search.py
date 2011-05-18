@@ -20,6 +20,7 @@ import re
 
 
 def get_search_query(original_search_text, lang='en'):
+    
     # Strip out redundant spaces
     search_text = original_search_text.strip()
     search_text = re.sub(' +', ' ', search_text)
@@ -208,7 +209,7 @@ def en_to_nl_for_field(thedict, searchtype):
     {'month_max': 1, 'year_min': 1800, 'year_max': 1900}
     and will be converted (assuming searchtype='sterf') to
     {'sterfmaand_max': 1, 'sterfjaar_min': 1800, 'sterfjaar_max': 1900}
-    searchtype should be either 'sterf' or 'geboorten'
+    searchtype should be either 'sterf' or 'geboorte'
     """
     return dict([
     (searchtype + name.replace('year', 'jaar').replace('month', 'maand')

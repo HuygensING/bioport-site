@@ -1,8 +1,8 @@
 <html metal:use-macro="context/@@main_template/macros/master" i18n:domain="bioport">
     <meta metal:fill-slot="description" name="Description" 
-        tal:attributes="content string:Biografieen van ${view/biography/title}" />
+        tal:attributes="content string:Biografie van ${view/biography/title}" />
     <meta metal:fill-slot="keywords" name="Keywords" 
-        tal:attributes="content string:biografie ${view/biography/title}" />
+        tal:attributes="content python:' '.join([x.guess_normal_form2() for x in view.biography.get_names()] + ['biografie', 'biografisch portaal'])" />
     <title metal:fill-slot="head_title"
         tal:content="structure python:view.biography.title()" ></title> 
     <div metal:fill-slot="content"
@@ -229,7 +229,10 @@
         <div class="adminDebugLink" >
             <a tal:attributes="href python:view.application_url() + '/admin/debuginfo?bioport_id=%s' % person_id">debug</a>
         </div>
-    </div>
+        <div class="adminDebugLink" >
+            <a tal:attributes="href python:view.application_url() + '/persoon/xml/%s' % person_id">XML</a>
+        </div>
+     </div>
 
     <div class="belowbios" tal:condition="nothing"
          tal:content="structure provider:belowbios" />
