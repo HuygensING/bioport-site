@@ -129,7 +129,7 @@
                           i18n:translate="" /></ul>
             </td>
         </tr>
-        <tr tal:condition="python:view.biography.get_value('religion')">
+        <tr tal:condition="python:0 and view.biography.get_value('religion')">
             <th i18n:translate="religion">Religie</th>
             <td tal:content="python:view.biography.get_value('religion')">
             </td>
