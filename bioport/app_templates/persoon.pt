@@ -131,7 +131,7 @@
         </tr>
         <tr tal:condition="python:view.biography.get_value('religion')">
             <th i18n:translate="religion">Religie</th>
-            <td tal:content="view.biography.get_value('religion')">
+            <td tal:content="python:view.biography.get_value('religion')">
             </td>
         </tr>
          <tr tal:condition="python:False and view.biography.get_value('beroep')">
