@@ -129,7 +129,12 @@
                           i18n:translate="" /></ul>
             </td>
         </tr>
-        <tr tal:condition="python:False and view.biography.get_value('beroep')">
+        <tr tal:condition="python:view.biography.get_value('religion')">
+            <th i18n:translate="religion">Religie</th>
+            <td tal:content="view.biography.get_value('religion')">
+            </td>
+        </tr>
+         <tr tal:condition="python:False and view.biography.get_value('beroep')">
             <th>Beroepen en functies</th>
             <td>
             <ul><li tal:repeat="beroep python:view.biography.get_value('beroep')" 

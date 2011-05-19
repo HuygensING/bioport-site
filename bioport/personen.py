@@ -67,11 +67,7 @@ class _Personen(RepositoryView):
        
         request = self.request 
         form = request.form
-        
-        size = form.get('size')
-        if not size:
-            qry['size'] = 100
-            
+       
         search_name = form.get('search_name') 
         if form.get('search_name_exact') and not search_name.startswith('"'):
             #search for the exact phrase
@@ -116,43 +112,6 @@ class _Personen(RepositoryView):
         persons = self.repository().get_persons_sequence(**qry)
         return persons
 
-def parse_api_args(qry):
-    """
-    if qry['birth_min'] is defined, return a dictionary that can be passed to the get_persons fucntion of the repository
-    same for 'birth_max', 'death_min', 'death_max'
-    """
-    result = {}
-    if qry.get('birth_min'):
-        y, m,  d = to_ymd(qry['birth_min'])
-        result['geboortejaar_min']  = y   
-        result['geboortemaand_min']  = m   
-        result['geboortedag_min']  = d   
-        
-    if qry.get('birth_max'):
-        y, m,  d = to_ymd(qry['birth_max'])
-        result['geboortejaar_max']  = y   
-        result['geboortemaand_max']  = m   
-        result['geboortedag_max']  = d   
-    
-    if qry.get('death_min'):
-        y, m,  d = to_ymd(qry['death_min'])
-        result['sterfjaar_min']  = y   
-        result['sterfmaand_min']  = m   
-        result['sterfjaar_min']  = d   
-    if qry.get('death_max'):
-        y, m,  d = to_ymd(qry['death_max'])
-        result['sterfjaar_max']  = y   
-        result['sterfmaand_max']  = m   
-        result['sterfdag_max']  = d   
-    
-    if qry.get('birth_place'):
-        result['geboorteplaats'] = qry['birth_place']
-    if qry.get('death_place'):
-        result['sterfplaats'] = qry['death_place']
-    if qry.get('sex'):
-        qry['geslacht'] = qry.get('sex')
-    return result
-        
 class Personen(grok.View, _Personen, Batcher):
     def publishTraverse(self, request, name):
        if name == 'biodes':
@@ -316,6 +275,13 @@ class Personen(grok.View, _Personen, Batcher):
     
 
 class PersonenXML(grok.View, _Personen):
+    def get_persons(self, **args):
+        form = self.request.form
+        size = form.get('size')
+        if not size:
+            args['size'] = 100
+        return _Personen.get_persons(self, **args) 
+    
     def render(self):
         
         detail = self.request.get('detail', 'full')
@@ -349,9 +315,7 @@ class PersonenXML(grok.View, _Personen):
         self.request.response.setHeader('Content-Type','text/xml; charset=utf-8')
         return ''.join(out)
 
-
-
-class PersonenJSON(grok.View, _Personen):
+class PersonenJSON(PersonenXML):
     def render(self):
         persons = self.get_persons()
         out = []
@@ -360,4 +324,41 @@ class PersonenJSON(grok.View, _Personen):
                 out.append(person.get_merged_biography().to_dict())
         self.request.response.setHeader('Content-Type','application/json; charset=utf-8')
         return simplejson.dumps(out)
+ 
+def parse_api_args(qry):
+    """
+    if qry['birth_min'] is defined, return a dictionary that can be passed to the get_persons fucntion of the repository
+    same for 'birth_max', 'death_min', 'death_max'
+    """
+    result = {}
+    if qry.get('birth_min'):
+        y, m,  d = to_ymd(qry['birth_min'])
+        result['geboortejaar_min']  = y   
+        result['geboortemaand_min']  = m   
+        result['geboortedag_min']  = d   
+        
+    if qry.get('birth_max'):
+        y, m,  d = to_ymd(qry['birth_max'])
+        result['geboortejaar_max']  = y   
+        result['geboortemaand_max']  = m   
+        result['geboortedag_max']  = d   
     
+    if qry.get('death_min'):
+        y, m,  d = to_ymd(qry['death_min'])
+        result['sterfjaar_min']  = y   
+        result['sterfmaand_min']  = m   
+        result['sterfjaar_min']  = d   
+    if qry.get('death_max'):
+        y, m,  d = to_ymd(qry['death_max'])
+        result['sterfjaar_max']  = y   
+        result['sterfmaand_max']  = m   
+        result['sterfdag_max']  = d   
+    
+    if qry.get('birth_place'):
+        result['geboorteplaats'] = qry['birth_place']
+    if qry.get('death_place'):
+        result['sterfplaats'] = qry['death_place']
+    if qry.get('sex'):
+        qry['geslacht'] = qry.get('sex')
+    return result
+           
