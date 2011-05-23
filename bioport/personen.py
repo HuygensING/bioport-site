@@ -40,6 +40,7 @@ class _Personen(RepositoryView):
 #        is_identified=None,
             'hide_invisible',
             'order_by', 
+            'religion',
 #            'search_family_name',
 #            'search_family_name_exact',
             'search_term',

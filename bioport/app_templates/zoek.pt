@@ -275,6 +275,29 @@ For example
     </td>
 </tr>
 <tr>
+    <th i18n:translate="religion">religie</th>
+    <td>
+        <select name="religion">
+            <option />
+            <option tal:repeat="religion python:view.repository().get_religion_values()"
+                tal:attributes="value python:religion[0];
+                    selected python:str(religion[0]) == request.get('religion');
+                "
+                tal:content="python:religion[1]"
+                i18n:translate="" />
+        </select>
+        <a class="tooltip_button toggle"
+            Onclick="jQuery('#tip_religion').toggle(200)">[?]</a>
+        <div id="tip_religion" class="tooltip" i18n:translate="religion_help_text">
+            De ‘reden van roem’ van mensen in een biografisch naslagwerk is zeer divers,
+            en mensen kunnen bovendien om meer dan één reden beroemd zijn.
+            Voorlopig gebruiken we een grofmazig rubriekensysteem om hen in te delen in diverse levenssferen.
+           <br />
+           Voor meer informatie, zie <a href="faq#religion" i18n:translate="FAQs" i18n:name="faq">de veelgestelde vragen</a>.
+        </div>
+    </td>
+</tr>
+<<tr>
     <th i18n:translate="source">bron</th>
     <td>
     <select name="source_id" style="width:20em">
