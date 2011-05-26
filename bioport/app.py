@@ -385,7 +385,7 @@ class Persoon(BioPortIdTraverser, grok.View, RepositoryView):
     def get_religion(self):
         el = self.bioport_biography.get_religion()
         if el is not None:
-            return ReligionWrapper(el)
+            return ReligionWrapper(el, self.repository())
         
     def get_categories(self):
         return [StateWrapper(x) for x in self.bioport_biography.get_states(type='category')]
@@ -800,8 +800,15 @@ class IllustrationWrapper:
         self.index = index
 
 class ReligionWrapper:
-    def __init__(self, el):    
+    def __init__(self, el, repo=None ):    
+        self.repo = repo
         self.idno = el.get('idno')
+    
+    @property
+    def name(self, repo=None):
+        if repo:
+            self.repo = repo
+        return dict(self.repo.get_religion_values())[int(self.idno)]
         
      
 class StateWrapper:
