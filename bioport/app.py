@@ -806,9 +806,10 @@ class ReligionWrapper:
     
     @property
     def name(self, repo=None):
-        if repo:
-            self.repo = repo
-        return dict(self.repo.get_religion_values())[int(self.idno)]
+        if self.idno:
+	        if repo:
+	            self.repo = repo
+	        return dict(self.repo.get_religion_values())[int(self.idno)]
         
      
 class StateWrapper:
