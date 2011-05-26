@@ -130,7 +130,7 @@
             </td>
         </tr>
         <tr tal:condition="python:view.get_religion() is not None and view.get_religion().idno">
-            <th i18n:translate="religion">Religie</th>
+            <th i18n:translate="religion">religie</th>
             <td tal:content="python:view.get_religion().name">
             </td>
         </tr>

@@ -225,6 +225,15 @@ class Personen(grok.View, _Personen, Batcher):
             result += ' %s <em>%s</em>' % (
                 translate(_("of_the_category"), target_language=current_language), #uit de rubriek
                              category_name)
+        if request.get('religion'):
+            religion = dict(repository.get_religion_values()).get(int(request.get('religion')))
+            if religion:
+#                religion = religion[1]
+                religion = translate(_(religion),
+                                          target_language=current_language)
+                result += ' %s <em>%s</em>' % (
+                    translate(_("of_the_religion"), target_language=current_language), #uit de rubriek
+                             religion)
         
         if request.get('bioport_id'):
             result += ' %s <em>%s</em>' % (translate(_("with_bioport_id"), target_language=current_language), request.get('bioport_id'))
@@ -293,25 +302,25 @@ class PersonenXML(grok.View, _Personen):
         persons = self.get_persons()
         if detail == 'full':
             if len(persons):
-	            for person in  persons:
-	                out.append(person.get_merged_biography().to_string())
+                for person in  persons:
+                    out.append(person.get_merged_biography().to_string())
         else:
             if len(persons):
-	            for person in  persons:
-	                person_id = person.record.bioport_id
-	                timestamp = person.record.timestamp
-	                name = person.record.naam
-	                if name:
-	                    if not type(name) in (unicode,):
-	                        name = name.decode('latin1')
-	                    
-	                    if '&' in name: 
-	                        name = name.replace('&', '&amp;')
-	    #                    name = unescape(name).encode('utf8')
-	                url = self.url('persoon') + '/xml/' + person_id
-	                changed = timestamp.isoformat()
-	                out.append(u'<a href="%(url)s" last_changed="%(changed)s">%(name)s</a>\n'
-	                        % dict(name=name, url=url, changed=changed) )
+                for person in  persons:
+                    person_id = person.record.bioport_id
+                    timestamp = person.record.timestamp
+                    name = person.record.naam
+                    if name:
+                        if not type(name) in (unicode,):
+                            name = name.decode('latin1')
+                        
+                        if '&' in name: 
+                            name = name.replace('&', '&amp;')
+        #                    name = unescape(name).encode('utf8')
+                    url = self.url('persoon') + '/xml/' + person_id
+                    changed = timestamp.isoformat()
+                    out.append(u'<a href="%(url)s" last_changed="%(changed)s">%(name)s</a>\n'
+                            % dict(name=name, url=url, changed=changed) )
         out.append('</list>\n')
         self.request.response.setHeader('Content-Type','text/xml; charset=utf-8')
         return ''.join(out)

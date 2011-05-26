@@ -286,11 +286,6 @@ For example
                 tal:content="python:religion[1]"
                 i18n:translate="" />
         </select>
-        <a class="tooltip_button toggle"
-            Onclick="jQuery('#tip_religion').toggle(200)">[?]</a>
-        <div id="tip_religion" class="tooltip" i18n:translate="religion_help_text">
-        ...
-        </div>
     </td>
 </tr>
 <tr>
