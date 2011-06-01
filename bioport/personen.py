@@ -123,7 +123,13 @@ class Personen(grok.View, _Personen, Batcher):
        return super(Personen, self).publishTraverse(request, name)
    
     def get_persons(self, **args):
+        """get persons batch"""
+        #ignore the start and size parameters when querying the database
+        #(they are used for batching, but we need the whole result set for navigating)
+        args['start'] = None
+        args['size'] = None
         persons = _Personen.get_persons(self, **args)
+        
         try:
             batch = Batch(persons,  start=self.start, size=self.size)
         except IndexError:
