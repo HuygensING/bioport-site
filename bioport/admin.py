@@ -127,7 +127,7 @@ class Edit(grok.EditForm,RepositoryView):
     def refresh_similarity_cache(self, **data): 
         refresh = bool(self.request.get('refresh'))
         sid = self.request.get('source_id')
-        self.repository().db.fill_similarity_cache(refresh=refresh, source_id=sid, start=request.get('start'))
+        self.repository().db.fill_similarity_cache(refresh=refresh, source_id=sid, start=self.request.get('start'))
         self._redirect_with_msg('finished')
         
     @grok.action('Assign category to source', name='assign_category_to_source')
