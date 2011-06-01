@@ -53,6 +53,23 @@
         </td>
     </tr>
 
+    <tr>
+        <th>default status</th>
+        <td>
+            <select name="default_status">
+                <option tal:repeat="option view/get_status_values"
+                    tal:attributes="
+	                    value python:option[0];
+	                    selected python:str(option[0]) == str(source.default_status);
+                    "
+                    tal:content="python:option[1]">
+                </option>
+                
+            </select> 
+            (if a biography is imported for the first time, it will get this status)
+        </td>
+    </tr>
+
 
 </table>
 
