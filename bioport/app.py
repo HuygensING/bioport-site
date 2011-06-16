@@ -394,16 +394,24 @@ class Persoon(BioPortIdTraverser, grok.View, RepositoryView):
         return [StateWrapper(state) for state in self.bioport_biography.get_states() 
                 if state.get('type') not in ['floruit', 'category', 'religion']]
     
+
+
+
     def get_biographies(self):
         bios = self.person.get_biographies()
-        bios = [bio for bio in bios if bio.source_id != 'bioport' and bio.source_id != 'portraits']
+        bios = [bio for bio in bios if bio.source_id != 'bioport' and bio.source_id != 'portraits' and bio.source_id != 'na']
         return bios
     
     def get_portraits(self):
         bios = self.person.get_biographies()
         bios = [bio for bio in bios if bio.source_id == 'portraits']
         return bios
-        
+
+    def get_archives(self):
+        bios = self.person.get_biographies()
+        bios = [bio for bio in bios if bio.source_id == 'na']
+        return bios
+    
     def maanden(self):
         return maanden
         

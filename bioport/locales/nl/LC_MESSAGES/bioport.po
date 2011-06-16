@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Thu May 26 14:59:53 2011\n"
+"POT-Creation-Date: Thu Jun 16 14:53:48 2011\n"
 "PO-Revision-Date: 2011-05-26 15:05+0100\n"
 "Last-Translator: jelle <jelle@gerbrandy.com>\n"
 "Language-Team: Italian\n"
@@ -24,35 +24,53 @@ msgstr ""
 "Generated-By: zope/app/locales/extract.py\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: bioport/app.py:354
-#: bioport/personen.py:166
+#: bioport/admin_templates/edit.pt:47 bioport/admin_templates/edit.pt:97
+#: bioport/app_templates/zoek.pt:259 bioport/app_templates/zoek.pt:282
+#: bioport/contact_templates/bare_edit_form.pt:4
+#: bioport/contact_templates/bare_edit_form.pt:12
+#: bioport/contact_templates/bare_edit_form.pt:31
+#: bioport/contact_templates/bare_edit_form.pt:37
+msgid "${DYNAMIC_CONTENT}"
+msgstr ""
+
+#. Default: "sekse"
+#: bioport/admin_templates/persons.pt:70 bioport/app_templates/zoek.pt:239
+msgid "gender"
+msgstr ""
+
+#: bioport/admin_templates/persons.pt:73 bioport/app_templates/zoek.pt:243
+msgid "man"
+msgstr ""
+
+#: bioport/admin_templates/persons.pt:77 bioport/app_templates/zoek.pt:247
+msgid "vrouw"
+msgstr ""
+
+#: bioport/app.py:354 bioport/personen.py:172
 msgid "between"
 msgstr "tussen"
 
-#: bioport/app.py:355
-#: bioport/personen.py:167
+#: bioport/app.py:355 bioport/personen.py:173
 msgid "and"
 msgstr "en"
 
-#: bioport/app.py:356
-#: bioport/personen.py:168
+#: bioport/app.py:356 bioport/personen.py:174
 msgid "after"
 msgstr "na"
 
-#: bioport/app.py:357
-#: bioport/personen.py:169
+#: bioport/app.py:357 bioport/personen.py:175
 msgid "before"
 msgstr "voor"
 
-#: bioport/app.py:425
+#: bioport/app.py:433
 msgid "Unable to parse birth date. Please rephrase it"
 msgstr ""
 
-#: bioport/app.py:437
+#: bioport/app.py:445
 msgid "Unable to parse death date. Please rephrase it."
 msgstr ""
 
-#: bioport/app.py:449
+#: bioport/app.py:457
 msgid "Unable to parse alive date. Please rephrase it."
 msgstr ""
 
@@ -97,8 +115,12 @@ msgid "We are sorry, but that page does not exist"
 msgstr "Het spijt ons, maar deze pagina bestaat niet..."
 
 #: bioport/app_templates/bioportnotfound.pt:4
-msgid "Please double check the web address or use the search function on this page to find what you are looking for."
-msgstr "Controleer het web-adres of gebruik de zoekfunctie op deze pagina om te vinden wat u zoekt."
+msgid ""
+"Please double check the web address or use the search function on this page "
+"to find what you are looking for."
+msgstr ""
+"Controleer het web-adres of gebruik de zoekfunctie op deze pagina om te "
+"vinden wat u zoekt."
 
 #. Default: "Op ${today_date} gestorven"
 #: bioport/app_templates/birthdays.pt:12
@@ -135,7 +157,11 @@ msgstr ""
 #. Default: "<hr /> <h3 class=\"textOnly\">Deelnemers</h3> <span>Deelnemers aan het Biografisch Portaal van Nederland zijn: </span> <a href=\"http://www.inghist.nl\">Instituut voor Nederlandse Geschiedenis</a>, <a href=\"http://www.huygensinstituut.knaw.nl\">Huygens Instituut</a>, <a href=\"http://www.iisg.nl\">Internationaal Instituut voor Sociale Geschiedenis</a>, <a href=\"http://biografieinstituut.ub.rug.nl/\">Biografie Instituut</a>, <a href=\"http://www.cbg.nl/\">Centraal Bureau voor Genealogie</a>, <a href=\"http://www.dbnl.org/\">Digitale Bibliotheek voor de Nederlandse Letteren</a>, <a href=\"http://www.uu.nl/NL/faculteiten/geesteswetenschappen/Onderzoek/onderzoekinstituten/ogc/Pages/default.aspx\">Onderzoekscentrum voor Geschiedenis en Cultuur (UU)</a>, <a href=\"http://www.parlementairdocumentatiecentrum.nl/\">Parlementair Documentatie Centrum</a>, <a href=\"http://website.rkd.nl/\">Rijksbureau voor Kunsthistorische Documentatie</a>, <a href=\"http://dans.knaw.nl/nl/\">Data Archiving and Networked Services</a>. Het project werd mede mogelijk gemaakt door een startsubsidie van <a href=\"http://www.nwo.nl/\">NWO</a> en subsidies van het <a href=\"http://www.cultuurfonds.nl/\">Prins Bernhard Cultuurfonds</a> en <a href=\"http://www.senternovem.nl/\">SenterNovem</a> ('Digitaliseren met beleid' / OCW)."
 #: bioport/app_templates/index.pt:70
 msgid "credits_paragraph"
-msgstr "Het Biografisch Portaal is een samenwerkingsverband van diverse cultuurwetenschappelijke instellingen (zie onder <a href=\"./about/instellingen\">project</a>). De site wordt gehost door het Huygens Instituut voor Nederlandse geschiedenis."
+msgstr ""
+"Het Biografisch Portaal is een samenwerkingsverband van diverse "
+"cultuurwetenschappelijke instellingen (zie onder <a href=\"./about/"
+"instellingen\">project</a>). De site wordt gehost door het Huygens Instituut "
+"voor Nederlandse geschiedenis."
 
 #. Default: "Biographical Portal - Instituut voor Nederlandse Geschiedenis"
 #: bioport/app_templates/main_template.pt:13
@@ -234,7 +260,7 @@ msgstr "alternatieve namen"
 msgid "categories"
 msgstr "rubriek(en)"
 
-#. Default: "levensbeschrijving(en)"
+#. Default: "Levensbeschrijving(en)"
 #: bioport/app_templates/persoon.pt:180
 msgid "Biographies"
 msgstr "levensbeschrijving(en)"
@@ -253,8 +279,12 @@ msgstr "door"
 msgid "meer..."
 msgstr ""
 
-#. Default: "Portret(ten)"
 #: bioport/app_templates/persoon.pt:224
+msgid "Archives"
+msgstr "Archieven"
+
+#. Default: "Portret(ten)"
+#: bioport/app_templates/persoon.pt:232
 msgid "Portraits"
 msgstr "Portretten"
 
@@ -269,12 +299,42 @@ msgstr "begraven"
 #. Default: "e.g. <a onclick=\"jQuery(&quot;input[name='geboorte_fuzzy_text']&quot;).attr('value', 'may 1650 to september 1665')\">may 1650 to september 1655</a>."
 #: bioport/app_templates/zoek.pt:110
 msgid "born_help_text_example"
-msgstr "bijv. <a OnClick=\"jQuery(&quot;input[name='geboorte_fuzzy_text']&quot;).attr('value', 'maart 1650 tot september 1665')\">maart 1650 tot 1655</a>."
+msgstr ""
+"bijv. <a OnClick=\"jQuery(&quot;input[name='geboorte_fuzzy_text']&quot;).attr"
+"('value', 'maart 1650 tot september 1665')\">maart 1650 tot 1655</a>."
 
 #. Default: "<ul> <li> In the fields 'born', 'died', and 'alive' you can seach for a certain day (for example <a onclick=\"jQuery(&quot;input[name='geboorte_fuzzy_text']&quot;).attr('value', '22 april')\">22 april</a>) or a complete date (for example <a onclick=\"jQuery(&quot;input[name='geboorte_fuzzy_text']&quot;).attr('value', '22 april 1734')\">22 april 1734</a> ). You can also only use numbers ( <a onclick=\"jQuery(&quot;input[name='geboorte_fuzzy_text']&quot;).attr('value', '22 4 1734')\">22 4 1734</a> = 22 april 1734).</li> <li> The fields can also be used to determine a time period. For example: <a onclick=\"jQuery(&quot;input[name='geboorte_fuzzy_text']&quot;).attr('value', 'May 1945')\">May 1945</a>, <a onclick=\"jQuery(&quot;input[name='geboorte_fuzzy_text']&quot;).attr('value', 'after 1500')\">after 1500</a> , <a onclick=\"jQuery(&quot;input[name='geboorte_fuzzy_text']&quot;).attr('value', 'before 1650')\">before 1650</a>, or <a onclick=\"jQuery(&quot;input[name='geboorte_fuzzy_text']&quot;).attr('value', 'between 1750 and 1760')\">between 1750 and 1760</a>.</li> <li> For those that are interesed in Astrology: a search for people born <a onclick=\"jQuery(&quot;input[name='geboorte_fuzzy_text']&quot;).attr('value', 'between 22 december and 20 january')\">between 22 december and 20 january</a> results in a list of all Capricorns.</li> <li> You can use the search fields 'born', 'died' and 'alive' in combination with other search fields as well. If, for example, you are search for writing women in the 19th Century, you could select 'born after 1770' and 'died before 1900', sex: 'female' and category: 'Literature'.</li> <li> For selections of people who were alive during a certain period, you can use the field 'alive'. For example <a onclick=\"jQuery(&quot;input[name='levend_fuzzy_text']&quot;).attr('value', 'between 1940 and 1945')\">between 1940 and 1945</a>.</li> </ul>"
 #: bioport/app_templates/zoek.pt:117
 msgid "born_died_help_text"
-msgstr "Er zijn verschillende manieren om op datum of tijdvak te zoeken: <ul><li>In de zoekvelden ‘geboren’ en ‘gestorven’ en 'levend' kunt u zoeken op een exacte dag (bijvoorbeeld:  <a OnClick=\"jQuery(&quot;input[name='geboorte_fuzzy_text']&quot;).attr('value', '22 april')\">22 april</a> ) of datum (bijvoorbeeld:  <a OnClick=\"jQuery(&quot;input[name='geboorte_fuzzy_text']&quot;).attr('value', '22 april 1734')\">22 april 1734</a> ). U mag ook alleen cijfers gebruiken ( <a OnClick=\"jQuery(&quot;input[name='geboorte_fuzzy_text']&quot;).attr('value', '22 4 1734')\">22 4 1734</a> = 22 april 1734). <li>De zoekvelden ‘geboren’ en ‘gestorven’ zijn ook te gebruiken om een tijdvak af te bakenen. Bijvoorbeeld: <a OnClick=\"jQuery(&quot;input[name='geboorte_fuzzy_text']&quot;).attr('value', 'mei 1945')\">mei 1945</a>,  <a OnClick=\"jQuery(&quot;input[name='geboorte_fuzzy_text']&quot;).attr('value', 'na 1500')\">na 1500</a> , <a OnClick=\"jQuery(&quot;input[name='geboorte_fuzzy_text']&quot;).attr('value', 'voor 1650')\">voor 1650</a>, of <a OnClick=\"jQuery(&quot;input[name='geboorte_fuzzy_text']&quot;).attr('value', 'tussen 1750 en 1760')\">tussen 1750 en 1760</a>. <li>Voor de astrologisch geïnterresseerden: een zoekopdracht <a OnClick=\"jQuery(&quot;input[name='geboorte_fuzzy_text']&quot;).attr('value', 'van 22 december tot 20 januari')\">van 22 december tot 20 januari</a> in het zoekveld ‘geboren’ levert een complete lijst met steenbokken op.<li>U kunt de zoekvelden ‘geboren’ en ‘gestorven’ ook gebruiken in combinatie met andere zoekvelden. Als u bijvoorbeeld op zoek bent naar 19de-eeuwse schrijvende vrouwen, zou u kunnen selecteren: ‘geboren na 1770’ en ‘gestorven voor 1900’, sekse: ‘vrouw’, rubriek: ‘letterkunde’.<li>Voor selecties van personen die een bepaald tijdvak hebben meegemaakt, kunt u het zoekveld ‘levend’ gebruiken. Bijvoorbeeld: <a OnClick=\"jQuery(&quot;input[name='levend_fuzzy_text']&quot;).attr('value', 'tussen 1940 en 1945')\">tussen 1940 en 1945</a>.</ul>"
+msgstr ""
+"Er zijn verschillende manieren om op datum of tijdvak te zoeken: <ul><li>In "
+"de zoekvelden ‘geboren’ en ‘gestorven’ en 'levend' kunt u zoeken op een "
+"exacte dag (bijvoorbeeld:  <a OnClick=\"jQuery(&quot;input"
+"[name='geboorte_fuzzy_text']&quot;).attr('value', '22 april')\">22 april</"
+"a> ) of datum (bijvoorbeeld:  <a OnClick=\"jQuery(&quot;input"
+"[name='geboorte_fuzzy_text']&quot;).attr('value', '22 april 1734')\">22 "
+"april 1734</a> ). U mag ook alleen cijfers gebruiken ( <a OnClick=\"jQuery"
+"(&quot;input[name='geboorte_fuzzy_text']&quot;).attr('value', '22 4 1734')"
+"\">22 4 1734</a> = 22 april 1734). <li>De zoekvelden ‘geboren’ en "
+"‘gestorven’ zijn ook te gebruiken om een tijdvak af te bakenen. "
+"Bijvoorbeeld: <a OnClick=\"jQuery(&quot;input[name='geboorte_fuzzy_text']"
+"&quot;).attr('value', 'mei 1945')\">mei 1945</a>,  <a OnClick=\"jQuery(&quot;"
+"input[name='geboorte_fuzzy_text']&quot;).attr('value', 'na 1500')\">na 1500</"
+"a> , <a OnClick=\"jQuery(&quot;input[name='geboorte_fuzzy_text']&quot;).attr"
+"('value', 'voor 1650')\">voor 1650</a>, of <a OnClick=\"jQuery(&quot;input"
+"[name='geboorte_fuzzy_text']&quot;).attr('value', 'tussen 1750 en 1760')"
+"\">tussen 1750 en 1760</a>. <li>Voor de astrologisch geïnterresseerden: een "
+"zoekopdracht <a OnClick=\"jQuery(&quot;input[name='geboorte_fuzzy_text']"
+"&quot;).attr('value', 'van 22 december tot 20 januari')\">van 22 december "
+"tot 20 januari</a> in het zoekveld ‘geboren’ levert een complete lijst met "
+"steenbokken op.<li>U kunt de zoekvelden ‘geboren’ en ‘gestorven’ ook "
+"gebruiken in combinatie met andere zoekvelden. Als u bijvoorbeeld op zoek "
+"bent naar 19de-eeuwse schrijvende vrouwen, zou u kunnen selecteren: ‘geboren "
+"na 1770’ en ‘gestorven voor 1900’, sekse: ‘vrouw’, rubriek: ‘letterkunde’."
+"<li>Voor selecties van personen die een bepaald tijdvak hebben meegemaakt, "
+"kunt u het zoekveld ‘levend’ gebruiken. Bijvoorbeeld: <a OnClick=\"jQuery"
+"(&quot;input[name='levend_fuzzy_text']&quot;).attr('value', 'tussen 1940 en "
+"1945')\">tussen 1940 en 1945</a>.</ul>"
 
 #. Default: "geboorteplaats"
 #: bioport/app_templates/zoek.pt:154
@@ -284,12 +344,16 @@ msgstr ""
 #. Default: "e.g. <a onclick=\"jQuery(&quot;input[name='geboorteplaats']&quot;).attr('value', 'Zaamslag')\">Zaamslag</a>."
 #: bioport/app_templates/zoek.pt:160
 msgid "geboorteplaats_help_text_example"
-msgstr "bijv. <a OnClick=\"jQuery(&quot;input[name='geboorteplaats']&quot;).attr('value', 'Zaamslag')\">Zaamslag</a>."
+msgstr ""
+"bijv. <a OnClick=\"jQuery(&quot;input[name='geboorteplaats']&quot;).attr"
+"('value', 'Zaamslag')\">Zaamslag</a>."
 
 #. Default: "e.g. <a onclick=\"jQuery(&quot;input[name='sterf_fuzzy_text']&quot;).attr('value', 'before 1914')\">before 1914</a>."
 #: bioport/app_templates/zoek.pt:175
 msgid "died_help_text_example"
-msgstr "bijv. <a OnClick=\"jQuery(&quot;input[name='sterf_fuzzy_text']&quot;).attr('value', 'voor 1914')\">voor 1914</a>."
+msgstr ""
+"bijv. <a OnClick=\"jQuery(&quot;input[name='sterf_fuzzy_text']&quot;).attr"
+"('value', 'voor 1914')\">voor 1914</a>."
 
 #. Default: "sterfplaats"
 #: bioport/app_templates/zoek.pt:197
@@ -303,49 +367,26 @@ msgstr ""
 #. Default: "e.g. <a onclick=\"jQuery(&quot;input[name='sterfplaats']&quot;).attr('value', 'Den Helder')\">Den Helder</a>."
 #: bioport/app_templates/zoek.pt:203
 msgid "sterfplaats_help_text_example"
-msgstr "bijv. <a OnClick=\"jQuery(&quot;input[name='sterfplaats']&quot;).attr('value', 'Den Helder')\">Den Helder</a>."
+msgstr ""
+"bijv. <a OnClick=\"jQuery(&quot;input[name='sterfplaats']&quot;).attr"
+"('value', 'Den Helder')\">Den Helder</a>."
 
 #. Default: "e.g. <a onclick=\"jQuery(&quot;input[name='levend_fuzzy_text']&quot;).attr('value', '1795 to 1813')\">1795 to 1813</a>."
 #: bioport/app_templates/zoek.pt:215
 msgid "alive_help_text_example"
-msgstr "bijv. <a OnClick=\"jQuery(&quot;input[name='levend_fuzzy_text']&quot;).attr('value', '1795 tot 1813')\">1795 tot 1813</a>."
-
-#. Default: "sekse"
-#: bioport/app_templates/zoek.pt:239
-#: bioport/admin_templates/persons.pt:70
-msgid "gender"
 msgstr ""
+"bijv. <a OnClick=\"jQuery(&quot;input[name='levend_fuzzy_text']&quot;).attr"
+"('value', '1795 tot 1813')\">1795 tot 1813</a>."
 
 #. Default: "zoek op de volledige naam"
 #: bioport/app_templates/zoek.pt:24
 msgid "search_by_name"
 msgstr "zoek op naam"
 
-#: bioport/app_templates/zoek.pt:243
-#: bioport/admin_templates/persons.pt:73
-msgid "man"
-msgstr ""
-
-#: bioport/app_templates/zoek.pt:247
-#: bioport/admin_templates/persons.pt:77
-msgid "vrouw"
-msgstr ""
-
 #. Default: "rubriek"
 #: bioport/app_templates/zoek.pt:255
 msgid "category"
 msgstr "rubriek"
-
-#: bioport/app_templates/zoek.pt:259
-#: bioport/app_templates/zoek.pt:282
-#: bioport/contact_templates/bare_edit_form.pt:4
-#: bioport/contact_templates/bare_edit_form.pt:12
-#: bioport/contact_templates/bare_edit_form.pt:31
-#: bioport/contact_templates/bare_edit_form.pt:37
-#: bioport/admin_templates/edit.pt:47
-#: bioport/admin_templates/edit.pt:97
-msgid "${DYNAMIC_CONTENT}"
-msgstr ""
 
 #. Default: "De \342\200\230reden van roem\342\200\231 van mensen in een biografisch naslagwerk is zeer divers, en mensen kunnen bovendien om meer dan \303\251\303\251n reden beroemd zijn. Voorlopig gebruiken we een grofmazig rubriekensysteem om hen in te delen in diverse levenssferen. <br /> Voor meer informatie, zie ${faq}."
 #: bioport/app_templates/zoek.pt:273
@@ -362,78 +403,74 @@ msgstr ""
 msgid "religion"
 msgstr "religie"
 
-#. Default: "..."
-#: bioport/app_templates/zoek.pt:291
-msgid "religion_help_text"
-msgstr "Kies een religie."
-
 #. Default: "bron"
-#: bioport/app_templates/zoek.pt:297
+#: bioport/app_templates/zoek.pt:292
 msgid "source"
 msgstr "bron"
 
 #. Default: "e.g. <a onclick=\"jQuery(&quot;input[name='search_name']&quot;).attr('value', 'huygens')\">huygens</a> or <a onclick=\"jQuery(&quot;input[name='search_name']&quot;).attr('value', 'aalb*')\">aalb*</a>."
 #: bioport/app_templates/zoek.pt:30
 msgid "search_name_help_text_example"
-msgstr "bijv.   <a OnClick=\"jQuery(&quot;input[name='search_name']&quot;).attr('value', 'huygens')\">huygens</a> of     <a OnClick=\"jQuery(&quot;input[name='search_name']&quot;).attr('value', 'aalb*')\">aalb*</a>.     "
+msgstr ""
+"bijv.   <a OnClick=\"jQuery(&quot;input[name='search_name']&quot;).attr"
+"('value', 'huygens')\">huygens</a> of     <a OnClick=\"jQuery(&quot;input"
+"[name='search_name']&quot;).attr('value', 'aalb*')\">aalb*</a>.     "
 
-#: bioport/app_templates/zoek.pt:316
+#: bioport/app_templates/zoek.pt:311
 msgid "vrij zoeken in tekst"
 msgstr ""
 
 #. Default: "bijv. <a onclick=\"jQuery(&quot;input[name='search_term']&quot;).attr('value', 'vroedvrouw')\">vroedvrouw</a> of <a onclick=\"jQuery(&quot;input[name='search_term']&quot;).attr('value', '*moord*')\">*moord*</a>"
-#: bioport/app_templates/zoek.pt:320
+#: bioport/app_templates/zoek.pt:315
 msgid "search_term_help_text_example"
 msgstr ""
 
 #. Default: "U kunt vrij zoeken op woord(en) in de tekst van de biografie\303\253n. <br /> Daarmee zoekt u in de tekst van alle naslagwerken die in het portaal zijn opgenomen. De kwaliteit daarvan is niet altijd even goed - in sommige gevallen betreft het OCR tekst, en soms is niet de tekst van de gehele biografie opgenomen."
-#: bioport/app_templates/zoek.pt:328
+#: bioport/app_templates/zoek.pt:323
 msgid "search_in_text_help"
 msgstr ""
 
-#: bioport/app_templates/zoek.pt:337
+#: bioport/app_templates/zoek.pt:332
 msgid "bioport identifier"
 msgstr ""
 
 #. Default: "bijv. <a onclick=\"jQuery(&quot;input[name='bioport_id']&quot;).attr('value', '43405721')\">43405721</a>"
-#: bioport/app_templates/zoek.pt:342
+#: bioport/app_templates/zoek.pt:337
 msgid "bioport_id_help_text_example"
-msgstr "bijv.   <a OnClick=\"jQuery(&quot;input[name='bioport_id']&quot;).attr('value', '43405721')\">43405721</a>"
+msgstr ""
+"bijv.   <a OnClick=\"jQuery(&quot;input[name='bioport_id']&quot;).attr"
+"('value', '43405721')\">43405721</a>"
 
 #. Default: "De \"Bioport identifier\" is een uniek nummer dat aan iedere persoon in het biografisch portaal wordt toegekend. Dat nummer blijft altijd hetzelfde, en kan worden gebruikt om op een blijvende manier naar de persoon te verwijzen."
-#: bioport/app_templates/zoek.pt:349
+#: bioport/app_templates/zoek.pt:344
 msgid "search_bioport_id_help"
 msgstr ""
 
 #. Default: "[more...]"
-#: bioport/app_templates/zoek.pt:35
-#: bioport/app_templates/zoek.pt:73
-#: bioport/app_templates/zoek.pt:113
-#: bioport/app_templates/zoek.pt:178
-#: bioport/app_templates/zoek.pt:218
-#: bioport/app_templates/zoek.pt:325
-#: bioport/app_templates/zoek.pt:346
+#: bioport/app_templates/zoek.pt:35 bioport/app_templates/zoek.pt:73
+#: bioport/app_templates/zoek.pt:113 bioport/app_templates/zoek.pt:178
+#: bioport/app_templates/zoek.pt:218 bioport/app_templates/zoek.pt:320
+#: bioport/app_templates/zoek.pt:341
 msgid "tooltip_button_toggle"
 msgstr "[meer...]"
 
 #. Default: "zoek"
-#: bioport/app_templates/zoek.pt:359
+#: bioport/app_templates/zoek.pt:354
 msgid " zoek "
 msgstr ""
 
 #. Default: "wis"
-#: bioport/app_templates/zoek.pt:360
+#: bioport/app_templates/zoek.pt:355
 msgid " wis "
 msgstr ""
 
 #. Default: "NB. Alle personen die in het Biografisch Portaal staan, zijn vindbaar op naam. Voor de overige zoekmogelijkheden geldt de waarschuwing dat de de resultaten onvolledig zijn, omdat persoonsgegevens (nog) niet bij alle personen zijn ingevuld. Er wordt hard aan gewerkt om de leemtes op te vullen."
-#: bioport/app_templates/zoek.pt:368
+#: bioport/app_templates/zoek.pt:363
 msgid "disclaimer_text"
 msgstr ""
 
 #. Default: "zoek exact"
-#: bioport/app_templates/zoek.pt:39
-#: bioport/app_templates/zoek.pt:77
+#: bioport/app_templates/zoek.pt:39 bioport/app_templates/zoek.pt:77
 msgid "exact_search"
 msgstr "zoek exact"
 
@@ -450,7 +487,10 @@ msgstr ""
 #. Default: "e.g. <a onclick=\"jQuery(&quot;input[name='search_family_name']&quot;).attr('value', 'huygens')\">huygens</a> or <a onclick=\"jQuery(&quot;input[name='search_family_name']&quot;).attr('value', 'aalb*')\">aalb*</a>."
 #: bioport/app_templates/zoek.pt:68
 msgid "search_family_name_help_text_example"
-msgstr "bijv.   <a OnClick=\"jQuery(&quot;input[name='search_name']&quot;).attr('value', 'huygens')\">huygens</a> of     <a OnClick=\"jQuery(&quot;input[name='search_name']&quot;).attr('value', 'aalb*')\">aalb*</a>"
+msgstr ""
+"bijv.   <a OnClick=\"jQuery(&quot;input[name='search_name']&quot;).attr"
+"('value', 'huygens')\">huygens</a> of     <a OnClick=\"jQuery(&quot;input"
+"[name='search_name']&quot;).attr('value', 'aalb*')\">aalb*</a>"
 
 #: bioport/app_templates/zoek.pt:7
 msgid "Zoeken"
@@ -459,7 +499,10 @@ msgstr ""
 #. Default: "Typ de naam of een gedeelte van de naam. <br /> De zoekfunctie houdt rekening met spellingsvarianten (zoeken op <a onclick=\"jQuery(&quot;input[name='search_name']&quot;).attr('value', 'uil')\">uil</a> en <a onclick=\"jQuery(&quot;input[name='search_name']&quot;).attr('value', 'uyl')\">uyl</a> geeft hetzelfde resultaat). Vindt u dat vervelend, gebruik dan dubbele aanhalingstekens om letterlijk <a onclick=\"jQuery(&quot;input[name='search_name']&quot;).attr('value', '&quot;uijl&quot;')\">\"uijl\"</a> te vinden. <br /> Gebruik wildcards (? voor \303\251\303\251n teken, * voor \303\251\303\251n of meer tekens) om spellingsvarianten te vinden: met <a onclick=\"jQuery(&quot;input[name='search_name']&quot;).attr('value', 'seven*')\">seven*</a> vindt u alle namen die met 'seven' beginnen."
 #: bioport/app_templates/zoek.pt:79
 msgid "search_by_family_name_help"
-msgstr "bijv.   <a OnClick=\"jQuery(&quot;input[name='search_name']&quot;).attr('value', 'huygens')\">huygens</a> of     <a OnClick=\"jQuery(&quot;input[name='search_name']&quot;).attr('value', 'aalb*')\">aalb*</a>."
+msgstr ""
+"bijv.   <a OnClick=\"jQuery(&quot;input[name='search_name']&quot;).attr"
+"('value', 'huygens')\">huygens</a> of     <a OnClick=\"jQuery(&quot;input"
+"[name='search_name']&quot;).attr('value', 'aalb*')\">aalb*</a>."
 
 #: bioport/contact.py:25
 msgid "Naam"
@@ -546,65 +589,66 @@ msgstr ""
 msgid "Bedrijfsleven"
 msgstr ""
 
-#: bioport/personen.py:179
+#: bioport/personen.py:185 bioport/admin_templates/persons.pt:60
 #: bioport/app_templates/zoek.pt:100
-#: bioport/admin_templates/persons.pt:60
 msgid "born"
 msgstr "geboren"
 
-#: bioport/personen.py:188
+#: bioport/personen.py:194 bioport/admin_templates/persons.pt:65
 #: bioport/app_templates/zoek.pt:171
-#: bioport/admin_templates/persons.pt:65
 msgid "died"
 msgstr "gestorven"
 
-#: bioport/personen.py:195
-#: bioport/app_templates/zoek.pt:211
+#: bioport/personen.py:201 bioport/app_templates/zoek.pt:211
 msgid "alive"
 msgstr "levend"
 
-#: bioport/personen.py:201
+#: bioport/personen.py:207
 msgid "from"
 msgstr "uit"
 
-#: bioport/personen.py:206
+#: bioport/personen.py:212
 msgid "whose_name_is_like"
 msgstr "wier naam lijkt op "
 
-#: bioport/personen.py:211
+#: bioport/personen.py:217
 msgid "whose_family_name_is_like"
 msgstr "wier familienaam lijkt op "
 
-#: bioport/personen.py:226
+#: bioport/personen.py:232
 msgid "of_the_category"
 msgstr "uit de rubriek"
 
-#: bioport/personen.py:235
+#: bioport/personen.py:241
 msgid "of_the_religion"
 msgstr "van de religie"
 
-#: bioport/personen.py:239
+#: bioport/personen.py:245
 msgid "with_bioport_id"
 msgstr "met bioport id"
 
-#: bioport/personen.py:246
+#: bioport/personen.py:252
 msgid "men"
 msgstr "mannen"
 
-#: bioport/personen.py:248
+#: bioport/personen.py:254
 msgid "women"
 msgstr "vrouwen"
 
-#: bioport/personen.py:250
+#: bioport/personen.py:256
 msgid "persons"
 msgstr "personen"
 
-#: bioport/personen.py:255
+#: bioport/personen.py:261
 msgid "you_searched_for"
 msgstr "U zocht naar"
 
+#~ msgid "religion_help_text"
+#~ msgstr "Kies een religie."
+
 #~ msgid "Welkom"
 #~ msgstr "Welkom"
+
 #~ msgid "home_bold_paragraph"
 #~ msgstr ""
 #~ "Dit is de site van het Biografisch Portaal van Nederland. Hier vindt u "
@@ -614,4 +658,3 @@ msgstr "U zocht naar"
 #, fuzzy
 #~ msgid "more"
 #~ msgstr "voor"
-

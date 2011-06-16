@@ -83,7 +83,7 @@ form {
      <hr> 
       <!--  generate similarity cache  -->
  </form>     
-    <form>
+    <form tal:on-error="string:xxx">
     <b> assign category to source<b>
     <br>
         source: <select name="source_id">

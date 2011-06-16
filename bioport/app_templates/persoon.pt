@@ -178,7 +178,7 @@
    <div class="levensbeschrijvingen"
         tal:define="bios view/get_biographies">
     <h2 i18n:translate="Biographies"
-        tal:condition="bios">levensbeschrijving(en)</h2>
+        tal:condition="bios">Levensbeschrijving(en)</h2>
     <hr />
     <div tal:repeat="biography bios" tal:omit-tag="">
     <div
@@ -219,6 +219,14 @@
              
     </div>
     </div>
+    <div class="levensbeschrijvingen"
+        tal:define="bios view/get_archives">
+    <h2 i18n:translate="Archives" tal:condition="bios">Archives</h2>
+    <div tal:repeat="biography bios" tal:omit-tag="">
+    <div metal:use-macro="template/macros/link2bio" />
+    </div>
+    </div>
+
     <div class="levensbeschrijvingen"
         tal:define="bios view/get_portraits">
     <h2 i18n:translate="Portraits" tal:condition="bios">Portret(ten)</h2>
