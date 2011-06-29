@@ -387,6 +387,7 @@ class Persoon(BioPortIdTraverser, grok.View, RepositoryView):
         if el is not None:
             return ReligionWrapper(el, self.repository())
         
+        
     def get_categories(self):
         return [StateWrapper(x) for x in self.bioport_biography.get_states(type='category')]
 
