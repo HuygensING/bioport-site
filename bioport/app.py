@@ -361,6 +361,10 @@ class Persoon(BioPortIdTraverser, grok.View, RepositoryView):
 
     def get_references(self):    
         return [ReferenceWrapper(index, el_reference) for (index, el_reference) in self.bioport_biography.get_references()]
+
+    def get_extrafields(self):    
+        return [ExtraFieldWrapper(index, el_extrafields) for (index, el_extrafields) in self.bioport_biography.get_extrafields()]
+
     
     def get_illustrations(self):    
         return [IllustrationWrapper(index, el) for (index, el) in self.bioport_biography.get_figures()]
@@ -797,7 +801,13 @@ class ReferenceWrapper:
         self.element = el_reference
         self.index = index
 
-
+class ExtraFieldWrapper:
+    def __init__(self, index, el_extrafield):    
+        self.value = el_extrafield.value
+        self.key = el_extrafield.get('target')
+        self.element = el_extrafield
+        self.index = index
+        
 class IllustrationWrapper:
     def __init__(self, index, el_figure):    
         head = ''

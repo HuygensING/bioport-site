@@ -412,6 +412,81 @@ class NewFieldsTestCase(FunctionalTestCase):
         self.assertEqual(browser.getControl(name='reference_%s_url' % identifier).value, 'http://url5')
         self.assertEqual(browser.getControl(name='reference_%s_text' % identifier).value , 'url5')
         
+
+
+
+    def test_edit_extrafields(self):
+        browser = self._open_edit_url()
+        edit_url = browser.url
+   
+        def get_identifiers():
+            """helper function returns all identifiers of relations in the edit form"""
+            ls = re.findall('name="extrafield_.*?_key"', browser.contents)
+            ls = [s.split('_')[1] for s in ls]
+            ls = [s for s in ls if s.isdigit()]
+            ls = list(set(ls))
+            return ls
+        
+        #add an extra field
+        browser.open(edit_url)
+        browser.getControl(name='extrafield_new_key').value = "sleutel1"
+        browser.getControl(name='extrafield_new_value').value = 'waarde1'
+        browser.getControl(name='form.actions.save_everything', index=0).click()
+        
+        #now we should have a new element in the form with our new relation info
+        assert len(get_identifiers()) == 1
+        identifier = get_identifiers()[0]
+        self.assertEqual(browser.getControl(name='extrafield_%s_key' % identifier).value, 'sleutel1')
+        self.assertEqual(browser.getControl(name='extrafield_%s_value' % identifier).value , 'waarde1')
+        
+        #add a second extrafield, but this time clicking on the button 'add_extrafield'
+        browser.getControl(name='extrafield_new_key').value = "sleutel2"
+        browser.getControl(name='extrafield_new_value').value = 'waarde2'
+        browser.getControl(name='form.actions.add_extrafield').click()        
+       
+        #now we should have one extrafields 
+        self.assertEqual(len(get_identifiers()), 2)
+       
+        #add a third extrafield
+        browser.getControl(name='extrafield_new_key').value = "sleutel3"
+        browser.getControl(name='extrafield_new_value').value = 'waarde3'
+        browser.getControl(name='form.actions.add_extrafield').click()        
+        
+        #now we should have three extrafields (identified by their indices) 
+        self.assertEqual(len(get_identifiers()), 3)
+        
+        #edit the third extrafield
+        identifier = get_identifiers()[2]
+        browser.getControl(name='extrafield_%s_key' % identifier).value = "sleutel4"
+        browser.getControl(name='extrafield_%s_value' % identifier).value = 'waarde4'
+        browser.getControl(name='form.actions.save_everything', index=0).click()       
+        
+        #see if changes stick
+        self.assertEqual(len(get_identifiers()), 3)
+        identifier = get_identifiers()[2]
+        
+        self.assertEqual(browser.getControl(name='extrafield_%s_key' % identifier).value, 'sleutel4')
+        self.assertEqual(browser.getControl(name='extrafield_%s_value' % identifier).value , 'waarde4')
+        
+        
+        #delete a extrafield
+        identifier = get_identifiers()[1]
+        #XXX for some readon, the browser cannot find the link, while browser.contents seems to show that it is there
+#        browser.getLink(id='delete_extrafield_%s' % identifier).click()
+        bioport_id = re.findall('[0-9]{8}', browser.contents)[0]
+        browser.open('%s?extrafield_index=%s&form.actions.remove_extrafield=&bioport_id=%s' % (browser.url, identifier, bioport_id))        
+        #now we should have two extrafield again, now
+        self.assertEqual(len(get_identifiers()), 2)
+        
+        #we can now edit this extrafield, and should see the changes
+        identifier = get_identifiers()[0]
+        browser.getControl(name='extrafield_%s_key' % identifier).value = "sleutel5"
+        browser.getControl(name='extrafield_%s_value' % identifier).value = 'waarde5'
+        browser.getControl(name='form.actions.save_everything', index=0).click()       
+        
+        self.assertEqual(browser.getControl(name='extrafield_%s_key' % identifier).value, 'sleutel5')
+        self.assertEqual(browser.getControl(name='extrafield_%s_value' % identifier).value , 'waarde5')
+
  
     
     def test_edit_illustrations(self):

@@ -845,6 +845,68 @@ img {
     </div>
 <!--  /ILLUSTRATIONS -->
        
+
+
+<!--  EXTRA FIELDS -->
+    <tr metal:use-macro="template/macros/separator" ></tr>  
+    
+    <tr>
+    <th colspan="3">
+        Extra informatie
+    </th></tr>
+    
+    <tal:block repeat="extrafield view/get_extrafields">
+    <div tal:omit-tag=""
+        tal:define="extrafield_id python:extrafield and str(extrafield.index) or 'new';"
+        metal:define-macro="extrafield_form" 
+         >
+    <tr tal:attributes="name string:extrafield_${extrafield_id}_form">
+        <th class="sublabel">Key/kop</th>
+        <td>
+            <input tal:attributes="
+                    name python:'extrafield_%s_key' % extrafield_id;
+                    id python:'extrafield_%s_key' % extrafield_id;
+                    value python:extrafield and extrafield.key;
+                    "
+                    style="width:300px">
+     
+            <a tal:condition="python:extrafield_id != 'new' and False"
+                tal:attributes="OnClick string:
+                jQuery('#extrafield_${extrafield_id}_delete').val('1');;
+                jQuery('*[name=extrafield_${extrafield_id}_form]').hide();;         
+                return false;;">[delete]</a>
+            <a tal:condition="python:extrafield_id != 'new'"
+			   tal:attributes="
+			     id string:extrafield_delete_${extrafield_id};
+			     href python:view.url(data={'form.actions.remove_extrafield':'', 'extrafield_index':extrafield_id, 'bioport_id':view.bioport_id})" title="verwijder">
+                 <img tal:attributes="src python:view.application_url() + '/@@/bioport/images/delete-icon.png'" />
+			 </a>
+	        </td>
+    </tr>
+    <tr tal:attributes="name string:extrafield_${extrafield_id}_form">
+        <th class="sublabel">Waarde</th> 
+        <td>
+            <input tal:attributes="
+                name python:'extrafield_%s_value' % extrafield_id;
+                id python:'extrafield_%s_value' % extrafield_id;
+                value python:extrafield and extrafield.value;
+                "
+                style="width:300px">
+        </td>
+    </tr>
+    </div>
+    </tal:block>
+    <div tal:define="extrafield nothing;" tal:omit-tag="">
+        <div  metal:use-macro="template/macros/extrafield_form"></div>
+        <tr><td></td><td>
+        <span tal:replace="structure python:view.actions.byname['form.actions.add_extrafield'].render()" ></span> 
+       </td></tr>
+    </div>
+<!--  /EXTRA FIELDS -->
+
+
+
+
     <!--  STATUS -->
     <tr metal:use-macro="template/macros/separator" ></tr> 
     <tr>

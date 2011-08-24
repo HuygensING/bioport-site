@@ -216,8 +216,17 @@
         <a  class="external_link open_in_new_window"
             tal:attributes="href reference/url"
             tal:content="reference/text" />
-             
     </div>
+
+    <div>
+    <ul>
+    <li tal:repeat="extrafield python:view.get_extrafields()"
+        class="biography_extrafield">
+        <b tal:content="extrafield/key"/>: <span tal:content="extrafield/value" /></li>
+    </ul>
+    </div>
+    
+
     </div>
     <div class="levensbeschrijvingen"
         tal:define="bios view/get_archives">

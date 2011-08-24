@@ -6,7 +6,7 @@ from bioport import app, personen
 import grok
 import tempfile
 import logging
-from app import Batcher, RepositoryView,  RelationWrapper, ReferenceWrapper
+from app import Batcher, RepositoryView,  RelationWrapper, ReferenceWrapper, ExtraFieldWrapper
 from bioport_repository.illustration import Illustration, CantDownloadImage
 from common import format_date, format_dates, format_number
 from names.common import from_ymd, to_ymd
@@ -817,6 +817,19 @@ class Persoon(app.Persoon, grok.EditForm, RepositoryView):
               uri = url,
               text = text,
               )
+
+    def _set_extrafield(self, identifier, index=None, add_new=False):
+        key = self.request.get('extrafield_%s_key' % identifier)
+        value = self.request.get('extrafield_%s_value' % identifier)
+        if add_new and url and text:
+            self.bioport_biography.add_extrafield(key=key, value=value)
+        else:
+            assert index != None
+            self.bioport_biography.update_extrafield(
+              index = index,
+              key=key,
+              value=value,
+              )
             
     def _set_states(self): 
         """set information for all states in the request"""
@@ -1031,6 +1044,7 @@ class Persoon(app.Persoon, grok.EditForm, RepositoryView):
         self._set_category()
         self._set_relations()
         self._set_references()
+        self._set_extrafields()
         self._set_illustrations()
         self._set_religion()
         self._set_state(identifier='floruit', type='floruit')
@@ -1066,6 +1080,24 @@ class Persoon(app.Persoon, grok.EditForm, RepositoryView):
         references = [(url, text) for (id, url, text) in references]
         self.bioport_biography._replace_references(references)
 
+
+    def _set_extrafields(self): 
+        extrafields = []
+        for k in self.request.form.keys():
+            if k.startswith('extrafield_') and k.endswith('key'):
+                identifier = k.split('_')[1]
+                key = self.request.get('extrafield_%s_key' % identifier)
+                value = self.request.get('extrafield_%s_value' % identifier)
+                if key and value:
+                    references.append((identifier, key, value))
+        extrafields.sort()
+        extrafields = [(key, value) for (id, key, value) in extrafields]
+        self.bioport_biography._replace_extrafields(extrafields)
+
+
+
+
+
     def _set_illustrations(self): 
 #        to_remove = [] #list of states to remove
         illustrations = []
@@ -1099,6 +1131,27 @@ class Persoon(app.Persoon, grok.EditForm, RepositoryView):
             self.bioport_biography.remove_reference(index=index) 
             self.msg = 'removed reference' 
             self.save_biography(comment=self.msg)
+
+
+    @grok.action('voeg toe', name='add_extrafield') 
+    def add_extrafield(self):
+        identifier = 'new'
+        key = self.request.get('extrafield_%s_key' % identifier)
+        value = self.request.get('extrafield_%s_value' % identifier)
+        if key and value:
+            self.bioport_biography.add_extrafield(key=key, value=value)
+            self.msg = 'added extrafield'
+            self.save_biography(comment=self.msg)
+    
+    @grok.action('remove extra field', name='remove_extrafield') 
+    def remove_extrafield(self):
+        index = self.request.get('extrafield_index')
+        if index and index.isdigit():
+            index = int(index)
+            self.bioport_biography.remove_extrafield(index=index) 
+            self.msg = 'removed extra field' 
+            self.save_biography(comment=self.msg)
+
             
     @grok.action('voeg toe', name='add_illustration') 
     def add_illustration(self):
