@@ -803,7 +803,7 @@ class ReferenceWrapper:
 
 class ExtraFieldWrapper:
     def __init__(self, index, el_extrafield):    
-        self.value = el_extrafield.value
+        self.value = el_extrafield.text
         self.key = el_extrafield.get('target')
         self.element = el_extrafield
         self.index = index
