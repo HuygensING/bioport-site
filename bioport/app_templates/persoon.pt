@@ -150,6 +150,12 @@
                 </ul>
 	        </td>
         </tr>
+
+      <tr tal:repeat="extrafield python:view.get_extrafields()" tal:condition="python:len(view.get_extrafields())>0">
+            <th tal:content="extrafield/key"/>
+	      <td tal:content="extrafield/value"/>
+       </tr>
+
         <tr tal:condition="nothing"
             tal:repeat="state python:view.get_editable_states()">
 	        <th tal:condition="not:repeat/state/index">levensloop</th>
@@ -218,14 +224,6 @@
             tal:content="reference/text" />
     </div>
 
-    <div>
-    <ul>
-    <li tal:repeat="extrafield python:view.get_extrafields()"
-        class="biography_extrafield">
-        <b tal:content="extrafield/key"/>: <span tal:content="extrafield/value" /></li>
-    </ul>
-    </div>
-    
 
     </div>
     <div class="levensbeschrijvingen"
