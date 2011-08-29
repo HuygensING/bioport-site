@@ -153,7 +153,7 @@
 
       <tr tal:repeat="extrafield python:view.get_extrafields()" tal:condition="python:len(view.get_extrafields())>0">
             <th tal:content="extrafield/key"/>
-	      <td tal:content="extrafield/value"/>
+	      <td tal:content="structure extrafield/value"/>
        </tr>
 
         <tr tal:condition="nothing"
