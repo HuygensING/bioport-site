@@ -1090,7 +1090,6 @@ class Persoon(app.Persoon, grok.EditForm, RepositoryView):
                 value = self.request.get('extrafield_%s_value' % identifier)
                 if key and value:
                     extrafields.append((identifier, key, value))
-        extrafields.sort()
         extrafields = [(key, value) for (id, key, value) in extrafields]
         self.bioport_biography._replace_extrafields(extrafields)
 
