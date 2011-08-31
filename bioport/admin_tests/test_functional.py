@@ -6,6 +6,8 @@ Do a functional test on the app.
 import sys
 from bioport.app import Bioport
 from zope.testbrowser.testing import Browser
+import unittest
+
 import os
 import re
 from bioport.tests import DSN
@@ -24,7 +26,7 @@ class AdminPanelFunctionalTest(FunctionalTestCase):
         root = self.getRootFolder()
         self.app = app = root['app'] 
         
-         #define the db connection
+        #define the db connection
         self.base_url = 'http://localhost/app'
         browser = Browser()
         browser.handleErrors = False #show some information when an arror occurs

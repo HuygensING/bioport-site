@@ -1119,7 +1119,7 @@ class Persoon(app.Persoon, grok.EditForm, RepositoryView):
         text = self.request.get('reference_%s_text' % identifier)
         if url and text:
             self.bioport_biography.add_reference(uri=url, text = text)
-            self.msg = 'added reference'
+            self.msg = u'added reference'
             self.save_biography(comment=self.msg)
     
     @grok.action('remove reference', name='remove_reference') 
@@ -1128,7 +1128,7 @@ class Persoon(app.Persoon, grok.EditForm, RepositoryView):
         if index and index.isdigit():
             index = int(index)
             self.bioport_biography.remove_reference(index=index) 
-            self.msg = 'removed reference' 
+            self.msg = u'removed reference' 
             self.save_biography(comment=self.msg)
 
 
@@ -1139,7 +1139,7 @@ class Persoon(app.Persoon, grok.EditForm, RepositoryView):
         value = self.request.get('extrafield_%s_value' % identifier)
         if key and value:
             self.bioport_biography.add_extrafield(key=key, value=value)
-            self.msg = 'added extrafield'
+            self.msg = u'added extrafield'
             self.save_biography(comment=self.msg)
     
     @grok.action('remove extra field', name='remove_extrafield') 
@@ -1148,7 +1148,7 @@ class Persoon(app.Persoon, grok.EditForm, RepositoryView):
         if index and index.isdigit():
             index = int(index)
             self.bioport_biography.remove_extrafield(index=index) 
-            self.msg = 'removed extra field' 
+            self.msg = u'removed extra field' 
             self.save_biography(comment=self.msg)
 
             
@@ -1159,7 +1159,7 @@ class Persoon(app.Persoon, grok.EditForm, RepositoryView):
         text = self.request.get('illustration_%s_text' % identifier)
         illustration_file = self.request.get('illustration_file')
         if not text:
-            self.msg = 'U heeft geen beschrijving van de illustratie ingevuld'
+            self.msg = u'U heeft geen beschrijving van de illustratie ingevuld'
             return
         
         if illustration_file:
