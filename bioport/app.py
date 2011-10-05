@@ -298,15 +298,15 @@ class Resolver(grok.View, RepositoryView):
             url = os.path.join(self.application_url(), 'persoon', bioport_id)
         if return_json:
             if bioport_id:
-	            dct = {
-	                'bioport_id':bioport_id,
-	                'url':url,
-	            }
+                dct = {
+                    'bioport_id':bioport_id,
+                    'url':url,
+                }
             else:
-	            dct = {
-	                'bioport_id':'',
-	                'url':'',
-	            }
+                dct = {
+                    'bioport_id':'',
+                    'url':'',
+                }
             return simplejson.dumps(dct)
         else:
             #redirect to the person, if we can
@@ -340,6 +340,10 @@ class Persoon(BioPortIdTraverser, grok.View, RepositoryView):
             self.bioport_id = random.choice(self.repository().get_bioport_ids())
             self.redirect(self.url(self) + '/'+ self.bioport_id)
         self.person  = self.repository().get_person(bioport_id=self.bioport_id) 
+        if not self.person:
+            message = 'Geen biografie gevonden met deze id: %s' % self.bioport_id
+            qs = urlencode({'message':message})
+            self.request.response.redirect(os.path.join(self.application_url(), 'person_not_found') + '?'+ qs)
         self.biography  = self.merged_biography = self.person.get_merged_biography()
         self.bioport_biography =  self.repository().get_bioport_biography(self.person) 
         
@@ -467,7 +471,8 @@ class Persoon(BioPortIdTraverser, grok.View, RepositoryView):
         from zope.security import checkPermission
         return checkPermission('bioport.Manage', self.context)
         
-
+class Person_Not_Found(BioPortIdTraverser, grok.View, RepositoryView):
+    pass
 
 def get_born_description(request):
     """ Inspect the request and build a natural language description 
