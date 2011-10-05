@@ -4,14 +4,14 @@ import os
 import simplejson
 
 from chameleon.zpt.template import PageTemplateFile
-from plone.memoize import ram
+#from plone.memoize import ram
 from plone.memoize.instance import memoize
 from z3c.batching.batch import Batch
 from bioport import BioportMessageFactory as _
 from bioport.app import RepositoryView, Batcher, Bioport, get_born_description, get_died_description, get_alive_description
 from fuzzy_search import get_search_query
 from fuzzy_search import en_to_nl_for_field
-from fuzzy_search import make_description
+#from fuzzy_search import make_description
 
 try:
     from zope.i18n.interfaces import IUserPreferredLanguages  # after python 2.6 upgrade
@@ -56,6 +56,7 @@ class _Personen(RepositoryView):
 #            'sterfjaar_max',
             'sterfplaats',
             'has_contradictions',
+            'url_biography',
 #        start=None,
 #        size=None,
              ]:
@@ -109,18 +110,16 @@ class _Personen(RepositoryView):
 
         #parameters from the API
         qry.update(parse_api_args(form))
-                
         persons = self.repository().get_persons_sequence(**qry)
         return persons
 
 class Personen(grok.View, _Personen, Batcher):
     def publishTraverse(self, request, name):
-       if name == 'biodes':
-           return PersonenXML(self.context, self.request)
-       elif name =='json':
-           return PersonenJSON(self.context, self.request)
-       
-       return super(Personen, self).publishTraverse(request, name)
+        if name == 'biodes':
+            return PersonenXML(self.context, self.request)
+        elif name == 'json':
+            return PersonenJSON(self.context, self.request)
+        return super(Personen, self).publishTraverse(request, name)
    
     def get_persons(self, **args):
         """get persons batch"""

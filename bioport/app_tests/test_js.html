@@ -1,0 +1,19 @@
+test!!!
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js" type="text/javascript"></script>
+<div id="bioport_link">
+</div>
+<script>
+	document.getElementById('bioport_link').innerHTML ='loading..';
+	url_of_biography = 'http://proxy.handle.net/10648/6380a2b6-7810-4141-8872-bb54dba3ad6c'
+//	url = 'http://www.biografiesportaal.nl/'
+	base_url = 'http://jelle:8094/bioport/persoon';
+//	base_url = 'http://www.biografischportaal.nl/bioport/personen/json';
+	url = base_url +  '?' + $.param({'url_biography' : url_of_biography, 'callback':'?'});
+	document.getElementById('bioport_link').innerHTML ='loading..' + url;
+	create_link = function(data) { //callback for when json comes back 
+		debugger;
+		console.debug(data);	
+	}
+//	jQuery.getJSON(_url, {'url_biography':url_of_biography}, create_link);
+	jQuery.getJSON(url, function(data) { console.debug('yyy');} );
+</script>

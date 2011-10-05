@@ -6,14 +6,15 @@ import types
 
 import grok
 import zope.interface
-from chameleon.zpt.template import PageTemplateFile
+from zope.interface.common.interfaces import IException
+#from chameleon.zpt.template import PageTemplateFile
 from common import (format_date, format_dates, format_number, 
                     html2unicode, maanden, months)
 from interfaces import IBioport
 from names.common import to_ymd
 from plone.memoize import ram
-from plone.memoize.instance import memoize
-from z3c.batching.batch import Batch
+#from plone.memoize.instance import memoize
+#from z3c.batching.batch import Batch
 from bioport import BioportMessageFactory as _
 from zope.i18n import translate
 from sqlalchemy.exc import OperationalError
@@ -23,7 +24,7 @@ except ImportError:
     from zope.app.publisher.browser import IUserPreferredLanguages  # before python 2.6 upgrade
 from urllib import urlencode
 from fuzzy_search import get_search_query
-from fuzzy_search import en_to_nl_for_field
+#from fuzzy_search import en_to_nl_for_field
 from fuzzy_search import make_description
 import simplejson
 from zope.publisher.interfaces import NotFound, INotFound
@@ -251,12 +252,12 @@ class BioPortIdTraverser(object):
     """
     bioport_id = None # will be available after traversal
     def publishTraverse(self, request, name):
-       # We won't traverse more than once
-       # allowing view_url/some_id but not view_url/something/some_id
-       if len(request.getTraversalStack()) > 0 or not name.isdigit():
-           raise NotFound(self.context, name)
-       self.bioport_id = name
-       return self
+        # We won't traverse more than once
+        # allowing view_url/some_id but not view_url/something/some_id
+        if len(request.getTraversalStack()) > 0 or not name.isdigit():
+            raise NotFound(self.context, name)
+        self.bioport_id = name
+        return self
 
 
 class PersoonXml(BioPortIdTraverser, grok.View,RepositoryView):
@@ -277,18 +278,60 @@ class PersoonJson(BioPortIdTraverser, grok.View,RepositoryView):
         self.request.response.setHeader('Content-Type','application/json; charset=utf-8')
         return simplejson.dumps(person.get_merged_biography().to_dict())
 
-
+class Resolver(grok.View, RepositoryView):
+    """be as smart as possible about the values in the request, and redirect to a person (if found)
+    
+    at the moment, we parse the following request args:
+        url - try to find a person that refers to the the biography at this url
+    perhaps in the future:
+        priref -
+        pica -
+        ecc.
+    """
+    def render(self):
+        return_json = self.request.get('json')
+        if self.request.get('url'):
+            bioport_id = self.repository().get_bioport_id(url_biography = self.request.get('url'))
+        else:
+            bioport_id = None
+        if bioport_id:
+            url = os.path.join(self.application_url(), 'persoon', bioport_id)
+        if return_json:
+            if bioport_id:
+	            dct = {
+	                'bioport_id':bioport_id,
+	                'url':url,
+	            }
+            else:
+	            dct = {
+	                'bioport_id':'',
+	                'url':'',
+	            }
+            return simplejson.dumps(dct)
+        else:
+            #redirect to the person, if we can
+            if bioport_id:
+                self.request.response.redirect(url)
+            else:
+                #XXX would be nice to give some feedback if the thing is not found
+                self.request.response.redirect(os.path.join(self.application_url()))
+        
+            
+            
+            
 class Persoon(BioPortIdTraverser, grok.View, RepositoryView):
 
     def publishTraverse(self, request, name):
-       if name in ['biodes', 'xml']:
-           return PersoonXml(self.context, self.request)
-       elif name in ['json']:
-           return PersoonJson(self.context, self.request)
-       return super(Persoon, self).publishTraverse(request, name)
+        if name in ['biodes', 'xml']:
+            return PersoonXml(self.context, self.request)
+        elif name in ['json']:
+            return PersoonJson(self.context, self.request)
+        return super(Persoon, self).publishTraverse(request, name)
 
     def update(self, **args):
-        self.bioport_id = self.bioport_id or self.request.get('bioport_id')
+        if not self.bioport_id and self.request.get('bioport_id'):
+            self.bioport_id = self.request.get('bioport_id')
+            #XXX redirect, not show
         redirects_to = self.repository().redirects_to(self.bioport_id)
         if redirects_to != self.bioport_id:
             #this is an 'old'bioport_id that has been identified with the bioport_id at redirects_to
@@ -312,8 +355,8 @@ class Persoon(BioPortIdTraverser, grok.View, RepositoryView):
                 def __init__(self, el, _between, _and, _after, _before):
                     self.when = el.get('when')
                     try:
-	                    self.when_ymd = to_ymd(self.when) 
-	                    self.when_formatted = format_date(self.when)
+                        self.when_ymd = to_ymd(self.when) 
+                        self.when_formatted = format_date(self.when)
                     except:
                         self.when_formatted = self.when
                         
@@ -477,7 +520,7 @@ class Zoek(grok.View, RepositoryView):
 
 class Zoek_places(grok.View, RepositoryView):
     """The JSON used in the search form of the main site.
-    It return a JSON like this:
+    It returns a JSON like this:
     
     {'sterf' : ['a','b','c',...],
      'geboorte' : ['a','b','c',...]
@@ -498,7 +541,7 @@ class Zoek_places(grok.View, RepositoryView):
         
 
 class Zoek_places_admin(grok.View, RepositoryView):
-    """The JSON used in various search forms of the admin inrface.
+    """The JSON used in various search forms of the admin interface.
     Return a JSON comprehending *all* places as a JSON list which 
     looks like this:
     
@@ -646,7 +689,7 @@ class SiteMaps(grok.View,RepositoryView):
     def render(self):
         self.request.response.setHeader('Content-Type','text/xml; charset=utf-8')
         if hasattr(self, 'start_index'):
-           return self.render_sitemap(self.start_index)
+            return self.render_sitemap(self.start_index)
         all_records = self.repository().get_persons_sequence()
         num_records = len(all_records)
         out = '<?xml version="1.0" encoding="UTF-8"?>\n'
@@ -724,7 +767,6 @@ class Robots_txt(grok.View):
         return "User-agent: *\nAllow: /\n"
 
     
-from zope.interface.common.interfaces import IException
  
 
 class ErrorHandler(grok.View, RepositoryView):
@@ -748,44 +790,11 @@ class PeopleWhoLivedMoreThanHundredYears(grok.View, RepositoryView):
         query = db.get_session().query(PersonRecord).filter(PersonRecord.sterfdatum_min - PersonRecord.geboortedatum_max > 100)
         result = ''
         for person in query.all():
-           result = '%s (leefde tenminste %s jaar)' % (person.get_bioport_id(), person.sterfdatum_min - person.geboortedatum_max)
+            result = '%s (leefde tenminste %s jaar)' % (person.get_bioport_id(), person.sterfdatum_min - person.geboortedatum_max)
         return result 
-#from zope.publisher.interfaces import INotFound
-#from zope.location import LocationProxy
-
-#class PageNotFound(grok.View, RepositoryView):
-
-#    grok.context(INotFound)
-#    grok.name('index.html')
-#    grok.require("zope.Public")
-
-#    def application_url(self):
-#        return ""
-
-#    def repository(self, *args, **kwargs):
-#        try:
-#            return self.__parent__.__parent__.repository('')
-#        except:
-#            return self.__parent__.__parent__.repository()
-
-#    @apply
-#    def context():
-#        # This is done to avoid redefining context in the __init__, after
-#        # calling Page.__init__. This way, the error is directly located.
-
-#        def fset(self, error):
-#            self._context = LocationProxy(error, error.ob, "Not found")
-
-#        def fget(self):
-#            return self._context
-
-#        return property(fget, fset)
-
-#    def update(self):
-#        self.request.response.setStatus(404)
 
 class RelationWrapper:
-     def __init__(self, index, el_relation, el_person):
+    def __init__(self, index, el_relation, el_person):
         self.index = index
         self.type = el_relation.get('name')
         self.name = el_person[0].text 
@@ -826,9 +835,9 @@ class ReligionWrapper:
     @property
     def name(self, repo=None):
         if self.idno:
-	        if repo:
-	            self.repo = repo
-	        return dict(self.repo.get_religion_values())[int(self.idno)]
+            if repo:
+                self.repo = repo
+            return dict(self.repo.get_religion_values())[int(self.idno)]
         
      
 class StateWrapper:
