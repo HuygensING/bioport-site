@@ -4,10 +4,9 @@ Do a Python test on the app.
 :Test-Layer: python
 """
 import unittest
-import sys
 import os
 
-from bioport.admin import Sources, Source, Edit, Persoon
+from bioport.admin import Sources, Source, Persoon
 from bioport.app import Bioport
 from zope.publisher.browser import TestRequest
 import bioport_repository

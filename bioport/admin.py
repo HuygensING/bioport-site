@@ -691,7 +691,7 @@ class Persoon(app.Persoon, grok.EditForm, RepositoryView):
             return '' 
 
     def url(self, object=None, name=None, data=None, hash=None):
-        url = app.Persoon.url(self, object, name, data)
+        url = app.Persoon.url(self, object, name, data) #@UndefinedVariable
         if hash:
             if '?' in url: 
                 url = url.replace('?', '#%s?' % hash)
@@ -821,7 +821,7 @@ class Persoon(app.Persoon, grok.EditForm, RepositoryView):
     def _set_extrafield(self, identifier, index=None, add_new=False):
         key = self.request.get('extrafield_%s_key' % identifier)
         value = self.request.get('extrafield_%s_value' % identifier)
-        if add_new and url and text:
+        if add_new and url and text: #XX this must not be used anywhere, as these varaibles seem undefined!
             self.bioport_biography.add_extrafield(key=key, value=value)
         else:
             assert index != None
@@ -874,11 +874,8 @@ class Persoon(app.Persoon, grok.EditForm, RepositoryView):
         for idx in to_remove:
             self.bioport_biography.remove_relation(idx=idx)
             
-
-            
     def get_relations(self):
-       return [RelationWrapper(el_relation=el_relation, el_person=el_person) for (el_relation, el_person) in self.bioport_biography.get_relations()]
-
+        return [RelationWrapper(el_relation=el_relation, el_person=el_person) for (el_relation, el_person) in self.bioport_biography.get_relations()]
 
     def get_relation_types(self): 
         """return identifier, text pairs for relation types"""

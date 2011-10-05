@@ -298,16 +298,26 @@ class Resolver(grok.View, RepositoryView):
             url = os.path.join(self.application_url(), 'persoon', bioport_id)
         if return_jsonp:
             if bioport_id:
-                dct = {
-                    'bioport_id':bioport_id,
-                    'url':url,
-                }
+                bios = self.repository().get_biographies(bioport_id=bioport_id)
+                bios = [x for x in bios if x.source_id != 'bioport']
+                min = self.request.get('min_number_of_biographies', '0')
+                if not min.isdigit():
+                    min = 0
+                min = int(min)
+                if len(bios) >= min:
+                    dct = {
+                        'bioport_id':bioport_id,
+                        'url':url,
+                        'number_of_biographies':len(bios),
+                    }
+                else:
+                    dct = {}
             else:
-                dct = {
-                    'bioport_id':'',
-                    'url':'',
-                }
-            return '%s(%s)' % (self.request.get('callback'), simplejson.dumps(dct))
+                dct = {}
+            self.request.response.setHeader('Content-Type', 'application/javascript; charset=UTF-8')
+            s = '%s(%s)' % (self.request.get('callback'), simplejson.dumps(dct))
+            s = s.encode('utf8') #need to encode, otherwise zope complains about mime-type
+            return s
         else:
             #redirect to the person, if we can
             if bioport_id:
@@ -438,16 +448,12 @@ class Persoon(BioPortIdTraverser, grok.View, RepositoryView):
         if el is not None:
             return ReligionWrapper(el, self.repository())
         
-        
     def get_categories(self):
         return [StateWrapper(x) for x in self.bioport_biography.get_states(type='category')]
 
     def get_editable_states(self): 
         return [StateWrapper(state) for state in self.bioport_biography.get_states() 
                 if state.get('type') not in ['floruit', 'category', 'religion']]
-    
-
-
 
     def get_biographies(self):
         bios = self.person.get_biographies()
@@ -483,7 +489,7 @@ def get_born_description(request):
     if geboorte_fuzzy_text:
         try:
             qry = get_search_query(geboorte_fuzzy_text)
-        except ValueError, e:
+        except ValueError:
             return _("Unable to parse birth date. Please rephrase it")
         return make_description(qry, lang=current_language)
 
@@ -495,7 +501,7 @@ def get_died_description(request):
     if sterf_fuzzy_text:
         try:
             qry = get_search_query(sterf_fuzzy_text)
-        except ValueError, e:
+        except ValueError:
             return _("Unable to parse death date. Please rephrase it.")
         return make_description(qry, lang=current_language)
 
@@ -507,7 +513,7 @@ def get_alive_description(request):
     if levend_fuzzy_text:
         try:
             qry = get_search_query(levend_fuzzy_text)
-        except ValueError, e:
+        except ValueError:
             return _("Unable to parse alive date. Please rephrase it.")
         return make_description(qry, lang=current_language)
 
