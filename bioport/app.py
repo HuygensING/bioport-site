@@ -289,14 +289,14 @@ class Resolver(grok.View, RepositoryView):
         ecc.
     """
     def render(self):
-        return_json = self.request.get('json')
+        return_jsonp = self.request.get('callback')
         if self.request.get('url'):
             bioport_id = self.repository().get_bioport_id(url_biography = self.request.get('url'))
         else:
             bioport_id = None
         if bioport_id:
             url = os.path.join(self.application_url(), 'persoon', bioport_id)
-        if return_json:
+        if return_jsonp:
             if bioport_id:
                 dct = {
                     'bioport_id':bioport_id,
@@ -307,7 +307,7 @@ class Resolver(grok.View, RepositoryView):
                     'bioport_id':'',
                     'url':'',
                 }
-            return simplejson.dumps(dct)
+            return '%s(%s)' % (self.request.get('callback'), simplejson.dumps(dct))
         else:
             #redirect to the person, if we can
             if bioport_id:
@@ -471,8 +471,9 @@ class Persoon(BioPortIdTraverser, grok.View, RepositoryView):
         from zope.security import checkPermission
         return checkPermission('bioport.Manage', self.context)
         
-class Person_Not_Found(BioPortIdTraverser, grok.View, RepositoryView):
-    pass
+class PersonNotFound(BioPortIdTraverser, grok.View, RepositoryView):
+    def update(self):
+        self.message = self.request.get('message')
 
 def get_born_description(request):
     """ Inspect the request and build a natural language description 

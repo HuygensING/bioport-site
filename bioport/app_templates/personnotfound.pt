@@ -1,0 +1,268 @@
+<html metal:use-macro="context/@@main_template/macros/master" i18n:domain="bioport">
+    <meta metal:fill-slot="description" name="Description" 
+        tal:attributes="content string:Biografie niet gevonden" />
+    <title metal:fill-slot="head_title"
+        tal:content="string:Niet gevonden" ></title> 
+    <div metal:fill-slot="content"
+    	tal:define="illustraties  python:[]"
+    	>
+    	
+    <div class="column_right">
+    
+        <!-- one or two pictures -->
+        <div class="illustratie" 
+             tal:condition="python:len(illustraties) in (1, 2)" 
+             tal:repeat="ill python:illustraties[:]"
+        >
+            <a tal:attributes="href ill/link_url">
+                <img tal:attributes="src ill/image_medium_url;
+                                     alt string:illustratie bij deze biografie;" /> 
+            </a>
+            <div class="caption" tal:condition="ill/caption">
+                <span tal:replace="ill/caption"></span>
+                <a 
+                tal:condition="ill/link_url"
+                    tal:attributes="href ill/link_url"
+                   class="external_link open_in_new_window"></a>
+            </div>
+        </div>
+
+        <!-- other pictures -->
+        <div class="illustratie" 
+             tal:condition="python:len(illustraties) >= 3" 
+        >
+            <div id="illustratie-image" tal:define="ill python:illustraties[0]">
+                <a tal:attributes="href ill/link_url">
+                    <img tal:attributes="src ill/image_medium_url;
+                                         alt string:illustratie bij deze biografie;" /> 
+                </a>
+                <div class="caption" tal:condition="ill/caption">
+                    <span id="illustratie-caption" tal:content="ill/caption"></span>
+                    <a tal:attributes="href ill/link_url"
+	                tal:condition="ill/link_url"
+                       class="external_link open_in_new_window"></a>
+                </div>
+            </div>
+
+            <div class="thumbs">
+                <tal:repeat repeat="ill2 python:illustraties[:]">
+                    <a tal:attributes="onclick string:jQuery('#illustratie-image img').attr('src', '${ill2/image_medium_url}');;
+                                                      jQuery('#illustratie-caption').text(${ill2/json_stripped_caption});;"
+                    >
+                        <img tal:attributes="src ill2/image_small_url;
+                                             alt string:illustratie bij deze biografie (${ill2/image_small_url});" 
+                             class="clickable"/> 
+                    </a>
+                </tal:repeat>
+            </div>
+
+        </div>
+
+        
+    </div>
+    
+    <div class="illustratie" tal:condition="not:illustraties">
+        <div class="geenplaatje"></div>
+    </div>
+
+    <div id="bioinfo">    
+    <h1 tal:content="structure python:view.biography.naam() and view.biography.naam().guess_normal_form2()" ></h1>
+    <table class="leefjaren">
+       <tal:block define="
+	       event python:view.get_event('birth');
+   			title string:born;">
+       	<tr metal:define-macro="event"
+       		tal:condition="python:event and (event.when or event.place or event.date_text)">
+            <th tal:content="title" i18n:translate="">title</th>
+            <td>
+             <span tal:replace="event/place" /><br tal:condition="event/place" />
+            <span tal:replace="python:event.when_formatted or event.date_text" />
+             </td>
+         </tr>
+		</tal:block>
+      <tal:block define="
+	       event python:view.get_event('baptism');
+   			title string:baptized;">
+                        <tal:dummy tal:condition="python: False"
+                                   i18n:translate="">baptized</tal:dummy>
+   			<tr metal:use-macro="template/macros/event" />
+   		</tal:block>
+       <tal:block define="
+	       event python:view.get_event('funeral');
+   			title string:funeral;">
+                        <tal:dummy tal:condition="python: False"
+                                   i18n:translate="">funeral</tal:dummy>
+   			<tr metal:use-macro="template/macros/event" />
+   		</tal:block>
+       <tal:block define="
+	       event python:view.get_event('death');
+   			title string:died;">
+   			<tr metal:use-macro="template/macros/event" />
+   		</tal:block>
+        <tr tal:define="state python:view.get_state(type='floruit')"
+            tal:condition="python:state and state.has_content()">
+            <th i18n:translate="">actief</th>
+            <td>
+                <span 
+                    tal:condition="not:state/text"
+                    tal:replace="python:view.context.format_dates(state.frm, state.to, parenthesis=False)" />
+                <span tal:condition="state/text" tal:content="structure string:${state/text}" />
+                <span tal:condition="state/place" tal:content="structure string:<br />${state/place}" />
+            </td>
+        </tr>
+        <tr tal:condition="python:len(view.biography.get_names()) > 1">
+            <th i18n:translate="alternative_names">naamsvarianten</th>
+            <td>
+            <ul><li tal:repeat="naam python:view.biography.get_names()"
+                tal:content="structure python:naam.guess_normal_form2()"/>
+            </ul>
+            </td>
+        </tr>
+        <tr tal:define="sexes python:['onbekend', 'man', 'vrouw'];
+                sex python:view.biography.get_value('geslacht')"
+            tal:condition="python:sex and sex in ['1','2']">
+            <th i18n:translate="gender">sekse</th>
+            <td>
+            <ul><li><span tal:replace="python:sexes[int(sex)]"
+                          i18n:translate="" /></ul>
+            </td>
+        </tr>
+        <tr tal:condition="python:view.get_religion() is not None and view.get_religion().idno">
+            <th i18n:translate="religion">religie</th>
+            <td tal:content="python:view.get_religion().name">
+            </td>
+        </tr>
+         <tr tal:condition="python:False and view.biography.get_value('beroep')">
+            <th>Beroepen en functies</th>
+            <td>
+            <ul><li tal:repeat="beroep python:view.biography.get_value('beroep')" 
+                tal:content="structure beroep" /></ul>
+            </td>
+        </tr>
+        <tr tal:define="states python:view.get_states(type='category')"
+            tal:condition="states">
+            <th i18n:translate="categories">rubriek(en)</th>
+            <td><ul>
+                <li tal:repeat="state states" 
+                    tal:content="python:view.repository().get_category(state.idno).name" />
+                </ul>
+	        </td>
+        </tr>
+
+      <tr tal:repeat="extrafield python:view.get_extrafields()" tal:condition="python:len(view.get_extrafields())>0">
+            <th tal:content="extrafield/key"/>
+	      <td tal:content="structure extrafield/value"/>
+       </tr>
+
+        <tr tal:condition="nothing"
+            tal:repeat="state python:view.get_editable_states()">
+	        <th tal:condition="not:repeat/state/index">levensloop</th>
+	        <th tal:condition="repeat/state/index"></th>
+            <td>
+                <span 
+                    tal:define="dates python:view.context.format_dates(state.frm, state.to, parenthesis=False)"
+                        tal:content="string:${dates}:" 
+                        tal:condition="dates"
+                        />
+                <span tal:content="structure string:${state/text}" />
+                <span tal:condition="state/place" tal:content="structure string:<br />${state/place}" />
+            </td>
+        </tr>
+              
+        <tr tal:define="notes python:view.bioport_biography.get_notes(type='public');
+	       notes_content python:' '.join([n.text for n in notes if n.text]).strip();
+	       "
+	        tal:condition="notes_content"
+            >
+            <th>opmerkingen</th>
+            <td tal:content="structure notes_content">
+            </td>
+        </tr>
+     </table>
+   <div class="levensbeschrijvingen"
+        tal:define="bios view/get_biographies">
+    <h2 i18n:translate="Biographies"
+        tal:condition="bios">Levensbeschrijving(en)</h2>
+    <hr />
+    <div tal:repeat="biography bios" tal:omit-tag="">
+    <div
+	    metal:define-macro="link2bio"
+        tal:define="url python:biography.get_value('url_biografie')"
+        class="biography_reference"
+        >
+        <tal:word i18n:translate="Biography"
+            tal:condition="nothing">Biografie</tal:word>
+        <span tal:condition="python:biography.get_value('auteur')">
+        	<tal:word i18n:translate="by">door</tal:word>
+            <span tal:repeat="auteur python:biography.get_value('auteur')" 
+                tal:content="structure auteur" />
+        </span>
+        <span>
+			in  <a 
+            tal:attributes="href url"
+			     class="external_link open_in_new_window"
+                    tal:content="python:biography.get_source_description()"></a>
+    	</span>
+    	   	
+    	<div class="snippet"
+    		tal:define="snippet  python:(view.bioport_biography and view.bioport_biography.get_snippet(biography.id)) or biography.snippet"
+            tal:condition="snippet">
+             <span tal:replace="structure snippet" />
+             <a  tal:attributes="href url"
+                class="external_link open_in_new_window" i18n:translate="">meer...</a>
+           </div>
+        </div>
+        
+        
+    </div>
+    <div tal:repeat="reference  python:view.get_references()"
+        class="biography_reference">
+        <a  class="external_link open_in_new_window"
+            tal:attributes="href reference/url"
+            tal:content="reference/text" />
+    </div>
+
+
+    </div>
+    <div class="levensbeschrijvingen"
+        tal:define="bios view/get_archives">
+    <h2 i18n:translate="Archives" tal:condition="bios">Archives</h2>
+    <div tal:repeat="biography bios" tal:omit-tag="">
+    <div metal:use-macro="template/macros/link2bio" />
+    </div>
+    </div>
+
+    <div class="levensbeschrijvingen"
+        tal:define="bios view/get_portraits">
+    <h2 i18n:translate="Portraits" tal:condition="bios">Portret(ten)</h2>
+    <div tal:repeat="biography bios" tal:omit-tag="">
+    <div metal:use-macro="template/macros/link2bio" />
+    </div>
+    </div>
+
+    <div class="adminSection" tal:condition="view/is_admin" tal:define="person_id view/person/id">
+        <div class="adminEditLink" >
+            <a tal:attributes="href python:view.application_url() + '/admin/persoon?bioport_id=%s' % person_id">edit person</a>
+        </div>
+        <div class="adminDebugLink" >
+            <a tal:attributes="href python:view.application_url() + '/admin/debuginfo?bioport_id=%s' % person_id">debug</a>
+        </div>
+        <div class="adminDebugLink" >
+            <a tal:attributes="href python:view.application_url() + '/persoon/xml/%s' % person_id">XML</a>
+        </div>
+     </div>
+
+    <div class="belowbios" tal:condition="nothing"
+         tal:content="structure provider:belowbios" />
+    <div tal:condition="nothing">
+    <!--  XXX TODO -->
+        <a class="backbutton" onClick="alert('terug naar de zoekresultaten (indien van toepassing). Moet nog geimplementeerd.')">terug naar de zoekresultaten</a>
+    </div>    
+   
+   <div>
+   <a tal:attributes="href python:view.url('contact', data={'subject':'reactie op biografie %s van %s' % (view.bioport_id,view.biography.title())})">opmerkingen of vragen over deze persoon?</a>
+   </div> 
+    
+</div>
+</div>
+</html>
