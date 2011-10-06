@@ -291,8 +291,6 @@ class Resolver(grok.View, RepositoryView):
     def render(self):
         #if true, we want to return a json-padded javascript. Otherwise, we redirect to a suitable page
         return_jsonp = self.request.get('callback')
-        
-        import ipdb;ipdb.set_trace() 
         url = self.request.get('url')
         if url:
             bioport_id = self.repository().get_bioport_id(url_biography = url)
