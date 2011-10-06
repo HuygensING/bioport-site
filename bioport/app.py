@@ -289,9 +289,22 @@ class Resolver(grok.View, RepositoryView):
         ecc.
     """
     def render(self):
+        #if true, we want to return a json-padded javascript. Otherwise, we redirect to a suitable page
         return_jsonp = self.request.get('callback')
-        if self.request.get('url'):
-            bioport_id = self.repository().get_bioport_id(url_biography = self.request.get('url'))
+        
+        import ipdb;ipdb.set_trace() 
+        url = self.request.get('url')
+        if url:
+            bioport_id = self.repository().get_bioport_id(url_biography = url)
+            if not bioport_id:
+                #perhaps do this cleaner, use urllib.urlencode
+                #the problem here is that in our db, we often have urls stored as
+                #     http://[urlencoded_url]
+                #(and not as urlllib.urlencode('http:///.....')
+                url = url.replace(' ', '%20')
+                url = url.replace(',', '%2C')
+                bioport_id = self.repository().get_bioport_id(url_biography = url)
+                
         else:
             bioport_id = None
         if bioport_id:

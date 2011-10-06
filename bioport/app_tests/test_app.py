@@ -5,7 +5,7 @@ Do a functional test on the app.
 """
 
 import unittest
-
+import urllib
 from bioport.tests import FunctionalTestCase
 from bioport.tests import messages
 from lxml.etree import fromstring
@@ -95,6 +95,23 @@ class SearchTest(FunctionalTestCase):
         form.getControl(name='geboorte_fuzzy_text').value = u'na 1800'
         form.submit()
 
+#      
+class ResolverTest(FunctionalTestCase):
+    
+    def test_resolver(self):
+        browser = self.browser
+        bio = self.repo.get_biography(local_id='knaw_test/001')
+        qs = urllib.urlencode({'url':bio.record.url_biography})
+        url = 'http://localhost/app/resolver?callback=somefunction&%s' % qs
+        browser.open(url)
+        self.assertTrue('"number_of_biographies": 1' in browser.contents)
+        
+        #this biography has an url with a space and a comma in it
+        bio = self.repo.get_biography(local_id='knaw_test/005')
+        qs = urllib.urlencode({'url':bio.record.url_biography})
+        url = 'http://localhost/app/resolver?callback=somefunction&%s' % qs
+        browser.open(url)
+        self.assertTrue('"number_of_biographies": 1' in browser.contents)
 def test_suite():
     test_suite = unittest.TestSuite()
     tests = [GoogleSitemapTest,
