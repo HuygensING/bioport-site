@@ -786,3 +786,14 @@
 	cursor: pointer;
 }
 
+  pre {
+        width : 500px; 
+        font-family: Monaco, "Courier New", Courier, monospace;
+		font-size: 100%;
+		padding: 1em;
+		border: 1px solid #8CACBB;
+		color: black;
+		background-color: #DEE7EC;
+		overflow: auto;
+    }  
+
