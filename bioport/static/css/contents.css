@@ -787,10 +787,10 @@
 }
 
   pre {
-        width : 500px; 
+        width : 670px; 
         font-family: Monaco, "Courier New", Courier, monospace;
 		font-size: 100%;
-		padding: 1em;
+		padding: 0.5em;
 		border: 1px solid #8CACBB;
 		color: black;
 		background-color: #DEE7EC;
