@@ -16,32 +16,12 @@
                  title="Jelle"
                  login="jelle"
                  password_manager="Plain Text"
-                 password="jelle"
+                 password="j3ll3"
                  />
 
       <grant role="bioport.Editor" principal="bioport.jelle" />
       <grant role="bioport.Manager" principal="bioport.jelle" />
       
-      <principal id="bioport.giampaolo"
-                 title="giampaolo"
-                 login="giampaolo"
-                 password_manager="Plain Text"
-                 password="N@p0li"
-                 />
-
-      <grant role="bioport.Editor" principal="bioport.giampaolo" />
-      <grant role="bioport.Manager" principal="bioport.giampaolo" />
-      
-      <principal id="bioport.bas"
-                 title="bas"
-                 login="bas"
-                 password_manager="Plain Text"
-                 password="b@s"
-                 />
-
-      <grant role="bioport.Editor" principal="bioport.bas" />
-      <grant role="bioport.Manager" principal="bioport.bas" />
-       
       <principal id="bioport.els"
                  title="Els"
                  login="els"
@@ -51,16 +31,7 @@
 
       <grant role="bioport.Editor" principal="bioport.els" />
 
-        <principal id="bioport.annemarie"
-                 title="Anne-Marie"
-                 login="annemarie"
-                 password_manager="Plain Text"
-                 password="annemarie123"
-                 />
 
-      <grant role="bioport.Editor" principal="bioport.annemarie" />
-     
-     
  <!-- FERNIE -->
       
       <principal id="bioport.fernie"
