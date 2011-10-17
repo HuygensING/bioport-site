@@ -904,9 +904,6 @@ img {
     </div>
 <!--  /EXTRA FIELDS -->
 
-
-
-
     <!--  STATUS -->
     <tr metal:use-macro="template/macros/separator" ></tr> 
     <tr>

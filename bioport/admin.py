@@ -1077,7 +1077,6 @@ class Persoon(app.Persoon, grok.EditForm, RepositoryView):
         references = [(url, text) for (id, url, text) in references]
         self.bioport_biography._replace_references(references)
 
-
     def _set_extrafields(self): 
         extrafields = []
         for k in self.request.form.keys():
@@ -1087,12 +1086,9 @@ class Persoon(app.Persoon, grok.EditForm, RepositoryView):
                 value = self.request.get('extrafield_%s_value' % identifier)
                 if key and value:
                     extrafields.append((identifier, key, value))
+        extrafields.sort() #sort by id
         extrafields = [(key, value) for (id, key, value) in extrafields]
         self.bioport_biography._replace_extrafields(extrafields)
-
-
-
-
 
     def _set_illustrations(self): 
 #        to_remove = [] #list of states to remove

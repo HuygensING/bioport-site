@@ -417,7 +417,7 @@ class NewFieldsTestCase(FunctionalTestCase):
 
 
 
-    def test_edit_extrafields(self):
+    def test_edit_extra_fields(self):
         browser = self._open_edit_url()
         edit_url = browser.url
    
@@ -470,8 +470,6 @@ class NewFieldsTestCase(FunctionalTestCase):
         self.assertEqual(browser.getControl(name='extrafield_%s_key' % identifier).value, 'sleutel4')
         self.assertEqual(browser.getControl(name='extrafield_%s_value' % identifier).value , 'waarde4')
         
-        
-        #delete a extrafield
         identifier = get_identifiers()[1]
         #XXX for some readon, the browser cannot find the link, while browser.contents seems to show that it is there
 #        browser.getLink(id='delete_extrafield_%s' % identifier).click()
@@ -489,8 +487,6 @@ class NewFieldsTestCase(FunctionalTestCase):
         self.assertEqual(browser.getControl(name='extrafield_%s_key' % identifier).value, 'sleutel5')
         self.assertEqual(browser.getControl(name='extrafield_%s_value' % identifier).value , 'waarde5')
 
- 
-    
     def test_edit_illustrations(self):
         browser = self._open_edit_url()
         edit_url = browser.url
