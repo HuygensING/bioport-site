@@ -34,7 +34,8 @@ class ContactFormTest(FunctionalTestCase):
         self.browser.open(self.base_url + '/contact')
         self.fill_form()
         self.browser.getControl('Vul de letters').value = 'wrongvalue'
-        captcha_crypt = re.findall(r'captcha_text[^>]+vaContactFormTestlue="([^"]+)', self.browser.contents)[0]
+#        captcha_crypt = re.findall(r'captcha_text[^>]+vaContactFormTestlue="([^"]+)', self.browser.contents)[0]
+        captcha_crypt = re.findall(r'captcha_text[^>]+value="([^"]+)', self.browser.contents)[0]
         self.browser.getControl('Submit').click()
         self.failUnlessEqual(len(messages), messages_before)
         new_captcha_crypt = re.findall(r'captcha_text[^>]+value="([^"]+)', self.browser.contents)[0]
