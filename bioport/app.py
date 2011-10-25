@@ -309,7 +309,8 @@ class Resolver(grok.View, RepositoryView):
             url = os.path.join(self.application_url(), 'persoon', bioport_id)
         if return_jsonp:
             if bioport_id:
-                bios = self.repository().get_biographies(bioport_id=bioport_id)
+                person = self.repository().get_person(bioport_id=bioport_id)
+                bios = person.get_biographies()
                 bios = [x for x in bios if x.source_id != 'bioport']
                 min = self.request.get('min_number_of_biographies', '0')
                 if not min.isdigit():
@@ -320,6 +321,7 @@ class Resolver(grok.View, RepositoryView):
                         'bioport_id':bioport_id,
                         'url':url,
                         'number_of_biographies':len(bios),
+                        'name':person.name().volledige_naam(),
                     }
                 else:
                     dct = {}

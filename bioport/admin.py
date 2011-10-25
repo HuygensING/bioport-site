@@ -119,9 +119,6 @@ class Edit(grok.EditForm,RepositoryView):
     @grok.action(u"Save Settings", name="edit_settings")
     def edit_admin(self, **data):
         self.applyData(self.context, **data)
-        repository = self.repository()
-        #repository.db.metadata.create_all()
-        #self.redirect(self.url(self))
     
     @grok.action('Refresh the similarity cache', name='refresh_similarity_cache')
     def refresh_similarity_cache(self, **data): 
