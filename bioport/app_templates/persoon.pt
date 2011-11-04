@@ -5,69 +5,12 @@
         tal:attributes="content python:' '.join([x.guess_normal_form2() for x in view.biography.get_names()] + ['biografie', 'biografisch portaal'])" />
     <title metal:fill-slot="head_title"
         tal:content="structure python:view.biography.title()" ></title> 
-    <div metal:fill-slot="content"
-    	tal:define="illustraties  python:[x for x in view.biography.get_illustrations() if x.has_image()]"
-    	>
+<div metal:fill-slot="content"
+	tal:define="illustraties  python:[x for x in view.biography.get_illustrations() if x.has_image()]"
+	>
     	
-    <div class="column_right">
-    
-        <!-- one or two pictures -->
-        <div class="illustratie" 
-             tal:condition="python:len(illustraties) in (1, 2)" 
-             tal:repeat="ill python:illustraties[:]"
-        >
-            <a tal:attributes="href ill/link_url">
-                <img tal:attributes="src ill/image_medium_url;
-                                     alt string:illustratie bij deze biografie;" /> 
-            </a>
-            <div class="caption" tal:condition="ill/caption">
-                <span tal:replace="ill/caption"></span>
-                <a 
-                tal:condition="ill/link_url"
-                    tal:attributes="href ill/link_url"
-                   class="external_link open_in_new_window"></a>
-            </div>
-        </div>
 
-        <!-- other pictures -->
-        <div class="illustratie" 
-             tal:condition="python:len(illustraties) >= 3" 
-        >
-            <div id="illustratie-image" tal:define="ill python:illustraties[0]">
-                <a tal:attributes="href ill/link_url">
-                    <img tal:attributes="src ill/image_medium_url;
-                                         alt string:illustratie bij deze biografie;" /> 
-                </a>
-                <div class="caption" tal:condition="ill/caption">
-                    <span id="illustratie-caption" tal:content="ill/caption"></span>
-                    <a tal:attributes="href ill/link_url"
-	                tal:condition="ill/link_url"
-                       class="external_link open_in_new_window"></a>
-                </div>
-            </div>
-
-            <div class="thumbs">
-                <tal:repeat repeat="ill2 python:illustraties[:]">
-                    <a tal:attributes="onclick string:jQuery('#illustratie-image img').attr('src', '${ill2/image_medium_url}');;
-                                                      jQuery('#illustratie-caption').text(${ill2/json_stripped_caption});;"
-                    >
-                        <img tal:attributes="src ill2/image_small_url;
-                                             alt string:illustratie bij deze biografie (${ill2/image_small_url});" 
-                             class="clickable"/> 
-                    </a>
-                </tal:repeat>
-            </div>
-
-        </div>
-
-        
-    </div>
-    
-    <div class="illustratie" tal:condition="not:illustraties">
-        <div class="geenplaatje"></div>
-    </div>
-
-    <div id="bioinfo">    
+    <div class="bioinfo">    
     <h1 tal:content="structure python:view.biography.naam() and view.biography.naam().guess_normal_form2()" ></h1>
     <table class="leefjaren">
        <tal:block define="
@@ -181,6 +124,68 @@
             </td>
         </tr>
      </table>
+</div>
+   
+ <div class="column_right">
+    
+        <!-- one or two pictures -->
+        <div class="illustratie" 
+             tal:condition="python:len(illustraties) in (1, 2)" 
+             tal:repeat="ill python:illustraties[:]"
+        >
+            <a tal:attributes="href ill/link_url">
+                <img tal:attributes="src ill/image_medium_url;
+                                     alt string:illustratie bij deze biografie;" /> 
+            </a>
+            <div class="caption" tal:condition="ill/caption">
+                <span tal:replace="ill/caption"></span>
+                <a 
+                tal:condition="ill/link_url"
+                    tal:attributes="href ill/link_url"
+                   class="external_link open_in_new_window"></a>
+            </div>
+        </div>
+
+        <!-- other pictures -->
+        <div class="illustratie" 
+             tal:condition="python:len(illustraties) >= 3" 
+        >
+            <div id="illustratie-image" tal:define="ill python:illustraties[0]">
+                <a tal:attributes="href ill/link_url">
+                    <img tal:attributes="src ill/image_medium_url;
+                                         alt string:illustratie bij deze biografie;" /> 
+                </a>
+                <div class="caption" tal:condition="ill/caption">
+                    <span id="illustratie-caption" tal:content="ill/caption"></span>
+                    <a tal:attributes="href ill/link_url"
+                    tal:condition="ill/link_url"
+                       class="external_link open_in_new_window"></a>
+                </div>
+            </div>
+
+            <div class="thumbs">
+                <tal:repeat repeat="ill2 python:illustraties[:]">
+                    <a tal:attributes="onclick string:jQuery('#illustratie-image img').attr('src', '${ill2/image_medium_url}');;
+                                                      jQuery('#illustratie-caption').text(${ill2/json_stripped_caption});;"
+                    >
+                        <img tal:attributes="src ill2/image_small_url;
+                                             alt string:illustratie bij deze biografie (${ill2/image_small_url});" 
+                             class="clickable"/> 
+                    </a>
+                </tal:repeat>
+            </div>
+
+        </div>
+
+        
+    </div> <!--  colright -->
+    
+    <div class="illustratie" tal:condition="not:illustraties">
+        <div class="geenplaatje"></div>
+    </div>
+
+
+<div class="bioinfo">
    <div class="levensbeschrijvingen"
         tal:define="bios view/get_biographies">
     <h2 i18n:translate="Biographies"
@@ -188,26 +193,26 @@
     <hr />
     <div tal:repeat="biography bios" tal:omit-tag="">
     <div
-	    metal:define-macro="link2bio"
+        metal:define-macro="link2bio"
         tal:define="url python:biography.get_value('url_biografie')"
         class="biography_reference"
         >
         <tal:word i18n:translate="Biography"
             tal:condition="nothing">Biografie</tal:word>
         <span tal:condition="python:biography.get_value('auteur')">
-        	<tal:word i18n:translate="by">door</tal:word>
+            <tal:word i18n:translate="by">door</tal:word>
             <span tal:repeat="auteur python:biography.get_value('auteur')" 
                 tal:content="structure auteur" />
         </span>
         <span>
-			in  <a 
+            in  <a 
             tal:attributes="href url"
-			     class="external_link open_in_new_window"
+                 class="external_link open_in_new_window"
                     tal:content="python:biography.get_source_description()"></a>
-    	</span>
-    	   	
-    	<div class="snippet"
-    		tal:define="snippet  python:(view.bioport_biography and view.bioport_biography.get_snippet(biography.id)) or biography.snippet"
+        </span>
+            
+        <div class="snippet"
+            tal:define="snippet  python:(view.bioport_biography and view.bioport_biography.get_snippet(biography.id)) or biography.snippet"
             tal:condition="snippet">
              <span tal:replace="structure snippet" />
              <a  tal:attributes="href url"
@@ -241,7 +246,6 @@
     <div metal:use-macro="template/macros/link2bio" />
     </div>
     </div>
-
     <div class="adminSection" tal:condition="view/is_admin" tal:define="person_id view/person/id">
         <div class="adminEditLink" >
             <a tal:attributes="href python:view.application_url() + '/admin/persoon?bioport_id=%s' % person_id">edit person</a>
@@ -264,7 +268,8 @@
    <div>
    <a tal:attributes="href python:view.url('contact', data={'subject':'reactie op biografie %s van %s' % (view.bioport_id,view.biography.title())})">opmerkingen of vragen over deze persoon?</a>
    </div> 
-    
-</div>
-</div>
+</div> <!--  /bioinfo 2 -->
+</div> <!--  /fillslot content  -->
+  
+
 </html>

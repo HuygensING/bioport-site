@@ -602,11 +602,11 @@ class Zoek_places_admin(grok.View, RepositoryView):
 #        return batch
 
 
-
-class Bronnen(grok.View, RepositoryView):
-    pass
-class Colofon(grok.View, RepositoryView):
-    pass
+#
+#class Bronnen(grok.View, RepositoryView):
+#    pass
+#class Colofon(grok.View, RepositoryView):
+#    pass
 
 class Birthdays_Box(grok.View, RepositoryView):
     
@@ -643,18 +643,18 @@ class Birthdays(grok.View, RepositoryView):
         return persons
     
 
-    
-class About(grok.View, RepositoryView):
-    pass
-
-class Agenda(grok.View, RepositoryView):
-    pass
-
-class English(grok.View, RepositoryView):
-    pass
-
-class FAQ(grok.View, RepositoryView):
-    pass
+#    
+#class About(grok.View, RepositoryView):
+#    pass
+#
+#class Agenda(grok.View, RepositoryView):
+#    pass
+#
+#class English(grok.View, RepositoryView):
+#    pass
+#
+#class FAQ(grok.View, RepositoryView):
+#    pass
 
 class Images_XML(grok.View, RepositoryView):
     grok.name('images.xml')
@@ -692,22 +692,22 @@ class BelowBios(grok.ViewletManager):
     grok.name('belowbios')
     grok.context(Bioport)
     
-class Collecties(grok.View, RepositoryView):
-    pass
-
-class Instellingen(grok.View, RepositoryView):
-    pass
-
-class Stichting(grok.View, RepositoryView):
-    pass
-
-class RedactieRaad(grok.View, RepositoryView):
-    pass
-
-class Links(grok.View,RepositoryView):
-    pass
-class Blog(grok.View,RepositoryView):
-    pass
+#class Collecties(grok.View, RepositoryView):
+#    pass
+#
+#class Instellingen(grok.View, RepositoryView):
+#    pass
+#
+#class Stichting(grok.View, RepositoryView):
+#    pass
+#
+#class RedactieRaad(grok.View, RepositoryView):
+#    pass
+#
+#class Links(grok.View,RepositoryView):
+#    pass
+#class Blog(grok.View,RepositoryView):
+#    pass
 
 class SiteMaps(grok.View,RepositoryView):
     MAX_PER_FILE = 2000

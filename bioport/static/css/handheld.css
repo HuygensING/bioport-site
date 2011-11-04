@@ -1,0 +1,109 @@
+/* @media handheld {
+*/
+.mobile {
+    display : block !important;
+}
+.nmobile {
+    display : none !important;
+}
+    #wrapper {
+        margin-left : 2%;
+        margin-right : 2%;
+    }
+    #layHead {
+        width: auto;
+		max-width: 920px;
+		height : auto;
+    }
+    #layHead h2 {
+        width: 240px; 
+        display : block;
+        float : left;
+    }
+    #layHead div#stats {
+        float : right; 
+        width: 100px;
+        display : block;
+        margin : 0px;
+    }
+    
+    #layMenu {
+        width: auto;
+		max-width: 920px;
+		clear: both;
+		height : auto;
+    
+    }
+    #layMenu li  {
+		background: url(../images/bgmenu.png) repeat-x #DEC34A;
+		border-top : 1px solid white;
+    }
+    #layMenu .search_form {
+    }
+    #layMenu .search_form > form {
+       margin-top : 3px; 
+    }
+    #layContent {
+        width: auto;
+		max-width: 920px;
+    } 
+    #layContent .main {
+	    width: auto;
+        max-width: 525px;
+    }
+ 
+	#colright, .colright {
+		max-width: 205px;
+		width : auto;
+	}	       
+	
+	#colcenter, .colcenter {
+        max-width : 690px;
+        min-width : 70%;
+        width : auto;
+	}
+	#Personen  .snippet {
+	   max-width: 470px;
+	   width : auto;
+	
+	}
+    #layFoot {
+        width: auto;
+		max-width: 920px;
+    }
+    .birthdays_box {
+    }
+    
+    #Index #colcenter {
+        min-width : 70%;
+    }
+    
+    #Index .searchcontainer {
+        clear: left;
+        margin: 0 0 4px 0;
+        max-width: 600px;
+        width: auto;
+        position : relative;
+    }
+    #Index #searchform {
+        float : left;
+        width : 84%;
+    }
+    
+	
+	#Persoon .bioinfo {
+        width : auto;
+        max-width : 550px;	
+	}
+	#Index .searchcontainer {
+        padding : 14px 3% 14px 3%;	
+        overflow : auto;
+	}
+	#Index .searchcontainer.freeform input[type=text] ,
+	#Index .searchcontainer.browse input[type=text] {
+	   width : 80%;
+	   max-width : 265px;
+	}
+	#Index .searchcontainer h3 {
+        min-width : 14%;	
+	}

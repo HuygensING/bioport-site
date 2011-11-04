@@ -18,8 +18,6 @@
 		font-family: "Trebuchet MS", Verdana, Geneva, Arial, Helvetica, sans-serif;
 	}
 	
-		body.home {
-		}
 	
 /* header -------------------------------------------------- */
 
@@ -30,26 +28,26 @@
 		background-repeat: no-repeat;
 	}
 	
-		#layHead h2 {
-			width: 242px;
-			height: 78px;
-			background: url(../images/logobpn.png) no-repeat;
-            cursor: pointer;
-		}
-		#layHead h2.english {
-			background: url(../images/logobpn-en.png) no-repeat;
-        }
-		
-		#layHead div#stats {
-			float: right;
-			height: 70px;
-			padding: 8px 92px 0 0;
-			font-size: 11px;
-			line-height: 1.7em;
-			margin: -78px 0 0 0;
-			text-align: right;
-			background: url(../images/book.jpg) no-repeat right;
-		}
+	#layHead h2 {
+		width: 242px;
+		height: 78px;
+		background: url(../images/logobpn.png) no-repeat;
+        cursor: pointer;
+	}
+	#layHead h2.english {
+		background: url(../images/logobpn-en.png) no-repeat;
+    }
+	
+	#layHead div#stats {
+		float: right;
+		height: 70px;
+		padding: 8px 92px 0 0;
+		font-size: 11px;
+		line-height: 1.7em;
+		margin: -78px 0 0 0;
+		text-align: right;
+		background: url(../images/book.jpg) no-repeat right;
+	}
 
 
 /* menu area ----------------------------------------------- */
@@ -65,46 +63,48 @@
 		text-transform:lowercase;
 	}
 
-		#layMenu ul {
-			list-style-type: none;
-			margin: 0;
-			padding: 0;
-		}
-	
-			#layMenu ul li {
-				overflow: hidden;
-				height: 26px;
-				padding: 7px 14px 0 14px;
-				border-style: solid;
-				border-color: white;
-				border-width: 0 1px 0 0;
-				float: left;
-			}
-	
-		#layMenu a {
-			color: #000;
-			font-size: 11px;
-			font-weight: bold;
-			text-decoration:none;
-		}	
-	
-			#layMenu a:hover {
-				color: #431;
-				text-decoration:underline;
-			}
+	#layMenu ul {
+		list-style-type: none;
+		margin: 0;
+		padding: 0;
+		background: url(../images/bgmenu.png) repeat-x #DEC34A;
+		overflow: hidden;
+	}
 
-               #layMenu ul#portal-languageselector {
-                       float: right;
-               }
+	#layMenu ul li {
+			overflow: hidden;
+			height: 26px;
+			height : 19px;
+			padding: 7px 14px 0 14px;
+			border-style: solid;
+			border-color: white;
+			border-width: 0px 1px 0px 0;
+			float: left;
+	}
+
+	#layMenu a {
+		color: #000;
+		font-size: 11px;
+		font-weight: bold;
+		text-decoration:none;
+	}	
+
+	#layMenu a:hover {
+		color: #431;
+		text-decoration:underline;
+	}
+
+   #layMenu li#portal-languageselector {
+           float: right;
+           border-left-width : 1px;
+           border-right-width: 0px;
+   }
        
-                       #layMenu ul#portal-languageselector li {
-                               border-width: 0 0 0 0px;
-                       }
 
 		#layMenu .search_form {
 			float: right;
             margin-right:5px;
-            margin-top:4px;
+            margin-top:-5px;
 		}
 
 		#layMenu .search_form .textArea {
@@ -137,6 +137,7 @@
 	#layContent {
 		margin: 25px auto 0 auto;
 		width: 920px;
+		
 	}
 
 		#layContent .main {

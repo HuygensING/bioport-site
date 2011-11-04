@@ -30,6 +30,9 @@
     <link tal:attributes="href static/css/contents.css" rel="stylesheet" type="text/css" />
     <link tal:attributes="href static/css/print.css" rel="stylesheet" media="print" type="text/css" />
     <link tal:attributes="href static/css/photoframe.css" rel="stylesheet" media="screen" type="text/css" />
+    <link tal:attributes="href static/css/handheld.css" rel="stylesheet" media="handheld" type="text/css" />
+    <link tal:attributes="href static/css/handheld.css" rel="stylesheet" media="screen" type="text/css" />
+    
     <link rel="places_url" tal:attributes="href python:view.url('zoek_places')" />
     <script tal:attributes="src static/js/jquery-1.4.1.min.js" type="text/javascript"></script>
     <script tal:attributes="src static/js/utils.js" type="text/javascript"></script>
@@ -37,6 +40,7 @@
 
     <script tal:attributes="src static/js/scripts.js" type="text/javascript"></script>
 	<link tal:attributes="href static/images/favicon.ico" rel="shortcut icon"/>
+	
 
     <!--[if IE 6]>
     <![endif]-->
@@ -88,15 +92,18 @@
                 <li tal:repeat="item python:view.menu_items()">
                     <a tal:attributes="href python:item[0]" i18n:translate="" tal:content="python:item[1]"></a>
                 </li>
-	        </ul>
-	        <form class="search_form" tal:condition="python:view.__name__ != 'index'" 
-	           tal:attributes="action python:view.url('personen')">
-	           <div>
-	           <input class="textArea" type="text" name="search_name" size="20" tal:attributes="value request/search_name | nothing" />
-	           <input class="submitButton" type="submit" value="zoek" />
-	           </div>
-	        </form>
+	        
+		     <li tal:condition="python:view.__name__ != 'index'" id="search_form">
+		        <form class="search_form" 
+		           tal:attributes="action python:view.url('personen')">
+		           <div>
+		           <input class="textArea" type="text" name="search_name" size="20" tal:attributes="value request/search_name | nothing" />
+		           <input class="submitButton" type="submit" value="zoek" />
+		           </div>
+		        </form>
+		     </li>
                 <tal:languageSelector replace="structure context/@@language_chooser" />
+	        </ul>
         <hr class="textOnly" />
         </div>
         
