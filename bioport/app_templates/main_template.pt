@@ -30,7 +30,7 @@
     <link tal:attributes="href static/css/contents.css" rel="stylesheet" type="text/css" />
     <link tal:attributes="href static/css/photoframe.css" rel="stylesheet" media="screen,handheld" type="text/css" />
     <link tal:attributes="href static/css/print.css" rel="stylesheet" media="print" type="text/css" />
-    <link tal:attributes="href static/css/handheld.css" rel="stylesheet" media="screen and (max-device-width: 1200px) or handheld" type="text/css" />
+    <link tal:attributes="href static/css/handheld.css" rel="stylesheet" media="only screen and (max-device-width: 1200px)" type="text/css" />
     
     <link rel="places_url" tal:attributes="href python:view.url('zoek_places')" />
     <script tal:attributes="src static/js/jquery-1.4.1.min.js" type="text/javascript"></script>
