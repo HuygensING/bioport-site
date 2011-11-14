@@ -26,10 +26,11 @@
     </tal:keywords>
 
     <link tal:attributes="href static/css/reset.css" rel="stylesheet" type="text/css" />
-    <link tal:attributes="href static/css/layout.css" rel="stylesheet" media="screen" type="text/css" />
+    <link tal:attributes="href static/css/layout.css" rel="stylesheet" media="screen,handheld" type="text/css" />
     <link tal:attributes="href static/css/contents.css" rel="stylesheet" type="text/css" />
+    <link tal:attributes="href static/css/photoframe.css" rel="stylesheet" media="screen,handheld" type="text/css" />
     <link tal:attributes="href static/css/print.css" rel="stylesheet" media="print" type="text/css" />
-    <link tal:attributes="href static/css/photoframe.css" rel="stylesheet" media="screen" type="text/css" />
+    <link tal:attributes="href static/css/handheld.css" rel="stylesheet" media="screen and (max-device-width: 1200px) or handheld" type="text/css" />
     
     <link rel="places_url" tal:attributes="href python:view.url('zoek_places')" />
     <script tal:attributes="src static/js/jquery-1.4.1.min.js" type="text/javascript"></script>
@@ -87,7 +88,7 @@
         <div id="layMenu">
             <h3 class="textOnly" i18n:translate="">Contents</h3>
             <ul>
-                <li tal:repeat="item python:view.menu_items()">
+                <li tal:repeat="item python:view.menu_items()" tal:attributes="id python:item[1]">
                     <a tal:attributes="href python:item[0]" i18n:translate="" tal:content="python:item[1]"></a>
                 </li>
 	        

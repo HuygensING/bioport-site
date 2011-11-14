@@ -107,3 +107,32 @@
 	#Index .searchcontainer h3 {
         min-width : 14%;	
 	}
+	
+	#Persoon .column_right {
+		max-width: 320px;
+		width : auto;
+		float: right;
+	}	
+	
+	#Persoon .illustratie {
+		background: white;
+		max-width: 300px;
+		width : auto;
+		min-width: 50%;
+	}
+	
+    .searchcontainer.browse h3 {
+        display : None; 
+    }
+    #Index .searchcontainer.freeform button {
+        margin : 0px; 
+    }	
+	#contact, #vragen, #links, #agenda {
+	
+        display : None;	
+	}
+	
+	#layContent form input[type="text"] { 
+        width : 50%;	
+        max-width : 16em;
+	}
