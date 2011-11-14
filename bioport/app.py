@@ -13,8 +13,6 @@ from common import (format_date, format_dates, format_number,
 from interfaces import IBioport
 from names.common import to_ymd
 from plone.memoize import ram
-#from plone.memoize.instance import memoize
-#from z3c.batching.batch import Batch
 from bioport import BioportMessageFactory as _
 from zope.i18n import translate
 from sqlalchemy.exc import OperationalError
@@ -24,7 +22,6 @@ except ImportError:
     from zope.app.publisher.browser import IUserPreferredLanguages  # before python 2.6 upgrade
 from urllib import urlencode
 from fuzzy_search import get_search_query
-#from fuzzy_search import en_to_nl_for_field
 from fuzzy_search import make_description
 import simplejson
 from zope.publisher.interfaces import NotFound, INotFound
@@ -32,6 +29,8 @@ from zope.app.security.interfaces import IAuthentication, PrincipalLookupError
 
 from zope import component
 
+from mobile.sniffer.detect import  detect_mobile_browser
+from mobile.sniffer.utilities import get_user_agent
 class RepositoryView:
     def repository(self):
         principal = self.request.principal
@@ -117,6 +116,26 @@ class RepositoryView:
             return self._principal_registry.getPrincipal(id)
         except PrincipalLookupError:
             return None    
+    
+    def is_handheld(self):
+        # Get HTTP_USER_AGENT from HTTP request object
+        class FakeRequest:
+            def __init__(self, request):
+                self.other= request
+        ua = get_user_agent(FakeRequest(self.request))
+        if ua:
+            # Apply reg
+            if detect_mobile_browser(ua):
+                # Redirect the visitor from a web site to a mobile site
+                pass
+            else:
+                # A regular web site visitor
+                pass
+        else:
+            # User agent header is missing from HTTP request
+  
+            return False
+        
 class Batcher: 
     def update(self, **kw):
         self.start = int(self.request.get('start', 0))
