@@ -127,13 +127,12 @@ class RepositoryView:
             # Apply reg
             if detect_mobile_browser(ua):
                 # Redirect the visitor from a web site to a mobile site
-                pass
+                return True
             else:
                 # A regular web site visitor
-                pass
+                return False
         else:
             # User agent header is missing from HTTP request
-  
             return False
         
 class Batcher: 

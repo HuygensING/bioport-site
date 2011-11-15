@@ -6,6 +6,11 @@
 .nmobile {
     display : none !important;
 }
+
+#contact, #vragen, #links, #agenda {
+    display : none !important;	
+}
+
     #wrapper {
         margin-left : 2%;
         margin-right : 2%;
@@ -127,10 +132,6 @@
     #Index .searchcontainer.freeform button {
         margin : 0px; 
     }	
-	#contact, #vragen, #links, #agenda {
-	
-        display : None;	
-	}
 	
 	#layContent form input[type="text"] { 
         width : 50%;	
