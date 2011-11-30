@@ -3,8 +3,6 @@ Do a functional test on the app.
 
 :Test-Layer: python
 """
-import sys
-from bioport.app import Bioport
 from zope.testbrowser.testing import Browser
 import unittest
 
@@ -12,7 +10,7 @@ import os
 import re
 from bioport.tests import DSN
 from bioport.tests import FunctionalTestCase
-from zope.app.testing.functional import FunctionalTestCase as baseFunctionalTestCase
+#from zope.app.testing.functional import FunctionalTestCase as baseFunctionalTestCase
 from bioport.tests import FunctionalLayer
 
 this_dir = os.path.dirname(__file__)

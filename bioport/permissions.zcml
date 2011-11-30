@@ -90,71 +90,8 @@
       <grant role="bioport.Editor" principal="bioport.rik" />
       <grant role="bioport.Manager" principal="bioport.rik" />
  
-<!-- Laurens Dokter       -->
-       <principal id="bioport.laurens"
-                 title="Laurens"
-                 login="laurens"
-                 password_manager="Plain Text"
-                 password="laurens123"
-                 />   
-      <grant role="bioport.Editor" principal="bioport.laurens" />
- 
-<!-- Herman Nijhuis       -->
-       <principal id="bioport.herman"
-                 title="Herman"
-                 login="herman"
-                 password_manager="Plain Text"
-                 password="herman123"
-                 />   
-      <grant role="bioport.Editor" principal="bioport.herman" />
-
- 
-<!-- Rens -->
-       <principal id="bioport.rens"
-                 title="Rens"
-                 login="rens"
-                 password_manager="Plain Text"
-                 password="rens123"
-                 />   
-      <grant role="bioport.Editor" principal="bioport.rens" />
  
  
-<!-- Eppo -->
-       <principal id="bioport.eppo"
-                 title="Eppo"
-                 login="eppo"
-                 password_manager="Plain Text"
-                 password="eppo123"
-                 />   
-      <grant role="bioport.Editor" principal="bioport.eppo" />
- 
-<!-- Flora Gutierrez Rojas       -->
-       <principal id="bioport.flora"
-                 title="Flora"
-                 login="flora"
-                 password_manager="Plain Text"
-                 password="flora123"
-                 />   
-      <grant role="bioport.Editor" principal="bioport.flora" />
- 
-<!-- Jan Bolten-->    
-       <principal id="bioport.janbolten"
-                 title="Jan Bolten"
-                 login="janbolten"
-                 password_manager="Plain Text"
-                 password="janbolten321"
-                 />   
-                 
-      <grant role="bioport.Editor" principal="bioport.janbolten" />
-  
-<!-- Manuel Gutierrez Rojas   -->    
-       <principal id="bioport.manuel"
-                 title="Manuel"
-                 login="manuel"
-                 password_manager="Plain Text"
-                 password="manuel123"
-                 />   
-      <grant role="bioport.Editor" principal="bioport.manuel" />
  
 <!-- Renske Siemens       -->
        <principal id="bioport.renske"
@@ -194,166 +131,58 @@
                  />   
       <grant role="bioport.Editor" principal="bioport.dieb" />
       <grant role="bioport.Manager" principal="bioport.dieb" />
-
-<!-- GUEST LOGINS -->
-       <principal id="bioport.gast1"
-                 title="Gast1"
-                 login="gast1"
-                 password_manager="Plain Text"
-                 password="gast1"
-                 />   
-      <grant role="bioport.Editor" principal="bioport.gast1" />
       
-      <principal id="bioport.gast2"
-                 title="Gast2"
-                 login="gast2"
+<!-- * Marlein Sopers -->
+	 <principal id="bioport.marlein"
+                 title="Marlein"
+                 login="marlein"
                  password_manager="Plain Text"
-                 password="gast2"
+                 password="marlein"
                  />   
-      <grant role="bioport.Editor" principal="bioport.gast2" />
+      <grant role="bioport.Editor" principal="bioport.marlein" />                    
       
-      <principal id="bioport.gast3"
-                 title="Gast3"
-                 login="gast3"
+<!-- * Michael Baars -->
+	 <principal id="bioport.michael"
+                 title="Michael"
+                 login="michael"
                  password_manager="Plain Text"
-                 password="gast3"
+                 password="michael"
                  />   
-      <grant role="bioport.Editor" principal="bioport.gast3" />
+      <grant role="bioport.Editor" principal="bioport.michael" />                    
       
-      <principal id="bioport.gast4"
-                 title="Gast4"
-                 login="gast4"
+<!-- * Sebastiaan Derks -->
+	 <principal id="bioport.sebastiaan"
+                 title="Sebastiaan"
+                 login="sebastiaan"
                  password_manager="Plain Text"
-                 password="gast4"
+                 password="sebastiaan"
                  />   
-      <grant role="bioport.Editor" principal="bioport.gast4" />
-      
-       <principal id="bioport.gast5"
-                 title="Gast5"
-                 login="gast5"
+      <grant role="bioport.Editor" principal="bioport.sebastiaan" />                    
+<!--    * Ronald Sluijter -->
+	 <principal id="bioport.ronald"
+                 title="Ronald"
+                 login="ronald"
                  password_manager="Plain Text"
-                 password="gast5"
+                 password="ronald"
                  />   
-      <grant role="bioport.Editor" principal="bioport.gast5" />
-        <principal id="bioport.gast6"
-                 title="Gast6"
-                 login="gast6"
+      <grant role="bioport.Editor" principal="bioport.ronald" />                    
+      <!--* Pauline Beckers -->
+      <principal id="bioport.pauline"
+                 title="Pauline"
+                 login="pauline"
                  password_manager="Plain Text"
-                 password="gast6"
+                 password="pauline"
                  />   
-      <grant role="bioport.Editor" principal="bioport.gast6" />
-      
-      <principal id="bioport.gast7"
-                 title="Gast7"
-                 login="gast7"
+      <grant role="bioport.Editor" principal="bioport.pauline" />                    
+     
+<!--* Ger Ruigrok        -->
+      <principal id="bioport.ger"
+                 title="Ger"
+                 login="ger"
                  password_manager="Plain Text"
-                 password="gast7"
+                 password="ger"
                  />   
-      <grant role="bioport.Editor" principal="bioport.gast7" />
-      
-      <principal id="bioport.gast8"
-                 title="Gast8"
-                 login="gast8"
-                 password_manager="Plain Text"
-                 password="gast8"
-                 />   
-      <grant role="bioport.Editor" principal="bioport.gast8" />
-      
-      <principal id="bioport.gast9"
-                 title="Gast9"
-                 login="gast9"
-                 password_manager="Plain Text"
-                 password="gast9"
-                 />   
-      <grant role="bioport.Editor" principal="bioport.gast9" />
-      
-      <principal id="bioport.gast10"
-                 title="Gast10"
-                 login="gast10"
-                 password_manager="Plain Text"
-                 password="gast10"
-                 />   
-      <grant role="bioport.Editor" principal="bioport.gast10" />
-                 
-      <principal id="bioport.gast11"
-                 title="Gast11"
-                 login="gast11"
-                 password_manager="Plain Text"
-                 password="gast11"
-                 />   
-      <grant role="bioport.Editor" principal="bioport.gast11" />
-      
-      <principal id="bioport.gast12"
-                 title="Gast12"
-                 login="gast12"
-                 password_manager="Plain Text"
-                 password="gast12"
-                 />   
-      <grant role="bioport.Editor" principal="bioport.gast12" />
-      
-      <principal id="bioport.gast13"
-                 title="Gast13"
-                 login="gast13"
-                 password_manager="Plain Text"
-                 password="gast13"
-                 />   
-      <grant role="bioport.Editor" principal="bioport.gast13" />
-      
-      <principal id="bioport.gast14"
-                 title="Gast14"
-                 login="gast14"
-                 password_manager="Plain Text"
-                 password="gast14"
-                 />   
-      <grant role="bioport.Editor" principal="bioport.gast14" />
-      
-      <principal id="bioport.gast15"
-                 title="Gast15"
-                 login="gast15"
-                 password_manager="Plain Text"
-                 password="gast15"
-                 />   
-      <grant role="bioport.Editor" principal="bioport.gast15" />
-      
-      <principal id="bioport.gast16"
-                 title="Gast16"
-                 login="gast16"
-                 password_manager="Plain Text"
-                 password="gast16"
-                 />   
-      <grant role="bioport.Editor" principal="bioport.gast16" />
-      
-      <principal id="bioport.gast17"
-                 title="Gast17"
-                 login="gast17"
-                 password_manager="Plain Text"
-                 password="gast17"
-                 />   
-      <grant role="bioport.Editor" principal="bioport.gast17" />
-      
-      <principal id="bioport.gast18"
-                 title="Gast18"
-                 login="gast18"
-                 password_manager="Plain Text"
-                 password="gast18"
-                 />   
-      <grant role="bioport.Editor" principal="bioport.gast18" />
-      
-      <principal id="bioport.gast19"
-                 title="gast19"
-                 login="gast19"
-                 password_manager="Plain Text"
-                 password="gast19"
-                 />   
-      <grant role="bioport.Editor" principal="bioport.gast19" />                    
-      
-      <principal id="bioport.gast20"
-                 title="Gast20"
-                 login="gast20"
-                 password_manager="Plain Text"
-                 password="gast20"
-                 />   
-      <grant role="bioport.Editor" principal="bioport.gast20" />                    
+      <grant role="bioport.Editor" principal="bioport.ger" />                    
       
    </configure>
 </configure>

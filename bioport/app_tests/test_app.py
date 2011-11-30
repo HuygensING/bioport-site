@@ -15,7 +15,7 @@ from zope.testbrowser.testing import Browser
 class GoogleSitemapTest(FunctionalTestCase):
 
     def test_google_sitemap(self):
-        messages_before = len(messages)
+        _messages_before = len(messages)
         bioport_ids = self.app.repository(user='unittest user').get_bioport_ids()
         browser = self.browser
         browser.open(self.base_url + '/sitemaps/')

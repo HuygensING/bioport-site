@@ -37,7 +37,7 @@ class ContactForm(grok.AddForm, RepositoryView):
         default_subject = 'reactie biografisch portaal van %s' % kwargs['name'] 
         subject = self.request.form.get('subject') or default_subject
 #        subject = 'reactie biografisch portaal van %s' % kwargs['name'] 
-        email_from = self.context['admin'].EMAIL_FROM_ADDRESS
+        _email_from = self.context['admin'].EMAIL_FROM_ADDRESS
         email_to = self.context['admin'].CONTACT_DESTINATION_ADDRESS
         content = '%s\n---------\n\n%s' % (kwargs['text'], default_subject) 
         if self.request.form.get('subject'):
