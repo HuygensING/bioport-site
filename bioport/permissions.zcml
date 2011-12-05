@@ -135,7 +135,7 @@
 <!-- * Marlein Sopers -->
 	 <principal id="bioport.marlein"
                  title="Marlein"
-                 login="marlein"
+                 login="marlein123"
                  password_manager="Plain Text"
                  password="marlein"
                  />   
@@ -146,7 +146,7 @@
                  title="Michael"
                  login="michael"
                  password_manager="Plain Text"
-                 password="michael"
+                 password="michael123"
                  />   
       <grant role="bioport.Editor" principal="bioport.michael" />                    
       
@@ -155,7 +155,7 @@
                  title="Sebastiaan"
                  login="sebastiaan"
                  password_manager="Plain Text"
-                 password="sebastiaan"
+                 password="sebastiaan123"
                  />   
       <grant role="bioport.Editor" principal="bioport.sebastiaan" />                    
 <!--    * Ronald Sluijter -->
@@ -163,7 +163,7 @@
                  title="Ronald"
                  login="ronald"
                  password_manager="Plain Text"
-                 password="ronald"
+                 password="ronald123"
                  />   
       <grant role="bioport.Editor" principal="bioport.ronald" />                    
       <!--* Pauline Beckers -->
@@ -171,7 +171,7 @@
                  title="Pauline"
                  login="pauline"
                  password_manager="Plain Text"
-                 password="pauline"
+                 password="pauline123"
                  />   
       <grant role="bioport.Editor" principal="bioport.pauline" />                    
      
@@ -180,7 +180,7 @@
                  title="Ger"
                  login="ger"
                  password_manager="Plain Text"
-                 password="ger"
+                 password="ger123"
                  />   
       <grant role="bioport.Editor" principal="bioport.ger" />                    
       
