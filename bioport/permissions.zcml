@@ -135,9 +135,9 @@
 <!-- * Marlein Sopers -->
 	 <principal id="bioport.marlein"
                  title="Marlein"
-                 login="marlein123"
+                 login="marlein"
                  password_manager="Plain Text"
-                 password="marlein"
+                 password="marlein123"
                  />   
       <grant role="bioport.Editor" principal="bioport.marlein" />                    
       
