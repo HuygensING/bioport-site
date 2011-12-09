@@ -98,7 +98,7 @@
                     <a tal:attributes="href python:item[0]" i18n:translate="" tal:content="python:item[1]"></a>
                 </li>
 	        
-		     <li tal:condition="python:view.__name__ != 'index'" id="search_form">
+		     <li tal:condition="python:view.__name__ != 'index'" id="search_box">
 		        <form class="search_form" 
 		           tal:attributes="action python:view.url('personen')">
 		           <div>
