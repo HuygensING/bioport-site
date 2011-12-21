@@ -1,8 +1,8 @@
 <html metal:use-macro="context/@@main_template/macros/master" i18n:domain="bioport">
     <meta metal:fill-slot="description" name="Description" 
-        tal:attributes="content string:Biografie van ${view/biography/title}" />
+        tal:attributes="content string:Biografie van ${view/biography/title} (${view/bioport_id})" />
     <meta metal:fill-slot="keywords" name="Keywords" 
-        tal:attributes="content python:' '.join([x.guess_normal_form2() for x in view.biography.get_names()] + ['biografie', 'biografisch portaal'])" />
+        tal:attributes="content python:' '.join([x.guess_normal_form2() for x in view.biography.get_names()] + ['biografie', 'biografisch portaal', view.bioport_id])" />
     <title metal:fill-slot="head_title"
         tal:content="structure python:view.biography.title()" ></title> 
 <div metal:fill-slot="content"
@@ -13,6 +13,10 @@
     <div class="bioinfo">    
     <h1 tal:content="structure python:view.biography.naam() and view.biography.naam().guess_normal_form2()" ></h1>
     <table class="leefjaren">
+        <tr>
+            <th>bioport nummer</th> 
+            <td tal:content="python:view.bioport_id" />
+        </tr>
        <tal:block define="
 	       event python:view.get_event('birth');
    			title string:born;">
@@ -20,8 +24,10 @@
        		tal:condition="python:event and (event.when or event.place or event.date_text)">
             <th tal:content="title" i18n:translate="">title</th>
             <td>
-             <span tal:replace="event/place" /><br tal:condition="event/place" />
-            <span tal:replace="python:event.when_formatted or event.date_text" />
+            
+            <span tal:replace="python:event.when_formatted or event.date_text" ></span>
+            <span tal:condition="event/place" ><br /><span tal:replace="event/place" ></span></span>
+            
              </td>
          </tr>
 		</tal:block>
@@ -48,11 +54,9 @@
             tal:condition="python:state and state.has_content()">
             <th i18n:translate="">actief</th>
             <td>
-                <span 
-                    tal:condition="not:state/text"
-                    tal:replace="python:view.context.format_dates(state.frm, state.to, parenthesis=False)" />
-                <span tal:condition="state/text" tal:content="structure string:${state/text}" />
-                <span tal:condition="state/place" tal:content="structure string:<br />${state/place}" />
+                <span  tal:condition="not:state/text" tal:replace="python:view.context.format_dates(state.frm, state.to, parenthesis=False)" ></span>
+                <span tal:condition="state/text" tal:content="structure string:${state/text}" ></span>
+                <span tal:condition="state/place"><br /><span tal:replace="structure string:${state/place}" ></span></span>
             </td>
         </tr>
         <tr tal:condition="python:len(view.biography.get_names()) > 1">
@@ -68,8 +72,7 @@
             tal:condition="python:sex and sex in ['1','2']">
             <th i18n:translate="gender">sekse</th>
             <td>
-            <ul><li><span tal:replace="python:sexes[int(sex)]"
-                          i18n:translate="" /></ul>
+            <ul><li><span tal:replace="python:sexes[int(sex)]" i18n:translate=""> </span></ul>
             </td>
         </tr>
         <tr tal:condition="python:view.get_religion() is not None and view.get_religion().idno">
@@ -95,8 +98,8 @@
         </tr>
 
       <tr tal:repeat="extrafield python:view.get_extrafields()" tal:condition="python:len(view.get_extrafields())>0">
-            <th tal:content="extrafield/key"/>
-	      <td tal:content="structure extrafield/value"/>
+            <th tal:content="extrafield/key"></th>
+	      <td tal:content="structure extrafield/value"></td>
        </tr>
 
         <tr tal:condition="nothing"
@@ -108,9 +111,9 @@
                     tal:define="dates python:view.context.format_dates(state.frm, state.to, parenthesis=False)"
                         tal:content="string:${dates}:" 
                         tal:condition="dates"
-                        />
-                <span tal:content="structure string:${state/text}" />
-                <span tal:condition="state/place" tal:content="structure string:<br />${state/place}" />
+                        ></span>
+                <span tal:content="structure string:${state/text}" ></span>
+                <span tal:condition="state/place"><br /><span tal:replace="structure string:${state/place}" ></span></span>
             </td>
         </tr>
               
@@ -214,7 +217,7 @@
         <div class="snippet"
             tal:define="snippet  python:(view.bioport_biography and view.bioport_biography.get_snippet(biography.id)) or biography.snippet"
             tal:condition="snippet">
-             <span tal:replace="structure snippet" />
+             <span tal:replace="structure snippet" ></span>
              <a  tal:attributes="href url"
                 class="external_link open_in_new_window" i18n:translate="">meer...</a>
            </div>
@@ -226,7 +229,7 @@
         class="biography_reference">
         <a  class="external_link open_in_new_window"
             tal:attributes="href reference/url"
-            tal:content="reference/text" />
+            tal:content="reference/text" ></a>
     </div>
 
 
@@ -235,7 +238,7 @@
         tal:define="bios view/get_archives">
     <h2 i18n:translate="Archives" tal:condition="bios">Archives</h2>
     <div tal:repeat="biography bios" tal:omit-tag="">
-    <div metal:use-macro="template/macros/link2bio" />
+    <div metal:use-macro="template/macros/link2bio" ></div>
     </div>
     </div>
 
@@ -270,6 +273,5 @@
    </div> 
 </div> <!--  /bioinfo 2 -->
 </div> <!--  /fillslot content  -->
-  
 
 </html>
