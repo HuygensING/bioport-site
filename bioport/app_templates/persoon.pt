@@ -14,7 +14,7 @@
     <h1 tal:content="structure python:view.biography.naam() and view.biography.naam().guess_normal_form2()" ></h1>
     <table class="leefjaren">
         <tr>
-            <th>bioport nummer</th> 
+            <th>bioportnummer</th> 
             <td tal:content="python:view.bioport_id" />
         </tr>
        <tal:block define="
