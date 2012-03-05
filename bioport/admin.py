@@ -63,7 +63,7 @@ class Admin(grok.Container):
         return Repository(
             svn_repository=self.SVN_REPOSITORY, 
             svn_repository_local_copy=self.SVN_REPOSITORY_LOCAL_COPY,
-            db_connection=self.DB_CONNECTION,
+            dsn=self.DB_CONNECTION,
             images_cache_local=self.IMAGES_CACHE_LOCAL,
             images_cache_url=self.IMAGES_CACHE_URL,
             user=user,

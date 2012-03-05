@@ -160,11 +160,11 @@ class Bioport(grok.Application, grok.Container):
     DB_CONNECTION = None
     debug=False
 
-    def __init__(self, db_connection=None):
+    def __init__(self, dsn=None):
         super(Bioport,self).__init__() #cargoculting from ingforms 
         from admin import Admin
         self['admin'] = Admin()
-        self['admin'].DB_CONNECTION = db_connection
+        self['admin'].DB_CONNECTION = dsn
         from biodes import BioDes
         self['biodes'] = BioDes()
     
