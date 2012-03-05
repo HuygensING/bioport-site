@@ -107,8 +107,8 @@ class _Personen(RepositoryView):
             qry['has_contradictions'] = True
 
 #        DEFAULT  (XXX this is a hack around a bug with large resultsets)
-        if not qry:
-            qry['beginletter'] = 'a' 
+        if set(qry.keys()).issubset(set(['start', 'size'])):
+            self.request.form['beginletter'] = qry['beginletter'] = 'a' 
 
         #parameters from the API
         qry.update(parse_api_args(form))
@@ -253,6 +253,7 @@ class Personen(grok.View, _Personen, Batcher):
         #uncommenting the following lines messes up this logic    
 #        if request.get('beginletter'):
 #            result += ' met een achternaam beginnend met een <em>%s</em>' % request.get('beginletter')
+#
         geslacht_id = request.get('geslacht', None)
         gender_name = {'1': '<em>' + translate(_("men"),
                                       target_language=current_language) + '</em>',
