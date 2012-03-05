@@ -24,7 +24,7 @@ setup(name='bioport',
                         'python-Levenshtein',
 #                        'zope.sendmail==3.5',
                         'zope.sendmail',
-                        'captchaimage', # This probably requires libfreetype-dev
+                        'captchaimage', # This probably requires libfreetype6-dev
                         'FormEncode',
                         'collective.monkeypatcher',
                         'bioport_repository',
