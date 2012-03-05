@@ -137,8 +137,8 @@ class RepositoryView:
         
 class Batcher: 
     def update(self, **kw):
-        self.start = int(self.request.get('start', 0))
-        self.size = int(self.request.get('size', 30))
+        self.start = int(self.request.get('start', 0) or 0)
+        self.size = int(self.request.get('size', 30) or 0)
         
     def batch_url(self, start=None, size=None):
         

@@ -130,8 +130,9 @@ class Personen(grok.View, _Personen, Batcher):
         #(they are used for batching, but we need the whole result set for navigating)
         args['start'] = None
         args['size'] = None
-        del args['start']
-        del args['size']
+#        del args['start']
+#        del args['size']
+#        import ipdb;ipdb.set_trace() 
         persons = _Personen.get_persons(self, **args)
         
         try:
