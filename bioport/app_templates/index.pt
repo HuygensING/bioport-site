@@ -2,27 +2,26 @@
       i18n:domain="bioport">
 <div metal:fill-slot="content">
 
-<div id="colcenter">
-    <div id="search" class="mobile">
-        <div class="searchcontainer freeform">
-            <h3 i18n:translate="Zoeken">Zoeken</h3>
-            <form id="searchform" action="personen">
-                <fieldset>
-                    <input type="text" name="search_name"/>
-                    <button type="submit" value="zoek" i18n:attributes="value">zoek</button>
-                    <a href="zoek" i18n:translate="">geavanceerde zoekopties</a>
-                </fieldset>
-            </form>
+    <div id="colright" metal:define-macro="birthdays_box">
+    
+        <h3 i18n:translate="born_on_day">
+            <span onclick="refreshElem('pBirthdays','birthdays_box');" class="refresh"
+                tal:condition="nothing" >XXX: This element would show a new set of jarigen, if activated.</span>
+            op <span i18n:name="today_date" tal:replace="view/today">deze dag</span> geboren
+        </h3>
+    
+        <div class="sidebar gallery">
+            <div id="pBirthdays"></div>
+            <span class="sep"></span>
+            <a class="more" tal:attributes="href python:view.url('birthdays')"
+               i18n:translate="show_more">toon meer</a>
+            <hr class="textOnly"/>
         </div>
     
-        <div class="searchcontainer browse">
-            <h3 i18n:translate="">Bladeren</h3>
-            <a tal:repeat="letter string:abcdefghijklmnopqrstuvwxyz"
-                tal:content="letter"
-                tal:attributes="href string:personen?beginletter=${letter}">X</a>
-        </div>
-    </div>        
-    <div id="photo_plus_content">
+    </div>
+
+    <div id="colcenter">
+
         <div id="photoframe">
             <div id="photoframe-1"></div>
             <div id="photoframe-2"></div>
@@ -48,10 +47,8 @@
             "> 
         </script>
         
-        <p id="homepage_content" tal:content="structure view/get_homepage_html">content of homepage goes here</p>    
-    </div>
+        <p tal:content="structure view/get_homepage_html">content of homepage goes here</p>    
         
-    <div id="search" class="nmobile">
         <div class="searchcontainer freeform">
             <h3 i18n:translate="Zoeken">Zoeken</h3>
             <form id="searchform" action="personen">
@@ -69,26 +66,29 @@
                 tal:content="letter"
                 tal:attributes="href string:personen?beginletter=${letter}">X</a>
         </div>
-    </div>        
- </div>
-    <div id="colright" metal:define-macro="birthdays_box" class="birthdays_box">
-    
-        <h3 i18n:translate="born_on_day">
-            <span onclick="refreshElem('pBirthdays','birthdays_box');" class="refresh"
-                tal:condition="nothing" >XXX: This element would show a new set of jarigen, if activated.</span>
-            op <span i18n:name="today_date" tal:replace="view/today">deze dag</span> geboren
-        </h3>
-    
-        <div class="sidebar gallery">
-            <div id="pBirthdays"></div>
-            <span class="sep"></span>
-            <a class="more" tal:attributes="href python:view.url('birthdays')"
-               i18n:translate="show_more">toon meer</a>
-            <hr class="textOnly"/>
+        
+        <div class="credits" i18n:translate="credits_paragraph">
+            <hr/>
+            <h3 class="textOnly">Deelnemers</h3>
+            <span>Deelnemers aan het Biografisch Portaal van Nederland zijn: </span>
+            <a href="http://www.inghist.nl">Instituut voor Nederlandse Geschiedenis</a>, 
+            <a href="http://www.huygensinstituut.knaw.nl">Huygens Instituut</a>, 
+            <a href="http://www.iisg.nl">Internationaal Instituut voor Sociale Geschiedenis</a>, 
+            <a href="http://biografieinstituut.ub.rug.nl/" >Biografie Instituut</a>, 
+            <a href="http://www.cbg.nl/" >Centraal Bureau voor Genealogie</a>, 
+            <a href="http://www.dbnl.org/" >Digitale Bibliotheek voor de Nederlandse Letteren</a>, 
+            <a href="http://www.uu.nl/NL/faculteiten/geesteswetenschappen/Onderzoek/onderzoekinstituten/ogc/Pages/default.aspx">Onderzoekscentrum voor Geschiedenis en Cultuur (UU)</a>, 
+            <a href="http://www.parlementairdocumentatiecentrum.nl/" >Parlementair Documentatie Centrum</a>, 
+            <a href="http://website.rkd.nl/">Rijksbureau voor Kunsthistorische Documentatie</a>, 
+            <a href="http://dans.knaw.nl/nl/">Data Archiving and Networked Services</a>. 
+            Het project werd mede mogelijk gemaakt door een startsubsidie van 
+            <a href="http://www.nwo.nl/">NWO</a>
+            en subsidies van het 
+            <a href="http://www.cultuurfonds.nl/">Prins Bernhard Cultuurfonds</a> 
+            en 
+            <a href="http://www.senternovem.nl/">SenterNovem</a> ('Digitaliseren met beleid' / OCW).
         </div>
-    
-    </div>
-
+        
+    </div>  
 </div>
 </html>
-

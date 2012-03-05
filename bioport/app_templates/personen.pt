@@ -4,6 +4,9 @@
         search_description view/search_description">
 <html metal:use-macro="context/@@main_template/macros/master">
 <div metal:fill-slot="content">
+<div class="colright">
+    <tal:block tal:replace="structure view/get_navigation_box" />
+</div>
 <div class="colcenter">
 <h1 tal:condition="search_description" i18n:translate="">Zoekresultaten</h1>
 <h1 tal:condition="not:search_description" i18n:translate="">Bladeren</h1>
@@ -101,9 +104,6 @@
 	</div>
     <div metal:use-macro="template/macros/prev_next_navigation"></div>
     </div>
-</div>
-<div class="colright">
-    <tal:block tal:replace="structure view/get_navigation_box" />
 </div>
 </div>
 </html>

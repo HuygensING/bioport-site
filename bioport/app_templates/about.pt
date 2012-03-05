@@ -1,0 +1,64 @@
+<html metal:use-macro="context/@@main_template/macros/master">
+<div metal:fill-slot="content">
+<div id="colright">
+<div class="navigation_box"
+    metal:define-macro="navigation_box">
+<ul>
+	<li>
+	<a tal:attributes="href python:view.url('about')">over het project</a>
+	</li>
+	<li>
+	<a tal:attributes="href python:view.url('collecties')">collecties</a>
+	</li>
+	<li>
+	<a tal:attributes="href python:view.url('redactieraad')">redactieraad</a>
+	</li>
+	<li>
+	<a tal:attributes="href python:view.url('instellingen')">samenwerkende instellingen</a>
+	</li>
+	<li>
+	<a tal:attributes="href python:view.url('stichting')">stichting</a>
+	</li>
+	<li>
+	<a tal:attributes="href python:view.url('colofon')">colofon</a>
+	</li>
+	<li><a tal:attributes="href python:view.url('biodes')">BioDes</a></li>
+	</ul>
+</div>
+</div>
+<div id="colcenter">
+<h1>Over het project </h1>
+<p>
+Het Biografisch Portaal van Nederland is een digitale
+toegang tot <a href="collecties">verspreid gepubliceerde informatie</a>
+over bekende en minder bekende personen uit de Nederlandse
+geschiedenis, van de vroegste tijden tot heden. 
+
+<h2>Inhoud</h2>
+<p>In het
+Biografisch Portaal worden bestaande (gedrukte én digitale) 
+<a tal:attributes="href python:view.url('collecties')">collecties
+en databanken</a> opgenomen die
+biografische informatie bevatten over de bewoners van Nederland van de
+vroegste tijden tot heden. Onder ‘Nederland’ wordt – voorlopig –
+verstaan: het gebied dat tegenwoordig binnen de staatkundige grenzen van
+Nederland ligt plús die gebieden die in het verleden (en alleen voor die
+periode) koloniaal bezit van Nederland waren. Onder ‘bewoners’ verstaan
+we mensen die in Nederland zijn geboren (ook als ze elders actief zijn
+geweest) én niet-Nederlanders die in Nederland actief zijn geweest.
+Vooralsnog nemen we alleen informatie op van mensen die zijn overleden.
+
+<h2>Organisatie</h2>
+<p>Het Biografisch Portaal van Nederland is een
+samenwerkingsproject van <a tal:attributes="href python:view.url('instellingen')">tien wetenschappelijke en culturele
+instellingen</a>. 
+Het Het Instituut
+voor Nederlandse Geschiedenis (ING) treedt op als penvoerder. Ook hebben
+de partners een <a tal:attributes="href python:view.url('stichting')">stichting</a> in het leven geroepen.
+Voor de wetenschappelijke begeleiding is een 
+<a tal:attributes="href python:view.url('redactieraad')">redactieraad</a> ingesteld
+</p>
+</div>
+</div>
+</html>
+

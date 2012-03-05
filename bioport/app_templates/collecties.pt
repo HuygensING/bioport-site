@@ -1,0 +1,72 @@
+<html metal:use-macro="context/@@main_template/macros/master">
+<div metal:fill-slot="content">
+<div id="colright">
+	<div metal:use-macro="context/@@about/macros/navigation_box"></div>
+</div>
+<div id="colcenter">
+<h1>
+Collecties
+</h1>
+<p>
+Zowel oude als nieuw materiaal wordt opgenomen in het Biografisch Portaal. Het aantal aangesloten collecties, naslagwerken en bestanden zal langzaam maar zeker groeien. Ze zijn niet allemaal even betrouwbaar. Op dit moment bevat het portaal, in volgorde van betrouwbaarheid:
+</p>
+
+<h2>Categorie A (meest betrouwbaar):</h2>
+<ul>
+<li>
+<a href="http://www.inghist.nl/Onderzoek/Projecten/BWN">
+Biografisch Woordenboek van Nederland (BWN) 
+</a>
+
+<li>
+<a href="http://www.inghist.nl/Onderzoek/Projecten/DVN">
+Digitaal Vrouwenlexicon van Nederland (DVN)
+</a>
+<li>
+<a href="http://www.biografischwoordenboekgelderland.nl/">
+Biografisch Woordenboek van Gelderland (BWG) 
+</a>
+<li>
+<a href="http://iisg.nl/bwsa/">
+Biografisch  Woordenboek van het Socialisme en de Arbeidersbeweging (BWSA) 
+</a>
+</ul>
+<h2>
+Categorie B (minder betrouwbaar/volledig):
+</h2>
+<ul>
+<li>
+<a href="http://www.digitallibrary.nl/levensberichten/">
+Levensberichten KNAW-leden 
+</a>
+<li>
+<a href="http://www.inghist.nl/retroboeken/nnbw/">
+P.C. Molhuysen, P.J. Blok red., Nieuw Nederlandsch biografisch woordenboek, 10 delen (Leiden 1911-1937) (NNBW) 
+</a>
+</ul>
+<h2>
+Categorie C (weinig betrouwbaar):
+</h2>
+<ul>
+<li>
+<a href="http://www.inghist.nl/retroboeken/vdaa/">
+A.J. van der Aa e.a. red., Biographisch woordenboek der Nederlanden 21 delen (1852-1878)
+(Van der Aa) 
+</a>
+</ul>
+<h2>In de toekomst</h2>
+<p>
+In de loop der tijd zullen steeds meer collecties worden toegevoegd. De eerste die op stapel staan, zijn:
+
+<ul>
+<li>
+Biografisch lexicon van de geschiedenis van het Nederlands protestantisme, 6 delen (1978-2006).
+<li>
+F.G. Waller, Biographisch woordenboek van Noord Nederlandsche graveurs ('s-Gravenhage 1938).
+RKD-artists.
+</ul>
+
+</div>
+</div>
+</html>
+

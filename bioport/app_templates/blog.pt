@@ -1,0 +1,223 @@
+<html metal:use-macro="context/@@main_template/macros/master">
+<div metal:fill-slot="content">
+<div id="colright">
+<div class="navigation_box"
+    metal:define-macro="navigation_box">
+<ul>
+<li>
+<a href="#20100303b">
+Woensdag 3 maart
+<br />
+Els Kloek: Een Biografisch Portaal van Europa?
+</a>
+ <li>
+ <a href="#20100303">
+
+3 maart
+      <br />
+De toespraak Hans Blom van 17 februari
+</a>
+<li>
+    <a href="#20100222">
+      23 februari 
+      <br />
+Anne-Marie Mreijen, 
+De grotere broer van het Biografisch Portaal
+	</a>
+
+    <li>
+    <a href="#20100222">
+      22 februari 
+      <br />
+	Rik Hoekstra, 
+	"Wij willen meer"
+	</a>
+
+
+    </li>
+    <li>
+    <a href="#20100217">
+    17 februari
+      <br />
+Jeltje Zijlstra,
+Alweer een 035-nummer
+</a>
+    </li>
+    <li>
+    <a href="#20100211">
+    11 februari
+      <br />
+    Els Kloek,
+De genderwisseling van Christina Bader
+    
+    </li>
+    </ul>
+</div>
+</div>
+
+<div id="colcenter">
+
+
+<h1><a name="20100303b"></a>
+Woensdag 3 maart
+</h1>
+<h2>
+Een Biografisch Portaal van Europa?
+</h2>
+
+<p>
+Van 25 tot 27 februari waren Anne-Marie, Jelle en ik op een internationaal congres in München om te praten over de mogelijkheden van internationale samenwerking. De Duitsers, Zwitsers en Oostenrijkers hebben namelijk vorig jaar de handen ineen geslagen om te komen tot een Biografisch Portaal van Europa, en proberen nu ook andere landen erbij te betrekken. 
+<p>
+Er waren makers van biografische naslagwerken uit deze drie landen, uit Zweden, Tsjechië, Slovenië, Engeland, Ierland, en uit een heleboel Duitse ‘Länder’, die allemaal hun projecten toonden. Lawrence Goldman van het Oxford DNB hield een wervelende show, ook de Ieren bleken in korte tijd iets heel moois te hebben ontwikkeld (dib.cambridge.org). Probleem alleen is dat deze twee projecten allebei commercieel zijn – de gebruiker moet dus betalen. Door de Duitstalige deelnemers werd veel gesproken over de noodzaak van hun PND: Personennamendatei ( 
+<a href="http://de.wikipedia.org/wiki/Personennamendatei">http://de.wikipedia.org/wiki/Personennamendatei</a>), 
+miljoenen persoonsgegevens in een gestandaardiseerde database (ook 14.000 Nederlanders) die wordt gehost door de Beierse Staatsbibliotheek. Ook was er iemand van de Duitse Wikipedia (Mathias Schindler) die liet zien hoe snel en slim de Duitse Wikipedia is, een hoogleraar uit Hamburg (Ulrike Spree) die expert is in onderzoek naar usability en darover een zeer leerzame presentatie hield, een kunsthistoricus uit Marburg (Michael Buchkremer), die een geweldig portaal van portretten aan het maken is: der Digitäle Poträtindex – nog niet online, maar veelbelovend. 
+<p>
+Wij Nederlanders traden maar liefst drie keer op: zelf mocht ik meteen bij de opening van de conferentie mijn licht laten schijnen over de perspectieven van internationale samenwerking, Anne-Marie en ik presenteerden op de tweede dag onze Vrouwenlexicon en ons Biografisch Portaal, en Jelle liet de technische ‘achterkant’ van ons portaal zien. Eén ding is zeker: we hebben met onze presentaties indruk gemaakt, juist omdat we met weinig middelen toch al een mooie en goedwerkende site konden laten zien. We hebben voor de ontwikkeling van het Europese portaal onze software en onze werkwijze nog aangeprezen, maar daarmee liepen we misschien een beetje te hard van stapel. De Oostenrijkers, Zwitsers en Duitsers zijn namelijk zelf al een tijdlang bezig met een portaal (zie 
+<a href="http://www.biographie-portal.eu/">http://www.biographie-portal.eu/</a>) en houden voorlopig liever vast aan hun eigen aanpak. Zie ook de <a tal:attributes="href static/pdf/Vernetzung-FAZ-2010-03-03.pdf">Franfurter Allgemeine</a> over dit congres.
+<p>
+Gelukkig wilden de – Duitstalige – initiatiefnemers ons wel graag bij hun initiatief betrekken, en die uitnodiging biedt perspectieven. Het zou immers echt prachtig zijn als we het biografisch materiaal ook internationaal kunnen koppelen. Dan wordt het biografisch erfgoed pas echt ‘gedenationaliseerd’, en zal er een prachtig transnationaal onderzoeksinstrument ontstaan. Wie kan daar nu tegen zijn?
+<p>
+Els Kloek
+<h1><a name="20100303"></a>
+Woensdag 3 maart
+</h1>
+<h2>
+De toespraak Hans Blom van 17 februari
+</h2>
+
+Een paar dagen na de oprichting van de stichting en de lancering van de site (17 feb.) moesten we naar een congres in München over de mogelijkheden van een Biografisch Portaal van Europa. Zodoende waren we er nog niet aan toegekomen om de tekst van de toespraak op de site te zetten die Hans Blom op die bijeenkomst van 17 februari heeft gehouden. Beter laat dan nooit, 
+dus: 
+<a tal:attributes="href static/pdf/rede_hans_blom_17feb2010.pdf">bij deze!</a> (PDF)
+<p>
+Els Kloek
+
+
+<h1><a name="20100223"></a>Dinsdag 23 februari</h1>
+<h2>De grotere broer van het Biografisch Portaal</h2>
+<p>
+Veel tijd om uit te blazen hebben we niet na de intensieve week waarin onze site officeel gelanceerd werd. Vandaag zit ik alweer te tikken aan een lezing voor een conferentie in München waar ik aanstaande donderdag met Els naar af zal reizen – tenminste: als Lufhansa de staking gestaakt heeft. Met de loftrompetten over de kick-off van het Biografisch Portaal van Nederland nog in de oren, zullen we in München onder andere moeten discussiëren over de mogelijkheden van een Biografisch Portaal van Europa.
+<p>
+ Als ik eraan denk hoeveel werk we hebben moeten verzetten om de Nederlandse versie van de grond te krijgen, denk ik liever nog even niet aan deze grotere broer van ons project. Niettemin verheug ik me erop te horen waar collega’s uit omringende landen mee bezig zijn en te kijken op welke manier we zo’n Europees biografieën-utopia zouden kunnen verwezenlijken. Voor de wetenschapsbeoefening zou het geweldig zijn als al die biografische naslagwerken ‘per land’ – in feite een wat negentiende-eeuwse benadering – bij elkaar onder één koepel komen te staan, want mensen zijn vaak helemaal niet zo ‘nationaal’ als de geschiedschrijving hen voorstelt, en bovendien kan zo’n biografisch portaal van Europa zeer interessant vergelijkingsmateriaal opleveren.
+
+<p>
+Maar eerst toch nog maar een beetje nagenieten van de aandacht voor ons eigen project. 
+Het Biografisch Portaal van Nederland heeft zelfs de 
+<a tal:attributes="href static/pdf/voorpagina_NRC_16_feb_2010-1.pdf">voorpagina</a> (en 
+<a tal:attributes="href static/pdf/NRC_20100216_1_008_article6.pdf">pagina 8</a>) en het 
+<a tal:attributes="href static/pdf/NRC_hoofdredcom.pdf">hoofdredactioneel commentaar</a> van de NRC gehaald! En daarnaast hadden we artikelen in 
+<a tal:attributes="href static/pdf/nrc_next_wetenschap_16feb2010.pdf">NRC Next</a>, 
+De Volkskrant (op 
+<a tal:attributes="href static/pdf/de_Volkskrant _Wetenschap_12feb2010.pdf">12 februari</a> 
+en 
+<a tal:attributes="href static/pdf/de_Volkskrant_17feb2010.pdf">17 februari</a>),
+<a tal:attributes="href static/pdf/Trouw_de Verdieping_18feb2010.pdf">Trouw</a>, het 
+<a tal:attributes="href static/pdf/Reformatorisch Dagblad_17feb2010.pdf">Reformatorisch dagblad</a>,
+<a tal:attributes="href static/pdf/De_Telegraaf_digitaal_17feb2010.pdf">de 
+Telegraaf</a> en het 
+<a tal:attributes="href static/pdf/AD_17feb2010.pdf">AD</a>. 
+Els was in maar liefst 4 radioprogramma’s te beluisteren. In het weekend dachten we nog een keer in de Volkskrant op te duiken, maar de val van het kabinet Balkenende IV maakte een einde aan onze minutes of fame. Aan het werk dus maar weer, onze vliegende start heeft namelijk genoeg nieuwe taken en aandachtspunten opgeleverd: ons lijstje ‘te doen’ is nog lang niet afgevinkt.
+
+<p>
+Anne-Marie Mreijen 
+
+
+<h1><a name="20100222" ></a>Maandag 22 februari</h1>
+<h2>“Wij willen meer.”</h2>
+<p>
+“Wij willen meer.” Dat was de belangrijkste wens van de deelnemers aan het forum, bij de presentatie van het Biografisch Portaal op 17 februari. En meer zullen ze krijgen, want het Biografisch Portaal staat pas aan het begin en moet gaan groeien. De 'aftrap' was een groot succes, met een volle zaal, een vrolijke notaris die de oprichting van de stichting officieel bekrachtigde en natuurlijk alle media-aandacht. Het is pas het begin, maar er is al veel werk gedaan. Hans Blom memoreerde in zijn openingslezing dat er altijd mensen schuil gaan achter de abstracte structuren van de geschiedenis. Zo is het ook met ons project: een site als Bioport wordt gemaakt door mensen, heel veel mensen. Een korte impressie:
+</p>
+
+<p>
+We wilden het simpel en doorzichtig houden, maar simpel is moeilijk. Els, Anne-Marie, Jelle en ikzelf hebben heel wat versies van projectvoorstellen heen en weer gestuurd. Google-Docs was vaak onze redding van over elkaar buitelende versies, last-minute wijzigingen en opdoemende deadlines. Het was een nieuwe belevenis om terwijl je aan een document zat te werken, andermans wijzigingen in afwijkende kleur op het scherm te zien verschijnen. Veelzeggend waren de namen die we eraan gaven: de laatste_versie.doc werd gevolgd door de bijna_allerlaatste_versie.doc, de  allerlaatste_versie_met_opmerkingen_ van_Els.doc en de allerallerlaatste_versie_ waaraan_echt_niks_meer_veranderd_mag_worden.doc. 
+</p>
+
+<p>
+Veel naslagwerken bestaan alleen in boekvorm en moeten worden gedigitaliseerd. Soms doen we dat samen met anderen (vooral DBNL), soms doen we dat zelf. Een simpele pdf is niet genoeg: we hebben namen en biografische kerngegevens nodig, want we willen geen amorfe massa van teksten. We willen een gestructureerd, efficiënt en betrouwbaar zoekmiddel. Ineke en haar assistenten hebben ervaring met de transformatie van een deftig drukwerk tot een digitaal boek dat de originele tekst behoudt en tegelijk digitaal doorzoekbaar is. De meest onverwachte problemen kunnen daarbij komen kijken: pagina’s die per kolom zijn genummerd 
+(<a href="http://www.inghist.nl/retroboeken/nnbw" class="external_link">NNBW</a>) en dus twee paginanummers hebben, het 21ste deel 
+van <a href="http://www.inghist.nl/retroboeken/vdaa" class="external_link">Van der Aa</a> dat halverwege opeens weer begint te tellen bij pagina 1, enzovoorts.
+</p>
+
+<p>
+Vervolgens de inhoud. Veel gegevens zijn verstopt of zijn onderling tegenstrijdig, terwijl het Biografisch Portaal juist betrouwbaarheid moet uitstralen. De medewerkers Jeltje en Mandy zaten drie dagen per week te identificeren, te on-identificeren, te vergelijken en te bewerken. Ze stonden continu in contact met Jelle om de invoerapplicatie te optimaliseren.Ook hadden we onze 'Chinese landdagen' (Els' term): drie dagen lang zaten circa acht ING-ers gegevens in te voeren om zo een eerste grote stap te zetten.
+</p>
+
+<p>
+En tot slot de 'harde' techniek. Els wilde de site voor de aftrap zo ver mogelijk ‘af’ hebben, maar na enig gemompel van mij ging ze ermee akkoord dat vooral de basis goed moest zijn. De toeters en bellen komen later wel. Een site is nooit af, en deze al helemaal niet. Het was onvoorspelbaar hoeveel bezoekers we zouden krijgen en gezien de belangstelling van de pers wilden we op alles voorbereid zijn. Voor onverwachte problemen waren er vijf, zes mensen aanwezig in onze chatbox. Bas en ikzelf op het ING, Diebert thuis in Leiden, Jelle in Friesland en zijn medewerker Silvio uit zijn woonplaats Turijn. Op dinsdagmiddag besloten we nog ingrijpende wijzigingen op de Bioport-machine door te voeren die de snelheid aanzienlijk zouden verbeteren. Deze ‘virtuele’ samenwerking laat zien wat er kan en waarheen we op weg zijn.
+</p>
+<p>Rik Hoekstra</p>
+<h1><a name="20100217"></a>Woensdag 17 februari</h1>
+<p>Ik zie mezelf nog met tegenzin naar de universiteitsbibliotheek
+sjokken, een paar jaar geleden. Ik hou van boeken en van bibliotheken,
+dus daar lag het niet aan. Maar nu was het voor biografisch onderzoek
+naar <a href="http://www.biografischportaal.nl/persoon/80670172">Claes
+Seep</a>, mij op dat moment totaal onbekend.</p>
+<p>Voor een collegeblok kreeg ik, studente Nederlands, de opdracht
+onderzoek te doen naar deze Claes Seep, die zich in de omgeving van 
+<a href="http://www.biografischportaal.nl/persoon/58236533">Jan
+Soet</a> en 
+<a href="http://www.biografischportaal.nl/persoon/99779396">
+Jan Krul</a> bevond. 
+Ook al van die klinkende namen uit de
+Nederlandse geschiedenis! Wikipedia bestond al wel, maar was totaal
+onbetrouwbaar. Trouwens, als ik nu in Wikipedia zoek op Claes Seep, vind
+ik nog steeds niets. Dus de enige manier om iets over zo’n ‘dead poet’
+te vinden, was: het biografisch woordenboek. Van der Aa op schoot en
+ploegen maar. Of het NNBW. Onhandig, die lijvige werken, omdat je altijd
+in meerdere delen moest zoeken, onder Seep, of Zeep. Of misschien was er
+nog een andere onverwachte spellingsvariant. Of bij een lemma van een
+van de tijdgenoten, een familielid. Ik vond dat geblader zonde van mijn
+tijd. Waarom was dit soort naslagwerken nog niet gedigitaliseerd?</p>
+
+<p>Biografisch onderzoek lag me niet, dacht ik. Ik dook liever de
+diepte van de teksten in. Uitpluizen van intertekstualiteit, de
+ontwikkeling van een tekst, de geschiedenis van een boek. Machtig vond
+ik dat. Wie er achter de tekst zat, kwam voor mij op de laatste plaats.
+Bovendien heb ik altijd een voorliefde voor de Middeleeuwen gehad. Veel
+teksten uit die tijd zijn sowieso anoniem overgeleverd. De keren dat er
+wel een auteur bekend is, zijn de personalia vaak ook beperkt.
+Biografisch onderzoek is dan bijna niet aan de orde.</p>
+
+<p>Claes Seep vormde voor mij een omslagpunt. Ik leerde dat
+onderzoek naar de onderlinge relaties met tijdgenoten interessant is om
+te begrijpen in welke situatie een tekst ontstaan was. Voorzichtig nam
+ik ook in mijn vrije tijd eens een biografie ter hand. Levensverhalen
+van markante personen zijn inspirerend. Zeker als je die kunt plaatsen
+in een sociaalhistorische context.</p>
+
+<p>Nu ben ik beroepshalve betrokken bij het Biografisch Portaal en
+zie ik drie dagen per week talloze BN’ers uit de Nederlandse
+geschiedenis aan me voorbij trekken. Ook minder grote namen, zoals Claes
+Seep, passeren de revue. Het NNBW, Van der Aa en andere biografische
+woordenboeken zijn nu digitaal raadpleegbaar. Samen met mijn collega
+Mandy maak ik persoonspagina’s met kerngegevens: we voegen kerndata toe,
+zodat al die biografieën beter doorzoakbaar worden. Mocht je dan 
+<a href="http://www.biografischportaal.nl/personen?search_name=jan+jansz">Jan
+Jansz</a> uit de zeventiende eeuw zoeken, kun je uitfilteren op geslacht,
+periode, rubriek en meer. Er zijn ruim 40.000 biografieën
+gedigitaliseerd en we hebben nu de data van een paar duizend lemmata
+bewerkt. Het is een enorme klus, maar het is mooi dat deze data vanaf
+morgen gratis toegankelijk zijn. Dan is het namelijk zover, het
+Biografisch Portaal van Nederland gaat online.</p>
+
+<p>De spanning op het kantoor is duidelijk voelbaar. De telefoon
+gaat. Collega Anne-Marie kijkt op het scherm en zegt: “Alweer een
+035-nummer!”. Hilversum, betekent dat. De pers pikt de lancering nu ook
+op. Iemand vraagt naar ‘meneer Kloek’. Mevrouw Kloek, bedoelt u? Ze is
+bereikbaar op haar GSM!</p>
+
+<p>De feestelijke opening wordt grondig voorbereid en we zetten met
+het team de laatste punten op de i. De laatste punten? Zover zijn we nog
+lang niet, maar de laatste punten voor de opening in ieder geval.</p>
+
+<p>Jeltje Zijlstra</p>
+<h1><a name="20100211"></a>Donderdag 11 februari 2010</h1>
+<p>De dag van de lancering van de site komt akelig dichtbij: nog zes dagen. Gisteren is de nieuwste versie op de server gezet, met alle schrikmomenten die daar bij horen: afbeeldingen zijn verdwenen, de lijst 'meer jarigen' doet het niet meer, de lay-out van de bladerpagina is nog niet goed. Maar toch: het ziet er allemaal meer dan prachtig uit, en ik blijf alle vertrouwen hebben in <a href="http://www.gerbrandy.com/" class="external_link">Jelle</a> en <a href= http://www.trilobiet.nl/ class="external_link">Richard</a>, die gestaag doorwerken en hun eigen prioriteitenlijstjes rustig afhandelen. Vanochtend vroeg rende ik meteen weer naar mijn pc: kijken of er intussen nog wat was gebeurd. Maar nee, kennelijk hadden Jelle en Richard er na gisteravond 10 uur (!) niets meer aan gedaan. Gelijk hebben ze. Het enige nieuwe waren de jarigen: niet die van gisteren, maar die van vandaag staan nu prominent op de openingspagina. Uiteraard! Bijna had ik de site alweer gesloten, toen mijn oog viel op de jarige Christina Bader, geboren op 11 februari 1878, die eruit zag als een man. Ik weet dat mannen soms de meeste vreemde namen hebben gehad (Popke, Aleid, Gesina), maar Christina...???  Ik klik op 'zijn' portretje en zie dat het een bug moet zijn: Christina Bader blijkt een vrouw - ze heeft aan liefdadigheid gedaan.</p>
+<p>De genderwisseling van Christina Bader doet me denken aan die dag in november 2004 toen we de pilot van het <a href="http://www.inghist.nl/Onderzoek/Projecten/DVN" class="external_link">Digitaal Vrouwenlexicon van Nederland</a> presenteerden in de aula van de KB: we hadden zo'n honderd vrouwenlevens beschreven en beloofden dat het er duizend zouden worden. Onder meer Herman Pleij en Nelleke Noordervliet zouden spreken. Tot onze verrassing noemde Pleij ons project achterhaalde apartheid, en Noordervliet vergeleek ons project met botox: al die aandacht voor vrouwen hielp hooguit een paar maanden, en zou de 'kop van de geschiedenis' -  een man! -  nooit blijvend veranderen. Het klonk als kritiek, en dat terwijl wijzelf er ook van overtuigd waren (en zijn) dat je vrouwen niet apart moet zetten. Wij fantaseerden ook toen al over een nieuw biografisch woordenboek waarin onze vrouwen ge&iuml;ntegreerd waren. Ik was toen, op die dag in 2004, niet echt in de gelegenheid om dat uit te leggen, dus ik heb hun speeches maar gelaten over me heen laten komen. Wacht maar, dacht ik, heb geduld. </p>
+<p>Nu is het vijf jaar later, en de bijna 950 vrouwen van mijn DVN zijn ge&iuml;ntegreerd in het Biografisch Portaal van Nederland. Niks geen botox, niks geen nieuwe apartheid. Goede dingen ontstaan vaak vanuit de marge, en het Biografisch Portaal is daar een voorbeeld van. Nog vijf dagen, en dan zijn de levensbeschrijvingen van  meer dan 40.000 beroemdheden en mindere goden uit de Nederlandse geschiedenis voor iedereen te raadplegen op het internet. Christina Bader zal er dan weer uitzien als een vrouw. Maar opnieuw moet ik vragen om geduld. Dit is pas het begin van het Biografisch Portaal, de 'kick-off'. We moeten nog heel veel data invoeren, collecties digitaliseren, de doorzoekbaarheid verbeteren, et cetera. Maar wie weet dat het Biografisch Portaal een opstapje vormt naar die oude fantasie: een nieuw, volledig (M/V!), betrouwbaar en actueel biografisch Woordenboek van Nederland op internet. De eerste stap is gezet. Of is het de tweede?</p>
+<p>Els Kloek</p>
+</div>
+
+
+</div>
+</html>
+

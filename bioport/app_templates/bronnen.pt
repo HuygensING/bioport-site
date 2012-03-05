@@ -1,0 +1,88 @@
+<html metal:use-macro="context/@@main_template/macros/master">
+<div metal:fill-slot="content">
+<div id="colright">
+</div>
+<div id="colcenter">
+</div>
+<h1>Op te nemen Bronnen</h1>
+<p>Welke collecties (databestanden en naslagwerken) komen in aanmerking voor integratie in het Biografisch Portaal?
+
+
+<h2>Online biografische lexica (een selectie)</h2>
+<ul>
+<li> Biografisch Woordenboek van Nederland
+url: http://www.inghist.nl/Onderzoek/Projecten/BWN 
+
+<li> Digitaal Vrouwenlexicon van Nederland
+url: http://www.inghist.nl/Onderzoek/Projecten/DVN 
+
+<li> Bio- en bibliografisch lexicon van de Neerlandistiek
+url: http://www.dbnl.org/tekst/anro001bioe01_01/index.htm
+
+<li> bwnw - Biografisch Woordenboek van Nederlandse Wiskundigen 
+url: http://www.bwnw.nl/
+
+<li>bwsa - Biografisch Woordenboek van het Socialisme en de Arbeidersbeweging in Nederland
+url: http://www.iisg.nl/bwsa/
+
+<li> Biografisch Archief van het Parlementair Documentatie Centrum
+url: http://www.parlement.com/
+
+<li> Levensberichten van leden der Maatschappij der Nederlandse Letterkunde te Leiden
+url: http://www.maatschappijdernederlandseletterkunde.nl/mnl/levens/
+
+<li> Biografieën van Nederlandse ondernemers
+url: http://www.iisg.nl/ondernemers/
+
+<li> Brabantse biografieën
+url: http://62.221.199.220/noordbrabant/next/biografieen.asp
+
+</ul>
+
+<h2>Gedrukte biografische lexica (een selectie)</h2>
+<ul>
+<li> Jacques A. de Chalmot, Biographisch woordenboek der Nederlanden van de oudste tijden af tot heden toe, 8 delen (A-Drebbel) (Amsterdam 1789-1800).
+
+<li> A.J. van der Aa e.a. red., Biographisch woordenboek der Nederlanden 21 delen (1852-1878).
+<li> Kobus, Jan Christiaan en W. de Rivecourt, Beknopt biographisch handwoordenboek van Nederland, 3 delen (Zutphen 1854-1861).
+<li> Frederik Nagtglas, Levensberichten van Zeeuwen,..., 2 delen (Middelburg 1888-1893).
+
+<li> C.A.L. van Troostenburg de Bruijn, Biographisch Woordenboek van Oost-Indische predikanten (Nijmegen 1893).
+<li> Alfred von Wurzbach, Niederländiches Künstler-Lexikon, 3 delen (Wenen 1906-1911).
+<li> J.H. Letzer, Muzikaal Nederland, 1850-1910. Bio-bibliographisch woordenboek van Nederlandsche toonkunstenaars en toonkunstenaressen, alsmede van schrijvers en schrijfsters op muziek-literarisch gebied (Utrecht 1911).
+<li> P.C. Molhuysen, P.J. Blok red., Nieuw Nederlandsch biografisch woordenboek, 10 delen (Leiden 1911-1937).
+<li> J.P. de Bie, J. Loosjes e.a. red., Biographisch woordenboek van protestantsche godgeleerden in Nederland, 6 delen (¿s-Gravenhage 1919-1949).
+
+<li> J. Loosjes, Naamlijst van predikanten, hoogleeraren en proponenten der Luthersche Kerk in Nederland. Biographie en bibliographie ('s-Gravenhage 1925).
+<li> F.G. Waller, Biographisch woordenboek van Noord Nederlandsche graveurs ('s-Gravenhage 1938).
+G.A. Brouwer, Historische gegevens over onze vroegere ornithologen en de avifauna van Nederland (Leiden 1954)
+<li> J.M. Coffeng, Lexicon van Nederlandse tonelisten (Amsterdam 1965).
+<li> J.M.G.A. Dronkers, De admiraals van het Koninkrijk Holland (1806-1810). Een bijdrage tot de studie van de maritieme geschiedenis van Nederland ('s-Gravenhage 1967).
+<li> J.M.G.A. Dronkers, De generaals van het Koninkrijk Holland, 1806-1810. Een bijdrage tot de studie van de krijgsgeschiedenis van Nederland  ('s-Gravenhage 1968).
+
+<li> Pieter A. Scheen, Lexicon Nederlandse beeldende kunstenaars 1750-1950, 2 delen ('s-Gravenhage 1969-1970).
+<li> Fölting, H.P., ¿De Landsadvocaten en Raadpensionarissen der Staten van Holland en West-Friesland, 1480-1795. Een genealogische benadering¿, Jaarboek van het Centraal Bureau voor Genealogie 27 (1973), 28 (1974), 29 (1975).
+<li>Biografisch lexicon van de geschiedenis van het Nederlands protestantisme, 6 delen (1978-2006).
+<li> Hubert Dethier en Hubert Vandenbossche, Woordenboek van Belgische en Nederlandse vrijdenkers 1-¿(1979-¿).
+<li> Hindle S. Hes, Jewish physicians in the Netherlands, 1600-1940 (Assen 1980).
+<li> Piet Hein Honig, Acteurs- en kleinkunstenaarslexicon. 3200 namen uit honderd jaar Nederlands toneel (Diepenveen 1984).
+<li> G.A. Lindeboom, Dutch medical biography. A biographical dictionary of Dutch physicians and surgeons 1475-1975 (Amsterdam 1984). 
+<li> Joh. de Haas, Gedenkt uw voorgangers, 5 delen (Haarlem, 1984-1989).
+<li> Predikanten en oefenaars. Biografisch woordenboek van de kleine kerkgeschiedenis, 5 delen (Houten 1988-1999).
+<li> J. Bos, W. Foorthuis red., Drentse biografieën: levensbeschrijvingen van bekende en onbekende Drenten  (Meppel 1989-...).
+<li> J. Folkerts, J.M.M. Haverkate, F. Pereboom red., Overijsselse biografieën: levensbeschrijvingen van bekende en onbekende Overijsselaars (Meppel 1990-...).
+<li> R.E. van Ditzhuyzen, Oranje-Nassau. Een biografisch woordenboek (Haarlem 1992).
+<li> J.D.R. van Dijk, W.R. Foorthuis red.,Vierhonderd jaar Groninger Veenkoloniën in biografische schetsen (Groningen 1994).
+<li> J. Aalbers, W. van den Broeke, H. Buiter red., Utrechtse biografieën. Levensbeschrijvingen van bekende en onbekende Utrechters (Amsterdam/Utrecht 1994-...).
+Karel H. Voous, In de ban van vogels. Geschiedenis van de beoefening van de ornithologie in Nederland in de twintigste eeuw, tevens Ornitologisch Biografisch Woordenboek (Utrecht 1995).
+<li> Biografisch woordenboek Gelderland: bekende en onbekende mannen en vrouwen uit de Gelderse geschiedenis (Hilversum 1998-...).
+<li> Wiep van Bunge e.a. ed., Dictionary of seventeenth and eighteenth-century Dutch philosophers (Bristol 2003).
+<li> J.C. Streng, Zwols biografisch woordenboek. Een draagbaar mausoleum (Hilversum 2004).
+
+<li> Paul Begheijn red., N¿meegse biografieën (Hilversum 2004 -¿.).
+</ul> 
+
+
+</div>
+</html>
+

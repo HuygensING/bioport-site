@@ -1,0 +1,45 @@
+<html metal:use-macro="context/@@main_template/macros/master">
+<div metal:fill-slot="content">
+<div id="colright">
+<div metal:use-macro="context/@@about/macros/navigation_box"></div>
+</div>
+<div id="colcenter">
+<h1>Colofon</h1>
+Team van het Biografisch Portaal:
+<ul>
+<li>
+Projectleiding: Els Kloek
+<li>
+Coördinatie: Anne-Marie Mreijen
+<li>
+ICT-coördinatie: Rik Hoekstra
+<li>
+Webmaster: Milo van de Pol
+<li>
+Projectassistentie: Mandy Prins en Jeltje Zijlstra
+<li>
+Digitalisering: Ineke Huysman, Flora Gutierrez Rojas en Bianca Szytniewski
+</ul>
+Ontwerp, implementatie en beheer:
+<ul>
+<li>
+Grafisch Ontwerp: <a href="http://www.trilobiet.nl">Trilobiet</a>
+<li>
+Advies, technische ontwerp en implementatie: <a href="http://www.gerbrandy.com">Gerbrandy SRL</a>
+<li>
+Hosting en infrastructuur: <a href="http://www.inghist.nl">Instituut voor Nederlandse Geschiedenis</a>
+</ul>
+<p>
+De website is tot stand gekomen met financiële steun van 
+            de <a target="_blank" href="http://www.nwo.nl/">Nederlandse Stichting voor Wetenschappelijk Onderzoek</a>,
+            het <a target="_blank" href="http://www.cultuurfonds.nl/">Prins Bernhard Cultuurfonds</a>,
+            <a target="_blank" href="http://www.senternovem.nl/">SenterNovem</a> 
+en het <a href="http://www.inghist.nl">Instituut voor Nederlandse Geschiedenis</a>.
+<p>
+Met speciale dank aan Sonja Duykers van het KNAW, Marien van der Heijden van het IISG, D.J. van Rhijn van het ING, en <a href="http://www.gropen.net">Silvio Tomatis</a>. 
+
+
+</div>
+</div>
+</html>
+

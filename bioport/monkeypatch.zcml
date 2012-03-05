@@ -11,5 +11,4 @@
         original="handleException"
         replacement=".monkeypatch.patchedhandleException"
         />
-
 </configure>

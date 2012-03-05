@@ -1,0 +1,26 @@
+<html metal:use-macro="context/@@main_template/macros/master">
+<div metal:fill-slot="content">
+<div id="colright">
+<div metal:use-macro="context/@@about/macros/navigation_box"></div>
+</div>
+<div id="colcenter">
+<h1>Stichting</h1>
+<p>De initiatiefnemers hebben de stichting Biografisch Portaal van Nederland opgericht. Doelstelling van de Stichting: het opbouwen,
+ontwikkelen en onderhouden van een zo volledig mogelijke website met
+biografische informatie over personen die een rol hebben gespeeld in of
+een bijdrage hebben geleverd aan de geschiedenis van Nederland. Alle
+directeuren van de samenwerkende instellingen zitten qq in het
+stichtingsbestuur, dat onder voorzitterschap staat van Prof. dr. J.C.H.
+Blom. Het kernbestuur wordt gevormd door: 
+<ul>
+<li>
+Prof.dr. J.C.H. Blom (voorz.)
+<li>
+Prof.dr. J.P. Sigmond (secr./penn.)
+<li>
+Dr. H. Wals
+</ul>
+</div>
+</div>
+</html>
+

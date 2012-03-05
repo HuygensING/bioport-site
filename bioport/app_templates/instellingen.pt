@@ -1,0 +1,37 @@
+<html metal:use-macro="context/@@main_template/macros/master">
+<div metal:fill-slot="content">
+<div id="colright">
+<div metal:use-macro="context/@@about/macros/navigation_box"></div>
+</div>
+<div id="colcenter">
+</div>
+<h1>
+Samenwerkende instellingen:
+</h1>
+<ul>
+<li>
+<a target="_blank" href="http://www.inghist.nl">Het Instituut voor Nederlandse Geschiedenis (ING)</a>
+[penvoerder]
+<li>
+<a target="_blank" href="http://biografieinstituut.ub.rug.nl/" >Het Biografie Instituut</a>
+<li>
+<a target="_blank" href="http://www.cbg.nl/" >Het Centraal Bureau voor Genealogie (CBG)</a> 
+<li>
+<a target="_blank" href="http://www.dbnl.org/" >De Digitale Bibliotheek voor de Nederlandse Letteren (DBNL)</a>
+<li>
+<a target="_blank" href="http://dans.knaw.nl/nl/">Data Archiving and Networked Services (DANS)</a>
+<li>
+<a target="_blank" href="http://www.huygensinstituut.knaw.nl">Het Huygens Instituut</a>
+<li>
+<a target="_blank" href="http://www.iisg.nl">Het Internationaal Instituut voor Sociale Geschiedenis (IISG)</a>
+<li>
+<a target="_blank" href="http://www.uu.nl/NL/faculteiten/geesteswetenschappen/Onderzoek/onderzoekinstituten/ogc/Pages/default.aspx">Het Onderzoekscentrum voor Geschiedenis en Cultuur (OGC)</a>, 
+<li>
+<a target="_blank" href="http://www.parlementairdocumentatiecentrum.nl/" >Het Parlementair Documentatie Centrum (PDC)</a>
+<li>
+<a target="_blank" href="http://website.rkd.nl/">Het Rijksbureau voor Kunsthistorische Documentatie (RKD)</a>
+</ul>
+
+</div>
+</html>
+

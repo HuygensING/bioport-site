@@ -2,7 +2,7 @@ import  grok
 from zope.i18n import translate
 import os
 import simplejson
-
+import logging
 from chameleon.zpt.template import PageTemplateFile
 #from plone.memoize import ram
 from plone.memoize.instance import memoize
@@ -64,7 +64,8 @@ class _Personen(RepositoryView):
                 qry[k] = self.request[k]
             if k in args:
                 qry[k] = args[k]
-        
+
+#        logging.info('query %s \n args %s \n request: %s' % (str(qry), str(args), str(self.request)))
         current_language = IUserPreferredLanguages(self.request).getPreferredLanguages()[0]
        
         request = self.request 
@@ -105,11 +106,12 @@ class _Personen(RepositoryView):
             qry['has_contradictions'] = True
 
 #        DEFAULT  (XXX this is a hack around a bug with large resultsets)
-#        if not qry:
-#            qry['beginletter'] = 'a' 
+        if not qry:
+            qry['beginletter'] = 'a' 
 
         #parameters from the API
         qry.update(parse_api_args(form))
+
         persons = self.repository().get_persons_sequence(**qry)
         return persons
 
@@ -127,6 +129,8 @@ class Personen(grok.View, _Personen, Batcher):
         #(they are used for batching, but we need the whole result set for navigating)
         args['start'] = None
         args['size'] = None
+        del args['start']
+        del args['size']
         persons = _Personen.get_persons(self, **args)
         
         try:
