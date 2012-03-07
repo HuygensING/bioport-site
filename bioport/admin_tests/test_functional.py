@@ -123,7 +123,6 @@ class SimpleSampleFunctionalTest(FunctionalTestCase):
         #we can find the name of the person, followed by a 'verwijder' link
         assert re.findall('Hilbrand.*verwijder', browser.contents, re.DOTALL), browser.contents
         
-        
         #the page remembered the serach term
         form = browser.getForm()
         self.assertEqual(form.getControl(name='search_name').value, 'hilbrand')

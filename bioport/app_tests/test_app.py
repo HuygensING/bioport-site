@@ -95,6 +95,16 @@ class SearchTest(FunctionalTestCase):
         form.getControl(name='geboorte_fuzzy_text').value = u'na 1800'
         form.submit()
 
+    
+    def xtestt_search_form(self):
+        browser = self.browser
+        browser.open('http://localhost/app/zoek')
+        
+        form = browser.getForm(index=1)
+        form.getControl(name='geboorte_fuzzy_text').value = u'na 1800'
+        form.submit()
+
+
 #      
 class ResolverTest(FunctionalTestCase):
     

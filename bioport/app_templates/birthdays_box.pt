@@ -2,7 +2,7 @@
                  tal:repeat="person view/get_persons"
                  >
               <span tal:omit-tag=""
-                 tal:define="name python:person.name().guess_normal_form()">
+                 tal:define="name person/name">
                     
             <a tal:attributes="href python:view.url('persoon') + '/' +  person.bioport_id">
             <div class="image"

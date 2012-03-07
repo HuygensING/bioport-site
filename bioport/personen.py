@@ -4,8 +4,7 @@ import os
 import simplejson
 import logging
 from chameleon.zpt.template import PageTemplateFile
-#from plone.memoize import ram
-from plone.memoize.instance import memoize
+#from plone.memoize.instance import memoize
 from z3c.batching.batch import Batch
 from bioport import BioportMessageFactory as _
 from bioport.app import RepositoryView, Batcher, Bioport, get_born_description, get_died_description, get_alive_description
@@ -24,7 +23,6 @@ grok.context(Bioport)
 
 class _Personen(RepositoryView):
         
-    @memoize
     def get_persons(self, **args):
         """get Persons - with restrictions given by request"""
         qry = {}
@@ -107,12 +105,12 @@ class _Personen(RepositoryView):
             qry['has_contradictions'] = True
 
 #        DEFAULT  (XXX this is a hack around a bug with large resultsets)
-        if set(qry.keys()).issubset(set(['start', 'size'])):
-            self.request.form['beginletter'] = qry['beginletter'] = 'a' 
+        
+#        if not set(qry.keys()).issubset(set(['start', 'size'])):
+#            self.request.form['beginletter'] = qry['beginletter'] = 'a' 
 
         #parameters from the API
         qry.update(parse_api_args(form))
-
         persons = self.repository().get_persons_sequence(**qry)
         return persons
 
@@ -130,9 +128,6 @@ class Personen(grok.View, _Personen, Batcher):
         #(they are used for batching, but we need the whole result set for navigating)
         args['start'] = None
         args['size'] = None
-#        del args['start']
-#        del args['size']
-#        import ipdb;ipdb.set_trace() 
         persons = _Personen.get_persons(self, **args)
         
         try:
@@ -330,7 +325,10 @@ class PersonenXML(grok.View, _Personen):
                             name = name.replace('&', '&amp;')
         #                    name = unescape(name).encode('utf8')
                     url = self.url('persoon') + '/xml/' + person_id
-                    changed = timestamp.isoformat()
+                    if timestamp:
+                        changed = timestamp.isoformat()
+                    else:
+                        changed = ''
                     out.append(u'<a href="%(url)s" last_changed="%(changed)s">%(name)s</a>\n'
                             % dict(name=name, url=url, changed=changed) )
         out.append('</list>\n')

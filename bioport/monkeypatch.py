@@ -1,6 +1,6 @@
 from zope.app.publication.zopepublication import ZopePublication
 from zope.publisher.interfaces import Retry
-from sqlalchemy.exceptions import OperationalError
+from sqlalchemy.exc import OperationalError
 
 
 original = ZopePublication.handleException

@@ -5,7 +5,7 @@
 <html metal:use-macro="context/@@main_template/macros/master">
 <div metal:fill-slot="content">
 <div class="colright">
-    <tal:block tal:replace="structure view/get_navigation_box" />
+    <div tal:replace="structure view/get_navigation_box" />
 </div>
 <div class="colcenter">
 <h1 tal:condition="search_description" i18n:translate="">Zoekresultaten</h1>
@@ -77,28 +77,24 @@
    <div class="list_of_persons" >
 	<div tal:repeat="person persons" tal:omit-tag="">
 	
-	<div class="persoon" metal:define-macro="render_person"
-	   xtal:attributes="OnClick string:window.location.href='persoon/${person/bioport_id}'"
-	   >
-
-	    <tal:block tal:condition="person/has_illustrations">
-            <span tal:define="illustrations python:person.get_merged_biography().get_illustrations()" 
-                  tal:condition="python:bool(illustrations) and illustrations[0].has_image()"
-                  class="illustration"
-            >
-    	        <img tal:attributes="src python:illustrations[0].image_small_url;
+	<div class="persoon" metal:define-macro="render_person">
+	    
+	    <div tal:omit-tag="" tal:condition="person/has_illustrations">
+            <span  class="illustration" >
+    	        <img tal:attributes="src person/thumbnail;
       	                           alt person/name" />
             </span>                                    
-        </tal:block>
+        </div>
 
+	
 		<a 
-		tal:content="structure python:person.db_name()" 
-	    tal:attributes="href python:'%s/%s' % (view.url('persoon'), person.get_bioport_id())" />
+		tal:content="structure person/naam"
+	    tal:attributes="href python:'%s/%s' % (view.url('persoon'), person.bioport_id)" />
 	    <span class="date" 
 	    tal:content="structure python:view.print_dates_of_person(person)" />
 	    
 	    <br />
-	    <span class="snippet" tal:content="structure person/db_snippet" />
+	    <span class="snippet" tal:content="structure person/snippet" />
 	    <div style="clear:both" ></div>
 	</div>
 	</div>

@@ -256,7 +256,7 @@ For example
     <td>
         <select name="category">
             <option />
-            <option tal:repeat="category python:view.repository().db.get_categories()"
+            <option tal:repeat="category python:view.repository().get_categories()"
                 tal:attributes="value category/id;
                     selected python:str(category.id) == request.get('category');
                 "

@@ -1,12 +1,4 @@
-from setuptools import setup, find_packages
 
-version = '2.0.0'
-
-setup(name='bioport',
-      version=version,
-      packages=['bioport'],
-      include_package_data=True,
-      zip_safe=False,
       install_requires=['setuptools',
                         'grok',
                         'grokui.admin',
@@ -30,7 +22,14 @@ setup(name='bioport',
                         'bioport_repository',
                         'names',
                         'gerbrandyutils',
+                        'mobile.sniffer',
                         ],
+      
+      
+      
+      
+      
+      
       entry_points = """
       [console_scripts]
       bioport-debug = grokcore.startup:interactive_debug_prompt

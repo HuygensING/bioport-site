@@ -31,6 +31,7 @@ from zope import component
 
 from mobile.sniffer.detect import  detect_mobile_browser
 from mobile.sniffer.utilities import get_user_agent
+
 class RepositoryView:
     def repository(self):
         principal = self.request.principal
@@ -90,6 +91,7 @@ class RepositoryView:
                 (self.application_url('contact'), _('contact')),
         ]    
         return items
+    
     def today(self):
         today = datetime.date.today()
         adapter = IUserPreferredLanguages(self.request)
@@ -100,12 +102,12 @@ class RepositoryView:
         else:
             month = maanden[today.month-1]
             return '%s %s' % (today.day, month)
+        
     def print_dates_of_person(self, person):
         date1, date2 = person.get_dates_for_overview()
         return format_dates(date1, date2)    
     
     def getPrincipals(self):
-        
         self._principal_registry = component.getUtility(IAuthentication)
         principals = self._principal_registry.getPrincipals('')
         return principals
@@ -339,7 +341,7 @@ class Resolver(grok.View, RepositoryView):
                         'bioport_id':bioport_id,
                         'url':url,
                         'number_of_biographies':len(bios),
-                        'name':person.name().volledige_naam(),
+                        'name':person.name(), #.volledige_naam(),
                     }
                 else:
                     dct = {}
@@ -602,30 +604,6 @@ class Zoek_places_admin(grok.View, RepositoryView):
         return simplejson.dumps(result)
 
 
-
-#class Auteurs(grok.View,RepositoryView, Batcher):
-#    def update(self):
-#        Batcher.update(self)
-#    def get_auteurs(self, **args):
-#
-#        d = {}
-#        #request.form has unicode keys - make strings
-#        for k in self.request.form:
-#            d[str(k)] = self.request.form[k]
-#        
-#        ls = self.repository().get_authors(**d) 
-#        
-#        batch = Batch(ls, start=self.start, size=self.size)
-#        batch.grand_total = len(ls)
-#        return batch
-
-
-
-class Bronnen(grok.View, RepositoryView):
-    pass
-class Colofon(grok.View, RepositoryView):
-    pass
-
 class Birthdays_Box(grok.View, RepositoryView):
     
     
@@ -637,7 +615,8 @@ class Birthdays_Box(grok.View, RepositoryView):
         #query the database for persons born on this date that have an illustration
         persons = self.repository().get_persons(where_clause='CAST(geboortedatum_min AS CHAR) like "____%s%%" and geboortedatum_min = geboortedatum_max' % today, has_illustrations=True, hide_foreigners=True)
         
-        persons = [p for p in persons if [ill for ill in p.get_merged_biography().get_illustrations() if ill.has_image()]]
+        persons = [p for p in persons if p.has_illustrations]
+#        [ill for ill in p.get_merged_biography().get_illustrations() if ill.has_image()]]
         if len(persons) < 3:
             #if we have less then 3 people, we cheat a bit and take someone who died today
             persons += self.repository().get_persons(where_clause='CAST(sterfdatum_min AS CHAR) like "____%s%%" and geboortedatum_min = geboortedatum_max' % today, has_illustrations=True, hide_foreigners=True)
@@ -661,18 +640,6 @@ class Birthdays(grok.View, RepositoryView):
         return persons
     
 
-    
-class About(grok.View, RepositoryView):
-    pass
-
-class Agenda(grok.View, RepositoryView):
-    pass
-
-class English(grok.View, RepositoryView):
-    pass
-
-class FAQ(grok.View, RepositoryView):
-    pass
 
 class Images_XML(grok.View, RepositoryView):
     grok.name('images.xml')
@@ -710,22 +677,6 @@ class BelowBios(grok.ViewletManager):
     grok.name('belowbios')
     grok.context(Bioport)
     
-class Collecties(grok.View, RepositoryView):
-    pass
-
-class Instellingen(grok.View, RepositoryView):
-    pass
-
-class Stichting(grok.View, RepositoryView):
-    pass
-
-class RedactieRaad(grok.View, RepositoryView):
-    pass
-
-class Links(grok.View,RepositoryView):
-    pass
-class Blog(grok.View,RepositoryView):
-    pass
 
 class SiteMaps(grok.View,RepositoryView):
     MAX_PER_FILE = 2000
