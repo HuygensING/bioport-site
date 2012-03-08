@@ -1,20 +1,21 @@
-            <span tal:omit-tag=""
-                 tal:repeat="person view/get_persons"
-                 >
-              <span tal:omit-tag=""
-                 tal:define="name person/name">
+<span tal:omit-tag=""
+     tal:repeat="person view/get_persons"
+     >
+  <span tal:omit-tag=""
+     tal:define="name person/name">
                     
-            <a tal:attributes="href python:view.url('persoon') + '/' +  person.bioport_id">
-            <div class="image"
-                tal:define="illustrations python:person.get_merged_biography().get_illustrations();
-                    illustration python:illustrations and illustrations[0]"
-                tal:condition="illustration">
-                <img tal:attributes="src illustration/image_small_url;  
-	                alt name" />
-            </div>
-	            <div class="subscript"><span tal:replace="name" ></span> 
-	               <span tal:replace="python:context.format_dates(person.get_value('geboortedatum'), person.get_value('sterfdatum'), show_year_only=True)"></span>
-               </div>
-                </a>
-            </span>
-            </span>
+<a tal:attributes="href python:view.url('persoon') + '/' +  person.bioport_id">
+<div class="image"
+    tal:define="
+        illustration person/illustration"
+    tal:condition="illustration">
+    <img tal:attributes="src illustration/image_small_url;  
+        alt name" />
+</div>
+    <div class="subscript"><span tal:replace="name" ></span> 
+       <span tal:replace="python:context.format_dates(person.geboortedatum(), person.sterfdatum(), show_year_only=True)"></span>
+   </div>
+    </a>
+</span>
+</span>
+	

@@ -2,7 +2,7 @@ import  grok
 from zope.i18n import translate
 import os
 import simplejson
-import logging
+#import logging
 from chameleon.zpt.template import PageTemplateFile
 #from plone.memoize.instance import memoize
 from z3c.batching.batch import Batch
@@ -279,16 +279,16 @@ class Personen(grok.View, _Personen, Batcher):
             n2 = batch.lastElement.geslachtsnaam() or batch.lastElement.naam()
             ls.append((url, n1, n2))
         return ls
-
-    def get_navigation_box(self):
-        "This function returns the html for the navigation box"
-        template_filename = os.path.join(
-                      os.path.dirname(__file__),
-                      'app_templates',
-                      'navigation_block.cpt')
-        template = PageTemplateFile(template_filename)
-        
-        return template(view=self, request=self.request)
+#
+#    def get_navigation_box(self):
+#        "This function returns the html for the navigation box"
+#        template_filename = os.path.join(
+#                      os.path.dirname(__file__),
+#                      'app_templates',
+#                      'navigation_block.cpt')
+#        template = PageTemplateFile(template_filename)
+#        
+#        return template(view=self, request=self.request)
     
 
 class PersonenXML(grok.View, _Personen):

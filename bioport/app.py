@@ -607,12 +607,12 @@ class Zoek_places_admin(grok.View, RepositoryView):
 class Birthdays_Box(grok.View, RepositoryView):
     
     
-    @ram.cache(lambda *args: time.time() // (60 * 60 * 24))
+    @ram.cache(lambda *args: time.time() // (60 * 60 * 24)) #cache exactly one day
     def get_persons(self):
         """get 3 persons whose birthdate is today"""
         #get the month and day of today
         today = datetime.date.today().strftime('-%m-%d')
-        #query the database for persons born on this date that have an illustration
+        #query the datase for persons born on this date that have an illustration
         persons = self.repository().get_persons(where_clause='CAST(geboortedatum_min AS CHAR) like "____%s%%" and geboortedatum_min = geboortedatum_max' % today, has_illustrations=True, hide_foreigners=True)
         
         persons = [p for p in persons if p.has_illustrations]
@@ -621,7 +621,11 @@ class Birthdays_Box(grok.View, RepositoryView):
             #if we have less then 3 people, we cheat a bit and take someone who died today
             persons += self.repository().get_persons(where_clause='CAST(sterfdatum_min AS CHAR) like "____%s%%" and geboortedatum_min = geboortedatum_max' % today, has_illustrations=True, hide_foreigners=True)
             persons = [p for p in persons if [ill for ill in p.get_merged_biography().get_illustrations() if ill.has_image()]]
-             
+        
+        for person in persons:
+            illustrations = person.get_merged_biography().get_illustrations()
+            illustration = illustrations and illustrations[0]
+            person.illustration = illustration
         return persons[:3]
 
 class Birthdays(grok.View, RepositoryView):
@@ -649,17 +653,10 @@ class Images_XML(grok.View, RepositoryView):
 
     @ram.cache(lambda *args: time.time() // (60 * 60) + random.randint(1,10))
     def render_response(self):
-        
         persons = self.repository().get_persons(has_illustrations=True, order_by='random', size=20)
-        
         result = """<?xml version="1.0"?><root>"""
         for person in persons:
             illustrations = person.get_merged_biography().get_illustrations()
-            if not illustrations:
-                #if the database is up to date, it should not happen that we find persons without an illustration
-                #as a result of a call to get_persons(has_illustrations=True)
-                #but it can happen ...
-                continue
             illustration = illustrations[0]
             if not illustration.has_image():
                 continue
