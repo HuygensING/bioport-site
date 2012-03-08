@@ -155,7 +155,11 @@ class SimpleSampleFunctionalTest(FunctionalTestCase):
         link_url = link.url
         bioport_id1, bioport_id2 = link.url.split('bioport_ids=')[1:]
         bioport_id1 = bioport_id1[:bioport_id1.find('&')]
-        bioport_id2 = bioport_id2[:bioport_id2.find('&')]
+#        bioport_id2 = bioport_id2[:bioport_id2.find('&')]
+
+        #just check if we did not make parsing errors
+        self.assertTrue(len(bioport_id1), 8)
+        self.assertTrue(len(bioport_id2), 8)
         link.click()
         
         #now the two items names are identifed
