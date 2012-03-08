@@ -12,9 +12,9 @@ from common import (format_date, format_dates, format_number,
                     html2unicode, maanden, months)
 from interfaces import IBioport
 from names.common import to_ymd
-from plone.memoize import ram
 from bioport import BioportMessageFactory as _
 from zope.i18n import translate
+from plone.memoize import ram
 from sqlalchemy.exc import OperationalError
 try:
     from zope.i18n.interfaces import IUserPreferredLanguages  # after python 2.6 upgrade

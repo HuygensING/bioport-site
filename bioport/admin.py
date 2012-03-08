@@ -58,7 +58,7 @@ class Admin(grok.Container):
     CONTACT_DESTINATION_ADDRESS = 'destination@example.com'
     dutch_home_html = english_home_html = 'Biografisch Portaal van Netherlands'
     
-    @forever.memoize
+    @forever.memoize #keep repository (with its caches) memoized as long as the instance is running
     def repository(self, user):
         return Repository(
             svn_repository=self.SVN_REPOSITORY, 
