@@ -4,8 +4,27 @@
         search_description view/search_description">
 <html metal:use-macro="context/@@main_template/macros/master">
 <div metal:fill-slot="content">
-<div class="colright">
-    <div tal:replace="structure view/get_navigation_box" />
+<div class="colright" >
+<div class="navigation_box" tal:define="
+    batch persons;
+    navigation_box_data python:view.navigation_box_data();
+    current_language path: view/context/@@language_chooser/get_current_language;
+    translated_to python: current_language == 'en' and 'to' or 'tot'; "
+    xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+    i18n:domain="bioport">
+    <div tal:repeat="item navigation_box_data"
+        tal:condition="python:len(navigation_box_data) > 1"
+       tal:attributes="class python:repeat['item'].number() == batch.number and 'selected' or ''">
+        <a tal:attributes="href python:item[0]"
+            tal:define="item1 python: item[1]  or '??';
+                          item2 python: item[2] or '??'">
+            <span tal:replace="item1"></span>
+            <em tal:content="translated_to">tot</em>
+            <span tal:replace="item2"></span>
+        </a>
+    </div>
+</div>
+
 </div>
 <div class="colcenter">
 <h1 tal:condition="search_description" i18n:translate="">Zoekresultaten</h1>

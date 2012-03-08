@@ -53,7 +53,12 @@ class FunctionalTestCase(baseFunctionalTestCase):
         repository.db.metadata.create_all()
         this_dir = os.path.dirname(bioport.__file__)
         url = 'file://%s' % os.path.join(this_dir, 'admin_tests/data/knaw/list.xml')
-        repository.add_source(Source(u'knaw_test',url,'test'))
+        try:
+            repository.add_source(Source(u'knaw_test',url,'test'))
+        except ValueError:
+            repository.delete_source('knaw_test')
+            repository.add_source(Source(u'knaw_test',url,'test'))
+            
         repository.download_biographies(source=repository.get_source(u'knaw_test'))
         #add some categories as well
         repository.db.get_session().execute("insert into category (id, name) values (1, 'category1')")
