@@ -92,7 +92,7 @@ class SimpleSampleFunctionalTest(FunctionalTestCase):
         bioport_ids = list(set(bioport_ids))
         bioport_ids.sort()
         bioport_id1 = bioport_ids[0]
-        bioport_id2 = bioport_ids[1]
+#        bioport_id2 = bioport_ids[1]
         
         #create a bioport biography for one of the persons
         browser = Browser('http://localhost/app/admin/persoon?bioport_id=%s' % bioport_id1)
@@ -142,17 +142,14 @@ class SimpleSampleFunctionalTest(FunctionalTestCase):
         assert not re.findall('Hilbrand.*verwijder', browser.contents, re.DOTALL), browser.contents
         assert re.findall('Heyns.*verwijder', browser.contents, re.DOTALL), browser.contents
         
-        
         #choose another person
         form = browser.getForm()
         form.getControl(name='search_name').value= 'kraemer'
         form.getControl(name='form.actions.search_persons').click()
         browser.getLink('kies').click()
         
-        
         #identify the two
         link = browser.getLink(id='identify')
-        link_url = link.url
         bioport_id1, bioport_id2 = link.url.split('bioport_ids=')[1:]
         bioport_id1 = bioport_id1[:bioport_id1.find('&')]
 #        bioport_id2 = bioport_id2[:bioport_id2.find('&')]
@@ -175,12 +172,6 @@ class SimpleSampleFunctionalTest(FunctionalTestCase):
 #        assert 0, browser.contents
         link = browser.getLink('koppel', index=0)
         link.click()
-        
-        #open an edit page and unidentify
-#        browser = Browser('http://localhost/app/admin/persoon?bioport_id=%s' % bioport_id2)
-#        link = browser.getLink(url=re.compile('.*unidentify.*'))
-#        link.click()
-        
         
         
     def test_most_similar_workflow(self): 
@@ -339,7 +330,7 @@ class NewFieldsTestCase(FunctionalTestCase):
         link.click()
         
         #click on one of the "bewerk" links
-        link = browser.getLink('bewerk gegevens', index=0)
+        link = browser.getLink('ewerk gegevens', index=0)
         link.click()
         return browser    
    
@@ -579,7 +570,7 @@ class NewFieldsTestCase(FunctionalTestCase):
         
     def test_edit_categories(self):    
         browser = self._open_edit_url()
-        edit_url = browser.url
+#        edit_url = browser.url
         #add a state
         browser.getControl(name='category_id', index=0).value = ['1']
         browser.getControl(name='category_id', index=1).value = ['2']

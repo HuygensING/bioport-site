@@ -3,15 +3,15 @@
 import os
 import time    
 from bioport import app, personen
-import grok
 import tempfile
 import logging
-from app import Batcher, RepositoryView,  RelationWrapper, ReferenceWrapper, ExtraFieldWrapper
+from app import Batcher, RepositoryView,  RelationWrapper
 from bioport_repository.illustration import Illustration, CantDownloadImage
 from common import format_date, format_dates, format_number
 from names.common import from_ymd, to_ymd
 from names.name import Naam
-from permissions import *
+import grok
+#from permissions import *
 from plone.memoize import forever
 from z3c.batching.batch import Batch
 from zope import schema
@@ -22,7 +22,7 @@ from urllib2 import URLError
 import bioport_repository
 from bioport_repository.repository import Repository
 
-from gerbrandyutils import normalize_url, run_in_thread
+from gerbrandyutils import normalize_url
 
 class IAdminSettings(Interface):
     SVN_REPOSITORY = schema.TextLine(title=u'URL of svn repository', required=False)
@@ -584,7 +584,7 @@ class MostSimilar(grok.Form,RepositoryView, Batcher):
             person = self.selected_persons[0]
             ls = self.repository().get_most_similar_persons(bioport_id=person.bioport_id)
             def other_person(i):
-                score, p1, p2 = i
+                _score, p1, p2 = i
                 if person.bioport_id == p1.bioport_id:
                     return p2
                 else:
@@ -814,19 +814,19 @@ class Persoon(app.Persoon, grok.EditForm, RepositoryView):
               uri = url,
               text = text,
               )
-
-    def _set_extrafield(self, identifier, index=None, add_new=False):
-        key = self.request.get('extrafield_%s_key' % identifier)
-        value = self.request.get('extrafield_%s_value' % identifier)
-        if add_new and url and text: #XX this must not be used anywhere, as these varaibles seem undefined!
-            self.bioport_biography.add_extrafield(key=key, value=value)
-        else:
-            assert index != None
-            self.bioport_biography.update_extrafield(
-              index = index,
-              key=key,
-              value=value,
-              )
+#
+#    def _set_extrafield(self, identifier, index=None, add_new=False):
+#        key = self.request.get('extrafield_%s_key' % identifier)
+#        value = self.request.get('extrafield_%s_value' % identifier)
+#        if add_new and url and text: #XX this must not be used anywhere, as these varaibles seem undefined!
+#            self.bioport_biography.add_extrafield(key=key, value=value)
+#        else:
+#            assert index != None
+#            self.bioport_biography.update_extrafield(
+#              index = index,
+#              key=key,
+#              value=value,
+#              )
             
     def _set_states(self): 
         """set information for all states in the request"""
@@ -1170,7 +1170,7 @@ class Persoon(app.Persoon, grok.EditForm, RepositoryView):
                 self.bioport_biography.add_figure(uri=url, text = text)
                 self.msg = 'added illustration'
                 self.save_biography(comment=self.msg)
-            except URLError, error:
+            except URLError, _error:
                 msg = 'Helaas lukte het niet een plaatje te downloaden van %s' % url
                 self.msg = msg
             except CantDownloadImage:
@@ -1364,7 +1364,7 @@ class IdentifyMoreInfo(MostSimilar, Persons, Persoon,RepositoryView):
             if k.startswith('form'):
                 del data[k]
         most_similar_persons = self.get_most_similar_persons()
-        score, p1, p2= most_similar_persons[0]
+        _score, p1, p2= most_similar_persons[0]
         data.update({'bioport_ids':[p1.bioport_id, p2.bioport_id], 'start':self.start})
         redirect_url = self.url(data=data)
         self.redirect(redirect_url) 

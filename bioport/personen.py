@@ -1,9 +1,7 @@
 import  grok  
 from zope.i18n import translate
-import os
 import simplejson
-#import logging
-from chameleon.zpt.template import PageTemplateFile
+
 from z3c.batching.batch import Batch
 from bioport import BioportMessageFactory as _
 from bioport.app import RepositoryView, Batcher, Bioport, get_born_description, get_died_description, get_alive_description

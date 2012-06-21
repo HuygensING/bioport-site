@@ -358,9 +358,6 @@ class Resolver(grok.View, RepositoryView):
             else:
                 #XXX would be nice to give some feedback if the thing is not found
                 self.request.response.redirect(os.path.join(self.application_url()))
-        
-            
-            
             
 class Persoon(BioPortIdTraverser, grok.View, RepositoryView):
 
@@ -386,7 +383,7 @@ class Persoon(BioPortIdTraverser, grok.View, RepositoryView):
         if not self.person:
             message = 'Geen biografie gevonden met deze id: %s' % self.bioport_id
             qs = urlencode({'message':message})
-            self.request.response.redirect(os.path.join(self.application_url(), 'person_not_found') + '?'+ qs)
+            return self.request.response.redirect(os.path.join(self.application_url(), 'person_not_found') + '?'+ qs)
         self.biography  = self.merged_biography = self.person.get_merged_biography()
         self.bioport_biography =  self.repository().get_bioport_biography(self.person) 
         
