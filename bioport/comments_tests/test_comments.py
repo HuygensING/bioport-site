@@ -14,7 +14,7 @@ from bioport.crypt import decrypt
 
 class CommentFormTest(FunctionalTestCase):
     def est_comment_form(self):
-        messages_before = len(messages)
+#        messages_before = len(messages)
         some_bioport_id = self.app.repository(user='unittest user').get_bioport_ids()[2]
         browser = self.browser
         browser.open(self.base_url + '/persoon/' + str(some_bioport_id))
@@ -28,14 +28,14 @@ class CommentFormTest(FunctionalTestCase):
         browser.getControl('Submit').click()
         self.failUnless('this is a really accurate biography!' in browser.contents)
         
-        
-def test_suite():
-    test_suite = unittest.TestSuite()
-    tests = [TestEmailValidation]
-    for test in tests:
-        test_suite.addTest(unittest.makeSuite(test))
-    return test_suite
-
-if __name__ == "__main__":
-    unittest.main(defaultTest='test_suite')
+#        
+#def test_suite():
+#    test_suite = unittest.TestSuite()
+#    tests = [TestEmailValidation]
+#    for test in tests:
+#        test_suite.addTest(unittest.makeSuite(test))
+#    return test_suite
+#
+#if __name__ == "__main__":
+#    unittest.main(defaultTest='test_suite')
 
