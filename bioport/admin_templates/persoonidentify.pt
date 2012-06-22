@@ -105,8 +105,7 @@ Het vraagteken "?" staat voor een enkel karakter. Dus zoeken op "Ja?ob" vindt je
         <th>Id</th>
         <th>Naam</th>
         <th>Bronnen</th>
-        <th tal:condition="python:batch and batch[0].score">Score</th>
-        <th>Bewerkt</th>
+        <th>Bewerk</th>
     </tr>
 <tal:block repeat="person batch">
     <tr tal:attributes="class python:person.bioport_id in view.bioport_ids and 'grey' or ''">
@@ -135,7 +134,7 @@ Het vraagteken "?" staat voor een enkel karakter. Dus zoeken op "Ja?ob" vindt je
     <td tal:condition="person/get_bioport_id">
     </td>
      -->
-    <td tal:condition="person/score" tal:content="person/score" />
+    <td tal:condition="person/score | nothing" tal:content="person/score" />
     <td>
     <span tal:condition="python:person.bioport_id not in view.bioport_ids"> [<a tal:attributes="href python:view.url(data={
         'form.actions.search_person':'', 
