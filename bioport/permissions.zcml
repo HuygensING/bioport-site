@@ -131,6 +131,16 @@
                  />   
       <grant role="bioport.Editor" principal="bioport.dieb" />
       <grant role="bioport.Manager" principal="bioport.dieb" />
+    
+<!-- Ramona -->  
+       <principal id="bioport.ramona"
+                 title="Ramona"
+                 login="ramona"
+                 password_manager="Plain Text"
+                 password="ramona123"
+                 />   
+      <grant role="bioport.Editor" principal="bioport.ramona" />
+      <grant role="bioport.Manager" principal="bioport.ramona" />
       
 <!-- * Marlein Sopers -->
 	 <principal id="bioport.marlein"
