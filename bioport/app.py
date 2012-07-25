@@ -36,7 +36,7 @@ class RepositoryView:
     def repository(self):
         principal = self.request.principal
         user = principal and principal.id or 'unknown'
-        return self.context.repository(user=user)
+        return self.context.repository()
     
     def get_sources(self):
         return self.repository().get_sources()
@@ -163,18 +163,18 @@ class Bioport(grok.Application, grok.Container):
     debug=False
 
     def __init__(self, dsn=None):
-        super(Bioport,self).__init__() #cargoculting from ingforms 
+        super(Bioport,self).__init__() 
         from admin import Admin
         self['admin'] = Admin()
-        self['admin'].DB_CONNECTION = dsn
+#        self['admin'].DB_CONNECTION = dsn
         from biodes import BioDes
         self['biodes'] = BioDes()
     
     def format_dates(self, s1, s2, **args):
         return  format_dates(s1, s2, **args)
 
-    def repository(self, user):
-        return self['admin'].repository(user=user)
+    def repository(self):
+        return self['admin'].repository()
     
     def format_number(self, s):
         return format_number(s)

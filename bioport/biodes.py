@@ -6,8 +6,8 @@ import zope.interface
 
 class BioDes(grok.Container):
     grok.template('index')
-    def repository(self, user):
-        return self.__parent__.repository(user)
+    def repository(self):
+        return self.__parent__.repository()
     
 class Beschrijving(grok.View, RepositoryView):
     pass

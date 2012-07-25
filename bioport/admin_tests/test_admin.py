@@ -10,7 +10,7 @@ from bioport.admin import Sources, Source, Persoon
 from bioport.app import Bioport
 from zope.publisher.browser import TestRequest
 import bioport_repository
-from bioport_repository.tests.config import DSN
+from bioport_repository.tests.config import DSN, IMAGES_CACHE_LOCAL , SQLDUMP_FILENAME , CREATE_NEW_DUMPFILE 
 
 class SimpleSampleTest(unittest.TestCase):
     "Test the Sample application"
@@ -19,9 +19,12 @@ class SimpleSampleTest(unittest.TestCase):
         grokapp = Bioport()
         admin = grokapp['admin']
         admin.DB_CONNECTION = DSN
+        if not os.path.exists(IMAGES_CACHE_LOCAL):
+            os.mkdir(IMAGES_CACHE_LOCAL)
+        admin.IMAGES_CACHE_LOCAL = IMAGES_CACHE_LOCAL
         self.app = grokapp
         self.admin = admin
-        self.repo = repo = self.admin.repository(user='unittest user')
+        self.repo = repo = self.admin.repository() #user='unittest user')
         self.repo.db.metadata.drop_all()
         repo.db.SIMILARITY_TRESHOLD = 0.0
         repo.db.metadata.create_all()

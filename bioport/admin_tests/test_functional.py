@@ -61,7 +61,8 @@ class SimpleSampleFunctionalTest(FunctionalTestCase):
     def test_if_pages_work(self):
         
         browser = self.browser
-        some_bioport_id = self.app.repository(user='unittest user').get_bioport_ids()[2]
+        #user='unittest user'
+        some_bioport_id = self.app.repository().get_bioport_ids()[2]
         for url in [
             '',
             'personen',

@@ -59,14 +59,17 @@ class Admin(grok.Container):
     dutch_home_html = english_home_html = 'Biografisch Portaal van Netherlands'
     
     @forever.memoize #keep repository (with its caches) memoized as long as the instance is running
-    def repository(self, user):
+    #XXX it might be more clearer to have this as a global variable, or, more grok, as a GlobalUtility
+    #but: settings are stored in ZODB, so we need to initialize the repository after the app is available
+    #in grok1.1 the event initializeapp is not raised and b) upgrading to grok1.2 is the right way, but Hours of Work.
+    def repository(self):
         return Repository(
             svn_repository=self.SVN_REPOSITORY, 
             svn_repository_local_copy=self.SVN_REPOSITORY_LOCAL_COPY,
             dsn=self.DB_CONNECTION,
             images_cache_local=self.IMAGES_CACHE_LOCAL,
             images_cache_url=self.IMAGES_CACHE_URL,
-            user=user,
+#            user=user, 
 #            ZOPE_SESSIONS=False, #use z3c.saconfig package
             ) 
 
@@ -97,7 +100,10 @@ class Edit(grok.EditForm,RepositoryView):
     grok.template('edit')
     grok.context(Admin)
     form_fields = grok.Fields(IAdminSettings)
-    
+#    def update(self, **args):
+#        super(grok.EditForm, self).update( **args)
+#        import ipdb;ipdb.set_trace() 
+
     def _redirect_with_msg(self, msg, base_url=None):
         if base_url is None:
             base_url = self.url()
