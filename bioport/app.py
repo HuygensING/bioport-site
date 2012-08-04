@@ -25,7 +25,9 @@ from fuzzy_search import get_search_query
 from fuzzy_search import make_description
 import simplejson
 from zope.publisher.interfaces import NotFound, INotFound
-from zope.app.security.interfaces import IAuthentication, PrincipalLookupError
+#from zope.app.security.interfaces import IAuthentication, PrincipalLookupError
+from zope.authentication.interfaces import IAuthentication
+from zope.authentication.interfaces import  PrincipalLookupError
 
 from zope import component
 
@@ -157,9 +159,9 @@ class Batcher:
 class Bioport(grok.Application, grok.Container):
     zope.interface.implements(IBioport)
               
-    SVN_REPOSITORY = None
-    SVN_REPOSITORY_LOCAL_COPY = None
-    DB_CONNECTION = None
+#    SVN_REPOSITORY = None
+#    SVN_REPOSITORY_LOCAL_COPY = None
+#    DB_CONNECTION = None
     debug=False
 
     def __init__(self, dsn=None):
@@ -845,3 +847,6 @@ class StateWrapper:
             return True
         else:
             return False        
+        
+# IApplicationInitializedEvent gets called after the application is created.
+#grok.subscribe(Bioport, grok.IApplicationInitializedEvent)

@@ -37,24 +37,39 @@ class AdminPanelFunctionalTest(FunctionalTestCase):
         form.getControl(name='form.LIMIT').value = '20'
         form.submit('Save')
         
-        repository = app.repository(user='unittest user')
+        repository = app.repository() 
         repository.db.metadata.create_all()
+        
+        
+        #test adding and deleteing sources through the web interface 
+        #remember how many persons we have at this point
+        n_persons = len(repository.get_persons())
+
         #add a source
         this_dir = os.path.dirname(__file__)
         source_url = 'file://%s' % os.path.join(this_dir, 'data/knaw/list.xml')
         browser.open('http://localhost/app/admin/sources') 
         form = browser.getForm(index=0)
-        form.getControl(name='source_id').value = u'knaw_test'
+        new_source_id = u'new_source'
+        form.getControl(name='source_id').value = new_source_id 
         form.getControl(name='url').value = source_url
-        try:
-            form.submit()
-        except:
-            #we get an arror because it already exists -- 
-            #XXX we need to properly handle that error
-            pass
-        #download the biographies for this source
-        repository.download_biographies(source=repository.get_source(u'knaw_test'))
+        form.submit()
         
+        #now do we have this source available?
+        self.assertEqual(repository.get_source(new_source_id).id, new_source_id)
+        #download the biographies for this source
+        #now check if they are available on the site
+        browser.open('http://localhost/app/admin/source?source_id=%s' % new_source_id) 
+        form = browser.getForm(index=0)
+        form.getControl(name='form.actions.download_biographies').click()
+
+#        repository.download_biographies(source=repository.get_source(new_source_id))
+        #now check if they are available on the site
+        #the amount of new persons 
+        n_new_persons = len(repository.get_persons(source_id=new_source_id)) 
+        self.assertTrue(n_new_persons > 1, 'It seems no persons were downloaded')
+        #now we should have the previous persons as well as the new persons available in the repository
+        self.assertEqual(len(repository.get_persons()), n_persons + n_new_persons)
 
 class SimpleSampleFunctionalTest(FunctionalTestCase):
     """ This the app in ZODB. """
