@@ -45,7 +45,6 @@ select {
 <p>
 <form metal:define-macro="search_form"
     tal:attributes="action view/url">
-    
 
         	<label accesskey="n" for="search_name"><span class="accesskey">n</span>aam:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
         	<input type="text" name="search_name" id="search_name" tal:attributes="value request/search_name | nothing" />
