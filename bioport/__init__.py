@@ -12,9 +12,11 @@ from bioport_repository.repository import Repository
 from zope import interface
 class IRepository(interface.Interface):
     pass
+
     
 class SiteRepository(grok.GlobalUtility):
     grok.implements(IRepository)
+    grok.provides(IRepository)
     def __init__(self):
         pass
     def repository(self, data):
