@@ -5,24 +5,25 @@ import time
 from bioport import app, personen
 import tempfile
 import logging
-from app import Batcher, RepositoryView,  RelationWrapper
-from bioport_repository.illustration import Illustration, CantDownloadImage
-from common import format_date, format_dates, format_number
-from names.common import from_ymd, to_ymd
-from names.name import Naam
 import grok
 #from permissions import *
-from plone.memoize import forever
+#from plone.memoize import forever
 from z3c.batching.batch import Batch
 from zope import schema
 from zope.interface import Interface
 from zope.session.interfaces import ISession
+from zope import component
 from urllib2 import URLError
 
-import bioport_repository
-from bioport_repository.repository import Repository
-
 from gerbrandyutils import normalize_url
+from common import format_date, format_dates, format_number
+from names.common import from_ymd, to_ymd
+from names.name import Naam
+import bioport_repository
+from bioport_repository.illustration import Illustration, CantDownloadImage
+
+from bioport import IRepository
+from app import Batcher, RepositoryView,  RelationWrapper
 
 class IAdminSettings(Interface):
     SVN_REPOSITORY = schema.TextLine(title=u'URL of svn repository', required=False)
@@ -63,8 +64,6 @@ class Admin(grok.Container):
     #but: settings are stored in ZODB, so we need to initialize the repository after the app is available
     #in grok1.1 the event initializeapp is not raised and b) upgrading to grok1.2 is the right way, but Hours of Work.
     def repository(self):
-        from zope import component
-        from bioport import IRepository
         utility = component.getUtility(IRepository)
         return utility.repository(self)
 #        try:
