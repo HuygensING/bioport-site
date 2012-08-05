@@ -11,12 +11,16 @@ from bioport.app import Bioport
 from zope.publisher.browser import TestRequest
 import bioport_repository
 from bioport_repository.tests.config import DSN, IMAGES_CACHE_LOCAL , SQLDUMP_FILENAME , CREATE_NEW_DUMPFILE 
+from bioport.tests import FunctionalTestCase
 
-class SimpleSampleTest(unittest.TestCase):
+class SimpleSampleTest(FunctionalTestCase):
     "Test the Sample application"
 
     def setUp(self):
-        grokapp = Bioport()
+        super(SimpleSampleTest, self).setUp()
+        
+        #TODO: cleanup all this stuff below, which is duplicated in FunctionalTestCase.setUp
+        grokapp = self.app
         admin = grokapp['admin']
         admin.DB_CONNECTION = DSN
         if not os.path.exists(IMAGES_CACHE_LOCAL):
@@ -34,8 +38,10 @@ class SimpleSampleTest(unittest.TestCase):
         repo.add_source(source)
         self.repo.download_biographies(source)
                
-    def tearDown(self):
-        self.repo.db.metadata.drop_all()
+#    def tearDown(self):
+        #remove all data from test db
+#        self.repo.db.metadata.drop_all()
+#        super(SimpleSampleTest, self).setUp()
         
     def test_sources(self):
         request = TestRequest()
@@ -69,5 +75,4 @@ def test_suite():
     return test_suite
 
 if __name__ == "__main__":
-    unittest.main(defaultTest='test_suite')    
-
+	unittest.main(defaultTest='test_suite')    
