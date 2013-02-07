@@ -14,18 +14,18 @@ try:
 except ImportError:
     from zope.app.publisher.browser import IUserPreferredLanguages  # before python 2.6 upgrade
 from names.common import to_ymd
-    
+
 grok.templatedir('app_templates')
 grok.context(Bioport)
 
+
 class _Personen(RepositoryView):
-        
     def get_persons(self, **args):
         """get Persons - with restrictions given by request"""
         qry = {}
         #request.form has unicode keys - make strings
         for k in [
-            'bioport_id', 
+            'bioport_id',
             'beginletter',
             'category',
             'geboortejaar_min',
@@ -35,7 +35,7 @@ class _Personen(RepositoryView):
 #        has_illustrations=None, #boolean: does this person have illustrations?
 #        is_identified=None,
             'hide_invisible',
-            'order_by', 
+            'order_by',
             'religion',
 #            'search_family_name',
 #            'search_family_name_exact',
@@ -48,7 +48,7 @@ class _Personen(RepositoryView):
             'source_id2',
             'start',
             'status',
-#            'sterfjaar_min', 
+#            'sterfjaar_min',
 #            'sterfjaar_max',
             'sterfplaats',
             'has_contradictions',
@@ -63,10 +63,10 @@ class _Personen(RepositoryView):
 
 #        logging.info('query %s \n args %s \n request: %s' % (str(qry), str(args), str(self.request)))
         current_language = IUserPreferredLanguages(self.request).getPreferredLanguages()[0]
-       
+
         request = self.request 
         form = request.form
-       
+
         search_name = form.get('search_name') 
         if form.get('search_name_exact') and not search_name.startswith('"'):
             #search for the exact phrase

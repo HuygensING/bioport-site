@@ -49,11 +49,11 @@ class RepositoryView:
     
     def get_status_value(self, k, default=None):
         return self.repository().get_status_value(k, default)
-    
+
     def get_status_values(self):
         return self.repository().get_status_values()
 
-    
+
     @ram.cache(lambda *args: time.time() // (60 * 60))
     def count_persons(self):
         try:
@@ -62,7 +62,7 @@ class RepositoryView:
             return i
         except OperationalError:
             return 0 
-    
+
     @ram.cache(lambda *args: time.time() // (60 * 60))
     def count_biographies(self):
         try:
@@ -72,7 +72,7 @@ class RepositoryView:
             return i
         except OperationalError:
             return 0
-            
+
     def menu_items(self):
         items = [
                 (self.application_url(), _('home')),
@@ -188,6 +188,7 @@ class BioportNotFound(grok.View, RepositoryView):
         " Put the context back to the last found element "
         self.notfound_exception = notfound_exception
         return super(BioportNotFound, self).__init__(notfound_exception.ob, request)
+    
     def update(self):
         self.request.response.setStatus(404)
 
@@ -356,7 +357,8 @@ class Resolver(grok.View, RepositoryView):
             else:
                 #XXX would be nice to give some feedback if the thing is not found
                 self.request.response.redirect(os.path.join(self.application_url()))
-            
+
+
 class Persoon(BioPortIdTraverser, grok.View, RepositoryView):
 
     def publishTraverse(self, request, name):
@@ -373,22 +375,23 @@ class Persoon(BioPortIdTraverser, grok.View, RepositoryView):
         redirects_to = self.repository().redirects_to(self.bioport_id)
         if redirects_to != self.bioport_id:
             #this is an 'old'bioport_id that has been identified with the bioport_id at redirects_to
-            self.redirect(self.url(self) + '/'+ redirects_to)
+            self.redirect(self.url(self) + '/' + redirects_to)
         if not self.bioport_id:
             self.bioport_id = random.choice(self.repository().get_bioport_ids())
-            self.redirect(self.url(self) + '/'+ self.bioport_id)
-        self.person  = self.repository().get_person(bioport_id=self.bioport_id) 
+            self.redirect(self.url(self) + '/' + self.bioport_id)
+
+        self.person = self.repository().get_person(bioport_id=self.bioport_id) 
         if not self.person:
             message = 'Geen biografie gevonden met deze id: %s' % self.bioport_id
-            qs = urlencode({'message':message})
-            return self.request.response.redirect(os.path.join(self.application_url(), 'person_not_found') + '?'+ qs)
-        self.biography  = self.merged_biography = self.person.get_merged_biography()
-        self.bioport_biography =  self.repository().get_bioport_biography(self.person) 
-        
+            qs = urlencode({'message': message})
+            return self.request.response.redirect(os.path.join(self.application_url(), 'person_not_found') + '?' + qs)
+        self.biography = self.merged_biography = self.person.get_merged_biography()
+        self.bioport_biography = self.repository().get_bioport_biography(self.person) 
+
     def get_event(self, type, biography=None):
         if not biography:
             biography = self.merged_biography
-        
+
         event_el = biography.get_event(type)
         if event_el is not None:
 
@@ -401,15 +404,15 @@ class Persoon(BioPortIdTraverser, grok.View, RepositoryView):
                         self.when_formatted = format_date(self.when)
                     except:
                         self.when_formatted = self.when
-                        
+
                     self.notBefore = el.get('notBefore')
                     self.notBefore_ymd = to_ymd(self.notBefore) 
                     self.notBefore_formatted = format_date(self.notBefore)
                     self.notAfter = el.get('notAfter')
-                    self.notAfter_ymd = to_ymd(self.notAfter) 
+                    self.notAfter_ymd = to_ymd(self.notAfter)
                     self.notAfter_formatted = format_date(self.notAfter)
                     self.date_text = el.find('date') is not None and el.find('date').text or ''
-                    self.place =  el.find('place') is not None and el.find('place').text or ''
+                    self.place = el.find('place') is not None and el.find('place').text or ''
                     self.place_id = el.get('place_id')
                     self.type = el.get('type')
                     start = self.notBefore_formatted
@@ -432,7 +435,7 @@ class Persoon(BioPortIdTraverser, grok.View, RepositoryView):
                         if attr.startswith('_'):
                             continue
                         value = getattr(self, attr)
-                        string.append("%s=%s" %(attr, value))
+                        string.append("%s=%s" % (attr, value))
                     return '; '.join(string)
 
             current_lang = IUserPreferredLanguages(self.request).getPreferredLanguages()[0]
