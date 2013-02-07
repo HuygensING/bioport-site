@@ -26,8 +26,6 @@ from bioport import IRepository
 from app import Batcher, RepositoryView,  RelationWrapper
 
 class IAdminSettings(Interface):
-    SVN_REPOSITORY = schema.TextLine(title=u'URL of svn repository', required=False)
-    SVN_REPOSITORY_LOCAL_COPY = schema.TextLine(title=u'path to local copy of svn repository', required=False)
    
     DB_CONNECTION = schema.TextLine(title=u'Database connection (e.g. "mysql://root@localhost/bioport_test" ) (changes need restart to take effect)', required=False)
     LIMIT = schema.Decimal(title=u'Dont download more than this amount of biographies per source (used for testing)', required=False)
@@ -38,6 +36,8 @@ class IAdminSettings(Interface):
     CONTACT_DESTINATION_ADDRESS = schema.TextLine(title=u'''Emails sent by the site will be sent to this email address''', required=False)
 
 
+#    SVN_REPOSITORY = schema.TextLine(title=u'URL of svn repository', required=False)
+#    SVN_REPOSITORY_LOCAL_COPY = schema.TextLine(title=u'path to local copy of svn repository', required=False)
 class IHomePageSettings(Interface):
     dutch_home_html = schema.Text(title=u'Dutch html for the homepage')
     english_home_html = schema.Text(title=u'English html for the homepage')

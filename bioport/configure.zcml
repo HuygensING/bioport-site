@@ -1,31 +1,26 @@
 <configure xmlns="http://namespaces.zope.org/zope"
            xmlns:grok="http://namespaces.zope.org/grok"
            xmlns:i18n="http://namespaces.zope.org/i18n">
-  <include package="grok" />
-  <include package="megrok.chameleon" />
-  <includeDependencies package="." />
-  <grok:grok package="." />
-  <include file="permissions.zcml" />
-  <include file="mail.zcml" />
-
-  <adapter factory=".app_i18n.EnglishAbsoluteURL"
-      provides="zope.traversing.browser.interfaces.IAbsoluteURL"
-     />
-  <adapter factory=".app_i18n.EnglishAbsoluteURL"
-      provides="zope.interface.Interface"
-     name="absolute_url" />
-<!--
-<subscriber 
-    for="zope.site.interfaces.IRootFolder
-         zope.app.publication.interfaces.IBeforeTraverseEvent" 
-    handler=".app_i18n.language_switch" 
-/>  
--->
-<subscriber 
-    for="zope.app.folder.interfaces.IRootFolder
-         zope.app.publication.interfaces.IBeforeTraverseEvent" 
-    handler=".app_i18n.language_switch" 
-/> 
- <i18n:registerTranslations directory="locales" />
-
+    <include package="grok" />
+    <includeDependencies package="." />
+    <grok:grok package="." />
+    <include file="permissions.zcml" />
+    <include file="mail.zcml" />
+    
+    <adapter factory=".app_i18n.EnglishAbsoluteURL"
+          provides="zope.traversing.browser.interfaces.IAbsoluteURL"
+         />
+    
+    <adapter factory=".app_i18n.EnglishAbsoluteURL"
+         provides="zope.interface.Interface"
+         name="absolute_url" />
+    
+    <subscriber 
+        for="zope.app.folder.interfaces.IRootFolder
+             zope.app.publication.interfaces.IBeforeTraverseEvent" 
+        handler=".app_i18n.language_switch" 
+    /> 
+    
+    <i18n:registerTranslations directory="locales" />
+    
 </configure>

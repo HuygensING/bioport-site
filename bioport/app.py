@@ -34,15 +34,16 @@ from zope import component
 from mobile.sniffer.detect import  detect_mobile_browser
 from mobile.sniffer.utilities import get_user_agent
 
+
 class RepositoryView:
     def repository(self):
         principal = self.request.principal
         user = principal and principal.id or 'unknown'
         return self.context.repository()
-    
+
     def get_sources(self):
         return self.repository().get_sources()
-    
+
     def get_person(self,bioport_id):
         return self.repository().get_person(bioport_id)
     
@@ -145,7 +146,6 @@ class Batcher:
         self.size = int(self.request.get('size', 30) or 0)
         
     def batch_url(self, start=None, size=None):
-        
         #next two lines replaces data = self.request.form
         #which magickally resolves a unicode error
         data = {}
@@ -154,30 +154,26 @@ class Batcher:
             data['start'] = start
         if size != None:
             data['size'] = size
-        return self.url(data= data)    
- 
+        return self.url(data= data)
+
+
 class Bioport(grok.Application, grok.Container):
     zope.interface.implements(IBioport)
-              
-#    SVN_REPOSITORY = None
-#    SVN_REPOSITORY_LOCAL_COPY = None
-#    DB_CONNECTION = None
-    debug=False
+    debug = False
 
     def __init__(self, dsn=None):
-        super(Bioport,self).__init__() 
+        super(Bioport, self).__init__()
         from admin import Admin
         self['admin'] = Admin()
-#        self['admin'].DB_CONNECTION = dsn
         from biodes import BioDes
         self['biodes'] = BioDes()
-    
+
     def format_dates(self, s1, s2, **args):
         return  format_dates(s1, s2, **args)
 
     def repository(self):
         return self['admin'].repository()
-    
+
     def format_number(self, s):
         return format_number(s)
 
