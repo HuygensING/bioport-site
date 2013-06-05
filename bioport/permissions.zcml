@@ -1,6 +1,7 @@
 <configure xmlns="http://namespaces.zope.org/zope"
            i18n_domain="bioport">
 
+
       <configure i18n_domain="bioport">
       <role id="bioport.Editor" title="Bioport Editor" />
       <grant permission="bioport.Edit" role="bioport.Editor" />
@@ -89,17 +90,6 @@
       <grant role="bioport.Editor" principal="bioport.rik" />
       <grant role="bioport.Manager" principal="bioport.rik" />
  
- 
-
-             
-       <principal id="bioport.jeltje"
-                 title="Jeltje"
-                 login="jeltje"
-                 password_manager="Plain Text"
-                 password="jeltje123"
-                 />
-      <grant role="bioport.Editor" principal="bioport.jeltje" />
-      <grant role="bioport.Manager" principal="bioport.jeltje" />
  
  
  

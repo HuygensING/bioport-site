@@ -10,25 +10,39 @@ from bioport.admin import Sources, Source, Persoon
 from bioport.app import Bioport
 from zope.publisher.browser import TestRequest
 import bioport_repository
-from bioport_repository.tests.config import SQLDUMP_FILENAME, CREATE_NEW_DUMPFILE
+from bioport_repository.tests.config import DSN, IMAGES_CACHE_LOCAL , SQLDUMP_FILENAME , CREATE_NEW_DUMPFILE 
 from bioport.tests import FunctionalTestCase
-
 
 class SimpleSampleTest(FunctionalTestCase):
     "Test the Sample application"
 
     def setUp(self):
         super(SimpleSampleTest, self).setUp()
-        self.admin = self.app['admin']
-        self.repo = self.admin.repository() #user='unittest user')
-        self.repo.db.SIMILARITY_TRESHOLD = 0.0
-
-        url = os.path.join(os.path.dirname(bioport_repository.__file__),
-                         'tests', 'data', 'knaw', 'list.xml')
-        source = bioport_repository.source.Source(id='knaw', url=url, repository=self.repo)
-        self.repo.add_source(source)
+        
+        #TODO: cleanup all this stuff below, which is duplicated in FunctionalTestCase.setUp
+        grokapp = self.app
+        admin = grokapp['admin']
+        admin.DB_CONNECTION = DSN
+        if not os.path.exists(IMAGES_CACHE_LOCAL):
+            os.mkdir(IMAGES_CACHE_LOCAL)
+        admin.IMAGES_CACHE_LOCAL = IMAGES_CACHE_LOCAL
+        self.app = grokapp
+        self.admin = admin
+        self.repo = repo = self.admin.repository() #user='unittest user')
+        self.repo.db.metadata.drop_all()
+        repo.db.SIMILARITY_TRESHOLD = 0.0
+        repo.db.metadata.create_all()
+        url = os.path.join(os.path.dirname(bioport_repository.__file__), 
+                         'tests', 'data','knaw', 'list.xml')
+        source = bioport_repository.source.Source(id='knaw', url=url, repository=self.repo) 
+        repo.add_source(source)
         self.repo.download_biographies(source)
-
+               
+#    def tearDown(self):
+        #remove all data from test db
+#        self.repo.db.metadata.drop_all()
+#        super(SimpleSampleTest, self).setUp()
+        
     def test_sources(self):
         request = TestRequest()
         sources = Sources(self.admin, request)
@@ -36,12 +50,12 @@ class SimpleSampleTest(FunctionalTestCase):
         knaw_source = self.repo.get_source('knaw')
         source.update(source_id='knaw')
         sources.update(action='update_source', source_id='knaw')
-
+    
     def test_persoon(self):
         bioport_id = self.repo.get_persons()[1].get_bioport_id()
-
+    
         request = TestRequest(
-              bioport_id=bioport_id,
+              bioport_id=bioport_id, 
               state_new_text='testtext',
               state_new_type='unknown',
               )
@@ -52,7 +66,7 @@ class SimpleSampleTest(FunctionalTestCase):
         persoon.save_biography()
         self.assertEqual(len(persoon.get_states(type='test')), 1)
         self.assertEqual(len(persoon.get_editable_states()), 1)
-
+        
 def test_suite():
     test_suite = unittest.TestSuite()
     tests = [SimpleSampleTest]
@@ -61,4 +75,4 @@ def test_suite():
     return test_suite
 
 if __name__ == "__main__":
-	unittest.main(defaultTest='test_suite')
+	unittest.main(defaultTest='test_suite')    

@@ -11,7 +11,7 @@ from zope.testbrowser.testing import Browser
 
 from bioport_repository.source import Source 
 
-from bioport_repository.tests.config import DSN, IMAGES_CACHE_LOCAL
+from bioport_repository.tests.config import DSN
 
 ftesting_zcml = os.path.join(
     os.path.dirname(bioport.__file__), 'ftesting.zcml')
@@ -47,8 +47,6 @@ class FunctionalTestCase(baseFunctionalTestCase):
         browser.handleErrors = False #show some information when an arror occurs
         app['admin'].DB_CONNECTION = DSN
         app['admin'].LIMIT = 20
-        app['admin'].IMAGES_CACHE_LOCAL = IMAGES_CACHE_LOCAL
-
         self.repo = repository = app.repository()
         self.repo.db.metadata.drop_all()
         repository.db.metadata.create_all()
@@ -56,14 +54,12 @@ class FunctionalTestCase(baseFunctionalTestCase):
         this_dir = os.path.dirname(bioport.__file__)
         url = 'file://%s' % os.path.join(this_dir, 'admin_tests/data/knaw/list.xml')
         repository.add_source(Source(u'knaw_test',url,'test'))
- 
+            
         repository.download_biographies(source=repository.get_source(u'knaw_test'))
         #add some categories as well
         repository.db.get_session().execute("insert into category (id, name) values (1, 'category1')")
         repository.db.get_session().execute("insert into category (id, name) values (2, 'category2')")
-
-        if not os.path.exists(IMAGES_CACHE_LOCAL):
-            os.mkdir(IMAGES_CACHE_LOCAL)
+        
     def tearDown(self):
         baseFunctionalTestCase.tearDown(self)
         self.repo.db.metadata.drop_all()
