@@ -92,15 +92,6 @@
  
 
              
-       <principal id="bioport.jeltje"
-                 title="Jeltje"
-                 login="jeltje"
-                 password_manager="Plain Text"
-                 password="jeltje123"
-                 />
-      <grant role="bioport.Editor" principal="bioport.jeltje" />
-      <grant role="bioport.Manager" principal="bioport.jeltje" />
- 
  
  
 <!-- Renske Siemens       -->

@@ -7,10 +7,8 @@ import unittest
 import os
 
 from bioport.admin import Sources, Source, Persoon
-from bioport.app import Bioport
 from zope.publisher.browser import TestRequest
 import bioport_repository
-from bioport_repository.tests.config import SQLDUMP_FILENAME, CREATE_NEW_DUMPFILE
 from bioport.tests import FunctionalTestCase
 
 
@@ -20,7 +18,7 @@ class SimpleSampleTest(FunctionalTestCase):
     def setUp(self):
         super(SimpleSampleTest, self).setUp()
         self.admin = self.app['admin']
-        self.repo = self.admin.repository() #user='unittest user')
+        self.repo = self.admin.repository()  # user='unittest user')
         self.repo.db.SIMILARITY_TRESHOLD = 0.0
 
         url = os.path.join(os.path.dirname(bioport_repository.__file__),
@@ -33,7 +31,6 @@ class SimpleSampleTest(FunctionalTestCase):
         request = TestRequest()
         sources = Sources(self.admin, request)
         source = Source(self.admin, request)
-        knaw_source = self.repo.get_source('knaw')
         source.update(source_id='knaw')
         sources.update(action='update_source', source_id='knaw')
 
@@ -53,6 +50,7 @@ class SimpleSampleTest(FunctionalTestCase):
         self.assertEqual(len(persoon.get_states(type='test')), 1)
         self.assertEqual(len(persoon.get_editable_states()), 1)
 
+
 def test_suite():
     test_suite = unittest.TestSuite()
     tests = [SimpleSampleTest]
@@ -60,5 +58,6 @@ def test_suite():
         test_suite.addTest(unittest.makeSuite(test))
     return test_suite
 
+
 if __name__ == "__main__":
-	unittest.main(defaultTest='test_suite')
+    unittest.main(defaultTest='test_suite')
