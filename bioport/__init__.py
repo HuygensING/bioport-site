@@ -11,7 +11,7 @@ import grok
 from bioport_repository.repository import Repository
 from zope import interface
 
-repository = None
+# repository = None
 
 class IRepository(interface.Interface):
     """A marker interface for SiteRepository"""
@@ -36,10 +36,9 @@ class SiteRepository(grok.GlobalUtility):
         #     by porting it from a property of the admin object in the ZODB
         #     to a global utility
 
-        if not repository:# this is a global variable!
-#         try:
-#             return self._repository
-#         except AttributeError:
+        try:
+             return self._repository
+        except AttributeError:
             repository = Repository(
                 svn_repository=data.SVN_REPOSITORY,
                 svn_repository_local_copy=data.SVN_REPOSITORY_LOCAL_COPY,
@@ -47,5 +46,5 @@ class SiteRepository(grok.GlobalUtility):
                 images_cache_local=data.IMAGES_CACHE_LOCAL,
                 images_cache_url=data.IMAGES_CACHE_URL,
             )
-        return repository
+        return self._repository
 
