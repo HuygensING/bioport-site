@@ -39,7 +39,7 @@ class SiteRepository(grok.GlobalUtility):
         try:
              return self._repository
         except AttributeError:
-            repository = Repository(
+            self._repository = Repository(
                 svn_repository=data.SVN_REPOSITORY,
                 svn_repository_local_copy=data.SVN_REPOSITORY_LOCAL_COPY,
                 dsn=data.DB_CONNECTION,
