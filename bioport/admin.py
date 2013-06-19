@@ -63,8 +63,12 @@ class Admin(grok.Container):
     #but: settings are stored in ZODB, so we need to initialize the repository after the app is available
     #in grok1.1 the event initializeapp is not raised and b) upgrading to grok1.2 is the right way, but Hours of Work.
     def repository(self):
-        utility = component.getUtility(IRepository)
-        return utility.repository(data=self)
+        try:
+            return self._repository
+        except AttributeError:
+            utility = component.getUtility(IRepository)
+            self._repository = utility.repository(data=self)
+            return self._repository
 
     def __getstate__(self):
         #we cannot (and dont want to) pickle the repository -- like this we exclude it
