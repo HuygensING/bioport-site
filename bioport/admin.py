@@ -60,30 +60,14 @@ class Admin(grok.Container):
     CONTACT_DESTINATION_ADDRESS = 'destination@example.com'
     dutch_home_html = english_home_html = 'Biografisch Portaal van Netherlands'
 
-    #keep repository (with its caches) memoized as long as the instance is running
-    #XXX it might be more clearer to have this as a global variable, or, more grok, as a GlobalUtility
     #but: settings are stored in ZODB, so we need to initialize the repository after the app is available
     #in grok1.1 the event initializeapp is not raised and b) upgrading to grok1.2 is the right way, but Hours of Work.
     def repository(self):
         utility = component.getUtility(IRepository)
-        return utility.repository(self)
-#        try:
-#            return self._repository
-#        except AttributeError:
-#            self._repository =  Repository(
-#	            svn_repository=self.SVN_REPOSITORY, 
-#	            svn_repository_local_copy=self.SVN_REPOSITORY_LOCAL_COPY,
-#	            dsn=self.DB_CONNECTION,
-#	            images_cache_local=self.IMAGES_CACHE_LOCAL,
-#	            images_cache_url=self.IMAGES_CACHE_URL,
-#	#            user=user, 
-#	#            ZOPE_SESSIONS=False, #use z3c.saconfig package
-#	            ) 
-#            return self._repository
-
+        return utility.repository(data=self)
 
     def __getstate__(self):
-        #we cannot (And dont want to) pickle the repository -- like this we exclude it
+        #we cannot (and dont want to) pickle the repository -- like this we exclude it
         try:
             del self.__dict__['_repository']
         except KeyError:
@@ -99,9 +83,6 @@ class Admin(grok.Container):
     def format_number(self, s):
         return format_number(s)
 
-#    def get_auteurs(self, **args):
-#        return self.repository().get_authors()   
-
 
 class Edit(grok.EditForm, RepositoryView):
 
@@ -109,8 +90,6 @@ class Edit(grok.EditForm, RepositoryView):
     grok.template('edit')
     grok.context(Admin)
     form_fields = grok.Fields(IAdminSettings)
-#    def update(self, **args):
-#        super(grok.EditForm, self).update( **args)
 
     def _redirect_with_msg(self, msg, base_url=None):
         if base_url is None:

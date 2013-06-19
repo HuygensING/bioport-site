@@ -13,6 +13,7 @@ from zope import interface
 
 
 class IRepository(interface.Interface):
+    """A marker interface for SiteRepository"""
     pass
 
 
@@ -34,10 +35,10 @@ class SiteRepository(grok.GlobalUtility):
         #     by porting it from a property of the admin object in the ZODB
         #     to a global utility
 
-        try:
-            return self._repository
-        except AttributeError:
-            self._repository = Repository(
+#         try:
+#             return self._repository
+#         except AttributeError:
+        self._repository = Repository(
                 svn_repository=data.SVN_REPOSITORY,
                 svn_repository_local_copy=data.SVN_REPOSITORY_LOCAL_COPY,
                 dsn=data.DB_CONNECTION,
@@ -46,4 +47,4 @@ class SiteRepository(grok.GlobalUtility):
     #            user=user,
     #            ZOPE_SESSIONS=False, #use z3c.saconfig package
                 )
-            return self._repository
+        return self._repository

@@ -46,8 +46,6 @@ class Bioport(grok.Application, grok.Container):
         self['admin'] = Admin()
         from biodes import BioDes
         self['biodes'] = BioDes()
-        # initialiaze the cache of the repository
-        self.repository().db.all_persons()
 
     def format_dates(self, s1, s2, **args):
         return  format_dates(s1, s2, **args)
