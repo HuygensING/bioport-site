@@ -38,6 +38,7 @@ class IAdminSettings(Interface):
 
 #    SVN_REPOSITORY = schema.TextLine(title=u'URL of svn repository', required=False)
 #    SVN_REPOSITORY_LOCAL_COPY = schema.TextLine(title=u'path to local copy of svn repository', required=False)
+
 class IHomePageSettings(Interface):
     dutch_home_html = schema.Text(title=u'Dutch html for the homepage')
     english_home_html = schema.Text(title=u'English html for the homepage')
