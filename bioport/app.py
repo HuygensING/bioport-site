@@ -631,15 +631,18 @@ class Birthdays_Box(grok.View, RepositoryView):
     def get_persons(self):
         """get 3 persons whose birthdate is today"""
         # get the month and day of today
-        today = datetime.date.today().strftime('-%m-%d')
+#         today = datetime.date.today().strftime('-%m-%d')
+        today = datetime.date.today().strftime('%m%d')
         # query the datase for persons born on this date that have an illustration
-        persons = self.repository().get_persons(where_clause='CAST(geboortedatum_min AS CHAR) like "____%s%%" and geboortedatum_min = geboortedatum_max' % today, has_illustrations=True, hide_foreigners=True)
+#         persons = self.repository().get_persons(where_clause='CAST(geboortedatum_min AS CHAR) like "____%s%%" and geboortedatum_min = geboortedatum_max' % today, has_illustrations=True, hide_foreigners=True)
+        persons = self.repository().get_persons(where_clause='birthday = "%s"' % today, has_illustrations=True, hide_foreigners=True)
 
         persons = [p for p in persons if p.has_illustrations]
 #        [ill for ill in p.get_merged_biography().get_illustrations() if ill.has_image()]]
         if len(persons) < 3:
             # if we have less then 3 people, we cheat a bit and take someone who died today
-            persons += self.repository().get_persons(where_clause='CAST(sterfdatum_min AS CHAR) like "____%s%%" and geboortedatum_min = geboortedatum_max' % today, has_illustrations=True, hide_foreigners=True)
+#             persons += self.repository().get_persons(where_clause='CAST(sterfdatum_min AS CHAR) like "____%s%%" and geboortedatum_min = geboortedatum_max' % today, has_illustrations=True, hide_foreigners=True)
+            persons += self.repository().get_persons(where_clause='deathday = "%s"' % today, has_illustrations=True, hide_foreigners=True)
             persons = [p for p in persons if [ill for ill in p.get_merged_biography().get_illustrations() if ill.has_image()]]
 
         for person in persons:
@@ -651,16 +654,18 @@ class Birthdays_Box(grok.View, RepositoryView):
 class Birthdays(grok.View, RepositoryView):
     def get_persons_born_today(self):
         # get the month and day of today
-        today = datetime.date.today().strftime('-%m-%d')
+        today = datetime.date.today().strftime('%m%d')
         # query the database for persons born on this date
-        persons = self.repository().get_persons(where_clause='CAST(geboortedatum_min AS CHAR) like "____%s%%" and geboortedatum_min = geboortedatum_max' % today)
+        persons = self.repository().get_persons(where_clause='birthday = "%s"' % today)
+#         persons = self.repository().get_persons(where_clause='CAST(geboortedatum_min AS CHAR) like "____%s%%" and geboortedatum_min = geboortedatum_max' % today)
         return persons
 
     def get_persons_dead_today(self):
         # get the month and day of today
         today = datetime.date.today().strftime('-%m-%d')
         # query the database for persons born on this date
-        persons = self.repository().get_persons(where_clause='CAST(sterfdatum_min AS CHAR) like "____%s%%" and sterfdatum_min = sterfdatum_max' % today)
+#         persons = self.repository().get_persons(where_clause='CAST(sterfdatum_min AS CHAR) like "____%s%%" and sterfdatum_min = sterfdatum_max' % today)
+        persons = self.repository().get_persons(where_clause='deathday = "%s"' % today)
         return persons
 
 

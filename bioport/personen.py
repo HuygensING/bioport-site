@@ -27,7 +27,7 @@ from bioport import BioportMessageFactory as _
 from bioport.app import RepositoryView, Batcher, Bioport, get_born_description, get_died_description, get_alive_description
 from fuzzy_search import get_search_query
 from fuzzy_search import en_to_nl_for_field
-#from fuzzy_search import make_description
+# from fuzzy_search import make_description
 
 try:
     from zope.i18n.interfaces import IUserPreferredLanguages  # after python 2.6 upgrade
@@ -43,7 +43,7 @@ class _Personen(RepositoryView):
     def get_persons(self, **args):
         """get Persons - with restrictions given by request"""
         qry = {}
-        #request.form has unicode keys - make strings
+        # request.form has unicode keys - make strings
         for k in [
             'bioport_id',
             'beginletter',
@@ -89,7 +89,7 @@ class _Personen(RepositoryView):
 
         search_name = form.get('search_name') 
         if form.get('search_name_exact') and not search_name.startswith('"'):
-            #search for the exact phrase
+            # search for the exact phrase
             search_name = '"%s"' % search_name
             
         if search_name:
@@ -97,7 +97,7 @@ class _Personen(RepositoryView):
             
         search_family_name = form.get('search_family_name')
         if form.get('search_family_name_exact') and not search_family_name.startswith('"'):
-            #search for the exact phrase
+            # search for the exact phrase
             search_family_name = '"%s"' % search_family_name
             
         if search_family_name:
@@ -126,7 +126,7 @@ class _Personen(RepositoryView):
 #        if not set(qry.keys()).issubset(set(['start', 'size'])):
 #            self.request.form['beginletter'] = qry['beginletter'] = 'a' 
 
-        #parameters from the API
+        # parameters from the API
         qry.update(parse_api_args(form))
         persons = self.repository().get_persons_sequence(**qry)
         return persons
@@ -141,16 +141,16 @@ class Personen(grok.View, _Personen, Batcher):
    
     def get_persons(self, **args):
         """get persons batch"""
-        #ignore the start and size parameters when querying the database
-        #(they are used for batching, but we need the whole result set for navigating)
+        # ignore the start and size parameters when querying the database
+        # (they are used for batching, but we need the whole result set for navigating)
         args['start'] = None
         args['size'] = None
         persons = _Personen.get_persons(self, **args)
         
         try:
-            batch = Batch(persons,  start=self.start, size=self.size)
+            batch = Batch(persons, start=self.start, size=self.size)
         except IndexError:
-            batch = Batch(persons,size= self.size)
+            batch = Batch(persons, size=self.size)
             
         batch.grand_total = len(persons)
         self.batch = batch
@@ -186,12 +186,12 @@ class Personen(grok.View, _Personen, Batcher):
 #        where_clause=None,
 #        bioport_id
         current_language = IUserPreferredLanguages(self.request).getPreferredLanguages()[0]
-        _between = translate(_(u'between'),target_language=current_language)
+        _between = translate(_(u'between'), target_language=current_language)
         _and = translate(_(u'and'), target_language=current_language)
-        _after = translate(_(u'after'),target_language=current_language)
-        _before = translate(_(u'before'),target_language=current_language)
+        _after = translate(_(u'after'), target_language=current_language)
+        _before = translate(_(u'before'), target_language=current_language)
         repository = self.repository()
-        result= ''
+        result = ''
         request = self.request
         born_description = get_born_description(self.request)
         died_description = get_died_description(self.request)
@@ -208,14 +208,14 @@ class Personen(grok.View, _Personen, Batcher):
 
         sterfplaats = request.get('sterfplaats')
         if died_description or sterfplaats:
-            result += ' ' + translate(_(u'died'),target_language=current_language)
+            result += ' ' + translate(_(u'died'), target_language=current_language)
             if died_description:
                 result += ' ' + died_description
             if sterfplaats:
                 result += ' in <em>%s</em>' % sterfplaats
                 
         if alive_description:
-            result += ' ' + translate(_(u'alive'),target_language=current_language)
+            result += ' ' + translate(_(u'alive'), target_language=current_language)
             result += ' ' + alive_description
 
         source_id = request.get('source_id')
@@ -226,12 +226,12 @@ class Personen(grok.View, _Personen, Batcher):
              source_name)
             
         if request.get('search_name'):
-            whose_name_is_like = translate(_(u'whose_name_is_like'),target_language=current_language)
+            whose_name_is_like = translate(_(u'whose_name_is_like'), target_language=current_language)
             result += ' ' + whose_name_is_like
             result += ' <em>%s</em>' % request.get('search_name')
             
         if request.get('search_family_name'):
-            whose_family_name_is_like = translate(_(u'whose_family_name_is_like'),target_language=current_language)
+            whose_family_name_is_like = translate(_(u'whose_family_name_is_like'), target_language=current_language)
             result += ' ' + whose_family_name_is_like
             result += ' <em>%s</em>' % request.get('search_family_name')
             
@@ -246,7 +246,7 @@ class Personen(grok.View, _Personen, Batcher):
             category_name = translate(_(category_name_untranslated),
                                       target_language=current_language)
             result += ' %s <em>%s</em>' % (
-                translate(_("of_the_category"), target_language=current_language), #uit de rubriek
+                translate(_("of_the_category"), target_language=current_language),  # uit de rubriek
                              category_name)
         if request.get('religion'):
             religion = dict(repository.get_religion_values()).get(int(request.get('religion')))
@@ -255,14 +255,14 @@ class Personen(grok.View, _Personen, Batcher):
                 religion = translate(_(religion),
                                           target_language=current_language)
                 result += ' %s <em>%s</em>' % (
-                    translate(_("of_the_religion"), target_language=current_language), #uit de rubriek
+                    translate(_("of_the_religion"), target_language=current_language),  # uit de rubriek
                              religion)
         
         if request.get('bioport_id'):
             result += ' %s <em>%s</em>' % (translate(_("with_bioport_id"), target_language=current_language), request.get('bioport_id'))
             
-        #NB: in the template, we show the alphabet only if the search description is emtpy
-        #uncommenting the following lines messes up this logic    
+        # NB: in the template, we show the alphabet only if the search description is emtpy
+        # uncommenting the following lines messes up this logic    
 #        if request.get('beginletter'):
 #            result += ' met een achternaam beginnend met een <em>%s</em>' % request.get('beginletter')
 #
@@ -270,7 +270,7 @@ class Personen(grok.View, _Personen, Batcher):
         gender_name = {'1': '<em>' + translate(_("men"),
                                       target_language=current_language) + '</em>',
                        '2': '<em>' + translate(_("women"),
-                                      target_language=current_language) + '</em>',}
+                                      target_language=current_language) + '</em>', }
         _persons = translate(_("persons"), target_language=current_language)
         geslacht = gender_name.get(geslacht_id, _persons)
             
@@ -322,7 +322,7 @@ class PersonenXML(grok.View, _Personen):
         out = ['<?xml version="1.0" encoding="UTF-8"?>\n']
         
         out.append('<list>\n')
-        #if the argument 'format' is 'links', we just give links
+        # if the argument 'format' is 'links', we just give links
         persons = self.get_persons()
         if detail == 'full':
             if len(persons):
@@ -347,9 +347,9 @@ class PersonenXML(grok.View, _Personen):
                     else:
                         changed = ''
                     out.append(u'<a href="%(url)s" last_changed="%(changed)s">%(name)s</a>\n'
-                            % dict(name=name, url=url, changed=changed) )
+                            % dict(name=name, url=url, changed=changed))
         out.append('</list>\n')
-        self.request.response.setHeader('Content-Type','text/xml; charset=utf-8')
+        self.request.response.setHeader('Content-Type', 'text/xml; charset=utf-8')
         return ''.join(out)
 
 class PersonenJSON(PersonenXML):
@@ -359,7 +359,7 @@ class PersonenJSON(PersonenXML):
         if len(persons):
             for person in  persons:
                 out.append(person.get_merged_biography().to_dict())
-        self.request.response.setHeader('Content-Type','application/json; charset=utf-8')
+        self.request.response.setHeader('Content-Type', 'application/json; charset=utf-8')
         return simplejson.dumps(out)
  
 def parse_api_args(qry):
@@ -369,27 +369,27 @@ def parse_api_args(qry):
     """
     result = {}
     if qry.get('birth_min'):
-        y, m,  d = to_ymd(qry['birth_min'])
-        result['geboortejaar_min']  = y   
-        result['geboortemaand_min']  = m   
-        result['geboortedag_min']  = d   
+        y, m, d = to_ymd(qry['birth_min'])
+        result['geboortejaar_min'] = y   
+        result['geboortemaand_min'] = m   
+        result['geboortedag_min'] = d   
         
     if qry.get('birth_max'):
-        y, m,  d = to_ymd(qry['birth_max'])
-        result['geboortejaar_max']  = y   
-        result['geboortemaand_max']  = m   
-        result['geboortedag_max']  = d   
+        y, m, d = to_ymd(qry['birth_max'])
+        result['geboortejaar_max'] = y   
+        result['geboortemaand_max'] = m   
+        result['geboortedag_max'] = d   
     
     if qry.get('death_min'):
-        y, m,  d = to_ymd(qry['death_min'])
-        result['sterfjaar_min']  = y   
-        result['sterfmaand_min']  = m   
-        result['sterfjaar_min']  = d   
+        y, m, d = to_ymd(qry['death_min'])
+        result['sterfjaar_min'] = y   
+        result['sterfmaand_min'] = m   
+        result['sterfjaar_min'] = d   
     if qry.get('death_max'):
-        y, m,  d = to_ymd(qry['death_max'])
-        result['sterfjaar_max']  = y   
-        result['sterfmaand_max']  = m   
-        result['sterfdag_max']  = d   
+        y, m, d = to_ymd(qry['death_max'])
+        result['sterfjaar_max'] = y   
+        result['sterfmaand_max'] = m   
+        result['sterfdag_max'] = d   
     
     if qry.get('birth_place'):
         result['geboorteplaats'] = qry['birth_place']
