@@ -662,7 +662,7 @@ class Birthdays(grok.View, RepositoryView):
 
     def get_persons_dead_today(self):
         # get the month and day of today
-        today = datetime.date.today().strftime('-%m-%d')
+        today = datetime.date.today().strftime('%m%d')
         # query the database for persons born on this date
 #         persons = self.repository().get_persons(where_clause='CAST(sterfdatum_min AS CHAR) like "____%s%%" and sterfdatum_min = sterfdatum_max' % today)
         persons = self.repository().get_persons(where_clause='deathday = "%s"' % today)
