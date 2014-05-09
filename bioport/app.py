@@ -297,7 +297,7 @@ class BioPortIdTraverser(object):
         # allowing view_url/some_id but not view_url/something/some_id
         if len(request.getTraversalStack()) > 0 or not name.isdigit():
             raise NotFound(self.context, name)
-        self.bioport_id = name
+        self.bioport_id = long(name)
         return self
 
 
@@ -306,6 +306,7 @@ class PersoonXml(BioPortIdTraverser, grok.View, RepositoryView):
         redirects_to = self.repository().redirects_to(self.bioport_id)
         if redirects_to:
             self.bioport_id = redirects_to
+        print type(self.bioport_id)
         person = self.repository().get_person(bioport_id=self.bioport_id)
         self.request.response.setHeader('Content-Type', 'text/xml; charset=utf-8')
         return person.get_merged_biography().to_string()
@@ -347,7 +348,7 @@ class Resolver(grok.View, RepositoryView):
         else:
             bioport_id = None
         if bioport_id:
-            url = os.path.join(self.application_url(), 'persoon', bioport_id)
+            url = os.path.join(self.application_url(), 'persoon', str(bioport_id))
         if return_jsonp:
             if bioport_id:
                 person = self.repository().get_person(bioport_id=bioport_id)
@@ -392,15 +393,15 @@ class Persoon(BioPortIdTraverser, grok.View, RepositoryView):
 
     def update(self, **args):
         if not self.bioport_id and self.request.get('bioport_id'):
-            self.bioport_id = self.request.get('bioport_id')
+            self.bioport_id = long(self.request.get('bioport_id'))
             # XXX redirect, not show
         redirects_to = self.repository().redirects_to(self.bioport_id)
         if redirects_to != self.bioport_id:
             # this is an 'old'bioport_id that has been identified with the bioport_id at redirects_to
-            self.redirect(self.url(self) + '/' + redirects_to)
+            self.redirect(self.url(self) + '/' + str(redirects_to))
         if not self.bioport_id:
             self.bioport_id = random.choice(self.repository().get_bioport_ids())
-            self.redirect(self.url(self) + '/' + self.bioport_id)
+            self.redirect(self.url(self) + '/' + str(self.bioport_id))
 
         self.person = self.repository().get_person(bioport_id=self.bioport_id)
         if not self.person:
@@ -635,14 +636,14 @@ class Birthdays_Box(grok.View, RepositoryView):
         today = datetime.date.today().strftime('%m%d')
         # query the datase for persons born on this date that have an illustration
 #         persons = self.repository().get_persons(where_clause='CAST(geboortedatum_min AS CHAR) like "____%s%%" and geboortedatum_min = geboortedatum_max' % today, has_illustrations=True, hide_foreigners=True)
-        persons = self.repository().get_persons(where_clause='birthday = "%s"' % today, has_illustrations=True, hide_foreigners=True)
+        persons = self.repository().get_persons(where_clause='birthday = "%s"' % today, has_illustrations=True, hide_foreigners=True, size=3)
 
         persons = [p for p in persons if p.has_illustrations]
 #        [ill for ill in p.get_merged_biography().get_illustrations() if ill.has_image()]]
         if len(persons) < 3:
             # if we have less then 3 people, we cheat a bit and take someone who died today
 #             persons += self.repository().get_persons(where_clause='CAST(sterfdatum_min AS CHAR) like "____%s%%" and geboortedatum_min = geboortedatum_max' % today, has_illustrations=True, hide_foreigners=True)
-            persons += self.repository().get_persons(where_clause='deathday = "%s"' % today, has_illustrations=True, hide_foreigners=True)
+            persons += self.repository().get_persons(where_clause='deathday = "%s"' % today, has_illustrations=True, hide_foreigners=True, size=3)
             persons = [p for p in persons if [ill for ill in p.get_merged_biography().get_illustrations() if ill.has_image()]]
 
         for person in persons:
@@ -724,7 +725,7 @@ class SiteMaps(grok.View, RepositoryView):
         out = '<?xml version="1.0" encoding="UTF-8"?>\n'
         out += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
         for person in all_records[start_index:start_index + self.MAX_PER_FILE]:
-            person_url = application_url + '/persoon/' + person.id
+            person_url = application_url + '/persoon/' + str(person.id)
             out += '  <url>\n'
             out += '    <loc>%s</loc>\n' % person_url
             out += '  </url>\n'

@@ -1077,7 +1077,7 @@ img {
 
 
 
-<a target="_blank" tal:attributes="href python:view.url('debuginfo') + '?bioport_id=' + view.bioport_id">[debug information]</a>
+<a target="_blank" tal:attributes="href python:view.url('debuginfo') + '?bioport_id=' + str(view.bioport_id)">[debug information]</a>
 
 </div>
 </html>

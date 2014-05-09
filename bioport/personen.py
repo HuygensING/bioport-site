@@ -341,7 +341,7 @@ class PersonenXML(grok.View, _Personen):
                         if '&' in name: 
                             name = name.replace('&', '&amp;')
         #                    name = unescape(name).encode('utf8')
-                    url = self.url('persoon') + '/xml/' + person_id
+                    url = self.url('persoon') + '/xml/' + str(person_id)
                     if timestamp:
                         changed = timestamp.isoformat()
                     else:

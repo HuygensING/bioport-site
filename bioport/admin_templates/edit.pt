@@ -135,7 +135,7 @@ form {
 <div class="visualClear"></div>
 
 <p>[Use "fill the similarity cache" if you have added new sources.  Use the "refresh similarity cache" if the algorithm has changed.
-(the first addes only records for new names, the second completely reconstructs the table. And BE PATIENT (it can take hours)]
+(the first adds only records for new names, the second completely reconstructs the table. And BE PATIENT (it can take hours)]
 
 </div>
 </html>

@@ -151,6 +151,7 @@ class SimpleSampleFunctionalTest(FunctionalTestCase):
         form.getControl(name='search_name').value='hilbrand'
         form.getControl(name='form.actions.search_persons').click()
         assert 'Hilbrand' in browser.contents, browser.contents
+#         print "browser.contents=%s" % browser.contents
         
         #choose it and put it in the list
         browser.getLink('kies').click()
@@ -159,7 +160,7 @@ class SimpleSampleFunctionalTest(FunctionalTestCase):
         #we can find the name of the person, followed by a 'verwijder' link
         assert re.findall('Hilbrand.*verwijder', browser.contents, re.DOTALL), browser.contents
         
-        #the page remembered the serach term
+        #the page remembered the search term
         form = browser.getForm()
         self.assertEqual(form.getControl(name='search_name').value, 'hilbrand')
         
@@ -172,7 +173,7 @@ class SimpleSampleFunctionalTest(FunctionalTestCase):
         
         assert re.findall('Hilbrand.*verwijder', browser.contents, re.DOTALL), browser.contents
         assert re.findall('Heyns.*verwijder', browser.contents, re.DOTALL), browser.contents
-        #remove the frist person
+        #remove the first person
         browser.getLink('verwijder keuze').click()
         
         assert not re.findall('Hilbrand.*verwijder', browser.contents, re.DOTALL), browser.contents
@@ -188,18 +189,22 @@ class SimpleSampleFunctionalTest(FunctionalTestCase):
         link = browser.getLink(id='identify')
         bioport_id1, bioport_id2 = link.url.split('bioport_ids=')[1:]
         bioport_id1 = bioport_id1[:bioport_id1.find('&')]
-#        bioport_id2 = bioport_id2[:bioport_id2.find('&')]
+#         bioport_id2 = bioport_id2[:bioport_id2.find('&')]
 
         #just check if we did not make parsing errors
         self.assertTrue(len(bioport_id1), 8)
         self.assertTrue(len(bioport_id2), 8)
         link.click()
         
-        #now the two items names are identifed
+        #now the two items names are identified
         #if we go to the first url, it should redirect us to the second url
         self.assertNotEqual(bioport_id1, bioport_id2)
-        browser1 = Browser('http://localhost/app/persoon/%s' % bioport_id1)
-        browser2 = Browser('http://localhost/app/persoon/%s' % bioport_id2)
+        url1 = 'http://localhost/app/persoon/%s' % bioport_id1
+        url2 = 'http://localhost/app/persoon/%s' % bioport_id2
+#         print 'url1=%s' % url1
+#         print 'url2=%s' % url2
+        browser1 = Browser(url1)
+        browser2 = Browser(url2)
         #one of the two pages should have redirected to the other - both will now have the same url
         self.assertEqual(browser1.url , browser2.url)
         

@@ -488,10 +488,10 @@ class MostSimilar(grok.Form, RepositoryView, Batcher):
     def identify(self):
         """identify the two persons that are passed in the request parameter bioport_ids
 
-        thenr redirect the user"""
+        then redirect the user"""
         bioport_ids = self.request.get('bioport_ids')
         repo = self.repository()
-        persons = [self.get_person(id) for id in bioport_ids]
+        persons = [self.get_person(long(id)) for id in bioport_ids]
         assert len(persons) == 2
         new_person = repo.identify(persons[0], persons[1])
 
@@ -654,7 +654,7 @@ class Persoon(app.Persoon, grok.EditForm, RepositoryView):
 
     grok.require('bioport.Edit')
     def update(self, **args):
-        self.bioport_id = self.bioport_id or self.request.get('bioport_id')
+        self.bioport_id = self.bioport_id or long(self.request.get('bioport_id'))
         if not self.bioport_id:
             # XXX make a userfrienlider error
             assert 0, 'need bioport_id in the request'
@@ -1335,7 +1335,7 @@ class PersoonIdentify(MostSimilar, Persons, Persoon):
         if self.request.get('new_bioport_id'):
             self.bioport_ids.append(self.request.get('new_bioport_id'))
 
-        self.selected_persons = [self.repository().get_person(bioport_id) for bioport_id in self.bioport_ids]
+        self.selected_persons = [self.repository().get_person(long(bioport_id)) for bioport_id in self.bioport_ids]
 
         MostSimilar.update(self, **args)
         self.redirect_to = None
@@ -1391,7 +1391,7 @@ class ChangeName(Persoon, grok.EditForm, RepositoryView):
 
     def update(self, **args):
         Persoon.update(self, **args)
-        self.bioport_id = self.request.get('bioport_id')
+        self.bioport_id = long(self.request.get('bioport_id'))
         if not self.bioport_id:
             #XXX make a userfrienlider error
             assert 0, 'need bioport_id in the request'
@@ -1533,7 +1533,7 @@ class UnIdentify(grok.View, RepositoryView):
     grok.require('bioport.Edit')
 
     def update(self):
-        bioport_id = self.bioport_id = self.request.get('bioport_id')
+        bioport_id = self.bioport_id = long(self.request.get('bioport_id'))
         person = self.repository().get_person(bioport_id)
         if person:
             self.persons = self.repository().unidentify(person)

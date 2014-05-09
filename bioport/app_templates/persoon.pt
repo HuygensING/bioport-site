@@ -2,7 +2,7 @@
     <meta metal:fill-slot="description" name="Description" 
         tal:attributes="content string:Biografie van ${view/biography/title} (${view/bioport_id})" />
     <meta metal:fill-slot="keywords" name="Keywords" 
-        tal:attributes="content python:' '.join([x.guess_normal_form2() for x in view.biography.get_names()] + ['biografie', 'biografisch portaal', view.bioport_id])" />
+        tal:attributes="content python:' '.join([x.guess_normal_form2() for x in view.biography.get_names()] + ['biografie', 'biografisch portaal', str(view.bioport_id)])" />
     <title metal:fill-slot="head_title"
         tal:content="structure python:view.biography.title()" ></title> 
 <div metal:fill-slot="content"

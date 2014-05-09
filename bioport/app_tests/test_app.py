@@ -45,7 +45,7 @@ class GoogleSitemapTest(FunctionalTestCase):
         sitemap_url = first_sitemap_element.text
         browser.open(sitemap_url)
         for bioid in bioport_ids:
-            self.failUnless(bioid in browser.contents)
+            self.failUnless(str(bioid) in browser.contents)
         tree = fromstring(browser.contents)
         for url in tree.xpath(".//*[local-name() = 'loc']/text()"):
             browser.open(url)
@@ -56,7 +56,7 @@ class PersoonXmlTest(FunctionalTestCase):
         browser = self.browser
         bioport_ids = self.app.repository().get_bioport_ids()
         for p_id in bioport_ids:
-            url = self.base_url + '/persoon/xml/' + p_id
+            url = self.base_url + '/persoon/xml/' + str(p_id)
             browser.open(url)
             self.assertEqual(browser.headers.type, 'text/xml')
 
@@ -67,7 +67,7 @@ class PersoonXmlTest(FunctionalTestCase):
         browser.open(url + '?detail=list')
         bioport_ids = self.app.repository().get_bioport_ids()
         for bioid in bioport_ids:
-            self.failUnless('persoon/xml/' + bioid in browser.contents)
+            self.failUnless('persoon/xml/' + str(bioid) in browser.contents)
     
     def test_json_index(self):
         browser = self.browser
@@ -89,7 +89,7 @@ class AppTest(FunctionalTestCase):
         browser = self.browser
         bioport_ids = self.app.repository().get_bioport_ids()
         for p_id in bioport_ids:
-            url = self.base_url + '/persoon/something/' + p_id
+            url = self.base_url + '/persoon/something/' + str(p_id)
             self.assertRaises(NotFound, browser.open, url)
 
 
@@ -143,6 +143,7 @@ class ResolverTest(FunctionalTestCase):
         url = 'http://localhost/app/resolver?callback=somefunction&%s' % qs
         browser.open(url)
         self.assertTrue('"number_of_biographies": 1' in browser.contents)
+
 def test_suite():
     test_suite = unittest.TestSuite()
     tests = [GoogleSitemapTest,
