@@ -15,7 +15,7 @@
     <table class="leefjaren">
         <tr>
             <th>bioportnummer</th> 
-            <td tal:content="python:view.bioport_id" />
+            <td tal:content="python:'%08d' % view.bioport_id" />
         </tr>
        <tal:block define="
 	       event python:view.get_event('birth');

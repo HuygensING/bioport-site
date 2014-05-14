@@ -105,7 +105,7 @@ img {
 <form action="." tal:attributes="action request/URL" method="POST"
     enctype="multipart/form-data"
       class="edit-form" >
-      <input type="hidden" name="bioport_id" tal:attributes="value python:view.bioport_id" />
+      <input type="hidden" name="bioport_id" tal:attributes="value python:'%08d' % view.bioport_id" />
       <input type="hidden" name="history_counter" tal:attributes="value python:view.history_counter" />
 
 <table class="editTable" width="500">
@@ -1077,7 +1077,7 @@ img {
 
 
 
-<a target="_blank" tal:attributes="href python:view.url('debuginfo') + '?bioport_id=' + str(view.bioport_id)">[debug information]</a>
+<a target="_blank" tal:attributes="href python:view.url('debuginfo') + '?bioport_id=%08d' % view.bioport_id">[debug information]</a>
 
 </div>
 </html>

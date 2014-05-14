@@ -108,7 +108,7 @@
 	
 		<a 
 		tal:content="structure person/naam"
-	    tal:attributes="href python:'%s/%s' % (view.url('persoon'), person.bioport_id)" />
+	    tal:attributes="href python:'%s/%08d' % (view.url('persoon'), person.bioport_id)" />
 	    <span class="date" 
 	    tal:content="structure python:view.print_dates_of_person(person)" />
 	    

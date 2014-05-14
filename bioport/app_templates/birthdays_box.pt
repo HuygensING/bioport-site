@@ -4,7 +4,7 @@
   <span tal:omit-tag=""
      tal:define="name person/name">
                     
-<a tal:attributes="href python:view.url('persoon') + '/' +  person.bioport_id">
+<a tal:attributes="href python:view.url('persoon') + '/%08d' % person.bioport_id">
 <div class="image"
     tal:define="
         illustration person/illustration"
