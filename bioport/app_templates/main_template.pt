@@ -47,20 +47,6 @@
 	<link tal:attributes="href static/images/favicon.ico" rel="shortcut icon"/>
 	
 
-    <!--[if IE 6]>
-    <![endif]-->
-<script  type="text/javascript" tal:content="string:
-    /* load sidebar on doc ready */
-    $(document).ready(function() {
-        if ($('#pBirthdays').is('div')) {
-            if (! window.pBirthdays_loaded) {
-                refreshElem('pBirthdays','${view/application_url}/birthdays_box');;
-                /* But only once */
-                window.pBirthdays_loaded = true;;
-            }
-        }
-    });;">
-</script>
 
 <tal:block metal:define-slot="extra_header_content" />
 <script type="text/javascript">
@@ -81,7 +67,7 @@
 <body tal:attributes="id python:view.url().split('/')[-1].capitalize()" >
     <div id="wrapper">
         <div id="layHead">
-            <h2 tal:attributes="OnClick string:window.location.href='${view/application_url}'"
+            <h2 onclick="window.location.href='/'"
                 class="language_name" i18n:attributes="class">
 	            <span class="textOnly" i18n:translate="portal_title">Biographical Portal - Instituut voor Nederlandse Geschiedenis</span></h2>
            <div id="stats" i18n:translate="count_persons_and_biographies" >

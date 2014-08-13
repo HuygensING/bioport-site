@@ -89,6 +89,20 @@
             <a href="http://www.senternovem.nl/">SenterNovem</a> ('Digitaliseren met beleid' / OCW).
         </div>
         
-    </div>  
+    </div>
+    
+<script type="text/javascript">
+    /* load sidebar on doc ready */
+    $(document).ready(function() {
+        if ($('#pBirthdays').is('div')) {
+            if (! window.pBirthdays_loaded) {
+                refreshElem('pBirthdays','/birthdays_box');
+                /* But only once */
+                window.pBirthdays_loaded = true;
+            }
+        }
+    });
+</script>
+      
 </div>
 </html>
