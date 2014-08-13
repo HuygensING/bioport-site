@@ -92,7 +92,7 @@ class Admin(grok.Container):
             return self._repository
 
     def __getstate__(self):
-        #we cannot (and dont want to) pickle the repository -- like this we exclude it
+        #we cannot (and don't want to) pickle the repository -- like this we exclude it
         try:
             del self.__dict__['_repository']
         except KeyError:
