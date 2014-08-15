@@ -10,14 +10,15 @@
 <tr>
 	<th>Naam</th>
 	<td tal:repeat="p view/persons" style="width:40%">
-		 <a tal:attributes="href python:view.url(view.__parent__.__parent__,  '/persoon', data={'bioport_id':p.get_bioport_id()})"
-		 tal:content="structure python:p.naam() and p.naam().get_volledige_naam()" />
+		 <a tal:attributes="href python:view.url(view.__parent__.__parent__,  'persoon', data={'bioport_id':p.get_bioport_id()})"
+		 tal:content="structure python:p.naam()" />
+		 <!-- WAS: p.naam() and p.naam().get_volledige_naam() -->
 	</td>
 </tr>	
 <tr>
     <th>Bioport id</th>
     <td tal:repeat="p view/persons">
-	    <a tal:attributes="href python:view.url(view.__parent__.__parent__,  '/persoon', data={'bioport_id':p.get_bioport_id()})"
+	    <a tal:attributes="href python:view.url(view.__parent__.__parent__,  'persoon', data={'bioport_id':p.get_bioport_id()})"
 	         tal:content="p/bioport_id" /></td>
 </tr>
 <tr>
