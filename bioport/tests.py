@@ -78,8 +78,9 @@ class FunctionalTestCase(baseFunctionalTestCase):
 
         repository.download_biographies(source=repository.get_source(u'knaw_test'))
         # add some categories as well
-        repository.db.get_session().execute("insert into category (id, name) values (1, 'category1')")
-        repository.db.get_session().execute("insert into category (id, name) values (2, 'category2')")
+        with repository.db.get_session_context() as session: 
+            session.execute("insert into category (id, name) values (1, 'category1')")
+            session.execute("insert into category (id, name) values (2, 'category2')")
 
         if not os.path.exists(IMAGES_CACHE_LOCAL):
             os.mkdir(IMAGES_CACHE_LOCAL)

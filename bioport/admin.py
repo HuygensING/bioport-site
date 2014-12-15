@@ -1572,8 +1572,8 @@ p.`geboortedatum_min` ,
  FROM person p
 where CONVERT(LEFT(p.`sterfdatum_max`, 4), SIGNED) - CONVERT(LEFT(p.`geboortedatum_min`, 4), SIGNED) < 15
     """
-
-        self.less_than_15 = self.repository().db.get_session().execute(sql)
+        with self.repository().db.get_session_context as session:
+            self.less_than_15 = session.execute(sql)
 
         sql = """SELECT p.`bioport_id`,
 CONVERT(LEFT(p.`sterfdatum_min`, 4), SIGNED) - CONVERT(LEFT(p.`geboortedatum_max`, 4), SIGNED),
@@ -1586,4 +1586,5 @@ p.`geboortedatum_max` ,
  FROM person p
 where CONVERT(LEFT(p.`sterfdatum_min`, 4), SIGNED) - CONVERT(LEFT(p.`geboortedatum_max`, 4), SIGNED) > 100
 """
-        self.more_than_100 = self.repository().db.get_session().execute(sql)
+        with self.repository().db.get_session_context as session:
+            self.more_than_100 = session.execute(sql)

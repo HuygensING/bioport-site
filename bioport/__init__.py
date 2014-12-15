@@ -57,7 +57,7 @@ class SiteRepository(grok.GlobalUtility):
         #     to a global utility
 
         try:
-             return self._repository
+            return self._repository
         except AttributeError:
             self._repository = Repository(
                 svn_repository=data.SVN_REPOSITORY,

@@ -804,10 +804,11 @@ class PeopleWhoLivedMoreThanHundredYears(grok.View, RepositoryView):
     def render(self):
         db = self.repository().db
         from bioport_repository.db_definitions import PersonRecord
-        query = db.get_session().query(PersonRecord).filter(PersonRecord.sterfdatum_min - PersonRecord.geboortedatum_max > 100)
-        result = ''
-        for person in query.all():
-            result = '%s (leefde tenminste %s jaar)' % (person.get_bioport_id(), person.sterfdatum_min - person.geboortedatum_max)
+        with db.get_session_context() as session:
+            query = session.query(PersonRecord).filter(PersonRecord.sterfdatum_min - PersonRecord.geboortedatum_max > 100)
+            result = ''
+            for person in query.all():
+                result = '%s (leefde tenminste %s jaar)' % (person.get_bioport_id(), person.sterfdatum_min - person.geboortedatum_max)
         return result
 
 class RelationWrapper:

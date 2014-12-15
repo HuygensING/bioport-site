@@ -47,7 +47,7 @@ class AdminPanelFunctionalTest(FunctionalTestCase):
         #define the db connection
         self.base_url = 'http://localhost/app'
         browser = Browser()
-        browser.handleErrors = False #show some information when an arror occurs
+        browser.handleErrors = False #show some information when an error occurs
         browser.open('http://localhost/app/admin')
 #        link = browser.getLink(url=self.base_url + '/admin/edit')
 #        link.click()
@@ -61,7 +61,7 @@ class AdminPanelFunctionalTest(FunctionalTestCase):
         repository.db.metadata.create_all()
         
         
-        #test adding and deleteing sources through the web interface 
+        #test adding and deleting sources through the web interface 
         #remember how many persons we have at this point
         n_persons = len(repository.get_persons())
 
