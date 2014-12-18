@@ -10,7 +10,7 @@
     >
     
 <link rel="places_url"
-      href="http://localhost:8094/bioport/zoek_places_admin" />
+      href="../zoek_places_admin" />
 
 <script tal:attributes="src static/js/autocomplete/jquery.autocomplete-min.js" type="text/javascript"></script>
 
