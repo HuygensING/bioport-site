@@ -44,8 +44,8 @@
     <script tal:attributes="src static/js/photoframe.js" type="text/javascript"></script>
 
     <script tal:attributes="src static/js/scripts.js" type="text/javascript"></script>
-	<link tal:attributes="href static/images/favicon.ico" rel="shortcut icon"/>
-	
+  <link tal:attributes="href static/images/favicon.ico" rel="shortcut icon"/>
+  
 
 
 <tal:block metal:define-slot="extra_header_content" />
@@ -65,11 +65,20 @@
 </head>
 
 <body tal:attributes="id python:view.url().split('/')[-1].capitalize()" >
+<!-- Google Tag Manager -->
+<noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-M2KQR4"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-M2KQR4');</script>
+<!-- End Google Tag Manager -->
     <div id="wrapper">
         <div id="layHead">
             <h2 onclick="window.location.href='/'"
                 class="language_name" i18n:attributes="class">
-	            <span class="textOnly" i18n:translate="portal_title">Biographical Portal - Instituut voor Nederlandse Geschiedenis</span></h2>
+              <span class="textOnly" i18n:translate="portal_title">Biographical Portal - Instituut voor Nederlandse Geschiedenis</span></h2>
            <div id="stats" i18n:translate="count_persons_and_biographies" >
                 <span tal:replace="view/count_persons" i18n:name="persons"/> personen<br/>
                 in <span tal:replace="view/count_biographies" i18n:name="biographies" /> biografieën
@@ -83,27 +92,27 @@
                 <li tal:repeat="item python:view.menu_items()" tal:attributes="id python:item[1]">
                     <a tal:attributes="href python:item[0]" i18n:translate="" tal:content="python:item[1]"></a>
                 </li>
-	        
-		     <li tal:condition="python:view.__name__ != 'index'" id="search_box">
-		        <form class="search_form" 
-		           tal:attributes="action python:view.url('personen')">
-		           <div>
-		           <input class="textArea" type="text" name="search_name" size="20" tal:attributes="value request/search_name | nothing" />
-		           <input class="submitButton" type="submit" value="zoek" />
-		           </div>
-		        </form>
-		     </li>
+          
+         <li tal:condition="python:view.__name__ != 'index'" id="search_box">
+            <form class="search_form" 
+               tal:attributes="action python:view.url('personen')">
+               <div>
+               <input class="textArea" type="text" name="search_name" size="20" tal:attributes="value request/search_name | nothing" />
+               <input class="submitButton" type="submit" value="zoek" />
+               </div>
+            </form>
+         </li>
                 <tal:languageSelector replace="structure context/@@language_chooser" />
-	        </ul>
+          </ul>
         <hr class="textOnly" />
         </div>
         
         <div id="layContent">
             
             <!-- content goes here ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-	        <div metal:define-slot="content">
-		        body content goes here
-	        </div>
+          <div metal:define-slot="content">
+            body content goes here
+          </div>
             <!-- content end ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
             
         </div>
