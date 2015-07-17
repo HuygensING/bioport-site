@@ -2,19 +2,19 @@
 
 ##########################################################################
 # Copyright (C) 2009 - 2014 Huygens ING & Gerbrandy S.R.L.
-# 
+#
 # This file is part of bioport.
-# 
+#
 # bioport is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as
 # published by the Free Software Foundation, either version 3 of the
 # License, or (at your option) any later version.
-# 
+#
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU General Public
 # License along with this program.  If not, see
 # <http://www.gnu.org/licenses/gpl-3.0.html>.
@@ -27,8 +27,8 @@ from bioport import app, personen
 import tempfile
 import logging
 import grok
-#from permissions import *
-#from plone.memoize import forever
+# from permissions import *
+# from plone.memoize import forever
 from z3c.batching.batch import Batch
 from zope import schema
 from zope.interface import Interface
@@ -45,6 +45,7 @@ from bioport_repository.illustration import Illustration, CantDownloadImage
 
 from bioport import IRepository
 from app import Batcher, RepositoryView, RelationWrapper
+
 
 class IAdminSettings(Interface):
 
@@ -81,8 +82,8 @@ class Admin(grok.Container):
     CONTACT_DESTINATION_ADDRESS = 'destination@example.com'
     dutch_home_html = english_home_html = 'Biografisch Portaal van Netherlands'
 
-    #but: settings are stored in ZODB, so we need to initialize the repository after the app is available
-    #in grok1.1 the event initializeapp is not raised and b) upgrading to grok1.2 is the right way, but Hours of Work.
+    # but: settings are stored in ZODB, so we need to initialize the repository after the app is available
+    # in grok1.1 the event initializeapp is not raised and b) upgrading to grok1.2 is the right way, but Hours of Work.
     def repository(self):
         try:
             return self._repository
@@ -92,7 +93,7 @@ class Admin(grok.Container):
             return self._repository
 
     def __getstate__(self):
-        #we cannot (and don't want to) pickle the repository -- like this we exclude it
+        # we cannot (and don't want to) pickle the repository -- like this we exclude it
         try:
             del self.__dict__['_repository']
         except KeyError:
@@ -103,7 +104,7 @@ class Admin(grok.Container):
         return format_date(s)
 
     def format_dates(self, s1, s2, **args):
-        return  format_dates(s1, s2, **args)
+        return format_dates(s1, s2, **args)
 
     def format_number(self, s):
         return format_number(s)
@@ -178,12 +179,12 @@ class Edit(grok.EditForm, RepositoryView):
                 print 'found and saved remarks [%s]' % person.get_bioport_id()
 
 #    @grok.action('Fill geolocations table')
-#    def fill_geolocations_table(self, **data): 
+#    def fill_geolocations_table(self, **data):
 #        self.repository().db._update_geolocations_table()
 #        self.redirect(self.url(self))
 
 #   @grok.action('Fill categories table')
-#   def fill_categories_table(self, **data): 
+#   def fill_categories_table(self, **data):
 #        self.repository().db._update_category_table()
 #        self.redirect(self.url(self))
 
@@ -195,19 +196,19 @@ class Edit(grok.EditForm, RepositoryView):
     @grok.action('recompute_soundexes')
     def update_soundexes(self, **data):
         self.repository().db.update_soundexes()
-#        
+#
 #    @grok.action('add category kunstenaars to all rkdartists')
 #    def tmp_add_category_to_rkdartists(self, **data):
 #        source_id = 'rkdartists'
 #        category_id = 3
 #        self._add_category_to_source(source_id, category_id)
-#        
+#
 #    @grok.action('add category kunstenaars to all schilderkunst')
 #    def tmp_add_category_to_rkdartists(self, **data):
 #        source_id = 'schilderkunst'
 #        category_id = 3
 #        self._add_category_to_source(source_id, category_id)
-#        
+#
     def _add_category_to_source(self, source_id, category_id):
         repo = self.repository()
         persons = repo.get_persons(source_id=source_id)
@@ -220,7 +221,7 @@ class Edit(grok.EditForm, RepositoryView):
             bioport_bio.set_category(bioport_bio.get_category_ids() + [category_id])
             repo.save_biography(bioport_bio, comment='added category %s' % category_id)
 
-#    @grok.action('identify all similarity pairs with a score score of 1.0')            
+#    @grok.action('identify all similarity pairs with a score score of 1.0')
 #    def tmp_identify_rkdartists(self):
 #        logging.info('identifying all pairs with a similarity score of 1.0')
 #        i = 0
@@ -267,7 +268,7 @@ class Edit(grok.EditForm, RepositoryView):
 #        for source_id, bio_id, biourl in ls:
 #            bio = bioport_repository.biography.Biography(source_id=source_id, repository=repo)
 #            bio.from_url(biourl)
-#            repo.add_biography(bio)        
+#            repo.add_biography(bio)
 
 #    @grok.action('tmp_fixup_category_doublures ')
 #    def tmp_fixup_category_doublures(self, **data):
@@ -283,7 +284,7 @@ class Edit(grok.EditForm, RepositoryView):
 
 #    @grok.action('give blnps a categorie')
 #    def tmp_give_blnps_a_category(self, **data):
-#        self.repository().db.tmp_give_blnps_a_category()      
+#        self.repository().db.tmp_give_blnps_a_category()
 
 
 class Display(grok.DisplayForm):
@@ -311,8 +312,8 @@ class Biography(grok.View):
 
 class Persons(personen.Personen, RepositoryView):
     grok.require('bioport.Edit')
-    @grok.action('zoek', name="search_persons")
 
+    @grok.action('zoek', name="search_persons")
     def search_persons(self):
         self.persons = self.get_persons()
 
@@ -443,7 +444,6 @@ class MostSimilar(grok.Form, RepositoryView, Batcher):
                           getattr(self, 'similar_to', None)
         self.redirect_to = None
 
-
     def get_most_similar_persons(self):
         try:
             return self._most_similar_persons
@@ -461,8 +461,8 @@ class MostSimilar(grok.Form, RepositoryView, Batcher):
             return self._most_similar_persons
 
     def goback(self, data=None):
-        #do not repeat the form actions
-        #XXX this is a hack - we should really only have POST request changing the data (in that case, whatever is left her ein the request is harmless)
+        # do not repeat the form actions
+        # XXX this is a hack - we should really only have POST request changing the data (in that case, whatever is left her ein the request is harmless)
         for k in data.keys():
             if k.startswith('form'):
                 del data[k]
@@ -518,7 +518,7 @@ class MostSimilar(grok.Form, RepositoryView, Batcher):
             warning_msg += "</ul>"
             warning_msg += 'Click <a accesskey="b" href="./persoon?bioport_id=%s">here</a> to edit.' % new_person.id
             # XXX - something I'm really ashamed of; needed because otherwise
-            # grok raises an encoding error when visualizing the page. 
+            # grok raises an encoding error when visualizing the page.
             # When a character != ASCII is encountered is replaced by "?"
             # Hopefully someday I'll understand unicode and avoid this crap. <-- comment of giampaolo :-)
             warning_msg = warning_msg.encode("ascii", "replace")
@@ -533,7 +533,7 @@ class MostSimilar(grok.Form, RepositoryView, Batcher):
             warning_msg2 += "New person status is <i>%s</i> " % status_new
             warning_msg2 += '(<a accesskey="b" href="./persoon?bioport_id=%s">edit</a>).' % new_person.get_bioport_id()
             # XXX - something I'm really ashamed of; needed because otherwise
-            # grok raises an encoding error when visualizing the page. 
+            # grok raises an encoding error when visualizing the page.
             # When a character != ASCII is encountered is replaced by "?"
             # Hopefully someday I'll understand unicode and avoid this crap. <-- comment of giampaolo :-)
             warning_msg2 = warning_msg2.encode("ascii", "replace")
@@ -542,7 +542,7 @@ class MostSimilar(grok.Form, RepositoryView, Batcher):
             else:
                 warning_msg = warning_msg2
 
-        #redirect the user to where we were
+        # redirect the user to where we were
         data = self.request.form
         data['msg'] = 'identified %s and %s. ' % (person1_href, person2_href)
         if warning_msg:
@@ -565,7 +565,7 @@ class MostSimilar(grok.Form, RepositoryView, Batcher):
         msg = 'Anti-Identified <a href="../persoon?bioport_id=%s">%s</a> and <a href="../persoon?bioport_id=%s">%s</a>' % (
                 bioport_ids[0], persons[0].get_bioport_id(), bioport_ids[1], persons[1].get_bioport_id())
 
-        #redirect the user to where wer were
+        # redirect the user to where wer were
         data = self.request.form
         data['msg'] = msg
 #        request.form.set('msg', msg)
@@ -584,7 +584,7 @@ class MostSimilar(grok.Form, RepositoryView, Batcher):
         msg = '<a href="../persoon?bioport_id=%s">%s</a> and <a href="../persoon?bioport_id=%s">%s</a> in de lijst met moeilijke gevallen gezet' % (
                      bioport_ids[0], persons[0].get_bioport_id(), bioport_ids[1], persons[1].get_bioport_id())
 
-        #redirect the user to where wer were
+        # redirect the user to where wer were
         data = self.request.form
         data['msg'] = msg
         self.goback(data=data)
@@ -668,7 +668,7 @@ class Persoon(app.Persoon, grok.EditForm, RepositoryView):
 
         assert self.person, 'NO PERSON FOUND WITH THIS ID %s' % self.bioport_id
 
-        # XXX note that the following line creates a bioport biography if it 
+        # XXX note that the following line creates a bioport biography if it
         # did not exist yet (and saves it)
         # XXX this might be too much ofa  side effect for only viewing the page...
         self.bioport_biography = repository.get_bioport_biography(self.person)
@@ -705,7 +705,7 @@ class Persoon(app.Persoon, grok.EditForm, RepositoryView):
             return ''
 
     def url(self, object=None, name=None, data=None, hash=None):
-        url = app.Persoon.url(self, object, name, data) #@UndefinedVariable
+        url = app.Persoon.url(self, object, name, data)  # @UndefinedVariable
         if hash:
             if '?' in url:
                 url = url.replace('?', '#%s?' % hash)
@@ -847,7 +847,7 @@ class Persoon(app.Persoon, grok.EditForm, RepositoryView):
 
     def _set_states(self):
         """set information for all states in the request"""
-        to_remove = [] #list of states to remove
+        to_remove = []  # list of states to remove
 
 
         for k in self.request.form.keys():
@@ -861,15 +861,15 @@ class Persoon(app.Persoon, grok.EditForm, RepositoryView):
                         self._set_state(identifier=identifier, index=index)
                     if self.request.get('state_%s_delete' % identifier) == '1':
                         to_remove.append(int(identifier))
-        #remove the states - this only works well if we remove the highest indices first
-        #(otherwise index values will be outdated)
+        # remove the states - this only works well if we remove the highest indices first
+        # (otherwise index values will be outdated)
         to_remove.sort()
         to_remove.reverse()
         for idx in to_remove:
             self.bioport_biography.remove_state(idx=idx)
 
     def _set_relations(self):
-        to_remove = [] #list of states to remove
+        to_remove = []  # list of states to remove
         for k in self.request.form.keys():
             if k.startswith('relation_') and k.endswith('name'):
                 identifier = k.split('_')[1]
@@ -881,8 +881,8 @@ class Persoon(app.Persoon, grok.EditForm, RepositoryView):
                         self._set_relation(identifier=identifier, index=index)
                     if self.request.get('relation_%s_delete' % identifier) == '1':
                         to_remove.append(int(identifier))
-        #remove the states - this only works well if we remove the highest indices first
-        #(otherwise index values will be outdated)
+        # remove the states - this only works well if we remove the highest indices first
+        # (otherwise index values will be outdated)
         to_remove.sort()
         to_remove.reverse()
         for idx in to_remove:
@@ -909,36 +909,24 @@ class Persoon(app.Persoon, grok.EditForm, RepositoryView):
         self.msg = 'Removed biography %s from this person' % biography
         self.msg += '<br>New person for this biography can be found at <a href="%s/%s">%s</a>' % (self.url(self), new_person.bioport_id, new_person.bioport_id)
 
-        id = self.request.get("bioport_id")
-        url = self.url(data={"bioport_id":id, "msg":self.msg})
+        bioport_id = self.request.get("bioport_id")
+        url = self.url(data={"bioport_id": bioport_id, "msg": self.msg})
         self.redirect(url)
 
     def _set_category(self):
-
         category_ids = self.request.get('category_id', [])
-        if type(category_ids) != type([]):
+        if not isinstance(category_ids, type([])):
             category_ids = [category_ids]
-        category_ids = [id for id in category_ids if id]
+        category_ids = [category_id for category_id in category_ids if category_id]
         self.bioport_biography.set_category(category_ids)
-
-
-#        new_category_ids = self.request.get('new_category_id')
-#        if type(new_category_ids) != type([]):
-#            new_category_ids = [new_category_ids]
-#            
-#        new_category_ids = [s for s in new_category_ids if s ]
-#        for new_category_id in new_category_ids:
-#            name = self.repository().get_category(new_category_id).name 
-#            self.bioport_biography.add_state(type='category', idno=new_category_id, text=name)
-
 
     def save_biography(self, comment=None):
         if not self.person.status:
-            self.person.status = 2 #set status to bewerkt
+            self.person.status = 2  # set status to bewerkt
         if not comment:
             comment = 'changed biography'
         self.repository().save_biography(self.bioport_biography, comment=comment)
-        #we need to reload merged_biography because changes are not automatically picked up
+        # we need to reload merged_biography because changes are not automatically picked up
         self.person = self.repository().get_person(self.bioport_id)
         self.merged_biography = self.person.get_merged_biography()
 
@@ -977,7 +965,7 @@ class Persoon(app.Persoon, grok.EditForm, RepositoryView):
 
     @grok.action('verander naam', name='change_name')
     def change_name(self):
-        self.redirect(self.url(self.__parent__, 'changename', data={'bioport_id':self.bioport_id}))
+        self.redirect(self.url(self.__parent__, 'changename', data={'bioport_id' :self.bioport_id}))
 
     @grok.action('bewaar actief', name='save_state_floruit')
     def save_state_floruit(self):
@@ -1036,9 +1024,7 @@ class Persoon(app.Persoon, grok.EditForm, RepositoryView):
                 self.bioport_biography.set_snippet(bio_id, snippet)
 
     def _set_religion(self):
-        self.bioport_biography.set_religion(
-           idno=self.request.get('religion_id')
-           )
+        self.bioport_biography.set_religion(idno=self.request.get('religion_id'))
 
     @grok.action('bewaar alle veranderingen', name='save_everything')
     def save_everything(self):
@@ -1086,7 +1072,7 @@ class Persoon(app.Persoon, grok.EditForm, RepositoryView):
                 if url and text:
                     references.append((identifier, url, text))
         references.sort()
-        references = [(url, text) for (id, url, text) in references]
+        references = [(url, text) for (_id, url, text) in references]
         self.bioport_biography._replace_references(references)
 
     def _set_extrafields(self):
@@ -1098,8 +1084,8 @@ class Persoon(app.Persoon, grok.EditForm, RepositoryView):
                 value = self.request.get('extrafield_%s_value' % identifier)
                 if key and value:
                     extrafields.append((identifier, key, value))
-        extrafields.sort() # sort by id
-        extrafields = [(key, value) for (id, key, value) in extrafields]
+        extrafields.sort()  # sort by id
+        extrafields = [(key, value) for (_id, key, value) in extrafields]
         self.bioport_biography._replace_extrafields(extrafields)
 
     def _set_illustrations(self):
@@ -1108,13 +1094,13 @@ class Persoon(app.Persoon, grok.EditForm, RepositoryView):
         for k in self.request.form.keys():
             if k.startswith('illustration_') and k.endswith('text'):
                 identifier = k.split('_')[1]
-                if identifier != 'new': #we only want to add illustratiosn with the 'add' button, because of everything that can go wrong with downloading and such
+                if identifier != 'new':  # we only want to add illustratiosn with the 'add' button, because of everything that can go wrong with downloading and such
                     url = self.request.get('illustration_%s_url' % identifier)
                     text = self.request.get('illustration_%s_text' % identifier)
                     if url and text:
                         illustrations.append((identifier, url, text))
         illustrations.sort()
-        illustrations = [(url, text) for (id, url, text) in illustrations]
+        illustrations = [(url, text) for (_id, url, text) in illustrations]
         self.bioport_biography._replace_figures(illustrations)
 
     @grok.action('voeg toe', name='add_reference')
@@ -1136,7 +1122,6 @@ class Persoon(app.Persoon, grok.EditForm, RepositoryView):
             self.msg = u'removed reference'
             self.save_biography(comment=self.msg)
 
-
     @grok.action('voeg toe', name='add_extrafield')
     def add_extrafield(self):
         identifier = 'new'
@@ -1155,7 +1140,6 @@ class Persoon(app.Persoon, grok.EditForm, RepositoryView):
             self.bioport_biography.remove_extrafield(index=index)
             self.msg = u'removed extra field'
             self.save_biography(comment=self.msg)
-
 
     @grok.action('voeg toe', name='add_illustration')
     def add_illustration(self):
@@ -1179,7 +1163,7 @@ class Persoon(app.Persoon, grok.EditForm, RepositoryView):
             return
 
         if url and text:
-            #downlaod the illustation
+            # downlaod the illustation
             try:
                 self._download_illustration(url)
                 self.bioport_biography.add_figure(uri=url, text=text)
@@ -1192,17 +1176,16 @@ class Persoon(app.Persoon, grok.EditForm, RepositoryView):
                 msg = 'Dit is geen geschikt plaatje'
                 self.msg = msg
             finally:
-                #cleanup our temporaryfile
+                # cleanup our temporaryfile
                 os.remove(tmpfile)
                 os.removedirs(tmpdir)
-
 
     def _download_illustration(self, url):
         prefix = 'bioport'
         images_cache_local = self.repository().images_cache_local
         images_cache_url = self.repository().images_cache_url
         if (not url.startswith('http://')) and (not url.startswith('file://')):
-            #this is a relative url
+            # this is a relative url
             url = '/'.join((os.path.dirname(self.source_url), url))
             if not url.startswith('file://'):
                 url = 'file://' + url
@@ -1216,6 +1199,7 @@ class Persoon(app.Persoon, grok.EditForm, RepositoryView):
 
         illustration.download()
         return illustration
+
     @grok.action('remove illustration', name='remove_illustration')
     def remove_illustration(self):
         index = self.request.get('illustration_index')
@@ -1238,7 +1222,7 @@ class Persoon(app.Persoon, grok.EditForm, RepositoryView):
                 volledige_naam=name_new,
             )
 
-            #add the namen van de "merged biographies" als we dat nog niet hebben gedaan
+            # add the namen van de "merged biographies" als we dat nog niet hebben gedaan
             if not self.bioport_biography.get_namen():
                 for naam in self.merged_biography.get_names():
                     self.bioport_biography._add_a_name(naam)
@@ -1249,13 +1233,13 @@ class Persoon(app.Persoon, grok.EditForm, RepositoryView):
         else:
             self.msg = 'geen naam ingevuld'
 
-        id = self.request.get("bioport_id")
-        url = self.url(data={"bioport_id":id, "msg":self.msg})
+        bioport_id = self.request.get("bioport_id")
+        url = self.url(data={"bioport_id": bioport_id, "msg": self.msg})
         self.redirect(url)
 
     @grok.action('remove name', name='remove_name')
     def remove_name(self):
-        #add the namen van de "merged biographies" als we dat nog niet hebben gedaan
+        # add the namen van de "merged biographies" als we dat nog niet hebben gedaan
         if not self.bioport_biography.get_namen():
             for naam in self.merged_biography.get_names():
                 self.bioport_biography._add_a_name(naam)
@@ -1268,8 +1252,8 @@ class Persoon(app.Persoon, grok.EditForm, RepositoryView):
             self.msg = 'removed name'
             self.save_biography(comment=self.msg)
 
-        id = self.request.get("bioport_id")
-        url = self.url(data={"bioport_id":id, "msg":self.msg})
+        bioport_id = self.request.get("bioport_id")
+        url = self.url(data={"bioport_id": bioport_id, "msg": self.msg})
         self.redirect(url)
 
     @grok.action('download_illustration')
@@ -1282,41 +1266,9 @@ class Persoon(app.Persoon, grok.EditForm, RepositoryView):
     @grok.action('recompute similarities for this person', name="compute_similarity")
     def compute_similarity(self, **data):
         self.msg = 'computed similarity for this person'
-        id = self.person.bioport_id
+        bioport_id = self.person.bioport_id
         self.repository().db.fill_similarity_cache(person=self.person, refresh=True)
-        self.person = self.repository().get_person(bioport_id=id)
-
-#    @grok.action('bewaar beroep', name="save_occupation")
-#    def save_occupation(self):
-#        self._set_occupation()
-#        self.save_biography()
-#        self.msg = 'beroep bewaard' 
-
-#    def _set_occupation(self):
-#        occupation_ids = self.request.get('occupation_id', [])
-#        to_delete = []
-#        if type(occupation_ids) != type([]):
-#            occupation_ids = [occupation_ids]
-#        for idx in range(len(occupation_ids)):
-#            occupation_id = occupation_ids[idx] 
-#            if occupation_id:
-#                name = self.repository().get_occupation(occupation_id).name  
-#                self.bioport_biography.add_or_update_state(type='occupation', 
-#                                    idno=occupation_id, text=name, idx=idx)
-#            else:
-#                to_delete.append(idx) 
-#                
-#        to_delete.reverse()
-#        for idx in to_delete:
-#            self.bioport_biography.remove_state(type='occupation', idx=idx)
-#            
-#        new_occupation_ids = self.request.get('new_occupation_id')
-#        if type(new_occupation_ids) != type([]):
-#            new_occupation_ids = [new_occupation_ids]
-#        new_occupation_ids = [s for s in new_occupation_ids if s ]
-#        for new_occupation_id in new_occupation_ids:
-#            name = self.repository().get_occupation(new_occupation_id).name 
-#            self.bioport_biography.add_state(type='occupation', idno=new_occupation_id, text=name)
+        self.person = self.repository().get_person(bioport_id=bioport_id)
 
 
 class Debuginfo(Persoon):
@@ -1329,7 +1281,7 @@ class PersoonIdentify(MostSimilar, Persons, Persoon):
 
     def update(self, **args):
         self.bioport_ids = self.request.get('bioport_ids', [])
-        if type(self.bioport_ids) != type([]):
+        if not isinstance(self.bioport_ids, type([])):
             self.bioport_ids = [self.bioport_ids]
 
         if self.request.get('new_bioport_id'):
@@ -1345,7 +1297,7 @@ class PersoonIdentify(MostSimilar, Persons, Persoon):
             return self._get_similar_persons()
 
         persons = self.persons = self.get_persons()
-        #Persoon.update(self, **args        try:
+        # Persoon.update(self, **args        try:
         try:
             batch = Batch(persons, start=self.start, size=self.size)
         except IndexError:
@@ -1374,13 +1326,13 @@ class IdentifyMoreInfo(MostSimilar, Persons, Persoon, RepositoryView):
         self.redirect_to = None
 
     def goback(self, data={}):
-        #XXX this is a hack - we should really only have POST request changing the data (in that case, whatever is left her ein the request is harmless)
+        # XXX this is a hack - we should really only have POST request changing the data (in that case, whatever is left her ein the request is harmless)
         for k in data.keys():
             if k.startswith('form'):
                 del data[k]
         most_similar_persons = self.get_most_similar_persons()
         _score, p1, p2 = most_similar_persons[0]
-        data.update({'bioport_ids':[p1.bioport_id, p2.bioport_id], 'start':self.start})
+        data.update({'bioport_ids': [p1.bioport_id, p2.bioport_id], 'start': self.start})
         redirect_url = self.url(data=data)
         self.redirect(redirect_url)
 
@@ -1393,16 +1345,11 @@ class ChangeName(Persoon, grok.EditForm, RepositoryView):
         Persoon.update(self, **args)
         self.bioport_id = long(self.request.get('bioport_id'))
         if not self.bioport_id:
-            #XXX make a userfrienlider error
+            # XXX make a userfrienlider error
             assert 0, 'need bioport_id in the request'
         self.person = self.get_person(bioport_id=self.bioport_id)
         self.bioport_biography = self.repository().get_bioport_biography(self.person)
 
-#        if not self.bioport_biography.get_namen():
-#            for naam in self.person.get_merged_biography().get_names():
-#                self.bioport_biography._add_a_name(naam)
-#            self.save_biography()
-#        
         self.idx = self.request.get('idx')
         if not self.idx or self.idx == u'new':
             self.naam = None
@@ -1417,8 +1364,8 @@ class ChangeName(Persoon, grok.EditForm, RepositoryView):
         args = dict([(k, self.request.get(k)) for k in parts])
         volledige_naam = self.request.get('volledige_naam')
 
-        #als de volledige naam niet is veranderd, maar een van de oude velden wel
-        #dan, ja, dan wat?
+        # als de volledige naam niet is veranderd, maar een van de oude velden wel
+        # dan, ja, dan wat?
         if volledige_naam in ' '.join(parts):
             volledige_naam = ' '.join(parts)
 
@@ -1460,12 +1407,12 @@ class Identified(grok.View, RepositoryView, Batcher):
             'bioport_id',
             'beginletter',
             'status',
-             ]:
+            ]:
             if k in self.request.keys():
                 qry[k] = self.request[k]
 
         ls = self.repository().get_identified(**qry)
-        #**qry)
+        # **qry)
         self.qry = qry
         batch = Batch(ls, start=self.start, size=self.size)
         batch.grand_total = len(ls)
@@ -1527,6 +1474,7 @@ class ChangeLocation(Locations):
 
 class Identify(grok.View):
     grok.require('bioport.Edit')
+
 
 class UnIdentify(grok.View, RepositoryView):
 
