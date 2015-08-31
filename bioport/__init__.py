@@ -51,12 +51,6 @@ class SiteRepository(grok.GlobalUtility):
         arguments:
             data must have properties that define the repository
         """
-        #
-        # This implementation is very very ugly
-        #     mostly because it is implemented as a quick hack
-        #     by porting it from a property of the admin object in the ZODB
-        #     to a global utility
-
         try:
             return self._repository
         except AttributeError:

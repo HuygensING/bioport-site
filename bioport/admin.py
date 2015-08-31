@@ -27,8 +27,6 @@ from bioport import app, personen
 import tempfile
 import logging
 import grok
-# from permissions import *
-# from plone.memoize import forever
 from z3c.batching.batch import Batch
 from zope import schema
 from zope.interface import Interface
@@ -45,10 +43,10 @@ from bioport_repository.illustration import Illustration, CantDownloadImage
 
 from bioport import IRepository
 from app import Batcher, RepositoryView, RelationWrapper
+import transaction
 
 
 class IAdminSettings(Interface):
-
     DB_CONNECTION = schema.TextLine(title=u'Database connection (e.g. "mysql://root@localhost/bioport_test" ) (changes need restart to take effect)', required=False)
     LIMIT = schema.Decimal(title=u'Dont download more than this amount of biographies per source (used for testing)', required=False)
 
@@ -57,9 +55,6 @@ class IAdminSettings(Interface):
     EMAIL_FROM_ADDRESS = schema.TextLine(title=u'''Emails sent by the site will have this email address as source''', required=False)
     CONTACT_DESTINATION_ADDRESS = schema.TextLine(title=u'''Emails sent by the site will be sent to this email address''', required=False)
 
-
-#    SVN_REPOSITORY = schema.TextLine(title=u'URL of svn repository', required=False)
-#    SVN_REPOSITORY_LOCAL_COPY = schema.TextLine(title=u'path to local copy of svn repository', required=False)
 
 class IHomePageSettings(Interface):
     dutch_home_html = schema.Text(title=u'Dutch html for the homepage')
@@ -83,7 +78,8 @@ class Admin(grok.Container):
     dutch_home_html = english_home_html = 'Biografisch Portaal van Netherlands'
 
     # but: settings are stored in ZODB, so we need to initialize the repository after the app is available
-    # in grok1.1 the event initializeapp is not raised and b) upgrading to grok1.2 is the right way, but Hours of Work.
+    # in grok1.1 the event initializeapp is not raised.
+    # Upgrading to grok1.2 is the right way, but Hours of Work.
     def repository(self):
         try:
             return self._repository
@@ -137,7 +133,15 @@ class Edit(grok.EditForm, RepositoryView):
 
     @grok.action(u"Save Settings", name="edit_settings")
     def edit_admin(self, **data):
-        self.applyData(self.context, **data)
+        result = self.applyData(self.context, **data)
+        if result:
+            changed_fieldnames = result[IAdminSettings]
+            msg = 'Changed fields {changed_fieldnames}'.format(changed_fieldnames=changed_fieldnames)
+            transaction.commit()
+        else:
+            msg = 'No changes'
+
+        self._redirect_with_msg(msg)
 
     @grok.action('Refresh the similarity cache', name='refresh_similarity_cache')
     def refresh_similarity_cache(self, **data):
@@ -153,9 +157,6 @@ class Edit(grok.EditForm, RepositoryView):
         if source_id and category_id:
             self._add_category_to_source(source_id=source_id, category_id=category_id)
         self._redirect_with_msg('added category %s to source %s' % (category_id, source_id))
-#    @grok.action('Create non-existing tables')
-#    def reset_database(self, **data):
-#        self.repository().db.metadata.create_all()
 
     @grok.action('Automatically Identify', name='automatically_identify')
     def automatically_identify(self, **data):
@@ -178,16 +179,6 @@ class Edit(grok.EditForm, RepositoryView):
                 repo.save_biography(bioport_bio, '[administration] moved remarks from db to biodes')
                 print 'found and saved remarks [%s]' % person.get_bioport_id()
 
-#    @grok.action('Fill geolocations table')
-#    def fill_geolocations_table(self, **data):
-#        self.repository().db._update_geolocations_table()
-#        self.redirect(self.url(self))
-
-#   @grok.action('Fill categories table')
-#   def fill_categories_table(self, **data):
-#        self.repository().db._update_category_table()
-#        self.redirect(self.url(self))
-
     @grok.action('update persons')
     def update_persons(self, **args):
         total = self.repository().db.update_persons()
@@ -196,19 +187,7 @@ class Edit(grok.EditForm, RepositoryView):
     @grok.action('recompute_soundexes')
     def update_soundexes(self, **data):
         self.repository().db.update_soundexes()
-#
-#    @grok.action('add category kunstenaars to all rkdartists')
-#    def tmp_add_category_to_rkdartists(self, **data):
-#        source_id = 'rkdartists'
-#        category_id = 3
-#        self._add_category_to_source(source_id, category_id)
-#
-#    @grok.action('add category kunstenaars to all schilderkunst')
-#    def tmp_add_category_to_rkdartists(self, **data):
-#        source_id = 'schilderkunst'
-#        category_id = 3
-#        self._add_category_to_source(source_id, category_id)
-#
+
     def _add_category_to_source(self, source_id, category_id):
         repo = self.repository()
         persons = repo.get_persons(source_id=source_id)
@@ -440,8 +419,8 @@ class MostSimilar(grok.Form, RepositoryView, Batcher):
         self.start = int(self.request.get('start', 0))
         self.size = int(self.request.get('size', 20))
         self.similar_to = self.request.get('bioport_id') or \
-                          self.request.get('similar_to', None) or \
-                          getattr(self, 'similar_to', None)
+            self.request.get('similar_to', None) or \
+            getattr(self, 'similar_to', None)
         self.redirect_to = None
 
     def get_most_similar_persons(self):
@@ -449,15 +428,15 @@ class MostSimilar(grok.Form, RepositoryView, Batcher):
             return self._most_similar_persons
         except:
             self._most_similar_persons = self.repository().get_most_similar_persons(
-               start=self.start,
-               size=self.size,
-               bioport_id=self.similar_to,
-               source_id=self.request.get('source_id'),
-               source_id2=self.request.get('source_id2'),
-               search_name=self.request.get('search_name'),
-               status=self.request.get('status'),
-               sex=self.request.get('geslacht'),
-               )
+                start=self.start,
+                size=self.size,
+                bioport_id=self.similar_to,
+                source_id=self.request.get('source_id'),
+                source_id2=self.request.get('source_id2'),
+                search_name=self.request.get('search_name'),
+                status=self.request.get('status'),
+                sex=self.request.get('geslacht'),
+                )
             return self._most_similar_persons
 
     def goback(self, data=None):

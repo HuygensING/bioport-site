@@ -909,7 +909,6 @@ img {
     <tr>
        <th><span class="accesskey">s</span>tatus</th>
        <td>
-       <tt tal:content="view/person/status" />
            <select name="status" id="status" accesskey="s">
                <option></option> 
                <option tal:repeat="option python:view.repository().get_status_values()"
