@@ -1,18 +1,18 @@
 ##########################################################################
 # Copyright (C) 2009 - 2014 Huygens ING & Gerbrandy S.R.L.
-# 
+#
 # This file is part of bioport.
-# 
+#
 # bioport is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as
 # published by the Free Software Foundation, either version 3 of the
 # License, or (at your option) any later version.
-# 
+#
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU General Public
 # License along with this program.  If not, see
 # <http://www.gnu.org/licenses/gpl-3.0.html>.
@@ -23,36 +23,37 @@ import os
 import random
 import time
 import types
+import re
+import htmlentitydefs
+from urllib import urlencode
 
 import grok
 import zope.interface
 from zope.interface.common.interfaces import IException
-# from chameleon.zpt.template import PageTemplateFile
+from zope.i18n import translate
+from plone.memoize import ram
+from sqlalchemy.exc import OperationalError
+import simplejson
+from fuzzy_search import get_search_query
+from fuzzy_search import make_description
+
+from zope.publisher.interfaces import NotFound, INotFound
+from zope.authentication.interfaces import IAuthentication
+from zope.authentication.interfaces import PrincipalLookupError
+from zope import component
+try:
+    from zope.i18n.interfaces import IUserPreferredLanguages  # after python 2.6 upgrade
+except ImportError:
+    from zope.app.publisher.browser import IUserPreferredLanguages  # before python 2.6 upgrade
+
+from mobile.sniffer.detect import detect_mobile_browser
+from mobile.sniffer.utilities import get_user_agent
+
 from common import (format_date, format_dates, format_number,
                     html2unicode, maanden, months)
 from interfaces import IBioport
 from names.common import to_ymd
 from bioport import BioportMessageFactory as _
-from zope.i18n import translate
-from plone.memoize import ram
-from sqlalchemy.exc import OperationalError
-try:
-    from zope.i18n.interfaces import IUserPreferredLanguages  # after python 2.6 upgrade
-except ImportError:
-    from zope.app.publisher.browser import IUserPreferredLanguages  # before python 2.6 upgrade
-from urllib import urlencode
-from fuzzy_search import get_search_query
-from fuzzy_search import make_description
-import simplejson
-from zope.publisher.interfaces import NotFound, INotFound
-# from zope.app.security.interfaces import IAuthentication, PrincipalLookupError
-from zope.authentication.interfaces import IAuthentication
-from zope.authentication.interfaces import  PrincipalLookupError
-
-from zope import component
-
-from mobile.sniffer.detect import  detect_mobile_browser
-from mobile.sniffer.utilities import get_user_agent
 
 
 class Bioport(grok.Application, grok.Container):
@@ -68,7 +69,7 @@ class Bioport(grok.Application, grok.Container):
         self['biodes'] = BioDes()
 
     def format_dates(self, s1, s2, **args):
-        return  format_dates(s1, s2, **args)
+        return format_dates(s1, s2, **args)
 
     def repository(self):
         return self['admin'].repository()
@@ -79,8 +80,6 @@ class Bioport(grok.Application, grok.Container):
 
 class RepositoryView:
     def repository(self):
-        principal = self.request.principal
-        user = principal and principal.id or 'unknown'
         return self.context.repository()
 
     def get_sources(self):
@@ -94,7 +93,6 @@ class RepositoryView:
 
     def get_status_values(self):
         return self.repository().get_status_values()
-
 
     @ram.cache(lambda *args: time.time() // (60 * 60))
     def count_persons(self):
@@ -117,11 +115,10 @@ class RepositoryView:
 
     def menu_items(self):
         items = [
-                (self.application_url(), _('home')),
-                (self.application_url('zoek'), _('zoeken')),
-                (self.application_url('personen') + '?beginletter=a',
-                 _('bladeren')),
-                (self.application_url('about'), _('project')),
+            (self.application_url(), _('home')),
+            (self.application_url('zoek'), _('zoeken')),
+            (self.application_url('personen') + '?beginletter=a', _('bladeren')),
+            (self.application_url('about'), _('project')),
         ]
 
         adapter = IUserPreferredLanguages(self.request)
@@ -130,10 +127,9 @@ class RepositoryView:
             items += [(self.application_url('blog'), _('blog')),
                     (self.application_url('agenda'), _('agenda')), ]
         items += [
-#                (self.url('colofon'), 'colofon'),
-                (self.application_url('links'), _('links')),
-                (self.application_url('faq'), _('vragen')),
-                (self.application_url('contact'), _('contact')),
+            (self.application_url('links'), _('links')),
+            (self.application_url('faq'), _('vragen')),
+            (self.application_url('contact'), _('contact')),
         ]
         return items
 
@@ -157,7 +153,7 @@ class RepositoryView:
         principals = self._principal_registry.getPrincipals('')
         return principals
 
-    def getPrincipal(self, id):
+    def getPrincipal(self, id):  # @ReservedAssignment
         self._principal_registry = component.getUtility(IAuthentication)
         try:
             return self._principal_registry.getPrincipal(id)
@@ -182,6 +178,7 @@ class RepositoryView:
             # User agent header is missing from HTTP request
             return False
 
+
 class Batcher:
     def update(self, **kw):
         self.start = int(self.request.get('start', 0) or 0)
@@ -192,12 +189,11 @@ class Batcher:
         # which magickally resolves a unicode error
         data = {}
         data.update(self.request.form)
-        if start != None:
+        if start is not None:
             data['start'] = start
-        if size != None:
+        if size is not None:
             data['size'] = size
         return self.url(data=data)
-
 
 
 class BioportNotFound(grok.View, RepositoryView):
@@ -214,6 +210,7 @@ class BioportNotFound(grok.View, RepositoryView):
     def update(self):
         self.request.response.setStatus(404)
 
+
 class Index(grok.View, RepositoryView):
 
     def get_homepage_html(self):
@@ -225,11 +222,11 @@ class Index(grok.View, RepositoryView):
             return self.context['admin'].dutch_home_html
 
 
-
 class Popup_Template(grok.View):
 
     # make the .             template avaible for everything
     grok.context(zope.interface.Interface)
+
 
 class Main_Template(grok.View, RepositoryView):
     # make the main template avaible for everything
@@ -239,6 +236,7 @@ class Main_Template(grok.View, RepositoryView):
 class Admin_Template(grok.View):
     # make the main template avaible for everything
     grok.context(zope.interface.Interface)
+
 
 class Language_Chooser(grok.View):
     "A UI control to switch between English and Dutch"
@@ -287,11 +285,13 @@ class Language_Chooser(grok.View):
 class SiteMacros(grok.View):
     grok.context(zope.interface.Interface)
 
+
 class BioPortIdTraverser(object):
     """ Mixin class that makes a view traversable with an
         integer id.
     """
     bioport_id = None  # will be available after traversal
+
     def publishTraverse(self, request, name):
         # We won't traverse more than once
         # allowing view_url/some_id but not view_url/something/some_id
@@ -311,6 +311,7 @@ class PersoonXml(BioPortIdTraverser, grok.View, RepositoryView):
         self.request.response.setHeader('Content-Type', 'text/xml; charset=utf-8')
         return person.get_merged_biography().to_string()
 
+
 class PersoonJson(BioPortIdTraverser, grok.View, RepositoryView):
     def render(self):
         redirects_to = self.repository().redirects_to(self.bioport_id)
@@ -319,6 +320,7 @@ class PersoonJson(BioPortIdTraverser, grok.View, RepositoryView):
         person = self.repository().get_person(bioport_id=self.bioport_id)
         self.request.response.setHeader('Content-Type', 'application/json; charset=utf-8')
         return simplejson.dumps(person.get_merged_biography().to_dict())
+
 
 class Resolver(grok.View, RepositoryView):
     """be as smart as possible about the values in the request, and redirect to a person (if found)
@@ -354,16 +356,16 @@ class Resolver(grok.View, RepositoryView):
                 person = self.repository().get_person(bioport_id=bioport_id)
                 bios = person.get_biographies()
                 bios = [x for x in bios if x.source_id != 'bioport']
-                min = self.request.get('min_number_of_biographies', '0')
-                if not min.isdigit():
-                    min = 0
-                min = int(min)
-                if len(bios) >= min:
+                min_number = self.request.get('min_number_of_biographies', '0')
+                if not min_number.isdigit():
+                    min_number = 0
+                min_number = int(min_number)
+                if len(bios) >= min_number:
                     dct = {
-                        'bioport_id':bioport_id,
-                        'url':url,
-                        'number_of_biographies':len(bios),
-                        'name':person.name(),  # .volledige_naam(),
+                        'bioport_id': bioport_id,
+                        'url': url,
+                        'number_of_biographies': len(bios),
+                        'name': person.name(),
                     }
                 else:
                     dct = {}
@@ -411,7 +413,7 @@ class Persoon(BioPortIdTraverser, grok.View, RepositoryView):
         self.biography = self.merged_biography = self.person.get_merged_biography()
         self.bioport_biography = self.repository().get_bioport_biography(self.person)
 
-    def get_event(self, type, biography=None):
+    def get_event(self, type, biography=None):  # @ReservedAssignment
         if not biography:
             biography = self.merged_biography
 
@@ -476,20 +478,19 @@ class Persoon(BioPortIdTraverser, grok.View, RepositoryView):
     def get_extrafields(self):
         return [ExtraFieldWrapper(index, el_extrafields) for (index, el_extrafields) in enumerate(self.bioport_biography.get_extrafields())]
 
-
     def get_illustrations(self):
         return [IllustrationWrapper(index, el) for (index, el) in self.bioport_biography.get_figures()]
 
-    def get_states(self, type=None, biography=None):
+    def get_states(self, type=None, biography=None):  # @ReservedAssignment
         if not biography:
             biography = self.merged_biography
         result = []
-        for el in  biography.get_states(type):
+        for el in biography.get_states(type):
             if el is not None:
                 result.append(StateWrapper(el, type=type))
         return result
 
-    def get_state(self, type, biography=None):
+    def get_state(self, type, biography=None):  # @ReservedAssignment
         states = self.get_states(type, biography)
         if states:
             return states[0]
@@ -531,9 +532,11 @@ class Persoon(BioPortIdTraverser, grok.View, RepositoryView):
         from zope.security import checkPermission
         return checkPermission('bioport.Manage', self.context)
 
+
 class PersonNotFound(BioPortIdTraverser, grok.View, RepositoryView):
     def update(self):
         self.message = self.request.get('message')
+
 
 def get_born_description(request):
     """ Inspect the request and build a natural language description
@@ -547,6 +550,7 @@ def get_born_description(request):
             return _("Unable to parse birth date. Please rephrase it")
         return make_description(qry, lang=current_language)
 
+
 def get_died_description(request):
     """ Inspect the request and build a natural language description
         of the searched death date"""
@@ -558,6 +562,7 @@ def get_died_description(request):
         except ValueError:
             return _("Unable to parse death date. Please rephrase it.")
         return make_description(qry, lang=current_language)
+
 
 def get_alive_description(request):
     """ Inspect the request and build a natural language description
@@ -575,14 +580,13 @@ def get_alive_description(request):
 class Zoek(grok.View, RepositoryView):
     def get_born_description(self):
         return get_born_description(self.request)
+
     def get_died_description(self):
         return get_died_description(self.request)
+
     def get_alive_description(self):
         return get_alive_description(self.request)
-#
-# class Zoek_New(Zoek):
-#    """temporary form for staging new functionality"""
-#    pass
+
 
 class Zoek_places(grok.View, RepositoryView):
     """The JSON used in the search form of the main site.
@@ -627,22 +631,17 @@ class Zoek_places_admin(grok.View, RepositoryView):
 
 class Birthdays_Box(grok.View, RepositoryView):
 
-
     @ram.cache(lambda *args: time.time() // (60 * 60 * 24))  # cache exactly one day
     def get_persons(self):
         """get 3 persons whose birthdate is today"""
         # get the month and day of today
-#         today = datetime.date.today().strftime('-%m-%d')
         today = datetime.date.today().strftime('%m%d')
         # query the datase for persons born on this date that have an illustration
-#         persons = self.repository().get_persons(where_clause='CAST(geboortedatum_min AS CHAR) like "____%s%%" and geboortedatum_min = geboortedatum_max' % today, has_illustrations=True, hide_foreigners=True)
         persons = self.repository().get_persons(where_clause='birthday = "%s"' % today, has_illustrations=True, hide_foreigners=True, size=3)
 
         persons = [p for p in persons if p.has_illustrations]
-#        [ill for ill in p.get_merged_biography().get_illustrations() if ill.has_image()]]
         if len(persons) < 3:
             # if we have less then 3 people, we cheat a bit and take someone who died today
-#             persons += self.repository().get_persons(where_clause='CAST(sterfdatum_min AS CHAR) like "____%s%%" and geboortedatum_min = geboortedatum_max' % today, has_illustrations=True, hide_foreigners=True)
             persons += self.repository().get_persons(where_clause='deathday = "%s"' % today, has_illustrations=True, hide_foreigners=True, size=3)
             persons = [p for p in persons if [ill for ill in p.get_merged_biography().get_illustrations() if ill.has_image()]]
 
@@ -651,6 +650,7 @@ class Birthdays_Box(grok.View, RepositoryView):
             illustration = illustrations and illustrations[0]
             person.illustration = illustration
         return persons[:3]
+
 
 class Birthdays(grok.View, RepositoryView):
     def get_persons_born_today(self):
@@ -665,14 +665,13 @@ class Birthdays(grok.View, RepositoryView):
         # get the month and day of today
         today = datetime.date.today().strftime('%m%d')
         # query the database for persons born on this date
-#         persons = self.repository().get_persons(where_clause='CAST(sterfdatum_min AS CHAR) like "____%s%%" and sterfdatum_min = sterfdatum_max' % today)
         persons = self.repository().get_persons(where_clause='deathday = "%s"' % today)
         return persons
 
 
-
 class Images_XML(grok.View, RepositoryView):
     grok.name('images.xml')
+
     def render(self):
         self.request.response.setHeader('Content-Type', 'text/xml')
         return self.render_response()
@@ -687,14 +686,12 @@ class Images_XML(grok.View, RepositoryView):
             if not illustration.has_image():
                 continue
             result += '<image src="%s" title="%s" url="%s/%s" />\n' % (
-                           illustration.image_home_url,
-#                           urllib.quote(unicode( person.name()).encode('utf8')),
-                           html2unicode(unicode(person.name())),
-                           self.url('persoon'),
-                           person.bioport_id,
-                           )
+                illustration.image_home_url,
+                html2unicode(unicode(person.name())),
+                self.url('persoon'), person.bioport_id,)
         result += '</root>'
         return result
+
 
 class BelowBios(grok.ViewletManager):
     grok.name('belowbios')
@@ -703,6 +700,7 @@ class BelowBios(grok.ViewletManager):
 
 class SiteMaps(grok.View, RepositoryView):
     MAX_PER_FILE = 2000
+
     def render(self):
         self.request.response.setHeader('Content-Type', 'text/xml; charset=utf-8')
         if hasattr(self, 'start_index'):
@@ -719,6 +717,7 @@ class SiteMaps(grok.View, RepositoryView):
             out += '  </sitemap>\n'
         out += '</sitemapindex>\n'
         return out
+
     def render_sitemap(self, start_index):
         all_records = self.repository().get_persons_sequence()
         application_url = self.application_url()
@@ -744,7 +743,6 @@ class SiteMaps(grok.View, RepositoryView):
 # @param text The HTML (or XML) source text.
 # @return The plain text, as a Unicode string, if necessary.
 
-import re, htmlentitydefs
 def unescape(text):
     def fixup(m):
         text = m.group(0)
@@ -767,23 +765,23 @@ def unescape(text):
     return re.sub("&#?\w+;", fixup, text)
 
 
-
 class GoogleWebmasterSilvio(grok.View):
     """This view tells Google that Silvio (silviot@gmail.com)
        is authorized to use https://www.google.com/webmasters/
        for this site
     """
     grok.name('googlee0ed19dd49699977.html')
+
     def render(self):
         return "google-site-verification: googlee0ed19dd49699977.html"
 
+
 class Robots_txt(grok.View):
     grok.name('robots.txt')
+
     def render(self):
         self.request.response.setHeader('Content-Type', 'text/plain')
         return "User-agent: *\nAllow: /\n"
-
-
 
 
 class ErrorHandler(grok.View, RepositoryView):
@@ -800,6 +798,7 @@ class ErrorHandler(grok.View, RepositoryView):
             import traceback
             return traceback.format_exc()
 
+
 class PeopleWhoLivedMoreThanHundredYears(grok.View, RepositoryView):
     def render(self):
         db = self.repository().db
@@ -811,6 +810,7 @@ class PeopleWhoLivedMoreThanHundredYears(grok.View, RepositoryView):
                 result = '%s (leefde tenminste %s jaar)' % (person.get_bioport_id(), person.sterfdatum_min - person.geboortedatum_max)
         return result
 
+
 class RelationWrapper:
     def __init__(self, index, el_relation, el_person):
         self.index = index
@@ -821,6 +821,7 @@ class RelationWrapper:
         self.el_person = el_person
         self.el_person_index = el_person.getparent().index(el_person)
 
+
 class ReferenceWrapper:
     def __init__(self, index, el_reference):
         self.text = el_reference.text
@@ -828,12 +829,14 @@ class ReferenceWrapper:
         self.element = el_reference
         self.index = index
 
+
 class ExtraFieldWrapper:
     def __init__(self, index, el_extrafield):
         self.value = el_extrafield.text
         self.key = el_extrafield.get('target')
         self.element = el_extrafield
         self.index = index
+
 
 class IllustrationWrapper:
     def __init__(self, index, el_figure):
@@ -844,6 +847,7 @@ class IllustrationWrapper:
         self.text = head
         self.element = el_figure
         self.index = index
+
 
 class ReligionWrapper:
     def __init__(self, el, repo=None):
@@ -859,7 +863,7 @@ class ReligionWrapper:
 
 
 class StateWrapper:
-    def __init__(self, el, type=None):
+    def __init__(self, el, type=None):  # @ReservedAssignment
         self.frm = el.get('from')
         self.frm_ymd = to_ymd(self.frm)
         self.to = el.get('to')
@@ -870,11 +874,9 @@ class StateWrapper:
         self.idno = el.get('idno')
         self.element = el
         self.index = el.getparent().index(el)
+
     def has_content(self):
         if self.frm or self.to or self.text or self.place or self.idno:
             return True
         else:
             return False
-
-# IApplicationInitializedEvent gets called after the application is created.
-# grok.subscribe(Bioport, grok.IApplicationInitializedEvent)
