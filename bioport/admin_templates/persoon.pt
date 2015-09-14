@@ -139,7 +139,6 @@ img {
 		<td >
 		</td>
    	</tr>
-
    	<tr>
    		<th></th>
    		<td colspan="2">
@@ -172,7 +171,8 @@ img {
     	 	"
     	 	
     	 >
-    <div metal:define-macro="event_form"
+    <div 
+        metal:define-macro="event_form"
 	    tal:define="
     		event python:view.get_event(event_type);
 	    	show_exact python:(not event) or (event.when or not (event.notAfter or event.notBefore or event.date_text));
@@ -181,40 +181,40 @@ img {
 			prefix event_type;
 			accesskey accesskey | python:title[0];
         	">
-	<tr tal:attributes="class string:separator" ><td colspan="3"><hr></td></tr>
+	    <tr tal:attributes="class string:separator" ><td colspan="3"><hr></td></tr>
    
-    <tr  tal:attributes="id event_type; 
-	    "> 
-        <th>
-        <span tal:content="accesskey" class="accesskey"></span><span tal:content="python:title[1:]"></span>
-        </th>
-         <td><a href="" 
-            tal:condition="not:has_data" 
-            tal:attributes="
-                accesskey accesskey;
-                onClick string: jQuery('.form_${event_type}').show();; jQuery(this).accesskey='';;jQuery(this).hide();; 
-                    jQuery('input[name=${prefix}_d]').focus();; 
-                    return false;;;
-	            id string:button_show_${event_type};"
-            >[toon]</a></td>
-     </tr>
-     <tr tal:attributes="
-     	id string:${event_type}_exact;
-        class python:not has_data and 'form_%s' % event_type;
-		style python:not show_exact and 'display:none';"
+        <tr tal:attributes="id event_type;"> 
+            <th>
+                <span tal:content="accesskey" class="accesskey"></span><span tal:content="python:title[1:]"></span>
+            </th>
+            <td>
+                <a href="" 
+                    tal:condition="not:has_data" 
+                    tal:attributes="
+                        accesskey accesskey;
+                        onClick string: jQuery('.form_${event_type}').show();; jQuery(this).accesskey='';;jQuery(this).hide();; 
+                            jQuery('input[name=${prefix}_d]').focus();; 
+                            return false;;;
+                         id string:button_show_${event_type};"
+                    >[toon]</a>
+            </td>
+        </tr>
+        <tr tal:attributes="
+         	id string:${event_type}_exact;
+            class python:not has_data and 'form_%s' % event_type;
+		    style python:not show_exact and 'display:none';"
 		>
-     	<th class="sublabel">datum
-     	</th>
-        <td colspan="2"  tal:attributes="class python:view.status_value(event_type, 'when')"
-        	tal:define="ymd event/when_ymd | nothing">
+            <th class="sublabel">datum</th>
+            <td colspan="2"  tal:attributes="class python:view.status_value(event_type, 'when')"
+        	     tal:define="ymd event/when_ymd | nothing">
  	
  		<span metal:define-macro="date_widget" tal:omit-tag="">
         	<select 
         	   tal:condition="nothing"
         	   tal:attributes="
-		        accesskey accesskey | nothing;
-	        	name string:${prefix}_d;
-        	    id string:${prefix}_d;">
+    		        accesskey accesskey | nothing;
+    	        	name string:${prefix}_d;      
+            	    id string:${prefix}_d;">
         		<option ></option>
         		<option 
 	        		tal:repeat="option python:range(1, 32)" 
@@ -659,9 +659,9 @@ img {
 	<!--  RELIGION -->
     <tr metal:use-macro="template/macros/separator" ></tr>  
     <tr>
-        <th>religie</th> 
+        <th><span class="accesskey">r</span>eligie</th> 
         <td>
-            <select tal:attributes="name string:religion_id">
+            <select tal:attributes="name string:religion_id" accesskey="r">
                 <option />
                 <option tal:repeat="option view/get_religion_values"
                     tal:attributes="value python:option[0];
@@ -670,9 +670,9 @@ img {
                     tal:content="python:option[1]"></option>
             </select> 
         </td>
-    
     </tr>	
 	<!--  \RELIGION -->
+
    	<!--  category -->
     <tr metal:use-macro="template/macros/separator" ></tr>  
    	<tal:block repeat="state view/get_categories">
@@ -723,15 +723,16 @@ img {
     <tr metal:use-macro="template/macros/separator" ></tr>  
     
     <tr>
-    <th colspan="3">
-        verwijzingen naar andere biografie&euml;n
-    </th></tr>
+        <th colspan="3">
+            <span class="accesskey">v</span>erwijzingen naar andere biografie&euml;n
+        </th>
+    </tr>
     
     <tal:block repeat="reference view/get_references">
     <div tal:omit-tag=""
         tal:define="reference_id python:reference and str(reference.index) or 'new';"
         metal:define-macro="reference_form" 
-         >
+        >
     <tr tal:attributes="name string:reference_${reference_id}_form">
         <th class="sublabel">URL</th>
         <td>
@@ -740,6 +741,7 @@ img {
                     id python:'reference_%s_url' % reference_id;
                     value python:reference and reference.url;
                     "
+                    accesskey="v"
                     style="width:300px">
      
             <a tal:condition="python:reference_id != 'new' and False"
@@ -763,13 +765,14 @@ img {
                 id python:'reference_%s_text' % reference_id;
                 value python:reference and reference.text;
                 "
+                accesskey="v"
                 style="width:300px">
         </td>
     </tr>
     </div>
     </tal:block>
     <div tal:define="reference nothing;" tal:omit-tag="">
-        <div  metal:use-macro="template/macros/reference_form"></div>
+        <div metal:use-macro="template/macros/reference_form"></div>
         <tr><td></td><td>
         <span tal:replace="structure python:view.actions.byname['form.actions.add_reference'].render()" ></span> 
        </td></tr>
@@ -780,38 +783,37 @@ img {
     <tr metal:use-macro="template/macros/separator" ></tr>  
     
     <tr>
-    <th colspan="3">
-        illustraties
-    </th></tr>
-    
+        <th colspan="3">
+            <span class="accesskey">i</span>llustraties
+        </th>
+    </tr>
     <tal:block repeat="illustration view/get_illustrations">
     <div tal:omit-tag=""
         tal:define="illustration_id python:illustration and str(illustration.index) or 'new';"
         metal:define-macro="illustration_form" 
-         >
+        >
     <tr tal:attributes="name string:illustration_${illustration_id}_form"
         tal:condition="nothing">
         <th class="sublabel">URL</th>
         <td>
             <input tal:attributes="
-                    name python:'illustration_%s_url' % illustration_id;
-                    id python:'illustration_%s_url' % illustration_id;
-                    value python:illustration and illustration.url;
-                    "
-                    style="width:300px">
-     
+                name python:'illustration_%s_url' % illustration_id;
+                id python:'illustration_%s_url' % illustration_id;
+                value python:illustration and illustration.url;
+                "
+                accesskey="i"
+                style="width:300px">
            </td>
     </tr>
     <tr tal:condition="not:illustration">
-        <th class="sublabel">  Voeg toe: </th> 
+        <th class="sublabel">Voeg toe:</th> 
         <td>
-        <input type="file" name="illustration_file" tal:condition="not:illustration">
+        <input type="file" name="illustration_file" tal:condition="not:illustration" accesskey="i">
         </td>
      </tr>
         
      <tr tal:attributes="name string:illustration_${illustration_id}_form">
-        <th class="sublabel" >Beschrijving</th> 
-       
+        <th class="sublabel">Beschrijving</th> 
         <td>
             <input tal:attributes="
                 name python:'illustration_%s_url' % illustration_id;
@@ -825,6 +827,7 @@ img {
                 id python:'illustration_%s_text' % illustration_id;
                 value python:illustration and illustration.text;
                 "
+                accesskey="i"
                 style="width:300px">
          <a tal:condition="illustration"
                tal:attributes="
@@ -845,30 +848,31 @@ img {
     </div>
 <!--  /ILLUSTRATIONS -->
        
-
-
 <!--  EXTRA FIELDS -->
     <tr metal:use-macro="template/macros/separator" ></tr>  
     
     <tr>
-    <th colspan="3">
-        Extra informatie
-    </th></tr>
+        <th colspan="3">
+            E<span class="accesskey">x</span>tra informatie
+        </th>
+    </tr>
     
     <tal:block repeat="extrafield view/get_extrafields">
     <div tal:omit-tag=""
         tal:define="extrafield_id python:extrafield and str(extrafield.index) or 'new';"
         metal:define-macro="extrafield_form" 
-         >
+        >
     <tr tal:attributes="name string:extrafield_${extrafield_id}_form">
         <th class="sublabel">Key/kop</th>
         <td>
             <input tal:attributes="
-                    name python:'extrafield_%s_key' % extrafield_id;
-                    id python:'extrafield_%s_key' % extrafield_id;
-                    value python:extrafield and extrafield.key;
-                    "
-                    style="width:300px">
+                name python:'extrafield_%s_key' % extrafield_id;
+                id python:'extrafield_%s_key' % extrafield_id;
+                value python:extrafield and extrafield.key;
+                "
+                style="width:300px"
+                accesskey="x"
+                >
      
             <a tal:condition="python:extrafield_id != 'new' and False"
                 tal:attributes="OnClick string:
@@ -891,7 +895,10 @@ img {
                 id python:'extrafield_%s_value' % extrafield_id;
                 value python:extrafield and extrafield.value;
                 "
-                style="width:300px">
+                style="width:300px"
+                accesskey="x"
+                >
+
         </td>
     </tr>
     </div>
