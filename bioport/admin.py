@@ -448,7 +448,7 @@ class MostSimilar(grok.Form, RepositoryView, Batcher):
             if k.startswith('form'):
                 del data[k]
         for k, v in data.items():
-            if v in [None, 'None' ]:
+            if v in [None, 'None']:
                 del data[k]
         redirect_url = self.url(data=data)
         if self.redirect_to is not None:
@@ -472,7 +472,7 @@ class MostSimilar(grok.Form, RepositoryView, Batcher):
         then redirect the user"""
         bioport_ids = self.request.get('bioport_ids')
         repo = self.repository()
-        persons = [self.get_person(long(id)) for id in bioport_ids]
+        persons = [self.get_person(long(person_id)) for person_id in bioport_ids]
         assert len(persons) == 2
         new_person = repo.identify(persons[0], persons[1])
 
@@ -510,7 +510,7 @@ class MostSimilar(grok.Form, RepositoryView, Batcher):
             status_2 = get_status(persons[1].status, '--')
             status_new = get_status(new_person.status, '')
             warning_msg2 = '%s and %s had different statuses (<i>%s</i> and <i>%s</i>). ' \
-                         % (person1_href, person2_href, status_1, status_2)
+                % (person1_href, person2_href, status_1, status_2)
             warning_msg2 += "New person status is <i>%s</i> " % status_new
             warning_msg2 += '(<a accesskey="b" href="./persoon?bioport_id=%s">edit</a>).' % new_person.get_bioport_id()
             # XXX - something I'm really ashamed of; needed because otherwise
@@ -537,14 +537,14 @@ class MostSimilar(grok.Form, RepositoryView, Batcher):
     def antiidentify(self):
         bioport_ids = self.request.get('bioport_ids')
         repo = self.repository()
-        persons = [bioport_repository.person.Person(id, repository=repo) for id in bioport_ids]
+        persons = [bioport_repository.person.Person(person_id, repository=repo) for person_id in bioport_ids]
         p1, p2 = persons
         repo.antiidentify(p1, p2)
 
         self.bioport_ids = bioport_ids
         self.persons = persons
         msg = 'Anti-Identified <a href="../persoon?bioport_id=%s">%s</a> and <a href="../persoon?bioport_id=%s">%s</a>' % (
-                bioport_ids[0], persons[0].get_bioport_id(), bioport_ids[1], persons[1].get_bioport_id())
+            bioport_ids[0], persons[0].get_bioport_id(), bioport_ids[1], persons[1].get_bioport_id())
 
         # redirect the user to where wer were
         data = self.request.form
@@ -556,14 +556,14 @@ class MostSimilar(grok.Form, RepositoryView, Batcher):
     def deferidentification(self):
         bioport_ids = self.request.get('bioport_ids')
         repo = self.repository()
-        persons = [bioport_repository.person.Person(id, repository=repo) for id in bioport_ids]
+        persons = [bioport_repository.person.Person(person_id, repository=repo) for person_id in bioport_ids]
         p1, p2 = persons
         repo.defer_identification(p1, p2)
 
         self.bioport_ids = bioport_ids
         self.persons = persons
         msg = '<a href="../persoon?bioport_id=%s">%s</a> and <a href="../persoon?bioport_id=%s">%s</a> in de lijst met moeilijke gevallen gezet' % (
-                     bioport_ids[0], persons[0].get_bioport_id(), bioport_ids[1], persons[1].get_bioport_id())
+            bioport_ids[0], persons[0].get_bioport_id(), bioport_ids[1], persons[1].get_bioport_id())
 
         # redirect the user to where wer were
         data = self.request.form
@@ -582,6 +582,7 @@ class MostSimilar(grok.Form, RepositoryView, Batcher):
         if len(self.selected_persons) == 1:
             person = self.selected_persons[0]
             ls = self.repository().get_most_similar_persons(bioport_id=person.bioport_id)
+
             def other_person(i):
                 _score, p1, p2 = i
                 if person.bioport_id == p1.bioport_id:
@@ -596,22 +597,23 @@ class MostSimilar(grok.Form, RepositoryView, Batcher):
 
     def action_url(self, bioport_ids, action_id=None, url=None):
         form_data = {
-            'bioport_ids':bioport_ids,
-            'start':self.start,
-            'size':self.size,
-            'redirect_to':self.redirect_to,
-            'source_id':self.request.get('source_id', ''),
-            'source_id2':self.request.get('source_id2', ''),
-            'status':self.request.get('status', ''),
-            'search_name':self.request.get('search_name', ''),
-            'any_place':self.request.get('any_place', ''),
-        };
+            'bioport_ids': bioport_ids,
+            'start': self.start,
+            'size': self.size,
+            'redirect_to': self.redirect_to,
+            'source_id': self.request.get('source_id', ''),
+            'source_id2': self.request.get('source_id2', ''),
+            'status': self.request.get('status', ''),
+            'search_name': self.request.get('search_name', ''),
+            'any_place': self.request.get('any_place', ''),
+        }
         if action_id:
             form_data[action_id] = 'submit'
         if url:
             return self.url(url, data=form_data)
         else:
             return self.url(data=form_data)
+
 
 class DBNL_Ids(MostSimilar, Batcher):
 
