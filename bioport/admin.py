@@ -333,6 +333,8 @@ class Source(grok.EditForm, RepositoryView):
         if default_status is not None:
             source.default_status = default_status
 
+        source.source_type = self.request.get('source_type', None)
+
         self.repository().save_source(source)
         self._redirect_with_msg('Settings saved')
 

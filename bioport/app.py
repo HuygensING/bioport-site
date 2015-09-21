@@ -54,6 +54,7 @@ from common import (format_date, format_dates, format_number,
 from interfaces import IBioport
 from names.common import to_ymd
 from bioport import BioportMessageFactory as _
+from bioport_repository.db_definitions import SOURCE_TYPE_PORTRAITS
 
 
 class Bioport(grok.Application, grok.Container):
@@ -93,6 +94,9 @@ class RepositoryView:
 
     def get_status_values(self):
         return self.repository().get_status_values()
+
+    def get_source_types(self):
+        return self.repository().get_source_types()
 
     @ram.cache(lambda *args: time.time() // (60 * 60))
     def count_persons(self):
@@ -512,12 +516,17 @@ class Persoon(BioPortIdTraverser, grok.View, RepositoryView):
 
     def get_biographies(self):
         bios = self.person.get_biographies()
-        bios = [bio for bio in bios if bio.source_id != 'bioport' and bio.source_id != 'portraits' and bio.source_id != 'na']
+        bios = [
+            bio for bio in bios if
+            bio.source_id != 'bioport' and
+            bio.get_source().source_type != SOURCE_TYPE_PORTRAITS and
+            bio.source_id != 'na'
+        ]
         return bios
 
     def get_portraits(self):
         bios = self.person.get_biographies()
-        bios = [bio for bio in bios if bio.source_id == 'portraits']
+        bios = [bio for bio in bios if bio.get_source().source_type == SOURCE_TYPE_PORTRAITS]
         return bios
 
     def get_archives(self):
