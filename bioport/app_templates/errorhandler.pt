@@ -5,7 +5,6 @@
 
     <tal:block tal:define="traceback view/get_traceback_message">
         <pre tal:condition="traceback" width="110" tal:content="traceback" />
-
         <div tal:condition="not:traceback">
             <span  i18n:translate="contact_site_admin">U kunt de systeembeheerder bereiken via het onderstaande adres: </span>
             <a href="mailto:bioport@inghist.nl">bioport@inghist.nl</a>

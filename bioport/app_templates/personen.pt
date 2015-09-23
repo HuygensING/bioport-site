@@ -98,10 +98,9 @@
 	
 	<div class="persoon" metal:define-macro="render_person">
 	    
-	    <div tal:omit-tag="" tal:condition="person/has_illustrations">
+	    <div tal:omit-tag="" tal:condition="person/thumbnail">
             <span  class="illustration" >
-    	        <img tal:attributes="src person/thumbnail;
-      	                           alt person/name" />
+    	        <img tal:attributes="src person/thumbnail; alt person/name" />
             </span>                                    
         </div>
 

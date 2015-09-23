@@ -70,6 +70,21 @@
         </td>
     </tr>
 
+    <tr>
+        <th>type of source</th>
+        <td>
+            <select name="source_type">
+                <option tal:repeat="option view/get_source_types"
+                    tal:attributes="
+                        value python:option[0];
+                        selected python:str(option[0]) == str(source.source_type);
+                    "
+                    tal:content="python:option[1]">
+                </option>
+                
+            </select> (Portraits are only shown if they are linked to visible biography from another source)
+        </td>
+    </tr>
 
 </table>
 
