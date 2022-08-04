@@ -19,9 +19,11 @@
 ##########################################################################
 
 import grok
+
 from app import Bioport
 from interfaces import IBioport
 from interfaces import IEnglishRequest
+
 try:
     from zope.i18n.interfaces import IUserPreferredLanguages  # after python 2.6 upgrade
 except ImportError:
@@ -32,9 +34,11 @@ from zope.interface import implements
 from zope.traversing.browser.absoluteurl import AbsoluteURL
 from zope.traversing.browser.interfaces import IAbsoluteURL
 
+
 class BioportTraverser(grok.Traverser):
-    "This traverser ensures that an english version of the site is available at /en"
+    """This traverser ensures that an english version of the site is available at /en"""
     grok.context(Bioport)
+
     def traverse(self, name):
         if name == 'en':
             preferred_languages = IUserPreferredLanguages(self.request)
@@ -42,18 +46,19 @@ class BioportTraverser(grok.Traverser):
             alsoProvides(self.request, IEnglishRequest)
             return self.context
 
+
 def language_switch(object, event):
-    "This is registered in zcml as a pre-traversal hook on Bioport"
+    """This is registered in zcml as a pre-traversal hook on Bioport"""
     context = object
     request = event.request
     preferred_languages = IUserPreferredLanguages(request)
     preferred_languages.setPreferredLanguages(['nl'])
-    
+
+
 class EnglishAbsoluteURL(AbsoluteURL):
-    "This ensures that english requests will provide english urls"
+    """This ensures that english requests will provide english urls"""
     adapts(IBioport, IEnglishRequest)
     implements(IAbsoluteURL)
-    
+
     def __call__(self):
         return super(EnglishAbsoluteURL, self).__call__() + '/en'
-

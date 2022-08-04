@@ -21,26 +21,27 @@
 import datetime
 import os
 import random
+import re
 import time
 import types
-import re
-import htmlentitydefs
 from urllib import urlencode
 
 import grok
+import htmlentitydefs
+import simplejson
 import zope.interface
-from zope.interface.common.interfaces import IException
-from zope.i18n import translate
 from plone.memoize import ram
 from sqlalchemy.exc import OperationalError
-import simplejson
+from zope import component
+from zope.authentication.interfaces import IAuthentication
+from zope.authentication.interfaces import PrincipalLookupError
+from zope.i18n import translate
+from zope.interface.common.interfaces import IException
+from zope.publisher.interfaces import NotFound, INotFound
+
 from fuzzy_search import get_search_query
 from fuzzy_search import make_description
 
-from zope.publisher.interfaces import NotFound, INotFound
-from zope.authentication.interfaces import IAuthentication
-from zope.authentication.interfaces import PrincipalLookupError
-from zope import component
 try:
     from zope.i18n.interfaces import IUserPreferredLanguages  # after python 2.6 upgrade
 except ImportError:
@@ -55,6 +56,8 @@ from interfaces import IBioport
 from names.common import to_ymd
 from bioport import BioportMessageFactory as _
 from bioport_repository.db_definitions import SOURCE_TYPE_PORTRAITS
+
+bp_email_address = 'biografischportaal@huygens.knaw.nl'
 
 
 class Bioport(grok.Application, grok.Container):
@@ -129,11 +132,11 @@ class RepositoryView:
         lang = adapter.getPreferredLanguages()[0]
         if lang != 'en':
             items += [(self.application_url('blog'), _('blog')),
-                    (self.application_url('agenda'), _('agenda')), ]
+                      (self.application_url('agenda'), _('agenda')), ]
         items += [
             (self.application_url('links'), _('links')),
             (self.application_url('faq'), _('vragen')),
-            (self.application_url('contact'), _('contact')),
+            (f'mailto:{bp_email_address}', _('contact')),
         ]
         return items
 
@@ -169,6 +172,7 @@ class RepositoryView:
         class FakeRequest:
             def __init__(self, request):
                 self.other = request
+
         ua = get_user_agent(FakeRequest(self.request))
         if ua:
             # Apply reg
@@ -201,7 +205,6 @@ class Batcher:
 
 
 class BioportNotFound(grok.View, RepositoryView):
-
     grok.context(INotFound)
     grok.name("index.html")
     static = None
@@ -227,18 +230,17 @@ class Index(grok.View, RepositoryView):
 
 
 class Popup_Template(grok.View):
-
-    # make the .             template avaible for everything
+    # make the .             template available for everything
     grok.context(zope.interface.Interface)
 
 
 class Main_Template(grok.View, RepositoryView):
-    # make the main template avaible for everything
+    # make the main template available for everything
     grok.context(zope.interface.Interface)
 
 
 class Admin_Template(grok.View):
-    # make the main template avaible for everything
+    # make the main template available for everything
     grok.context(zope.interface.Interface)
 
 
@@ -310,7 +312,8 @@ class PersoonXml(BioPortIdTraverser, grok.View, RepositoryView):
         redirects_to = self.repository().redirects_to(self.bioport_id)
         if redirects_to:
             self.bioport_id = redirects_to
-        print type(self.bioport_id)
+        print
+        type(self.bioport_id)
         person = self.repository().get_person(bioport_id=self.bioport_id)
         self.request.response.setHeader('Content-Type', 'text/xml; charset=utf-8')
         return person.get_merged_biography().to_string()
@@ -336,6 +339,7 @@ class Resolver(grok.View, RepositoryView):
         pica -
         ecc.
     """
+
     def render(self):
         # if true, we want to return a json-padded javascript. Otherwise, we redirect to a suitable page
         return_jsonp = self.request.get('callback')
@@ -477,10 +481,12 @@ class Persoon(BioPortIdTraverser, grok.View, RepositoryView):
             return None
 
     def get_references(self):
-        return [ReferenceWrapper(index, el_reference) for (index, el_reference) in self.bioport_biography.get_references()]
+        return [ReferenceWrapper(index, el_reference) for (index, el_reference) in
+                self.bioport_biography.get_references()]
 
     def get_extrafields(self):
-        return [ExtraFieldWrapper(index, el_extrafields) for (index, el_extrafields) in enumerate(self.bioport_biography.get_extrafields())]
+        return [ExtraFieldWrapper(index, el_extrafields) for (index, el_extrafields) in
+                enumerate(self.bioport_biography.get_extrafields())]
 
     def get_illustrations(self):
         return [IllustrationWrapper(index, el) for (index, el) in self.bioport_biography.get_figures()]
@@ -646,13 +652,16 @@ class Birthdays_Box(grok.View, RepositoryView):
         # get the month and day of today
         today = datetime.date.today().strftime('%m%d')
         # query the datase for persons born on this date that have an illustration
-        persons = self.repository().get_persons(where_clause='birthday = "%s"' % today, has_illustrations=True, hide_foreigners=True, size=3)
+        persons = self.repository().get_persons(where_clause='birthday = "%s"' % today, has_illustrations=True,
+                                                hide_foreigners=True, size=3)
 
         persons = [p for p in persons if p.has_illustrations]
         if len(persons) < 3:
             # if we have less then 3 people, we cheat a bit and take someone who died today
-            persons += self.repository().get_persons(where_clause='deathday = "%s"' % today, has_illustrations=True, hide_foreigners=True, size=3)
-            persons = [p for p in persons if [ill for ill in p.get_merged_biography().get_illustrations() if ill.has_image()]]
+            persons += self.repository().get_persons(where_clause='deathday = "%s"' % today, has_illustrations=True,
+                                                     hide_foreigners=True, size=3)
+            persons = [p for p in persons if
+                       [ill for ill in p.get_merged_biography().get_illustrations() if ill.has_image()]]
 
         for person in persons:
             illustrations = person.get_merged_biography().get_illustrations()
@@ -667,7 +676,7 @@ class Birthdays(grok.View, RepositoryView):
         today = datetime.date.today().strftime('%m%d')
         # query the database for persons born on this date
         persons = self.repository().get_persons(where_clause='birthday = "%s"' % today)
-#         persons = self.repository().get_persons(where_clause='CAST(geboortedatum_min AS CHAR) like "____%s%%" and geboortedatum_min = geboortedatum_max' % today)
+        #         persons = self.repository().get_persons(where_clause='CAST(geboortedatum_min AS CHAR) like "____%s%%" and geboortedatum_min = geboortedatum_max' % today)
         return persons
 
     def get_persons_dead_today(self):
@@ -771,6 +780,7 @@ def unescape(text):
             except KeyError:
                 pass
         return text  # leave as is
+
     return re.sub("&#?\w+;", fixup, text)
 
 
@@ -813,10 +823,12 @@ class PeopleWhoLivedMoreThanHundredYears(grok.View, RepositoryView):
         db = self.repository().db
         from bioport_repository.db_definitions import PersonRecord
         with db.get_session_context() as session:
-            query = session.query(PersonRecord).filter(PersonRecord.sterfdatum_min - PersonRecord.geboortedatum_max > 100)
+            query = session.query(PersonRecord).filter(
+                PersonRecord.sterfdatum_min - PersonRecord.geboortedatum_max > 100)
             result = ''
             for person in query.all():
-                result = '%s (leefde tenminste %s jaar)' % (person.get_bioport_id(), person.sterfdatum_min - person.geboortedatum_max)
+                result = '%s (leefde tenminste %s jaar)' % (
+                    person.get_bioport_id(), person.sterfdatum_min - person.geboortedatum_max)
         return result
 
 
