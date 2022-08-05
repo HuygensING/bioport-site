@@ -269,7 +269,7 @@
     </div>    
    
    <div>
-   <a tal:attributes="href python:view.url('mailto:biografischportaal@huygens.knaw.nl?subject=reactie+op+biografie+%s+van+%s' % (view.bioport_id,view.biography.title())})">opmerkingen of vragen over deze persoon?</a>
+   <a tal:attributes="href python:view.url('mailto:biografischportaal@huygens.knaw.nl?subject=reactie+op+biografie+%s+van+%s' % (view.bioport_id,view.biography.title()))">opmerkingen of vragen over deze persoon?</a>
    </div> 
 </div> <!--  /bioinfo 2 -->
 </div> <!--  /fillslot content  -->
