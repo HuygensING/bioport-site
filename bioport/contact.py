@@ -20,26 +20,30 @@
 
 import email.Header
 import grok
-from app import Bioport
-from app import RepositoryView
-from bioport.captcha import CaptchaWidget
-from bioport.mail_validation import check_email
 from zope import schema
 from zope.component import getUtility
 from zope.interface import Interface
-from zope.sendmail.interfaces import IMailDelivery
 from zope.schema import ValidationError
+from zope.sendmail.interfaces import IMailDelivery
+
+from app import Bioport
+from app import RepositoryView
 from bioport import BioportMessageFactory as _
+from bioport.captcha import CaptchaWidget
+from bioport.mail_validation import check_email
 
 grok.context(Bioport)
 
+
 class InvalidEmailError(ValidationError):
-    "Dit is geen geldig email adres"
+    """Dit is geen geldig email adres"""
+
 
 def email_validator(value):
     if not check_email(value):
         raise InvalidEmailError(value)
     return True
+
 
 class IContact(Interface):
     name = schema.TextLine(title=_(u"Naam"))
@@ -47,19 +51,21 @@ class IContact(Interface):
     text = schema.Text(title=_(u"Tekst"))
     verification = schema.Text(title=_(u"Vul de letters in in het vakje"))
 
+
 class ContactForm(grok.AddForm, RepositoryView):
     template = grok.PageTemplateFile("contact_templates/bare_edit_form.pt")
     form_fields = grok.AutoFields(IContact)
     form_fields["verification"].custom_widget = CaptchaWidget
+
     @grok.action('Submit')
     def submit(self, **kwargs):
-        "Process input and send email"
-        default_subject = 'reactie biografisch portaal van %s' % kwargs['name'] 
+        """Process input and send email"""
+        default_subject = 'reactie biografisch portaal van %s' % kwargs['name']
         subject = self.request.form.get('subject') or default_subject
-#        subject = 'reactie biografisch portaal van %s' % kwargs['name'] 
+        #        subject = 'reactie biografisch portaal van %s' % kwargs['name']
         _email_from = self.context['admin'].EMAIL_FROM_ADDRESS
         email_to = self.context['admin'].CONTACT_DESTINATION_ADDRESS
-        content = '%s\n---------\n\n%s' % (kwargs['text'], default_subject) 
+        content = '%s\n---------\n\n%s' % (kwargs['text'], default_subject)
         if self.request.form.get('subject'):
             content += '\n%s' % self.request.get('subject')
         send_email(kwargs['sender'], email_to, subject, content)
@@ -76,7 +82,8 @@ class ContactOk(grok.View, RepositoryView):
 
 def send_email(sender, recipient, subject, body):
     msg = email.MIMEText.MIMEText(body.encode('latin-1'), 'plain', 'latin-1')
-    msg["From"] = sender
+    msg["From"] = 'no-reply@huygens.knaw.nl'
+    msg["Reply-To"] = sender
     msg["To"] = recipient
     msg["Subject"] = email.Header.Header(subject, 'latin-1')
     mailer = getUtility(IMailDelivery, 'bioport.mailer')
