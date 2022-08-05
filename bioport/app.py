@@ -136,7 +136,7 @@ class RepositoryView:
         items += [
             (self.application_url('links'), _('links')),
             (self.application_url('faq'), _('vragen')),
-            (f'mailto:{bp_email_address}', _('contact')),
+            ('mailto: %s' % bp_email_address, _('contact')),
         ]
         return items
 
