@@ -337,7 +337,7 @@ class PersonenJSON(PersonenXML):
 
 def parse_api_args(qry):
     """
-    if qry['birth_min'] is defined, return a dictionary that can be passed to the get_persons fucntion of the repository
+    if qry['birth_min'] is defined, return a dictionary that can be passed to the get_persons function of the repository
     same for 'birth_max', 'death_min', 'death_max'
     """
     result = {}
