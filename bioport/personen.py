@@ -18,15 +18,17 @@
 # <http://www.gnu.org/licenses/gpl-3.0.html>.
 ##########################################################################
 
-import  grok
-from zope.i18n import translate
+import grok
 import simplejson
-
 from z3c.batching.batch import Batch
+from zope.i18n import translate
+
 from bioport import BioportMessageFactory as _
-from bioport.app import RepositoryView, Batcher, Bioport, get_born_description, get_died_description, get_alive_description
-from fuzzy_search import get_search_query
+from bioport.app import RepositoryView, Batcher, Bioport, get_born_description, get_died_description, \
+    get_alive_description
 from fuzzy_search import en_to_nl_for_field
+from fuzzy_search import get_search_query
+
 # from fuzzy_search import make_description
 
 try:
@@ -52,36 +54,36 @@ class _Personen(RepositoryView):
             'geboortejaar_max',
             'geboorteplaats',
             'geslacht',
-#        has_illustrations=None, #boolean: does this person have illustrations?
-#        is_identified=None,
+            #        has_illustrations=None, #boolean: does this person have illustrations?
+            #        is_identified=None,
             'hide_invisible',
             'order_by',
             'religion',
-#            'search_family_name',
-#            'search_family_name_exact',
+            #            'search_family_name',
+            #            'search_family_name_exact',
             'search_term',
-#            'search_name',
-#            'search_name_exact',
-#            'search_soundex',
+            #            'search_name',
+            #            'search_name_exact',
+            #            'search_soundex',
             'size',
             'source_id',
             'source_id2',
             'start',
             'status',
-#            'sterfjaar_min',
-#            'sterfjaar_max',
+            #            'sterfjaar_min',
+            #            'sterfjaar_max',
             'sterfplaats',
             'has_contradictions',
             'url_biography',
-#        start=None,
-#        size=None,
-             ]:
+            #        start=None,
+            #        size=None,
+        ]:
             if k in self.request.keys():
                 qry[k] = self.request[k]
             if k in args:
                 qry[k] = args[k]
 
-#        logging.info('query %s \n args %s \n request: %s' % (str(qry), str(args), str(self.request)))
+        #        logging.info('query %s \n args %s \n request: %s' % (str(qry), str(args), str(self.request)))
         current_language = IUserPreferredLanguages(self.request).getPreferredLanguages()[0]
 
         request = self.request
@@ -123,8 +125,11 @@ class _Personen(RepositoryView):
 
         # parameters from the API
         qry.update(parse_api_args(form))
-        persons = self.repository().get_persons_sequence(**qry)
-        return persons
+        if qry:
+            persons = self.repository().get_persons_sequence(**qry)
+            return persons
+        else:
+            return []
 
 
 class Personen(grok.View, _Personen, Batcher):
@@ -195,8 +200,8 @@ class Personen(grok.View, _Personen, Batcher):
         if source_id:
             source_name = repository.get_source(source_id).description
             result += ' %s <em>%s</em>' % (translate(_(u'from'),
-                                                      target_language=current_language),
-             source_name)
+                                                     target_language=current_language),
+                                           source_name)
 
         if request.get('search_name'):
             whose_name_is_like = translate(_(u'whose_name_is_like'), target_language=current_language)
@@ -211,8 +216,8 @@ class Personen(grok.View, _Personen, Batcher):
         if request.get('search_term'):
             result += u' met het woord <em>%s</em> in de tekst' % request.get('search_term')
 
-#        if request.get('search_soundex'):
-#            result += u' wier naam lijkt op <em>%s</em>' % request.get('search_soundex')
+        #        if request.get('search_soundex'):
+        #            result += u' wier naam lijkt op <em>%s</em>' % request.get('search_soundex')
 
         if request.get('category'):
             category_name_untranslated = repository.db.get_category(request.get('category')).name
@@ -220,37 +225,38 @@ class Personen(grok.View, _Personen, Batcher):
                                       target_language=current_language)
             result += ' %s <em>%s</em>' % (
                 translate(_("of_the_category"), target_language=current_language),  # uit de rubriek
-                             category_name)
+                category_name)
         if request.get('religion'):
             religion = dict(repository.get_religion_values()).get(int(request.get('religion')))
             if religion:
-#                religion = religion[1]
+                #                religion = religion[1]
                 religion = translate(_(religion),
-                                          target_language=current_language)
+                                     target_language=current_language)
                 result += ' %s <em>%s</em>' % (
                     translate(_("of_the_religion"), target_language=current_language),  # uit de rubriek
-                             religion)
+                    religion)
 
         if request.get('bioport_id'):
-            result += ' %s <em>%s</em>' % (translate(_("with_bioport_id"), target_language=current_language), request.get('bioport_id'))
+            result += ' %s <em>%s</em>' % (translate(_("with_bioport_id"), target_language=current_language),
+                                           request.get('bioport_id'))
 
         # NB: in the template, we show the alphabet only if the search description is emtpy
         # uncommenting the following lines messes up this logic
-#        if request.get('beginletter'):
-#            result += ' met een achternaam beginnend met een <em>%s</em>' % request.get('beginletter')
-#
+        #        if request.get('beginletter'):
+        #            result += ' met een achternaam beginnend met een <em>%s</em>' % request.get('beginletter')
+        #
         geslacht_id = request.get('geslacht', None)
         gender_name = {'1': '<em>' + translate(_("men"),
-                                      target_language=current_language) + '</em>',
+                                               target_language=current_language) + '</em>',
                        '2': '<em>' + translate(_("women"),
-                                      target_language=current_language) + '</em>', }
+                                               target_language=current_language) + '</em>', }
         _persons = translate(_("persons"), target_language=current_language)
         geslacht = gender_name.get(geslacht_id, _persons)
 
         if result:
             result = '%s %s %s.' % (
-                    translate(_("you_searched_for"), target_language=current_language),
-                    geslacht, result)
+                translate(_("you_searched_for"), target_language=current_language),
+                geslacht, result)
         result = unicode(result)
         return result
 
@@ -269,6 +275,8 @@ class Personen(grok.View, _Personen, Batcher):
             n2 = batch.lastElement.geslachtsnaam() or batch.lastElement.naam()
             ls.append((url, n1, n2))
         return ls
+
+
 #
 #    def get_navigation_box(self):
 #        "This function returns the html for the navigation box"
@@ -299,11 +307,11 @@ class PersonenXML(grok.View, _Personen):
         persons = self.get_persons()
         if detail == 'full':
             if len(persons):
-                for person in  persons:
+                for person in persons:
                     out.append(person.get_merged_biography().to_string())
         else:
             if len(persons):
-                for person in  persons:
+                for person in persons:
                     person_id = person.record.bioport_id
                     timestamp = person.record.timestamp
                     name = person.record.naam
@@ -313,27 +321,29 @@ class PersonenXML(grok.View, _Personen):
 
                         if '&' in name:
                             name = name.replace('&', '&amp;')
-        #                    name = unescape(name).encode('utf8')
+                    #                    name = unescape(name).encode('utf8')
                     url = self.url('persoon') + '/xml/' + str(person_id)
                     if timestamp:
                         changed = timestamp.isoformat()
                     else:
                         changed = ''
                     out.append(u'<a href="%(url)s" last_changed="%(changed)s">%(name)s</a>\n'
-                            % dict(name=name, url=url, changed=changed))
+                               % dict(name=name, url=url, changed=changed))
         out.append('</list>\n')
         self.request.response.setHeader('Content-Type', 'text/xml; charset=utf-8')
         return ''.join(out)
+
 
 class PersonenJSON(PersonenXML):
     def render(self):
         persons = self.get_persons()
         out = []
         if len(persons):
-            for person in  persons:
+            for person in persons:
                 out.append(person.get_merged_biography().to_dict())
         self.request.response.setHeader('Content-Type', 'application/json; charset=utf-8')
         return simplejson.dumps(out)
+
 
 def parse_api_args(qry):
     """
@@ -371,4 +381,3 @@ def parse_api_args(qry):
     if qry.get('sex'):
         qry['geslacht'] = qry.get('sex')
     return result
-
