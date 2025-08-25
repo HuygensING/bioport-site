@@ -651,7 +651,7 @@ class Birthdays_Box(grok.View, RepositoryView):
         """get 3 persons whose birthdate is today"""
         # get the month and day of today
         today = datetime.date.today().strftime('%m%d')
-        # query the datase for persons born on this date that have an illustration
+        # query the database for persons born on this date that have an illustration
         persons = self.repository().get_persons(where_clause='birthday = "%s"' % today, has_illustrations=True,
                                                 hide_foreigners=True, size=3)
 

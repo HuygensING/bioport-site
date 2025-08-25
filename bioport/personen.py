@@ -182,7 +182,7 @@ class Personen(grok.View, _Personen, Batcher):
             if born_description:
                 result += ' ' + born_description
             if geboorteplaats:
-                result += ' in  <em>%s</em>' % geboorteplaats
+                result += ' in  <em>%s</em>' % self._html_escape(geboorteplaats)
 
         sterfplaats = request.get('sterfplaats')
         if died_description or sterfplaats:
@@ -190,7 +190,7 @@ class Personen(grok.View, _Personen, Batcher):
             if died_description:
                 result += ' ' + died_description
             if sterfplaats:
-                result += ' in <em>%s</em>' % sterfplaats
+                result += ' in <em>%s</em>' % self._html_escape(sterfplaats)
 
         if alive_description:
             result += ' ' + translate(_(u'alive'), target_language=current_language)
@@ -206,15 +206,15 @@ class Personen(grok.View, _Personen, Batcher):
         if request.get('search_name'):
             whose_name_is_like = translate(_(u'whose_name_is_like'), target_language=current_language)
             result += ' ' + whose_name_is_like
-            result += ' <em>%s</em>' % request.get('search_name')
+            result += ' <em>%s</em>' % self._html_escape(request.get('search_name'))
 
         if request.get('search_family_name'):
             whose_family_name_is_like = translate(_(u'whose_family_name_is_like'), target_language=current_language)
             result += ' ' + whose_family_name_is_like
-            result += ' <em>%s</em>' % request.get('search_family_name')
+            result += ' <em>%s</em>' % self._html_escape(request.get('search_family_name'))
 
         if request.get('search_term'):
-            result += u' met het woord <em>%s</em> in de tekst' % request.get('search_term')
+            result += u' met het woord <em>%s</em> in de tekst' % self._html_escape(request.get('search_term'))
 
         #        if request.get('search_soundex'):
         #            result += u' wier naam lijkt op <em>%s</em>' % request.get('search_soundex')
@@ -238,7 +238,7 @@ class Personen(grok.View, _Personen, Batcher):
 
         if request.get('bioport_id'):
             result += ' %s <em>%s</em>' % (translate(_("with_bioport_id"), target_language=current_language),
-                                           request.get('bioport_id'))
+                                           self._html_escape(request.get('bioport_id')))
 
         # NB: in the template, we show the alphabet only if the search description is emtpy
         # uncommenting the following lines messes up this logic
@@ -275,6 +275,9 @@ class Personen(grok.View, _Personen, Batcher):
             n2 = batch.lastElement.geslachtsnaam() or batch.lastElement.naam()
             ls.append((url, n1, n2))
         return ls
+
+    def _html_escape(self, string: str):
+        return string.replace('&', '&amp;').replace('"', '&quot;').replace('<', '&lt;').replace('>', '&gt;')
 
 
 #
