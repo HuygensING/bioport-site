@@ -829,3 +829,9 @@ width: auto;
 .help_text_wrapper {
     display : inline-block;
 }
+
+sup {
+    vertical-align: super;
+    font-size: smaller;
+    text-decoration-line: underline;
+}
